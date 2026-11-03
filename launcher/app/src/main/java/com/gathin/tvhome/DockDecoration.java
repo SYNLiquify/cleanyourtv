@@ -30,6 +30,8 @@ public class DockDecoration extends RecyclerView.ItemDecoration {
     private float shaderTop = Float.NaN, shaderBottom = Float.NaN;
     /** Draw the band and its edge (config.xml dock_band); false leaves the tiles floating on the wallpaper. */
     private final boolean bandVisible;
+    /** Room under the dock row for the Continue watching row (ContinueRow), in px; 0 without one. */
+    private int extraBottom;
     /** single_row: the tiles after the dock share its row, so they take the same offsets to stay level with it. */
     private final boolean singleRow;
     /** dock_band_all: in a single row, the band runs behind every app instead of the dock apps only. */
@@ -75,19 +77,52 @@ public class DockDecoration extends RecyclerView.ItemDecoration {
         return Math.max(0f, Math.min(gap, roomPx));
     }
 
+    /** The dock tiles' current scale (MainActivity's dock expand); the band grows around them by the same. */
+    private float expand = 1f;
+
+    void setExpand(float scale) { expand = scale; }
+
+    /** @return true when the room changed and the grid needs invalidateItemDecorations(). */
+    boolean setExtraBottom(int px) {
+        if (px == extraBottom) return false;
+        extraBottom = px;
+        return true;
+    }
+
     @Override
     public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent,
                                @NonNull RecyclerView.State state) {
         int pos = parent.getChildAdapterPosition(view);
         if (pos >= 0 && (singleRow || pos < dockSize)) {
             outRect.top = (int) (6 * density);
-            outRect.bottom = (int) (12 * density);
+            outRect.bottom = (int) (12 * density) + (singleRow ? 0 : extraBottom);
         }
     }
 
     @Override
     public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         if (!bandVisible) return;
+        float radius = computeBand(parent, expand, rect);
+        if (Float.isNaN(radius)) return;
+        if (lightGlass && (rect.top != shaderTop || rect.bottom != shaderBottom)) {
+            // The pills' glass (pill_bg: white, 18% fading to 8%), a little fainter over this much larger area.
+            band.setShader(new LinearGradient(0, rect.top, 0, rect.bottom, 0x24FFFFFF, 0x0DFFFFFF,
+                    Shader.TileMode.CLAMP));
+            shaderTop = rect.top;
+            shaderBottom = rect.bottom;
+        }
+        c.drawRoundRect(rect, radius, radius, band);
+        c.drawRoundRect(rect, radius, radius, edge);
+    }
+
+    /**
+     * The band's rect (in the grid's frame) with the dock tiles at this scale, into out; returns its corner radius,
+     * or NaN when no dock tile is laid out. MainActivity asks for it too: the shelf title lines up with the
+     * expanded band's left edge, and Continue watching is cut off at its right edge.
+     */
+    float computeBand(@NonNull RecyclerView parent, float scale, @NonNull RectF out) {
+        RectF rect = out;
+        float expand = scale;
         boolean any = false;
         int cardWidth = 0;
         for (int i = 0; i < parent.getChildCount(); i++) {
@@ -97,10 +132,13 @@ public class DockDecoration extends RecyclerView.ItemDecoration {
             RecyclerView.ViewHolder vh = parent.getChildViewHolder(child);
             View card = vh instanceof AppAdapter.Holder ? ((AppAdapter.Holder) vh).card : child.findViewById(R.id.card);
             if (card == null) continue;
-            float l = child.getLeft() + card.getLeft();
-            float t = child.getTop() + card.getTop() + child.getTranslationY();
-            float r = l + card.getWidth();
-            float b = t + card.getHeight();
+            // The card as drawn: scaled about its own centre while the dock is expanded.
+            float cx = child.getLeft() + card.getLeft() + card.getWidth() / 2f;
+            float cy = child.getTop() + card.getTop() + child.getTranslationY() + card.getHeight() / 2f;
+            float l = cx - card.getWidth() * expand / 2f;
+            float t = cy - card.getHeight() * expand / 2f;
+            float r = cx + card.getWidth() * expand / 2f;
+            float b = cy + card.getHeight() * expand / 2f;
             cardWidth = card.getWidth();
             if (!any) {
                 rect.set(l, t, r, b);
@@ -109,7 +147,7 @@ public class DockDecoration extends RecyclerView.ItemDecoration {
                 rect.union(l, t, r, b);
             }
         }
-        if (!any) return;
+        if (!any) return Float.NaN;
         float pad = 14 * density;
         // The band can only draw inside the grid, and the first and last dock tiles sit 12dp in from its
         // edges: a full 14dp at the sides sliced the rounded ends flat (#454). Keep the sides, with the
@@ -139,14 +177,9 @@ public class DockDecoration extends RecyclerView.ItemDecoration {
             rect.right = Math.min(rect.right, parent.getWidth() - density);
         }
         rect.bottom += namesRoom;
-        if (lightGlass && (rect.top != shaderTop || rect.bottom != shaderBottom)) {
-            // The pills' glass (pill_bg: white, 18% fading to 8%), a little fainter over this much larger area.
-            band.setShader(new LinearGradient(0, rect.top, 0, rect.bottom, 0x24FFFFFF, 0x0DFFFFFF,
-                    Shader.TileMode.CLAMP));
-            shaderTop = rect.top;
-            shaderBottom = rect.bottom;
-        }
-        c.drawRoundRect(rect, radius, radius, band);
-        c.drawRoundRect(rect, radius, radius, edge);
+        return radius;
     }
+
+    /** The dock tiles' scale the band is drawn for now. */
+    float expand() { return expand; }
 }

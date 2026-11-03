@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This fork: the Settings menu the top bar's Settings button opens (SettingsActivity). -->
+<resources>
+    <string name="sm_title" translatable="false">Settings</string>
+    <string name="sm_kicker" translatable="false">Launcher</string>
+    <string name="sm_home" translatable="false">Home</string>
+    <string name="sm_themes" translatable="false">Themes</string>
+    <string name="sm_weather" translatable="false">Weather</string>
+    <string name="sm_clock" translatable="false">Clock</string>
+    <string name="sm_system" translatable="false">System</string>
+    <string name="sm_storage" translatable="false">Storage</string>
+    <string name="sm_measuring" translatable="false">Measuring…</string>
+    <string name="sm_this_tv" translatable="false">This TV</string>
+    <string name="sm_tv_usage" translatable="false">%1$s used of %2$s · %3$s free</string>
+    <string name="sm_launcher_storage" translatable="false">The launcher</string>
+    <string name="sm_st_total" translatable="false">Launcher in total</string>
+    <string name="sm_st_app" translatable="false">App</string>
+    <string name="sm_st_theme_in_use" translatable="false">Theme in use (wallpapers)</string>
+    <string name="sm_st_downloaded" translatable="false">Downloaded themes</string>
+    <string name="sm_st_previews" translatable="false">Theme previews</string>
+    <string name="sm_st_thumbnails" translatable="false">Continue watching thumbnails</string>
+    <string name="sm_st_other" translatable="false">Settings, weather and other data</string>
+    <string name="sm_clean_up" translatable="false">Clean up</string>
+    <string name="sm_clear_thumbnails" translatable="false">Clear Continue watching thumbnails</string>
+    <string name="sm_delete_downloaded" translatable="false">Delete all downloaded themes</string>
+    <string name="sm_clear_previews" translatable="false">Clear theme previews</string>
+    <string name="sm_cleared" translatable="false">Cleared</string>
+    <string name="reordering_banner" translatable="false">Reordering apps, press Back to cancel</string>
+    <string name="sm_on" translatable="false">On</string>
+    <string name="sm_off" translatable="false">Off</string>
+
+    <string name="sm_dock_apps" translatable="false">Dock apps</string>
+    <string name="sm_grid_apps" translatable="false">Apps per row</string>
+    <string name="sm_continue_watching" translatable="false">Continue watching</string>
+    <string name="sm_dock_band" translatable="false">Dock background</string>
+    <string name="sm_animations" translatable="false">Animations</string>
+    <string name="sm_reorder" translatable="false">Reorder apps</string>
+    <string name="sm_more_options" translatable="false">Wallpaper and more options</string>
+    <string name="sm_layout" translatable="false">Layout</string>
+    <string name="sm_look" translatable="false">Look</string>
+    <string name="sm_apps" translatable="false">Apps</string>
+
+    <string name="sm_themes_note" translatable="false">Previews from the repo. Applying one downloads its wallpapers from GitHub. Your dock and settings stay as they are.</string>
+    <string name="sm_themes_saved" translatable="false">Themes saved on this TV</string>
+    <string name="sm_refresh_themes" translatable="false">Refresh</string>
+    <string name="sm_themes_checking" translatable="false">Checking GitHub for new and updated themes…</string>
+    <string name="sm_themes_current" translatable="false">Up to date with GitHub</string>
+    <string name="sm_themes_offline" translatable="false">Couldn\'t reach GitHub. Showing the themes saved on this TV.</string>
+    <string name="sm_downloaded" translatable="false">Downloaded</string>
+    <string name="sm_downloaded_note" translatable="false">Kept on this TV: switch to one with no download. Delete removes one (or hold OK on the card); the theme in use can\'t be deleted.</string>
+    <string name="sm_delete" translatable="false">Delete</string>
+    <string name="sm_downloaded_removed" translatable="false">%1$s deleted from this TV</string>
+    <string name="sm_all_themes" translatable="false">All themes</string>
+    <string name="sm_theme_current" translatable="false">Current</string>
+    <string name="sm_applying" translatable="false">Applying %1$s</string>
+    <string name="sm_downloading" translatable="false">Downloading wallpaper %1$d of %2$d…</string>
+    <string name="sm_theme_applied" translatable="false">%1$s applied</string>
+    <string name="sm_theme_failed" translatable="false">Couldn\'t download this theme\'s wallpapers. Check the connection and try again.</string>
+
+    <string name="sm_show_weather" translatable="false">Show weather</string>
+    <string name="sm_units" translatable="false">Units</string>
+    <string name="sm_fahrenheit" translatable="false">°F</string>
+    <string name="sm_celsius" translatable="false">°C</string>
+    <string name="sm_conditions" translatable="false">Conditions (Clear, Rain…)</string>
+    <string name="sm_hilo" translatable="false">Today\'s high and low</string>
+    <string name="sm_location" translatable="false">Location</string>
+    <string name="sm_location_auto" translatable="false">Automatic</string>
+    <string name="sm_location_auto_detail" translatable="false">From your internet address (with a VPN on, its server\'s city)</string>
+    <string name="sm_refresh" translatable="false">Refresh now</string>
+    <string name="sm_refreshing" translatable="false">The weather refreshes when you go back to Home</string>
+    <string name="sm_find_city" translatable="false">Find a city</string>
+    <string name="sm_city_hint" translatable="false">City, State, e.g. Denver, CO</string>
+    <string name="sm_search" translatable="false">Search</string>
+    <string name="sm_searching" translatable="false">Searching…</string>
+    <string name="sm_no_places" translatable="false">No places found. Try the city name alone.</string>
+    <string name="sm_lookup_failed" translatable="false">Couldn\'t reach the place lookup. Check the connection.</string>
+    <string name="sm_use_auto" translatable="false">Use automatic location</string>
+
+    <string name="sm_time_format" translatable="false">Time format</string>
+    <string name="sm_system_default" translatable="false">System</string>
+    <string name="sm_12h" translatable="false">12-hour</string>
+    <string name="sm_24h" translatable="false">24-hour</string>
+    <string name="sm_greeting" translatable="false">Greeting</string>
+    <string name="sm_greeting_time" translatable="false">Time of day</string>
+    <string name="sm_greeting_custom" translatable="false">Custom</string>
+    <string name="sm_name" translatable="false">Name after the greeting</string>
+    <string name="sm_name_hint" translatable="false">Your name</string>
+    <string name="sm_none" translatable="false">None</string>
+    <string name="sm_custom_greetings" translatable="false">Custom greetings</string>
+    <string name="sm_custom_note" translatable="false">Shown when Greeting is Custom. With more than one, they take turns.</string>
+    <string name="sm_add_greeting" translatable="false">Add a greeting</string>
+    <string name="sm_greeting_hint" translatable="false">e.g. Welcome home</string>
+    <string name="sm_remove" translatable="false">Remove</string>
+    <string name="sm_change_every" translatable="false">Rotate</string>
+    <string name="sm_minutes" translatable="false">%1$d min</string>
+    <string name="sm_each_visit" translatable="false">Each visit</string>
+    <string name="sm_save" translatable="false">Save</string>
+    <string name="sm_clear" translatable="false">Clear</string>
+
+    <string name="sm_tv_settings" translatable="false">Android TV settings</string>
+    <string name="sm_network" translatable="false">Network and Wi-Fi</string>
+    <string name="sm_apps_settings" translatable="false">Apps</string>
+    <string name="sm_screensaver" translatable="false">Screensaver</string>
+    <string name="sm_default_home" translatable="false">Default home app</string>
+    <string name="sm_about" translatable="false">Launcher %1$s · this fork</string>
+</resources>

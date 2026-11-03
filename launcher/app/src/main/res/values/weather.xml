@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Weather line under the date (Weather.java, config.xml weather). Shown in capitals, like the date. -->
+<resources>
+    <string name="weather_temp_f" translatable="false">%1$d°F</string>
+    <string name="weather_temp_c" translatable="false">%1$d°C</string>
+    <string name="weather_separator" translatable="false">"  ·  "</string>
+    <string name="weather_hilo" translatable="false">H %1$d°  L %2$d°</string>
+    <string name="weather_clear" translatable="false">Clear</string>
+    <string name="weather_mainly_clear" translatable="false">Mostly clear</string>
+    <string name="weather_partly_cloudy" translatable="false">Partly cloudy</string>
+    <string name="weather_overcast" translatable="false">Overcast</string>
+    <string name="weather_cloudy" translatable="false">Cloudy</string>
+    <string name="weather_fog" translatable="false">Fog</string>
+    <string name="weather_drizzle" translatable="false">Drizzle</string>
+    <string name="weather_rain" translatable="false">Rain</string>
+    <string name="weather_snow" translatable="false">Snow</string>
+    <string name="weather_showers" translatable="false">Showers</string>
+    <string name="weather_snow_showers" translatable="false">Snow showers</string>
+    <string name="weather_thunderstorm" translatable="false">Thunderstorms</string>
+</resources>

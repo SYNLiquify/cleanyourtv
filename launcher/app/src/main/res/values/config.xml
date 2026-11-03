@@ -22,6 +22,14 @@
         <item>com.google.android.youtube.tv</item>
         <item>in.startv.hotstar</item>
     </string-array>
+    <!-- Continue watching row under the dock: these apps' preview programs (Nuvio publishes its Continue watching
+         list as one), a sideways-scrolling row of up to 20 thumbnail cards with title, season/episode, time left
+         and progress. Needs `pm grant com.gathin.tvhome android.permission.READ_TV_LISTINGS`; the thumbnails
+         are downloaded over https (ContinueImages). Empty: no row, nothing read or downloaded. -->
+    <string-array name="continue_watching_apps" translatable="false">
+        <item>com.nuvio.tv</item>
+    </string-array>
+
     <!-- With fewer dock_apps than columns (or a dock app that is not installed), the free dock slots take
          the first grid apps, so the dock never shows a gap. false leaves them empty (#162); a theme can
          set "fill_dock": false. -->
@@ -397,6 +405,10 @@
     <!-- Tiles per row in the grid; the dock always has this many slots. Tiles are 180dp wide at 4 columns and
          shrink to fit from 5 up (about 144dp at 5, 117dp at 6 on a 1080p TV). -->
     <integer name="columns">4</integer>
+    <!-- Tiles per row under the dock, when that should differ from the dock's slots (columns above). 0: the same.
+         Only with dock_row on and single_row off. This fork: 4 across, but with larger tiles than the dock's
+         (AppAdapter.gridTileWidthPx), as the rows under the dock span the widened grid. -->
+    <integer name="grid_columns">4</integer>
 
     <!-- Basic motion is on; advanced effects are opt-in in the launcher's own Settings screen. -->
     <bool name="animations">true</bool>
@@ -473,6 +485,10 @@
          Vilnius: 54.69 and 25.28. -->
     <string name="latitude" translatable="false"></string>
     <string name="longitude" translatable="false"></string>
+    <!-- This fork: a weather line under the date (Weather.java), in °F, for latitude/longitude above when set,
+         else for the public IP's location (a VPN's server, while one is up). Cached: the place a day, the
+         weather 30 minutes. Settings > Weather can switch it off; false: nothing is fetched by default. -->
+    <bool name="weather">true</bool>
 
     <!-- Cinematic top shelf: the focused dock app's artwork, softened, fills the top of the screen in its
          colour; the shelf gets a larger name, a "Last opened" line (from the apps Home opened) and dock position

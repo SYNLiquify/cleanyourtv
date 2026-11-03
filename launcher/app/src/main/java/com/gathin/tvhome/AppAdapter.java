@@ -113,6 +113,29 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return Math.max(Math.round(80 * density), Math.min(design, fit));
     }
 
+    /** Gap between two tiles in the rows under the dock (this fork); a focused tile (x1.10) still clears it. */
+    static final float GRID_GAP_DP = 24f;
+    /** DockDecoration's band padding beside the dock's outer tiles. */
+    static final float BAND_SIDE_DP = 22f;
+
+    /** From the grid's inner edge to the dock band's edge, in px: where the rows under the dock start and end. */
+    static int gridEdgePx(int innerWidthPx, int dockColumns, float density) {
+        if (innerWidthPx <= 0 || dockColumns <= 0) return 0;
+        float cell = innerWidthPx / (float) dockColumns;
+        return Math.max(0, Math.round((cell - tileWidthPx(innerWidthPx, dockColumns, density)) / 2f - BAND_SIDE_DP * density));
+    }
+
+    /**
+     * Tile width for the rows under the dock (grid_columns, this fork): the columns, with GRID_GAP_DP between them,
+     * fill the dock band's width, so the first tile starts at the band's left edge and the last ends at its right edge
+     * (MainActivity's column offsets place them there). About 206dp at 4 across on the widened grid.
+     */
+    static int gridTileWidthPx(int innerWidthPx, int columns, int dockColumns, float density) {
+        if (innerWidthPx <= 0 || columns <= 0) return Math.round(DESIGN_W_DP * density);
+        int span = innerWidthPx - 2 * gridEdgePx(innerWidthPx, dockColumns, density);
+        return Math.max(Math.round(80 * density), Math.round((span - (columns - 1) * GRID_GAP_DP * density) / columns));
+    }
+
     static int tileHeightPx(int tileWidthPx) {
         return Math.round(tileWidthPx * DESIGN_H_DP / DESIGN_W_DP);
     }
@@ -415,7 +438,9 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         float density = parent.getResources().getDisplayMetrics().density;
         int width = parent.getWidth() > 0 ? parent.getWidth() : parent.getMeasuredWidth();
         int inner = width - parent.getPaddingLeft() - parent.getPaddingRight();
-        int w = tileWidthPx(inner, parent.getHeight(), dockSize, rowsBelowDock, dockTitle, dockRow, density), h = tileHeightPx(w);
+        int w = viewType == 2 ? gridTileWidthPx(inner, gridColumns, dockSize, density)
+                : tileWidthPx(inner, parent.getHeight(), dockSize, rowsBelowDock, dockTitle, dockRow, density);
+        int h = tileHeightPx(w);
         View card = v.findViewById(R.id.card);
         ViewGroup.LayoutParams cardLp = card.getLayoutParams();
         cardLp.width = w;
@@ -571,7 +596,18 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     boolean isLibraryAt(int position) { return showLibrary && position == items.size(); }
 
-    @Override public int getItemViewType(int position) { return isLibraryAt(position) ? 1 : 0; }
+    /** Tiles under the dock (config.xml grid_columns): a view type of their own, sized for that many across. */
+    private int gridColumns;
+
+    void setGridColumns(int columns) { gridColumns = columns; }
+
+    private boolean gridSized(int position) {
+        return dockRow && !singleRow && gridColumns > 0 && position >= dockSize;
+    }
+
+    @Override public int getItemViewType(int position) {
+        return isLibraryAt(position) ? 1 : gridSized(position) ? 2 : 0;
+    }
 
     boolean containsPackage(String pkg) {
         for (Entry entry : items) if (entry.pkg.equals(pkg)) return true;

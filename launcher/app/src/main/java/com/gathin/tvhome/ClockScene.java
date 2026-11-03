@@ -64,12 +64,16 @@ final class ClockScene {
     private Map<String, Set<String>> moods;
     private String latitude, longitude;
 
+    /** The weather under the date (config.xml weather): Home's cached reading, fetched again when it is due. */
+    private final Weather weather;
+
     private final Runnable tick = new Runnable() {
         @Override
         public void run() {
             moveClock();
             shiftGlow();
             advanceWallpaper();
+            if (weather != null) weather.refreshIfStale();
             handler.postDelayed(this, MOVE_MS);
         }
     };
@@ -86,6 +90,8 @@ final class ClockScene {
                 glow.setGradientRadius((r - l) * 0.55f));
         colorIndex = random.nextInt(PALETTE.length);
         setGlow(PALETTE[colorIndex]);
+        Context ctx = root.getContext();
+        weather = new Weather(ctx, handler, root.findViewById(R.id.dreamWeather));   // shown or not as Settings say
     }
 
     void start() {
@@ -97,6 +103,7 @@ final class ClockScene {
         handler.removeCallbacks(tick);
         handler.postDelayed(tick, MOVE_MS);
         clockRefresh.start();
+        if (weather != null) weather.refreshIfStale();
         if (wallpaperFile != null && !wallpaperShown) loadWallpaper();
     }
 

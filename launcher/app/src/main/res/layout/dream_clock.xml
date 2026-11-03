@@ -61,5 +61,20 @@
             android:fontFamily="@string/font_regular"
             android:letterSpacing="0.14"
             android:textAllCaps="true" />
+
+        <!-- This fork: the weather under the date, as on Home (Weather.java, config.xml weather). -->
+        <TextView
+            android:id="@+id/dreamWeather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="8dp"
+            android:singleLine="true"
+            android:textColor="#8CFFFFFF"
+            android:textSize="18sp"
+            android:fontFamily="@string/font_regular"
+            android:letterSpacing="0.14"
+            android:textAllCaps="true"
+            android:visibility="gone" />
     </LinearLayout>
 </FrameLayout>

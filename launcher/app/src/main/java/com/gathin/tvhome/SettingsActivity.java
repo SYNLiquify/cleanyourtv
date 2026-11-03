@@ -1,0 +1,1259 @@
+package com.gathin.tvhome;
+
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Outline;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.Settings;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.util.TypedValue;
+import android.view.FocusFinder;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.IntConsumer;
+
+/**
+ * The launcher's Settings menu (this fork), opened by the top bar's Settings button: categories down the left,
+ * the focused category's settings on the right, in Home's look (black, a soft glow, Outfit, frosted pills that turn
+ * white with focus). Every change is saved in Config.SETTINGS_NAME at once and counted in
+ * Config.SETTINGS_REVISION_KEY, so Home rebuilds with it when it comes back, as with Launcher settings.
+ */
+public final class SettingsActivity extends Activity {
+
+    static final String GRID_COLUMNS_KEY = "grid_columns";
+    static final String CONTINUE_WATCHING_KEY = "continue_watching";
+    static final String GREETING_MODE_KEY = "greeting_mode";
+    static final String GREETING_TIME = "time", GREETING_CUSTOM = "custom", GREETING_OFF = "off";
+    static final String GREETINGS_KEY = "greetings";
+    static final String GREETING_MINUTES_KEY = "greeting_minutes";
+    static final String GREETING_NAME_KEY = "greeting_name";
+
+    private static final int[] DOCK_OPACITIES = {100, 70, 50, 30};
+    /** 0: the next greeting each time Home comes back (MainActivity counts the visits in GREETING_TURN_KEY). */
+    private static final int[] GREETING_MINUTES = {0, 5, 15, 30, 60};
+    static final String GREETING_TURN_KEY = "greeting_turn";
+    private static final int INK = 0xFFFFFFFF, INK_FOCUSED = 0xFF111111;
+
+    /** The custom greetings, one per line in the preference. */
+    static List<String> greetings(SharedPreferences prefs) {
+        List<String> out = new ArrayList<>();
+        for (String line : prefs.getString(GREETINGS_KEY, "").split("\n")) {
+            if (!line.trim().isEmpty()) out.add(line.trim());
+        }
+        return out;
+    }
+
+    private SharedPreferences prefs;
+    private Config config;
+    private float density;
+    private final Handler main = new Handler(Looper.getMainLooper());
+    private final ExecutorService background = Executors.newSingleThreadExecutor();
+    private final List<TextView> categoryButtons = new ArrayList<>();
+    private TextView paneTitle;
+    private ScrollView scroll;
+    private LinearLayout pane;
+    private int category = -1;
+    /** What Back does on a page inside a category (the city search, a text field): return to the category. */
+    private Runnable back;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LauncherLocale.wrap(base));
+    }
+
+    @Override
+    protected void onCreate(Bundle state) {
+        super.onCreate(state);
+        prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
+        config = Config.load(this);
+        density = getResources().getDisplayMetrics().density;
+
+        FrameLayout root = new FrameLayout(this);
+        root.setBackgroundColor(0xFF000000);
+        // Home's ambient glow, a calm blue behind the menu.
+        View glow = new View(this);
+        GradientDrawable glowShape = new GradientDrawable();
+        glowShape.setGradientType(GradientDrawable.RADIAL_GRADIENT);
+        glowShape.setColors(new int[]{0x402B5CFF, 0x142B5CFF, 0x002B5CFF});
+        glowShape.setGradientCenter(0.18f, 0.2f);
+        glow.setBackground(glowShape);
+        glow.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> glowShape.setGradientRadius((r - l) * 0.7f));
+        root.addView(glow, new FrameLayout.LayoutParams(-1, -1));
+
+        LinearLayout columns = new LinearLayout(this);
+        columns.setOrientation(LinearLayout.HORIZONTAL);
+        columns.setPadding(dp(56), dp(44), dp(56), 0);
+        root.addView(columns, new FrameLayout.LayoutParams(-1, -1));
+
+        LinearLayout left = new LinearLayout(this);
+        left.setOrientation(LinearLayout.VERTICAL);
+        columns.addView(left, new LinearLayout.LayoutParams(dp(250), -1));
+        TextView kicker = text(13, R.string.font_regular, 0x99FFFFFF);
+        kicker.setText(getString(R.string.sm_kicker).toUpperCase(Locale.getDefault()));
+        kicker.setLetterSpacing(0.2f);
+        left.addView(kicker);
+        TextView title = text(44, R.string.font_light, INK);
+        title.setText(R.string.sm_title);
+        LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(-2, -2);
+        titleLp.bottomMargin = dp(26);
+        left.addView(title, titleLp);
+        int[] names = {R.string.sm_home, R.string.sm_themes, R.string.sm_weather, R.string.sm_clock, R.string.sm_storage,
+                R.string.sm_system};
+        for (int i = 0; i < names.length; i++) {
+            final int index = i;
+            TextView b = pill(getString(names[i]));
+            b.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+            b.setPadding(dp(22), 0, dp(22), 0);
+            b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+            b.setOnFocusChangeListener((v, focused) -> {
+                if (focused) showCategory(index);
+            });
+            b.setOnClickListener(v -> focusPane());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(48));
+            lp.bottomMargin = dp(10);
+            left.addView(b, lp);
+            categoryButtons.add(b);
+        }
+
+        LinearLayout right = new LinearLayout(this);
+        right.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams rightLp = new LinearLayout.LayoutParams(0, -1, 1f);
+        rightLp.setMarginStart(dp(48));
+        columns.addView(right, rightLp);
+        paneTitle = text(30, R.string.font_light, INK);
+        LinearLayout.LayoutParams paneTitleLp = new LinearLayout.LayoutParams(-2, -2);
+        paneTitleLp.topMargin = dp(18);
+        paneTitleLp.bottomMargin = dp(14);
+        right.addView(paneTitle, paneTitleLp);
+        scroll = new ScrollView(this);
+        scroll.setVerticalScrollBarEnabled(false);
+        scroll.setClipToPadding(false);
+        scroll.setClipChildren(false);
+        // Room at the sides for a focused theme card's zoom and ring; the right column still clips the scroll area,
+        // so content scrolled away stays off the title.
+        scroll.setPadding(dp(16), dp(12), dp(16), dp(40));
+        pane = new LinearLayout(this);
+        pane.setOrientation(LinearLayout.VERTICAL);
+        pane.setClipChildren(false);
+        pane.setClipToPadding(false);
+        scroll.addView(pane, new FrameLayout.LayoutParams(-1, -2));
+        right.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
+
+        setContentView(root);
+        // The Themes page checks GitHub only once focus is in it, not when the category is merely passed over.
+        root.getViewTreeObserver().addOnGlobalFocusChangeListener((was, now) -> {
+            if (category == 1 && back == null && now != null && isInside(now, pane)) onThemesEntered();
+        });
+        categoryButtons.get(0).requestFocus();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        background.shutdownNow();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (back != null) {
+            Runnable r = back;
+            back = null;
+            r.run();
+            return;
+        }
+        super.onBackPressed();
+    }
+
+    /**
+     * Left from the settings returns to the category they belong to, rather than whichever category the focus finder
+     * reaches; Up and Down stop at the ends of the category list.
+     */
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        View focus = getCurrentFocus();
+        if (event.getAction() == KeyEvent.ACTION_DOWN && focus != null) {
+            int key = event.getKeyCode();
+            if (key == KeyEvent.KEYCODE_DPAD_LEFT && isInside(focus, pane) && !(focus instanceof EditText)
+                    && FocusFinder.getInstance().findNextFocus(pane, focus, View.FOCUS_LEFT) == null) {
+                if (category >= 0) categoryButtons.get(category).requestFocus();
+                return true;
+            }
+            if (categoryButtons.contains(focus)) {
+                int i = categoryButtons.indexOf(focus);
+                if (key == KeyEvent.KEYCODE_DPAD_UP && i == 0) return true;
+                if (key == KeyEvent.KEYCODE_DPAD_DOWN && i == categoryButtons.size() - 1) return true;
+                if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    focusPane();
+                    return true;
+                }
+            }
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    private static boolean isInside(View v, ViewGroup group) {
+        for (View p = v; p != null; p = p.getParent() instanceof View ? (View) p.getParent() : null) {
+            if (p == group) return true;
+        }
+        return false;
+    }
+
+    private void focusPane() {
+        View first = firstFocusable(pane);
+        if (first != null) first.requestFocus();
+    }
+
+    private static View firstFocusable(View v) {
+        if (v.getVisibility() != View.VISIBLE) return null;
+        if (v.isFocusable()) return v;
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = 0; i < g.getChildCount(); i++) {
+                View f = firstFocusable(g.getChildAt(i));
+                if (f != null) return f;
+            }
+        }
+        return null;
+    }
+
+    // ---- categories ----------------------------------------------------------------------------------
+
+    private void showCategory(int index) {
+        showCategory(index, false);
+    }
+
+    private void showCategory(int index, boolean force) {
+        if (index == category && back == null && !force) return;
+        back = null;
+        category = index;
+        for (int i = 0; i < categoryButtons.size(); i++) categoryButtons.get(i).setSelected(i == index);
+        clearPane();
+        scroll.scrollTo(0, 0);
+        switch (index) {
+            case 0: buildHome(); break;
+            case 1: buildThemes(); break;
+            case 2: buildWeather(); break;
+            case 3: buildClock(); break;
+            case 4: buildStorage(); break;
+            default: buildSystem(); break;
+        }
+    }
+
+    /** Builds the category again in place, at the same scroll position. */
+    private void rebuild(int index) {
+        int scrollY = scroll.getScrollY();
+        showCategory(index, true);
+        scroll.post(() -> scroll.scrollTo(0, scrollY));
+    }
+
+    /**
+     * Empties the right side. A focused view removed with it would send focus to the first category (and so to the
+     * Home page): park it on this category's button first, which shows nothing new while back is null.
+     */
+    private void clearPane() {
+        if (pane.hasFocus() && category >= 0) categoryButtons.get(category).requestFocus();
+        pane.removeAllViews();
+    }
+
+    private void buildHome() {
+        paneTitle.setText(R.string.sm_home);
+        section(R.string.sm_layout);
+        int dock = config.columns;
+        pane.addView(choiceRow(getString(R.string.sm_dock_apps), numbers(1, 6), dock - 1, i -> {
+            prefs.edit().putInt("columns", i + 1).apply();
+            changed();
+        }));
+        int grid = prefs.getInt(GRID_COLUMNS_KEY, getResources().getInteger(R.integer.grid_columns));
+        pane.addView(choiceRow(getString(R.string.sm_grid_apps), numbers(2, 6), grid - 2, i -> {
+            prefs.edit().putInt(GRID_COLUMNS_KEY, i + 2).apply();
+            changed();
+        }));
+        pane.addView(toggleRow(getString(R.string.sm_continue_watching), prefs.getBoolean(CONTINUE_WATCHING_KEY, true),
+                on -> {
+                    prefs.edit().putBoolean(CONTINUE_WATCHING_KEY, on).apply();
+                    changed();
+                }));
+        section(R.string.sm_look);
+        String[] opacities = new String[DOCK_OPACITIES.length];
+        int current = 0;
+        for (int i = 0; i < DOCK_OPACITIES.length; i++) {
+            opacities[i] = DOCK_OPACITIES[i] + "%";
+            if (DOCK_OPACITIES[i] == config.dockOpacity) current = i;
+        }
+        pane.addView(choiceRow(getString(R.string.sm_dock_band), opacities, current, i -> {
+            prefs.edit().putInt(Config.DOCK_OPACITY_KEY, DOCK_OPACITIES[i]).apply();
+            changed();
+        }));
+        pane.addView(toggleRow(getString(R.string.sm_animations), prefs.getBoolean("animations", config.animations), on -> {
+            SharedPreferences.Editor e = prefs.edit().putBoolean("animations", on);
+            if (!on) e.putBoolean("advanced_effects", false);
+            e.apply();
+            changed();
+        }));
+        section(R.string.sm_apps);
+        pane.addView(actionRow(getString(R.string.sm_reorder), "", () -> {
+            setResult(RESULT_OK, new Intent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true));
+            finish();
+        }));
+        pane.addView(actionRow(getString(R.string.sm_more_options), "", () ->
+                open(new Intent(this, LauncherSettingsActivity.class))));
+    }
+
+    /** Whether this visit to Settings has checked the theme list against GitHub yet (once, on entering the page). */
+    private boolean themesChecked;
+    private boolean themesChecking;
+    private String themesStatus;
+    private TextView themesStatusView;
+    /** The cards on the Themes page and their image views, to load newer previews into after the check. */
+    private final List<ThemeLibrary.Theme> cardThemes = new ArrayList<>();
+    private final List<ImageView> cardImages = new ArrayList<>();
+    private int cardWidth;
+    /** Each card's focusable part and progress overlay by theme, and the No theme row, to come back to after applying. */
+    private final java.util.Map<String, View> themeHolders = new java.util.HashMap<>();
+    private final java.util.Map<String, TextView> themeProgress = new java.util.HashMap<>();
+    private boolean applyingTheme;
+
+    private void buildThemes() {
+        paneTitle.setText(R.string.sm_themes);
+        // At the top: where the list stands with GitHub, in bold, and Refresh to check now.
+        LinearLayout statusRow = new LinearLayout(this);
+        statusRow.setOrientation(LinearLayout.HORIZONTAL);
+        statusRow.setGravity(Gravity.CENTER_VERTICAL);
+        themesStatusView = text(17, R.string.font_medium, INK);
+        themesStatusView.setText(themesStatus != null ? themesStatus : getString(R.string.sm_themes_saved));
+        statusRow.addView(themesStatusView, new LinearLayout.LayoutParams(0, -2, 1f));
+        TextView refresh = pill(getString(R.string.sm_refresh_themes));
+        refresh.setOnClickListener(v -> checkThemes(true));
+        refresh.setOnFocusChangeListener((v, focused) -> {
+            if (focused) scrollIntoView(statusRow);
+        });
+        statusRow.addView(refresh, new LinearLayout.LayoutParams(-2, dp(44)));
+        pane.addView(statusRow);
+        note(getString(R.string.sm_themes_note));
+        cardThemes.clear();
+        cardImages.clear();
+        themeHolders.clear();
+        themeProgress.clear();
+        // Only what is saved on the TV here: passing over the category in the list fetches nothing. The check with
+        // GitHub starts when focus goes into the page (onThemesEntered).
+        List<ThemeLibrary.Theme> shown = ThemeLibrary.list(this);
+        String current = ThemeLibrary.current(this);
+        // Downloaded: Default first (the launcher's own look, which the repo's "default" theme writes out), unless it
+        // was deleted, then the themes applied before and kept on the TV: switching back to one needs no download.
+        List<ThemeLibrary.Theme> kept = new ArrayList<>();
+        if (!prefs.getBoolean(DEFAULT_HIDDEN_KEY, false)) kept.add(defaultTheme(shown));
+        for (ThemeLibrary.Theme t : ThemeLibrary.downloaded(this)) if (!isDefault(t)) kept.add(t);
+        if (!kept.isEmpty()) {
+            section(R.string.sm_downloaded);
+            note(getString(R.string.sm_downloaded_note));
+            themeGrid(kept, true, current);
+        }
+        section(R.string.sm_all_themes);
+        themeGrid(shown, false, current);
+    }
+
+    /** Theme cards three to a row; downloaded: the cards of the Downloaded section. */
+    private void themeGrid(List<ThemeLibrary.Theme> themes, boolean downloaded, String current) {
+        int perRow = 3;
+        int cardW = (getResources().getDisplayMetrics().widthPixels - dp(56 + 56 + 250 + 48 + 32) - dp(24) * (perRow - 1)) / perRow;
+        int cardH = Math.round(cardW * 9f / 16f);
+        LinearLayout row = null;
+        for (int i = 0; i < themes.size(); i++) {
+            if (i % perRow == 0) {
+                row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                row.setClipChildren(false);   // a focused card zooms and rings past its row
+                row.setClipToPadding(false);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+                lp.topMargin = dp(18);
+                pane.addView(row, lp);
+            }
+            ThemeLibrary.Theme theme = themes.get(i);
+            View card = themeCard(theme, cardW, cardH, isCurrent(theme, current), downloaded);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(cardW, -2);
+            if (i % perRow != 0) lp.setMarginStart(dp(24));
+            row.addView(card, lp);
+        }
+    }
+
+    /**
+     * Focus went into the Themes page: check the list against GitHub, once per visit to Settings (ThemeLibrary keeps
+     * it to a conditional call at most every few minutes). A changed list redraws the page; otherwise only the
+     * previews GitHub has a newer version of are fetched and swapped in.
+     */
+    private void onThemesEntered() {
+        if (!themesChecked) checkThemes(false);
+    }
+
+    /** force: the Refresh button, which checks now even if the list was checked in the last few minutes. */
+    private void checkThemes(boolean force) {
+        if (themesChecking) return;
+        themesChecking = true;
+        themesChecked = true;
+        themesStatus = getString(R.string.sm_themes_checking);
+        if (themesStatusView != null) themesStatusView.setText(themesStatus);
+        String before = signature(new ArrayList<>(cardThemes));
+        background.execute(() -> {
+            List<ThemeLibrary.Theme> fresh = null;
+            try {
+                fresh = ThemeLibrary.refresh(this, force);
+            } catch (java.io.IOException e) {
+                android.util.Log.d(ThemeLibrary.TAG, "themes not refreshed: " + e);
+            }
+            List<ThemeLibrary.Theme> result = fresh;
+            main.post(() -> {
+                themesChecking = false;
+                if (isFinishing()) return;
+                themesStatus = getString(result != null ? R.string.sm_themes_current : R.string.sm_themes_offline);
+                if (category != 1 || back != null) return;
+                if (result != null && !signature(result).equals(before)) {
+                    boolean inPane = pane.hasFocus();
+                    rebuild(1);
+                    if (inPane) focusPane();
+                    return;
+                }
+                if (themesStatusView != null) themesStatusView.setText(themesStatus);
+                if (result == null) return;
+                for (int i = 0; i < cardThemes.size(); i++) {
+                    ThemeLibrary.Theme theme = cardThemes.get(i);
+                    ImageView image = cardImages.get(i);
+                    if (!ThemeLibrary.previewStale(this, theme)) continue;
+                    background.execute(() -> {
+                        Bitmap b = ThemeLibrary.preview(this, theme, cardWidth, true);
+                        if (b != null) main.post(() -> image.setImageBitmap(b));
+                    });
+                }
+            });
+        });
+    }
+
+    /** What the page shows of a list: the themes and the versions of their previews. */
+    private static String signature(List<ThemeLibrary.Theme> themes) {
+        StringBuilder sb = new StringBuilder();
+        for (ThemeLibrary.Theme t : themes) sb.append(t.name).append(':').append(t.shotSha).append(';');
+        return sb.toString();
+    }
+
+    /**
+     * A theme's card: the preview, with a white ring around it while focused. The ring is a layer of its own around
+     * the card rather than a stroke on it: a stroke on the preview sat half inside its rounded clip and was cut, and
+     * the zoomed card was clipped by its row.
+     */
+    private View themeCard(ThemeLibrary.Theme theme, int w, int h, boolean current, boolean downloaded) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setClipChildren(false);
+        card.setClipToPadding(false);
+        FrameLayout holder = new FrameLayout(this);
+        holder.setFocusable(true);
+        holder.setClickable(true);
+        holder.setClipChildren(false);
+        holder.setClipToPadding(false);
+        FrameLayout frame = new FrameLayout(this);
+        float radius = dp(14);
+        GradientDrawable placeholder = new GradientDrawable(GradientDrawable.Orientation.TL_BR, new int[]{0xFF26262B, 0xFF16161A});
+        placeholder.setCornerRadius(radius);
+        frame.setBackground(placeholder);
+        frame.setOutlineProvider(new ViewOutlineProvider() {
+            @Override public void getOutline(View v, Outline o) {
+                o.setRoundRect(0, 0, v.getWidth(), v.getHeight(), radius);
+            }
+        });
+        frame.setClipToOutline(true);
+        ImageView image = new ImageView(this);
+        image.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        frame.addView(image, new FrameLayout.LayoutParams(-1, -1));
+        if (current) {
+            TextView badge = text(11, R.string.font_medium, INK_FOCUSED);
+            badge.setText(getString(R.string.sm_theme_current).toUpperCase(Locale.getDefault()));
+            badge.setLetterSpacing(0.1f);
+            GradientDrawable bg = new GradientDrawable();
+            bg.setColor(0xF5FFFFFF);
+            bg.setCornerRadius(dp(10));
+            badge.setBackground(bg);
+            badge.setPadding(dp(8), dp(3), dp(8), dp(3));
+            FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(-2, -2, Gravity.TOP | Gravity.END);
+            lp.setMargins(0, dp(8), dp(8), 0);
+            frame.addView(badge, lp);
+        }
+        // At rest, a faint edge (brighter on the current theme), drawn inside the preview.
+        GradientDrawable rest = new GradientDrawable();
+        rest.setCornerRadius(radius);
+        rest.setStroke(Math.max(1, dp(1)), current ? 0xB3FFFFFF : 0x1FFFFFFF);
+        frame.setForeground(rest);
+        // Shown on the card while its theme is applied: "Downloading wallpaper 3 of 12…".
+        TextView progress = text(15, R.string.font_medium, INK);
+        progress.setGravity(Gravity.CENTER);
+        progress.setBackgroundColor(0xB3000000);
+        progress.setVisibility(View.GONE);
+        frame.addView(progress, new FrameLayout.LayoutParams(-1, -1));
+        holder.addView(frame, new FrameLayout.LayoutParams(-1, -1));
+        // The focus ring, a few dp outside the preview all round, with its corners following the preview's.
+        int gap = dp(4);
+        View ring = new View(this);
+        GradientDrawable ringShape = new GradientDrawable();
+        ringShape.setCornerRadius(radius + gap);
+        ringShape.setStroke(dp(3), 0xF2FFFFFF);
+        ring.setBackground(ringShape);
+        ring.setAlpha(0f);
+        FrameLayout.LayoutParams ringLp = new FrameLayout.LayoutParams(-1, -1);
+        ringLp.setMargins(-gap, -gap, -gap, -gap);
+        holder.addView(ring, ringLp);
+        card.addView(holder, new LinearLayout.LayoutParams(w, h));
+        TextView name = text(15, R.string.font_regular, 0xB3FFFFFF);
+        name.setText(theme.title());
+        LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(-2, -2);
+        nameLp.topMargin = dp(12);
+        nameLp.setMarginStart(dp(4));
+        card.addView(name, nameLp);
+        holder.setOnFocusChangeListener((v, focused) -> {
+            ring.animate().alpha(focused ? 1f : 0f).setDuration(150).start();
+            v.animate().scaleX(focused ? 1.04f : 1f).scaleY(focused ? 1.04f : 1f).setDuration(150).start();
+            v.setTranslationZ(focused ? 1f : 0f);
+            name.setTextColor(focused ? INK : 0xB3FFFFFF);
+            if (focused) scrollIntoView(card);
+        });
+        String key = cardKey(theme.name, downloaded);
+        holder.setOnClickListener(v -> applyTheme(theme, downloaded));
+        if (downloaded) {
+            // Delete the copy kept on the TV: the Delete pill under the card, or hold OK. The theme in use cannot be
+            // deleted (its pill reads In use); Default is only taken out of this section, and comes back when it is
+            // applied from All themes.
+            Runnable delete = () -> {
+                if (current) return;
+                if (isDefault(theme)) prefs.edit().putBoolean(DEFAULT_HIDDEN_KEY, true).apply();
+                else ThemeLibrary.removeDownloaded(this, theme.name);
+                Toast.makeText(this, getString(R.string.sm_downloaded_removed, theme.title()), Toast.LENGTH_SHORT).show();
+                rebuild(1);
+                focusPane();
+            };
+            holder.setOnLongClickListener(v -> {
+                delete.run();
+                return true;
+            });
+            if (!current) {   // the theme in use gets no Delete: its Current badge says why
+                TextView deletePill = pill(getString(R.string.sm_delete));
+                deletePill.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+                deletePill.setOnClickListener(v -> delete.run());
+                deletePill.setOnFocusChangeListener((v, focused) -> {
+                    if (focused) scrollIntoView(card);
+                });
+                LinearLayout.LayoutParams deleteLp = new LinearLayout.LayoutParams(-2, dp(34));
+                deleteLp.topMargin = dp(8);
+                card.addView(deletePill, deleteLp);
+            }
+        } else {
+            cardThemes.add(theme);
+            cardImages.add(image);
+        }
+        themeHolders.put(key, holder);
+        themeProgress.put(key, progress);
+        cardWidth = w;
+        // After this visit's check the newest previews are fetched as the page is drawn; before it, the saved ones.
+        boolean fetch = !downloaded && themesChecked && getString(R.string.sm_themes_current).equals(themesStatus);
+        background.execute(() -> {
+            Bitmap b = ThemeLibrary.preview(this, theme, w, fetch);
+            if (b != null) main.post(() -> image.setImageBitmap(b));
+        });
+        return card;
+    }
+
+    /** Default: the launcher's own look; the repo's "default" theme is that look written out. */
+    private static final String DEFAULT_NAME = "default";
+    /** Default was deleted from the Downloaded section (it comes back when applied from All themes). */
+    private static final String DEFAULT_HIDDEN_KEY = "theme_default_hidden";
+
+    private static boolean isDefault(ThemeLibrary.Theme t) {
+        return DEFAULT_NAME.equals(t.name);
+    }
+
+    /** No theme pushed counts as Default. */
+    private static boolean isCurrent(ThemeLibrary.Theme t, String current) {
+        return t.name.equals(current) || isDefault(t) && current.isEmpty();
+    }
+
+    /** Default's card: the repo's entry when the list has it (for its preview), else one by name alone. */
+    private static ThemeLibrary.Theme defaultTheme(List<ThemeLibrary.Theme> all) {
+        for (ThemeLibrary.Theme t : all) if (isDefault(t)) return t;
+        return new ThemeLibrary.Theme(DEFAULT_NAME, new ArrayList<>(), null, null);
+    }
+
+    /**
+     * Applied in place: the card shows the download's progress, and the page stays where it is, with focus back on
+     * the same card and its Current badge, once the theme is in.
+     */
+    private static String cardKey(String name, boolean downloaded) {
+        return (downloaded ? "kept:" : "all:") + name;
+    }
+
+    /** downloaded: a theme kept on the TV, applied from that copy with no download. */
+    private void applyTheme(ThemeLibrary.Theme theme, boolean downloaded) {
+        if (applyingTheme) return;
+        applyingTheme = true;
+        String title = theme.title();
+        // Default is the launcher's own look: nothing to download, and it goes back into Downloaded.
+        boolean toDefault = isDefault(theme);
+        if (toDefault) prefs.edit().remove(DEFAULT_HIDDEN_KEY).apply();
+        // After a download the card to come back to is the theme's new card in Downloaded.
+        String key = cardKey(theme.name, true);
+        TextView progress = themeProgress.get(cardKey(theme.name, downloaded));
+        if (progress != null) {
+            progress.setText(getString(R.string.sm_applying, title));
+            progress.setVisibility(View.VISIBLE);
+        }
+        background.execute(() -> {
+            String error = null;
+            try {
+                if (toDefault) ThemeLibrary.reset(this);
+                else if (downloaded) ThemeLibrary.applyDownloaded(this, theme);
+                else ThemeLibrary.apply(this, theme, (done, total) -> main.post(() -> {
+                    if (progress != null && total > 0) {
+                        progress.setText(getString(R.string.sm_downloading, Math.min(done + 1, total), total));
+                    }
+                }));
+            } catch (java.io.IOException e) {
+                android.util.Log.w(ThemeLibrary.TAG, "theme not applied: " + e);
+                error = getString(R.string.sm_theme_failed);
+            }
+            String failure = error;
+            main.post(() -> {
+                applyingTheme = false;
+                if (isFinishing()) return;
+                setResult(RESULT_OK);
+                config = Config.load(this);
+                if (failure == null) Toast.makeText(this, getString(R.string.sm_theme_applied, title), Toast.LENGTH_SHORT).show();
+                else Toast.makeText(this, failure, Toast.LENGTH_LONG).show();
+                // Left the page meanwhile: the new Current badge shows the next time it is opened.
+                if (category != 1 || back != null) return;
+                boolean inPane = pane.hasFocus();
+                rebuild(1);
+                if (!inPane) return;
+                View again = themeHolders.get(key);
+                if (again == null) again = themeHolders.get(cardKey(theme.name, false));
+                if (again != null) again.requestFocus();
+                else focusPane();
+            });
+        });
+    }
+
+    private void buildWeather() {
+        paneTitle.setText(R.string.sm_weather);
+        pane.addView(toggleRow(getString(R.string.sm_show_weather), Weather.enabled(this), on -> {
+            prefs.edit().putBoolean(Weather.SHOW_KEY, on).apply();
+            changed();
+        }));
+        boolean celsius = "c".equals(prefs.getString(Weather.UNITS_KEY, "f"));
+        pane.addView(choiceRow(getString(R.string.sm_units),
+                new String[]{getString(R.string.sm_fahrenheit), getString(R.string.sm_celsius)}, celsius ? 1 : 0, i -> {
+                    prefs.edit().putString(Weather.UNITS_KEY, i == 1 ? "c" : "f").apply();
+                    changed();
+                }));
+        pane.addView(toggleRow(getString(R.string.sm_conditions), prefs.getBoolean(Weather.CONDITIONS_KEY, true), on -> {
+            prefs.edit().putBoolean(Weather.CONDITIONS_KEY, on).apply();
+            changed();
+        }));
+        pane.addView(toggleRow(getString(R.string.sm_hilo), prefs.getBoolean(Weather.HILO_KEY, true), on -> {
+            prefs.edit().putBoolean(Weather.HILO_KEY, on).apply();
+            changed();
+        }));
+        String place = prefs.getString(Weather.PLACE_KEY, "");
+        pane.addView(actionRow(getString(R.string.sm_location),
+                place.isEmpty() ? getString(R.string.sm_location_auto) : place, this::showCitySearch));
+        pane.addView(actionRow(getString(R.string.sm_refresh), "", () -> {
+            Weather.invalidate(this);
+            changed();
+            Toast.makeText(this, R.string.sm_refreshing, Toast.LENGTH_SHORT).show();
+        }));
+    }
+
+    private void showCitySearch() {
+        clearPane();
+        paneTitle.setText(R.string.sm_find_city);
+        back = () -> rebuild(2);
+        LinearLayout bar = new LinearLayout(this);
+        bar.setOrientation(LinearLayout.HORIZONTAL);
+        bar.setGravity(Gravity.CENTER_VERTICAL);
+        EditText field = field(getString(R.string.sm_city_hint), "");
+        bar.addView(field, new LinearLayout.LayoutParams(0, dp(52), 1f));
+        TextView search = pill(getString(R.string.sm_search));
+        LinearLayout.LayoutParams searchLp = new LinearLayout.LayoutParams(-2, dp(48));
+        searchLp.setMarginStart(dp(12));
+        bar.addView(search, searchLp);
+        pane.addView(bar);
+        TextView status = text(16, R.string.font_regular, 0x99FFFFFF);
+        LinearLayout.LayoutParams statusLp = new LinearLayout.LayoutParams(-1, -2);
+        statusLp.topMargin = dp(14);
+        pane.addView(status, statusLp);
+        LinearLayout results = new LinearLayout(this);
+        results.setOrientation(LinearLayout.VERTICAL);
+        pane.addView(results);
+        pane.addView(actionRow(getString(R.string.sm_use_auto), getString(R.string.sm_location_auto_detail), () -> {
+            prefs.edit().remove(Weather.PLACE_KEY).remove(Weather.LAT_KEY).remove(Weather.LON_KEY).apply();
+            Weather.invalidate(this);
+            changed();
+            back = null;
+            rebuild(2);
+            focusPane();
+        }));
+        Runnable run = () -> {
+            String query = field.getText().toString().trim();
+            if (query.isEmpty()) return;
+            hideKeyboard(field);
+            status.setText(R.string.sm_searching);
+            results.removeAllViews();
+            background.execute(() -> {
+                List<Weather.Place> found = null;
+                try {
+                    found = Weather.search(query);
+                } catch (java.io.IOException | org.json.JSONException e) {
+                    android.util.Log.d("TvHomeWeather", "lookup failed: " + e);
+                }
+                List<Weather.Place> places = found;
+                main.post(() -> {
+                    if (places == null) {
+                        status.setText(R.string.sm_lookup_failed);
+                        return;
+                    }
+                    status.setText(places.isEmpty() ? getString(R.string.sm_no_places) : "");
+                    for (Weather.Place p : places) {
+                        results.addView(actionRow(p.name, p.detail(), () -> {
+                            prefs.edit().putString(Weather.PLACE_KEY, p.label())
+                                    .putString(Weather.LAT_KEY, Double.toString(p.lat))
+                                    .putString(Weather.LON_KEY, Double.toString(p.lon)).apply();
+                            Weather.invalidate(this);
+                            changed();
+                            back = null;
+                            rebuild(2);
+                            focusPane();
+                        }));
+                    }
+                    View first = firstFocusable(results);
+                    if (first != null) first.requestFocus();
+                });
+            });
+        };
+        search.setOnClickListener(v -> run.run());
+        field.setOnEditorActionListener((v, action, event) -> {
+            run.run();
+            return true;
+        });
+        field.requestFocus();
+    }
+
+    private void buildClock() {
+        paneTitle.setText(R.string.sm_clock);
+        String[] formats = {"system", "12", "24"};
+        String format = prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat);
+        int formatIndex = Math.max(0, java.util.Arrays.asList(formats).indexOf(format));
+        pane.addView(choiceRow(getString(R.string.sm_time_format), new String[]{getString(R.string.sm_system_default),
+                getString(R.string.sm_12h), getString(R.string.sm_24h)}, formatIndex, i -> {
+            prefs.edit().putString(Config.CLOCK_FORMAT_KEY, formats[i]).apply();
+            changed();
+        }));
+        String[] modes = {GREETING_TIME, GREETING_CUSTOM, GREETING_OFF};
+        int modeIndex = Math.max(0, java.util.Arrays.asList(modes).indexOf(prefs.getString(GREETING_MODE_KEY, GREETING_TIME)));
+        pane.addView(choiceRow(getString(R.string.sm_greeting), new String[]{getString(R.string.sm_greeting_time),
+                getString(R.string.sm_greeting_custom), getString(R.string.sm_off)}, modeIndex, i -> {
+            prefs.edit().putString(GREETING_MODE_KEY, modes[i]).apply();
+            changed();
+        }));
+        String name = prefs.getString(GREETING_NAME_KEY, config.greetingName);
+        pane.addView(actionRow(getString(R.string.sm_name), name.isEmpty() ? getString(R.string.sm_none) : name, () ->
+                editText(getString(R.string.sm_name), getString(R.string.sm_name_hint), name, true, value -> {
+                    prefs.edit().putString(GREETING_NAME_KEY, value).apply();
+                    changed();
+                })));
+        section(R.string.sm_custom_greetings);
+        note(getString(R.string.sm_custom_note));
+        List<String> lines = greetings(prefs);
+        for (int i = 0; i < lines.size(); i++) {
+            final int index = i;
+            pane.addView(choiceRow("“" + lines.get(i) + "”", new String[]{getString(R.string.sm_remove)}, -1, x -> {
+                List<String> now = greetings(prefs);
+                if (index < now.size()) now.remove(index);
+                prefs.edit().putString(GREETINGS_KEY, TextUtils.join("\n", now)).apply();
+                changed();
+                rebuild(3);
+                focusPane();
+            }));
+        }
+        pane.addView(actionRow("+  " + getString(R.string.sm_add_greeting), "", () ->
+                editText(getString(R.string.sm_add_greeting), getString(R.string.sm_greeting_hint), "", false, value -> {
+                    if (value.isEmpty()) return;
+                    List<String> now = greetings(prefs);
+                    now.add(value.replace('\n', ' '));
+                    SharedPreferences.Editor e = prefs.edit().putString(GREETINGS_KEY, TextUtils.join("\n", now));
+                    // A first custom greeting is meant to be seen: switch the greeting to Custom with it.
+                    if (now.size() == 1) e.putString(GREETING_MODE_KEY, GREETING_CUSTOM);
+                    e.apply();
+                    changed();
+                })));
+        String[] every = new String[GREETING_MINUTES.length];
+        int minutes = prefs.getInt(GREETING_MINUTES_KEY, 5), everyIndex = 1;
+        for (int i = 0; i < GREETING_MINUTES.length; i++) {
+            every[i] = GREETING_MINUTES[i] == 0 ? getString(R.string.sm_each_visit)
+                    : getString(R.string.sm_minutes, GREETING_MINUTES[i]);
+            if (GREETING_MINUTES[i] == minutes) everyIndex = i;
+        }
+        pane.addView(choiceRow(getString(R.string.sm_change_every), every, everyIndex, i -> {
+            prefs.edit().putInt(GREETING_MINUTES_KEY, GREETING_MINUTES[i]).apply();
+            changed();
+        }));
+    }
+
+    // ---- storage -------------------------------------------------------------------------------------------
+
+    /** Bytes in a file or folder tree. */
+    private static long size(java.io.File f) {
+        if (f == null || !f.exists()) return 0;
+        if (f.isFile()) return f.length();
+        long total = 0;
+        java.io.File[] children = f.listFiles();
+        if (children != null) for (java.io.File c : children) total += size(c);
+        return total;
+    }
+
+    private static void delete(java.io.File f) {
+        if (f == null || !f.exists()) return;
+        java.io.File[] children = f.listFiles();
+        if (children != null) for (java.io.File c : children) delete(c);
+        f.delete();
+    }
+
+    private String bytes(long n) {
+        return android.text.format.Formatter.formatShortFileSize(this, n);
+    }
+
+    /**
+     * The TV's storage with a bar, then what the launcher takes and of what, then clean-up. The sizes are read off the
+     * main thread; the page shows placeholders until they are in.
+     */
+    private void buildStorage() {
+        paneTitle.setText(R.string.sm_storage);
+        TextView summary = text(18, R.string.font_regular, INK);
+        summary.setText(R.string.sm_measuring);
+        section(R.string.sm_this_tv);
+        pane.addView(summary);
+        UsageBar bar = new UsageBar(this);
+        LinearLayout.LayoutParams barLp = new LinearLayout.LayoutParams(-1, dp(10));
+        barLp.topMargin = dp(12);
+        pane.addView(bar, barLp);
+        section(R.string.sm_launcher_storage);
+        int[] labels = {R.string.sm_st_total, R.string.sm_st_app, R.string.sm_st_theme_in_use, R.string.sm_st_downloaded,
+                R.string.sm_st_previews, R.string.sm_st_thumbnails, R.string.sm_st_other};
+        List<TextView> values = new ArrayList<>();
+        for (int label : labels) {
+            View row = actionRow(getString(label), "…", null);
+            values.add((TextView) ((ViewGroup) row).getChildAt(1));
+            pane.addView(row);
+        }
+        section(R.string.sm_clean_up);
+        java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
+        java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
+        pane.addView(actionRow(getString(R.string.sm_clear_thumbnails), "", () -> {
+            delete(thumbnails);
+            Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
+            rebuild(4);
+            focusPane();
+        }));
+        pane.addView(actionRow(getString(R.string.sm_delete_downloaded), "", () -> {
+            for (ThemeLibrary.Theme t : ThemeLibrary.downloaded(this)) ThemeLibrary.removeDownloaded(this, t.name);
+            Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
+            rebuild(4);
+            focusPane();
+        }));
+        pane.addView(actionRow(getString(R.string.sm_clear_previews), "", () -> {
+            // Previews and the saved theme list; the downloaded copies stay. Both come back from GitHub when needed.
+            java.io.File[] dirs = themeStore.listFiles();
+            if (dirs != null) for (java.io.File d : dirs) {
+                if (d.isDirectory()) {
+                    java.io.File[] in = d.listFiles();
+                    if (in != null) for (java.io.File f : in) if (!f.getName().equals("saved")) delete(f);
+                } else {
+                    delete(d);
+                }
+            }
+            Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
+            rebuild(4);
+            focusPane();
+        }));
+        background.execute(() -> {
+            android.os.StatFs fs = new android.os.StatFs(android.os.Environment.getDataDirectory().getPath());
+            long total = fs.getTotalBytes(), free = fs.getAvailableBytes();
+            long app = new java.io.File(getPackageCodePath()).length();
+            java.io.File external = Config.dir(this);
+            long inUse = 0;
+            if (external != null) {
+                inUse = size(new java.io.File(external, Config.FILE_NAME)) + size(new java.io.File(external, Config.WALLPAPER_NAME))
+                        + size(new java.io.File(external, "wallpapers"));
+            }
+            long downloaded = 0, previews = 0;
+            java.io.File[] dirs = themeStore.listFiles();
+            if (dirs != null) for (java.io.File d : dirs) {
+                long all = size(d), kept = size(new java.io.File(d, "saved"));
+                downloaded += kept;
+                previews += all - kept;
+            }
+            long thumbs = size(thumbnails);
+            long data = size(getDataDir()) + size(external);
+            long other = Math.max(0, data - inUse - downloaded - previews - thumbs);
+            long launcher = app + data;
+            long[] sizes = {launcher, app, inUse, downloaded, previews, thumbs, other};
+            main.post(() -> {
+                if (isFinishing() || category != 4) return;
+                summary.setText(getString(R.string.sm_tv_usage, bytes(total - free), bytes(total), bytes(free)));
+                bar.set(total > 0 ? (total - free) / (float) total : 0f, total > 0 ? launcher / (float) total : 0f);
+                for (int i = 0; i < sizes.length; i++) values.get(i).setText(bytes(sizes[i]));
+            });
+        });
+    }
+
+    /** The storage bar: all used space in soft white, the launcher's share in solid white at its start. */
+    private static final class UsageBar extends View {
+        private final android.graphics.Paint track = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint used = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.Paint mine = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.RectF r = new android.graphics.RectF();
+        private float usedShare, launcherShare;
+
+        UsageBar(Context ctx) {
+            super(ctx);
+            track.setColor(0x26FFFFFF);
+            used.setColor(0x80FFFFFF);
+            mine.setColor(0xFFFFFFFF);
+        }
+
+        void set(float usedShare, float launcherShare) {
+            this.usedShare = usedShare;
+            this.launcherShare = launcherShare;
+            invalidate();
+        }
+
+        @Override protected void onDraw(android.graphics.Canvas c) {
+            float h = getHeight(), rad = h / 2f, w = getWidth();
+            r.set(0, 0, w, h);
+            c.drawRoundRect(r, rad, rad, track);
+            if (usedShare > 0) {
+                r.right = Math.max(h, w * usedShare);
+                c.drawRoundRect(r, rad, rad, used);
+            }
+            if (launcherShare > 0) {
+                r.right = Math.max(h, w * launcherShare);
+                c.drawRoundRect(r, rad, rad, mine);
+            }
+        }
+    }
+
+    private void buildSystem() {
+        paneTitle.setText(R.string.sm_system);
+        pane.addView(actionRow(getString(R.string.sm_tv_settings), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_network), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_apps_settings), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_APPLICATION_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_screensaver), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_DREAM_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_default_home), "", () ->
+                open(new Intent(this, HomeSettingsActivity.class))));
+        String version = "";
+        try {
+            version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
+        }
+        note(getString(R.string.sm_about, version));
+    }
+
+    /** A page with one text field: Save keeps what was typed (empty clears, where clearing is allowed). */
+    private void editText(String title, String hint, String value, boolean clearable, java.util.function.Consumer<String> save) {
+        int returnTo = category;
+        clearPane();
+        paneTitle.setText(title);
+        back = () -> rebuild(returnTo);
+        EditText field = field(hint, value);
+        pane.addView(field, new LinearLayout.LayoutParams(-1, dp(52)));
+        LinearLayout buttons = new LinearLayout(this);
+        buttons.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-2, -2);
+        buttonsLp.topMargin = dp(16);
+        pane.addView(buttons, buttonsLp);
+        Runnable done = () -> {
+            hideKeyboard(field);
+            save.accept(field.getText().toString().trim());
+            back = null;
+            rebuild(returnTo);
+            focusPane();
+        };
+        TextView saveButton = pill(getString(R.string.sm_save));
+        saveButton.setOnClickListener(v -> done.run());
+        buttons.addView(saveButton, new LinearLayout.LayoutParams(-2, dp(46)));
+        if (clearable) {
+            TextView clear = pill(getString(R.string.sm_clear));
+            clear.setOnClickListener(v -> {
+                field.setText("");
+                done.run();
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(46));
+            lp.setMarginStart(dp(12));
+            buttons.addView(clear, lp);
+        }
+        field.setOnEditorActionListener((v, action, event) -> {
+            done.run();
+            return true;
+        });
+        field.requestFocus();
+    }
+
+    // ---- rows ------------------------------------------------------------------------------------------
+
+    /** A label and a set of pills, the chosen one outlined; OK on a pill picks it. selected -1: none marked. */
+    private View choiceRow(String label, String[] options, int selected, IntConsumer pick) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setMinimumHeight(dp(58));
+        TextView name = text(18, R.string.font_regular, INK);
+        name.setText(label);
+        name.setSingleLine(true);
+        name.setEllipsize(TextUtils.TruncateAt.END);
+        row.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
+        List<TextView> pills = new ArrayList<>();
+        for (int i = 0; i < options.length; i++) {
+            final int index = i;
+            TextView p = pill(options[i]);
+            p.setMinWidth(dp(58));
+            p.setSelected(i == selected);
+            p.setOnClickListener(v -> {
+                for (TextView other : pills) other.setSelected(other == v);
+                pick.accept(index);
+            });
+            p.setOnFocusChangeListener((v, focused) -> {
+                if (focused) scrollIntoView(row);
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            lp.setMarginStart(dp(10));
+            row.addView(p, lp);
+            pills.add(p);
+        }
+        LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
+        rowLp.topMargin = dp(6);
+        row.setLayoutParams(rowLp);
+        return row;
+    }
+
+    private View toggleRow(String label, boolean on, java.util.function.Consumer<Boolean> set) {
+        return choiceRow(label, new String[]{getString(R.string.sm_on), getString(R.string.sm_off)}, on ? 0 : 1,
+                i -> set.accept(i == 0));
+    }
+
+    /** A full-width glass row: label, value and a chevron; it turns white with focus, like the pills. */
+    private View actionRow(String label, String value, Runnable action) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setFocusable(true);
+        row.setClickable(true);
+        row.setBackground(glass(dp(16)));
+        row.setPadding(dp(22), 0, dp(20), 0);
+        TextView name = text(18, R.string.font_regular, INK);
+        name.setText(label);
+        name.setDuplicateParentStateEnabled(true);
+        name.setTextColor(ink(INK));
+        name.setSingleLine(true);
+        name.setEllipsize(TextUtils.TruncateAt.END);
+        row.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
+        if (!value.isEmpty()) {
+            TextView v = text(15, R.string.font_regular, 0x99FFFFFF);
+            v.setText(value);
+            v.setDuplicateParentStateEnabled(true);
+            v.setTextColor(ink(0x99FFFFFF));
+            v.setSingleLine(true);
+            v.setEllipsize(TextUtils.TruncateAt.END);
+            v.setMaxWidth(dp(360));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2);
+            lp.setMarginStart(dp(16));
+            row.addView(v, lp);
+        }
+        // No action: an information row (Storage). It still takes focus, so the remote can scroll to it.
+        if (action != null) {
+            TextView chevron = text(22, R.string.font_light, 0x99FFFFFF);
+            chevron.setText("›");
+            chevron.setDuplicateParentStateEnabled(true);
+            chevron.setTextColor(ink(0x99FFFFFF));
+            LinearLayout.LayoutParams chevronLp = new LinearLayout.LayoutParams(-2, -2);
+            chevronLp.setMarginStart(dp(14));
+            row.addView(chevron, chevronLp);
+            row.setOnClickListener(v -> action.run());
+        }
+        row.setOnFocusChangeListener((v, focused) -> {
+            if (focused) scrollIntoView(v);
+        });
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(56));
+        lp.topMargin = dp(10);
+        row.setLayoutParams(lp);
+        return row;
+    }
+
+    private void section(int title) {
+        TextView t = text(13, R.string.font_medium, 0x80FFFFFF);
+        t.setText(getString(title).toUpperCase(Locale.getDefault()));
+        t.setLetterSpacing(0.16f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2);
+        lp.topMargin = pane.getChildCount() == 0 ? dp(4) : dp(26);
+        lp.bottomMargin = dp(4);
+        pane.addView(t, lp);
+    }
+
+    private void note(String s) {
+        TextView t = text(15, R.string.font_regular, 0x8CFFFFFF);
+        t.setText(s);
+        t.setLineSpacing(dp(3), 1f);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+        lp.topMargin = dp(8);
+        lp.bottomMargin = dp(6);
+        pane.addView(t, lp);
+    }
+
+    // ---- views -------------------------------------------------------------------------------------------
+
+    /** Home's frosted pill (pill_bg): glass at rest, white with dark text with focus; outlined when chosen. */
+    private TextView pill(String label) {
+        TextView p = text(15, R.string.font_medium, INK);
+        p.setText(label);
+        p.setGravity(Gravity.CENTER);
+        p.setPadding(dp(20), 0, dp(20), 0);
+        p.setFocusable(true);
+        p.setClickable(true);
+        p.setBackground(glass(dp(22)));
+        p.setTextColor(ink(INK));
+        return p;
+    }
+
+    private Drawable glass(int radius) {
+        StateListDrawable s = new StateListDrawable();
+        GradientDrawable focused = new GradientDrawable();
+        focused.setColor(0xF5FFFFFF);
+        focused.setCornerRadius(radius);
+        GradientDrawable chosen = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x47FFFFFF, 0x29FFFFFF});
+        chosen.setCornerRadius(radius);
+        chosen.setStroke(Math.max(1, Math.round(1.5f * density)), 0xD9FFFFFF);
+        GradientDrawable rest = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x2EFFFFFF, 0x14FFFFFF});
+        rest.setCornerRadius(radius);
+        rest.setStroke(Math.max(1, dp(1)), 0x38FFFFFF);
+        s.addState(new int[]{android.R.attr.state_focused}, focused);
+        s.addState(new int[]{android.R.attr.state_selected}, chosen);
+        s.addState(new int[]{}, rest);
+        return s;
+    }
+
+    private static ColorStateList ink(int rest) {
+        return new ColorStateList(new int[][]{{android.R.attr.state_focused}, {}}, new int[]{INK_FOCUSED, rest});
+    }
+
+    private EditText field(String hint, String value) {
+        EditText e = new EditText(this);
+        e.setSingleLine(true);
+        e.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+        e.setImeOptions(EditorInfo.IME_ACTION_DONE);
+        e.setHint(hint);
+        e.setText(value);
+        e.setSelection(value.length());
+        e.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+        e.setTypeface(UiFont.get(this, R.string.font_regular));
+        e.setTextColor(INK);
+        e.setHintTextColor(0x66FFFFFF);
+        e.setPadding(dp(20), 0, dp(20), 0);
+        StateListDrawable bg = new StateListDrawable();
+        GradientDrawable focused = new GradientDrawable();
+        focused.setColor(0x33FFFFFF);
+        focused.setCornerRadius(dp(16));
+        focused.setStroke(dp(2), 0xF2FFFFFF);
+        GradientDrawable rest = new GradientDrawable();
+        rest.setColor(0x1FFFFFFF);
+        rest.setCornerRadius(dp(16));
+        rest.setStroke(Math.max(1, dp(1)), 0x38FFFFFF);
+        bg.addState(new int[]{android.R.attr.state_focused}, focused);
+        bg.addState(new int[]{}, rest);
+        e.setBackground(bg);
+        return e;
+    }
+
+    private TextView text(float sp, int font, int color) {
+        TextView t = new TextView(this);
+        t.setTextSize(TypedValue.COMPLEX_UNIT_SP, sp);
+        t.setTypeface(UiFont.get(this, font));
+        t.setTextColor(color);
+        t.setIncludeFontPadding(false);
+        return t;
+    }
+
+    private void scrollIntoView(View v) {
+        scroll.post(() -> {
+            android.graphics.Rect r = new android.graphics.Rect();
+            v.getDrawingRect(r);
+            pane.offsetDescendantRectToMyCoords(v, r);
+            int top = r.top - dp(24), bottom = r.bottom + dp(24);
+            int y = scroll.getScrollY(), h = scroll.getHeight() - scroll.getPaddingBottom();
+            if (top < y) scroll.smoothScrollTo(0, Math.max(0, top));
+            else if (bottom > y + h) scroll.smoothScrollTo(0, bottom - h);
+        });
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (imm != null) imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+    }
+
+    private static String[] numbers(int from, int to) {
+        String[] out = new String[to - from + 1];
+        for (int i = from; i <= to; i++) out[i - from] = Integer.toString(i);
+        return out;
+    }
+
+    private int dp(float v) {
+        return Math.round(v * density);
+    }
+
+    /** A choice was saved: Home rebuilds with it when it comes back (Config.SETTINGS_REVISION_KEY). */
+    private void changed() {
+        setResult(RESULT_OK);
+        prefs.edit().putLong(Config.SETTINGS_REVISION_KEY, prefs.getLong(Config.SETTINGS_REVISION_KEY, 0) + 1).apply();
+    }
+
+    private void open(Intent intent) {
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException | SecurityException e) {
+            Toast.makeText(this, R.string.not_available, Toast.LENGTH_LONG).show();
+        }
+    }
+}

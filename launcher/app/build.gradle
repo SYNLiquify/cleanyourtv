@@ -42,6 +42,39 @@ android {
     }
 }
 
+// This fork: the Settings menu's Themes page. Each theme in the repo's themes/ folder that has a config.json and a
+// screenshot.jpg goes into the APK's assets as themes/<name>/, with themes/index.json listing its wallpaper files.
+// The wallpapers themselves stay out of the APK (about 13 MB): ThemeLibrary downloads them from GitHub on apply.
+def themeAssets = layout.buildDirectory.dir('generated/themeAssets').get().asFile
+android.sourceSets.main.assets.srcDirs += [themeAssets]
+tasks.register('bundleThemes') {
+    def src = rootProject.file('../themes')
+    inputs.dir(src)
+    outputs.dir(themeAssets)
+    doLast {
+        themeAssets.deleteDir()
+        def out = new File(themeAssets, 'themes')
+        out.mkdirs()
+        def index = []
+        src.listFiles().findAll { it.isDirectory() }.sort { it.name }.each { d ->
+            def cfg = new File(d, 'config.json')
+            def shot = new File(d, 'screenshot.jpg')
+            if (!cfg.isFile() || !shot.isFile()) return
+            def dst = new File(out, d.name)
+            dst.mkdirs()
+            java.nio.file.Files.copy(cfg.toPath(), new File(dst, 'config.json').toPath())
+            java.nio.file.Files.copy(shot.toPath(), new File(dst, 'screenshot.jpg').toPath())
+            def files = []
+            if (new File(d, 'wallpaper.jpg').isFile()) files << 'wallpaper.jpg'
+            def walls = new File(d, 'wallpapers')
+            if (walls.isDirectory()) walls.listFiles().findAll { it.isFile() }.sort { it.name }.each { files << "wallpapers/${it.name}" }
+            index << [name: d.name, files: files]
+        }
+        new File(out, 'index.json').text = groovy.json.JsonOutput.toJson(index)
+    }
+}
+tasks.named('preBuild') { dependsOn 'bundleThemes' }
+
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.3.2'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
