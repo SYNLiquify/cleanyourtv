@@ -3,7 +3,23 @@
 A fork of this repo's launcher (`launcher/`), built and tested on an **onn. 4K Streaming Box (2023, YOC), Google TV 14**.
 Everything else in the repo (the debloat tools, lists and docs) is unchanged.
 
-![Settings, Themes page](docs/screenshots/apple-tv-home/settings-themes.png)
+![Home with the dock focused](docs/screenshots/apple-tv-home/home-dock-focused.png)
+
+## Screenshots
+
+All taken on the onn box. In the Continue watching shots, the titles, episode names and thumbnails are blurred for
+privacy; the time-left pills and progress bars are left as they are.
+
+| | |
+|---|---|
+| ![Dock focused, at the bottom edge with the app's name and the clock lined up on its left](docs/screenshots/apple-tv-home/home-dock-focused.png) | ![Down from the dock: Continue watching under it, the app grid below](docs/screenshots/apple-tv-home/home-continue-watching.png) |
+| **Dock focused**: at the bottom edge, enlarged, the app's name and the clock lined up on its left | **Continue watching**: Down from the dock; thumbnail cards with time left and progress |
+| ![The app grid, four across, spanning the dock's width](docs/screenshots/apple-tv-home/home-app-grid.png) | ![Settings, Home page](docs/screenshots/apple-tv-home/settings-home.png) |
+| **App grid**: the rows span the dock's width | **Settings > Home**: dock and grid sizes, Continue watching, look |
+| ![Settings, Themes page](docs/screenshots/apple-tv-home/settings-themes.png) | ![Settings, Weather page](docs/screenshots/apple-tv-home/settings-weather.png) |
+| **Settings > Themes**: Downloaded (Default first) and every theme in this repo | **Settings > Weather**: units, what to show, location |
+| ![Settings, Clock page](docs/screenshots/apple-tv-home/settings-clock.png) | ![Settings, Storage page](docs/screenshots/apple-tv-home/settings-storage.png) |
+| **Settings > Clock**: 12/24-hour, greetings that rotate | **Settings > Storage**: the TV's space and the launcher's share |
 
 ## What it adds
 
@@ -20,6 +36,11 @@ Everything else in the repo (the debloat tools, lists and docs) is unchanged.
   left and a progress line. OK opens the title in the app.
 - Needs `pm grant com.gathin.tvhome android.permission.READ_TV_LISTINGS`. Thumbnails of titles that leave the list are
   deleted from the cache.
+- **Only Nuvio for now.** It is the only app this was built and tested with. The row reads Android TV's standard
+  preview channels, so other apps that publish their continue-watching list as one (Stremio keeps a "Continue
+  Watching" preview channel, see `docs/watch-next.md`) can be added by putting their package in
+  `continue_watching_apps`, e.g. `com.stremio.one`. Untested so far; the cards show whatever the app fills in (some
+  leave out dates or episode numbers), and support for other apps can be added later.
 
 **Weather** (`weather` in `config.xml`)
 - A line under the date on Home and on the clock screensaver: temperature, conditions, today's high and low.
