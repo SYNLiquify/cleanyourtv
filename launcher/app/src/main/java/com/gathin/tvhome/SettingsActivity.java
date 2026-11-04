@@ -1214,15 +1214,24 @@ public final class SettingsActivity extends Activity {
         pane.addView(check);
         if (offer != null) {
             // Install first shows what's new and asks again (UpdateConfirm), then downloads.
-            pane.addView(actionRow(getString(R.string.update_install), offer.name, () ->
+            // The row shows the download's progress, then that Android's installer is opening.
+            TextView[] progressView = {null};
+            View download = actionRow(getString(R.string.update_download), offer.name, () ->
                     UpdateConfirm.show(this, offer, accent, () -> {
                         Toast.makeText(this, R.string.update_downloading, Toast.LENGTH_SHORT).show();
                         Updates.install(this, offer, (percent, failure) -> {
                             if (failure != null) {
+                                if (progressView[0] != null) progressView[0].setText(offer.name);
                                 Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
+                            } else if (progressView[0] != null) {
+                                progressView[0].setText(percent < 0 ? getString(R.string.update_opening)
+                                        : getString(R.string.update_progress, percent));
                             }
                         });
-                    })));
+                    }));
+            View value = ((ViewGroup) download).getChildAt(1);
+            if (value instanceof TextView) progressView[0] = (TextView) value;
+            pane.addView(download);
         }
         pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this), null));
 

@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">%1$s を削除しました</string>
     <string name="sm_built_in">内蔵</string>
     <string name="sm_lang_ready">%1$s をダウンロードしました。選ぶと切り替わります。</string>
-    <string name="update_confirm_kicker">ランチャーのアップデート</string>
     <string name="update_confirm_title">%1$s をインストールしますか？</string>
     <string name="update_confirm_current">現在のバージョン：%1$s</string>
     <string name="update_whats_new">新機能</string>
     <string name="update_no_notes">このリリースには変更点の記載がありません。</string>
     <string name="update_more_notes">ほか %1$d 件</string>
     <string name="update_cancel">キャンセル</string>
+    <string name="update_download">アップデートをダウンロード</string>
+    <string name="update_progress">ダウンロード中… %1$d%%</string>
+    <string name="update_opening">Android のインストーラを開いています…</string>
 </resources>

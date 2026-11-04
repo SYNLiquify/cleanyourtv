@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">%1$s je uklonjen</string>
     <string name="sm_built_in">Ugrađen</string>
     <string name="sm_lang_ready">%1$s je preuzet. Izaberite ga da biste prešli.</string>
-    <string name="update_confirm_kicker">Ažuriranje pokretača</string>
     <string name="update_confirm_title">Instalirati %1$s?</string>
     <string name="update_confirm_current">Imate %1$s</string>
     <string name="update_whats_new">Šta je novo</string>
     <string name="update_no_notes">Ovo izdanje ne navodi izmene.</string>
     <string name="update_more_notes">i još %1$d</string>
     <string name="update_cancel">Otkaži</string>
+    <string name="update_download">Preuzmi ažuriranje</string>
+    <string name="update_progress">Preuzimanje… %1$d%%</string>
+    <string name="update_opening">Otvara se Android instaler…</string>
 </resources>

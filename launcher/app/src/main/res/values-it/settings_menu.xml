@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">%1$s rimossa</string>
     <string name="sm_built_in">Integrata</string>
     <string name="sm_lang_ready">%1$s scaricata. Sceglila per cambiare.</string>
-    <string name="update_confirm_kicker">Aggiornamento del launcher</string>
     <string name="update_confirm_title">Installare %1$s?</string>
     <string name="update_confirm_current">Hai %1$s</string>
     <string name="update_whats_new">Novità</string>
     <string name="update_no_notes">Questa versione non elenca modifiche.</string>
     <string name="update_more_notes">e altre %1$d</string>
     <string name="update_cancel">Annulla</string>
+    <string name="update_download">Scarica aggiornamento</string>
+    <string name="update_progress">Download in corso… %1$d%%</string>
+    <string name="update_opening">Apertura del programma di installazione Android…</string>
 </resources>

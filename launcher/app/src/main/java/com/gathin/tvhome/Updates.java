@@ -67,7 +67,7 @@ public final class Updates extends BroadcastReceiver {
     private static final String PREFS = "updates";
     private static final String LAST_CHECK = "last_check";
     private static final String CODE = "code", NAME = "name", URL_KEY = "url", SIZE = "size", SHA_KEY = "sha",
-            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated", START_PENDING = "start_pending", NOTES = "notes";
+            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated", START_PENDING = "start_pending", NOTES = "notes", BOOT_SEEN = "boot_seen";
     /** The least time between two checks that a Home press starts, within GitHub's 60 checks an hour. */
     static final long HOME_PRESS_GAP_MS = 60_000;
 
@@ -191,6 +191,7 @@ public final class Updates extends BroadcastReceiver {
         if (intervalHours(ctx) <= 0) return;
         long since = System.currentTimeMillis() - lastCheck(ctx);
         if (since >= 0 && since < HOME_PRESS_GAP_MS) return;
+        Log.i(TAG, "checking: Home pressed");
         check(ctx, done);
     }
 
@@ -201,7 +202,20 @@ public final class Updates extends BroadcastReceiver {
     static void checkOnStart(Context ctx, Consumer<Offer> done) {
         if (intervalHours(ctx) <= 0) return;
         prefs(ctx).edit().putBoolean(START_PENDING, true).apply();
+        Log.i(TAG, "checking: TV started or woke up");
         check(ctx, done);
+    }
+
+    /**
+     * Once per TV start: the start check. The boot broadcast is not enough, because the Hisense holds BOOT_COMPLETED
+     * back from apps it does not list, so Home calls this as it comes up too; whichever comes first runs it.
+     */
+    static void checkOnceAfterBoot(Context ctx, Consumer<Offer> done) {
+        long bootedAt = System.currentTimeMillis() - SystemClock.elapsedRealtime();
+        long seen = prefs(ctx).getLong(BOOT_SEEN, 0);
+        if (Math.abs(bootedAt - seen) < 60_000) return;   // this start's check already ran
+        prefs(ctx).edit().putLong(BOOT_SEEN, bootedAt).apply();
+        checkOnStart(ctx, done);
     }
 
     private static final java.util.concurrent.atomic.AtomicBoolean RETRYING = new java.util.concurrent.atomic.AtomicBoolean();
@@ -210,6 +224,7 @@ public final class Updates extends BroadcastReceiver {
     static void checkIfStartPending(Context ctx, Consumer<Offer> done) {
         if (!prefs(ctx).getBoolean(START_PENDING, false) || intervalHours(ctx) <= 0) return;
         if (!RETRYING.compareAndSet(false, true)) return;
+        Log.i(TAG, "checking: start check again, now online");
         check(ctx, o -> {
             RETRYING.set(false);
             if (done != null) done.accept(o);
@@ -242,6 +257,7 @@ public final class Updates extends BroadcastReceiver {
                 String notes = TextUtils.join("\n", ReleaseNotes.parse(r.optString("body")));
                 e.putInt(CODE, code).putString(NOTES, notes).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
                         .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR).remove(START_PENDING);
+                Log.i(TAG, "check done: latest " + code + ", installed " + installedCode(ctx));
                 if (code > installedCode(ctx)) {
                     found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US), notes);
                 }
@@ -309,7 +325,8 @@ public final class Updates extends BroadcastReceiver {
         });
     }
 
-    private static final long CONFIRM_FALLBACK_MS = 4000;
+    /** Long enough for Android to check the APK it was handed; the screen closes itself if opened earlier. */
+    private static final long CONFIRM_FALLBACK_MS = 1000;
     /** The session whose confirm screen was opened, so the answer and the fallback don't open it twice. */
     private static volatile int confirmOpenedFor = -1;
 
@@ -417,7 +434,7 @@ public final class Updates extends BroadcastReceiver {
             if (intervalHours(ctx) > 0 && Intent.ACTION_BOOT_COMPLETED.equals(action)) {
                 // Kept pending if the network isn't up yet; Home checks again once it is.
                 PendingResult pending = goAsync();
-                checkOnStart(ctx, o -> pending.finish());
+                checkOnceAfterBoot(ctx, o -> pending.finish());
             }
         } else if (ACTION_CHECK.equals(action)) {
             PendingResult pending = goAsync();

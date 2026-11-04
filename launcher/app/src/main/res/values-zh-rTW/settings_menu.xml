@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">已移除%1$s</string>
     <string name="sm_built_in">內建</string>
     <string name="sm_lang_ready">已下載%1$s。選擇即可切換。</string>
-    <string name="update_confirm_kicker">啟動器更新</string>
     <string name="update_confirm_title">安裝 %1$s？</string>
     <string name="update_confirm_current">目前版本：%1$s</string>
     <string name="update_whats_new">新功能</string>
     <string name="update_no_notes">此版本未列出變更。</string>
     <string name="update_more_notes">以及另外 %1$d 項</string>
     <string name="update_cancel">取消</string>
+    <string name="update_download">下載更新</string>
+    <string name="update_progress">正在下載… %1$d%%</string>
+    <string name="update_opening">正在開啟 Android 安裝程式…</string>
 </resources>

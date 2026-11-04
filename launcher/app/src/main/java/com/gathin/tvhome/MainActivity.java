@@ -1221,6 +1221,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             offerUpdate(Updates.offer(this));
         }, 1500);
         Updates.checkIfDue(this, this::offerUpdate);
+        Updates.checkOnceAfterBoot(this, this::offerUpdate);
         Updates.checkIfStartPending(this, this::offerUpdate);
         if (grid.getAdapter() == null) grid.setAdapter(adapter);   // dropped by onTrimMemory
         switch (tileRefresh.onResume(packagesChangedSinceRebuild())) {
@@ -4527,6 +4528,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Updates.install(this, offer, (percent, failure) -> {
             if (failure != null) {
                 Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
+            } else if (percent < 0) {
+                // Downloaded and checked: Android's own screen opens in a moment.
+                Toast.makeText(this, R.string.update_opening, Toast.LENGTH_SHORT).show();
             }
         });
     }

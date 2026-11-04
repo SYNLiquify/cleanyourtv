@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">تمت إزالة %1$s</string>
     <string name="sm_built_in">مدمجة</string>
     <string name="sm_lang_ready">تم تنزيل %1$s. اختره للتبديل.</string>
-    <string name="update_confirm_kicker">تحديث المشغّل</string>
     <string name="update_confirm_title">تثبيت %1$s؟</string>
     <string name="update_confirm_current">لديك %1$s</string>
     <string name="update_whats_new">ما الجديد</string>
     <string name="update_no_notes">لا يذكر هذا الإصدار أي تغييرات.</string>
     <string name="update_more_notes">و%1$d أخرى</string>
     <string name="update_cancel">إلغاء</string>
+    <string name="update_download">تنزيل التحديث</string>
+    <string name="update_progress">جارٍ التنزيل… %1$d%%</string>
+    <string name="update_opening">جارٍ فتح أداة التثبيت في Android…</string>
 </resources>

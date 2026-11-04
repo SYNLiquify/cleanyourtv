@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">Đã xóa %1$s</string>
     <string name="sm_built_in">Tích hợp sẵn</string>
     <string name="sm_lang_ready">Đã tải xuống %1$s. Chọn để chuyển.</string>
-    <string name="update_confirm_kicker">Bản cập nhật trình chạy</string>
     <string name="update_confirm_title">Cài đặt %1$s?</string>
     <string name="update_confirm_current">Bạn đang có %1$s</string>
     <string name="update_whats_new">Có gì mới</string>
     <string name="update_no_notes">Bản phát hành này không liệt kê thay đổi.</string>
     <string name="update_more_notes">và %1$d mục khác</string>
     <string name="update_cancel">Hủy</string>
+    <string name="update_download">Tải bản cập nhật xuống</string>
+    <string name="update_progress">Đang tải xuống… %1$d%%</string>
+    <string name="update_opening">Đang mở trình cài đặt Android…</string>
 </resources>

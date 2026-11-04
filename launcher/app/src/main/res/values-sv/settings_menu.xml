@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">%1$s borttaget</string>
     <string name="sm_built_in">Inbyggt</string>
     <string name="sm_lang_ready">%1$s har laddats ned. Välj det för att byta.</string>
-    <string name="update_confirm_kicker">Uppdatering av startprogrammet</string>
     <string name="update_confirm_title">Installera %1$s?</string>
     <string name="update_confirm_current">Du har %1$s</string>
     <string name="update_whats_new">Nyheter</string>
     <string name="update_no_notes">Den här versionen listar inga ändringar.</string>
     <string name="update_more_notes">och %1$d till</string>
     <string name="update_cancel">Avbryt</string>
+    <string name="update_download">Ladda ned uppdatering</string>
+    <string name="update_progress">Laddar ned… %1$d %%</string>
+    <string name="update_opening">Öppnar Androids installationsprogram…</string>
 </resources>

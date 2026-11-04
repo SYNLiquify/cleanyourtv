@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">%1$s kaldırıldı</string>
     <string name="sm_built_in">Yerleşik</string>
     <string name="sm_lang_ready">%1$s indirildi. Geçmek için seçin.</string>
-    <string name="update_confirm_kicker">Başlatıcı güncellemesi</string>
     <string name="update_confirm_title">%1$s yüklensin mi?</string>
     <string name="update_confirm_current">Sizdeki: %1$s</string>
     <string name="update_whats_new">Yenilikler</string>
     <string name="update_no_notes">Bu sürümde değişiklik listelenmemiş.</string>
     <string name="update_more_notes">ve %1$d tane daha</string>
     <string name="update_cancel">İptal</string>
+    <string name="update_download">Güncellemeyi indir</string>
+    <string name="update_progress">İndiriliyor… %%%1$d</string>
+    <string name="update_opening">Android yükleyicisi açılıyor…</string>
 </resources>

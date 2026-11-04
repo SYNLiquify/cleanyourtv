@@ -149,11 +149,13 @@
     <string name="sm_lang_removed">S\'ha suprimit %1$s</string>
     <string name="sm_built_in">Integrat</string>
     <string name="sm_lang_ready">S\'ha baixat %1$s. Tria\'l per canviar.</string>
-    <string name="update_confirm_kicker">Actualització del llançador</string>
     <string name="update_confirm_title">Vols instal·lar %1$s?</string>
     <string name="update_confirm_current">Tens %1$s</string>
     <string name="update_whats_new">Novetats</string>
     <string name="update_no_notes">Aquesta versió no detalla canvis.</string>
     <string name="update_more_notes">i %1$d més</string>
     <string name="update_cancel">Cancel·la</string>
+    <string name="update_download">Baixa l\'actualització</string>
+    <string name="update_progress">S\'està baixant… %1$d %%</string>
+    <string name="update_opening">S\'està obrint l\'instal·lador d\'Android…</string>
 </resources>
