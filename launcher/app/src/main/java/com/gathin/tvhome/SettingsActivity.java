@@ -1646,8 +1646,19 @@ public final class SettingsActivity extends Activity {
         return t;
     }
 
+    /** Whether v is, or holds, the first focusable view of the page. */
+    private boolean isFirstFocusable(View v) {
+        View first = firstFocusable(pane);
+        return first != null && (first == v || isInside(first, v instanceof ViewGroup ? (ViewGroup) v : null));
+    }
+
     private void scrollIntoView(View v) {
         scroll.post(() -> {
+            // The page's first row: show the page from its top, so a note above that row is not cut in half.
+            if (isInside(v, pane) && isFirstFocusable(v)) {
+                scroll.smoothScrollTo(0, 0);
+                return;
+            }
             android.graphics.Rect r = new android.graphics.Rect();
             v.getDrawingRect(r);
             pane.offsetDescendantRectToMyCoords(v, r);
