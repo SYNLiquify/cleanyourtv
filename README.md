@@ -42,8 +42,26 @@ color, sampled from its banner like the glow behind Home.
 | **Themes**: every theme in the repo, applied in place | **Weather**: °F/°C, what to show, location |
 | ![Settings, Clock: time format, greetings, custom greetings that rotate](docs/screenshots/apple-tv-home/settings-clock.jpg) | ![Settings, Storage: the TV's free space and what the launcher uses](docs/screenshots/apple-tv-home/settings-storage.jpg) |
 | **Clock**: 12/24-hour, greetings that rotate | **Storage**: space used, with clean-up buttons |
-| ![Settings, System: shortcuts to Android TV settings, network, apps, screensaver and default home](docs/screenshots/apple-tv-home/settings-system.jpg) | |
-| **System**: Android's own settings, a click away | |
+| ![Settings, System: ATV settings, Language and Updates, each opening its own page](docs/screenshots/apple-tv-home/settings-system.jpg) | ![System, ATV settings: Android TV settings, network and Wi-Fi, apps, screensaver, default home app](docs/screenshots/apple-tv-home/atv-settings.jpg) |
+| **System**: ATV settings, Language, Updates | **ATV settings**: Android's own settings, a click away |
+| ![Storage, the Languages row: 32 included](docs/screenshots/apple-tv-home/storage-languages.jpg) | |
+| **Storage**: the built-in languages, one row that opens their list | |
+
+### Updates from this fork
+
+| | |
+|---|---|
+| ![Home offering a launcher update: Install update or Later](docs/screenshots/apple-tv-home/update-card.jpg) | ![System, Updates: Check for updates and the version at the top, how often to check below](docs/screenshots/apple-tv-home/updates-page.jpg) |
+| **Home offers each new version**: Install update or Later | **Updates**: Check for updates at the top, the interval below |
+
+### Every language upstream has, plus Japanese
+
+| | |
+|---|---|
+| ![System, Language: the TV's language, English, Español, 日本語, العربية and more, each in its own name](docs/screenshots/apple-tv-home/language-list.jpg) | ![The Settings menu in Japanese](docs/screenshots/apple-tv-home/japanese-settings.jpg) |
+| **Language**: 32, each in its own name | **The menu in Japanese** |
+| ![Home in Japanese: the date, the weather and the pills translated](docs/screenshots/apple-tv-home/japanese-home.jpg) | ![Home in Spanish: the long date and weather shrink to one line](docs/screenshots/apple-tv-home/spanish-home.jpg) |
+| **Home in Japanese** | **Home in Spanish**: long words shrink to fit one line |
 
 ### What's new
 
