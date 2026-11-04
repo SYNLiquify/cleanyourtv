@@ -131,7 +131,7 @@
     <string name="sm_language_note">启动器、主屏幕及其菜单会立即切换。未安装的语言会先下载，再次选择即可切换。</string>
     <string name="sm_update_auto">自动检查</string>
     <string name="sm_update_every">检查间隔</string>
-    <string name="sm_update_auto_note">电视开机或从待机唤醒时也会检查。关闭后，仅在按下“检查更新”时检查。</string>
+    <string name="sm_update_auto_note">每次按主屏幕键时（每分钟最多一次），以及电视开机或从待机唤醒并联网后，也会检查。关闭时仅在按“检查更新”时检查。</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
     <string name="update_done">启动器已更新到 %1$s</string>

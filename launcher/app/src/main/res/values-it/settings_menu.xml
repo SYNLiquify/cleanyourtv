@@ -131,7 +131,7 @@
     <string name="sm_language_note">Il launcher, la Home e i suoi menu cambiano subito. Una lingua non installata viene prima scaricata; sceglila di nuovo per cambiare.</string>
     <string name="sm_update_auto">Controlli automatici</string>
     <string name="sm_update_every">Controlla ogni</string>
-    <string name="sm_update_auto_note">Anche all\'accensione della TV o al risveglio dallo standby. Con No, il controllo avviene solo quando premi Cerca aggiornamenti.</string>
+    <string name="sm_update_auto_note">Anche ogni volta che premi Home (al massimo una volta al minuto) e quando il televisore si accende o esce dallo standby, appena è online. Disattivato controlla solo quando premi Cerca aggiornamenti.</string>
     <string name="sm_atv_settings">Impostazioni ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher aggiornato a %1$s</string>

@@ -131,7 +131,7 @@
     <string name="sm_language_note">Startprogrammet, Hem och menyerna byter direkt. Ett språk som inte är installerat laddas ned först; välj det igen för att byta.</string>
     <string name="sm_update_auto">Automatisk sökning</string>
     <string name="sm_update_every">Sök var</string>
-    <string name="sm_update_auto_note">Även när TV:n startar eller vaknar ur viloläge. Av söker bara när du trycker på Sök efter uppdateringar.</string>
+    <string name="sm_update_auto_note">Även varje gång du trycker på Hem (högst en gång i minuten), och när tv:n startar eller vaknar ur viloläge, så snart den är online. Av söker bara när du trycker på Sök efter uppdateringar.</string>
     <string name="sm_atv_settings">ATV-inställningar</string>
     <string name="sm_hours">%1$d tim</string>
     <string name="update_done">Startskärmen uppdaterad till %1$s</string>

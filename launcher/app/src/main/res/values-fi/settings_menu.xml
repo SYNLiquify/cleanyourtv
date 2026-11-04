@@ -131,7 +131,7 @@
     <string name="sm_language_note">Käynnistin, aloitusnäyttö ja valikot vaihtuvat heti. Asentamaton kieli ladataan ensin; vaihda valitsemalla se uudelleen.</string>
     <string name="sm_update_auto">Automaattiset tarkistukset</string>
     <string name="sm_update_every">Tarkistusväli</string>
-    <string name="sm_update_auto_note">Myös kun televisio käynnistyy tai herää valmiustilasta. Pois-asetuksella tarkistetaan vain, kun painat Tarkista päivitykset.</string>
+    <string name="sm_update_auto_note">Myös aina kun painat Koti-painiketta (enintään kerran minuutissa) sekä kun televisio käynnistyy tai herää valmiustilasta, heti kun se on verkossa. Pois tarkistaa vain, kun painat Tarkista päivitykset.</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>

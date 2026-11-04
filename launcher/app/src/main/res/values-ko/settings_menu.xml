@@ -131,7 +131,7 @@
     <string name="sm_language_note">런처, 홈, 메뉴가 바로 바뀝니다. 설치되지 않은 언어는 먼저 다운로드되며, 다시 선택하면 전환됩니다.</string>
     <string name="sm_update_auto">자동 확인</string>
     <string name="sm_update_every">확인 주기</string>
-    <string name="sm_update_auto_note">TV를 켜거나 대기 모드에서 깨어날 때도 확인합니다. 꺼짐으로 두면 업데이트 확인을 누를 때만 확인합니다.</string>
+    <string name="sm_update_auto_note">홈 버튼을 누를 때마다(1분에 한 번까지), 그리고 TV가 켜지거나 대기 모드에서 깨어날 때 온라인이 되는 즉시 확인합니다. 끄기는 업데이트 확인을 누를 때만 확인합니다.</string>
     <string name="sm_atv_settings">ATV 설정</string>
     <string name="sm_hours">%1$d시간</string>
     <string name="update_done">런처가 %1$s(으)로 업데이트됨</string>

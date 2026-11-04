@@ -131,7 +131,7 @@
     <string name="sm_language_note">Spouštěč, Domovská obrazovka a jejich nabídky se přepnou hned. Nenainstalovaný jazyk se nejdřív stáhne; vyberte ho znovu a přepněte.</string>
     <string name="sm_update_auto">Automatická kontrola</string>
     <string name="sm_update_every">Interval kontroly</string>
-    <string name="sm_update_auto_note">Také při zapnutí televize nebo probuzení z pohotovosti. Když je vypnuto, kontroluje se jen po stisknutí Vyhledat aktualizace.</string>
+    <string name="sm_update_auto_note">Také při každém stisku Domů (nejvýš jednou za minutu) a když se televizor zapne nebo probudí z pohotovostního režimu, jakmile je online. Vypnuto kontroluje jen po stisku Zkontrolovat aktualizace.</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

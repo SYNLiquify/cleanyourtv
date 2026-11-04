@@ -131,7 +131,7 @@
     <string name="sm_language_note">המשגר, מסך הבית והתפריטים מתחלפים מיד. שפה שאינה מותקנת יורדת קודם; בחרו בה שוב כדי לעבור.</string>
     <string name="sm_update_auto">בדיקות אוטומטיות</string>
     <string name="sm_update_every">בדיקה כל</string>
-    <string name="sm_update_auto_note">גם כשהטלוויזיה נדלקת או מתעוררת ממצב המתנה. במצב כבוי, הבדיקה מתבצעת רק כשלוחצים על בדיקת עדכונים.</string>
+    <string name="sm_update_auto_note">וגם בכל לחיצה על בית (לכל היותר פעם בדקה), וכשהטלוויזיה נדלקת או מתעוררת ממצב המתנה, ברגע שהיא מחוברת. כבוי בודק רק כשלוחצים על בדיקת עדכונים.</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

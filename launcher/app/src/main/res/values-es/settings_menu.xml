@@ -131,7 +131,7 @@
     <string name="sm_language_note">El launcher, Inicio y sus menús cambian al instante. Un idioma que no está instalado se descarga primero; elígelo otra vez para cambiar.</string>
     <string name="sm_update_auto">Comprobaciones automáticas</string>
     <string name="sm_update_every">Comprobar cada</string>
-    <string name="sm_update_auto_note">También al encender el televisor o salir del modo de espera. Con No, solo se comprueba al pulsar Buscar actualizaciones.</string>
+    <string name="sm_update_auto_note">También cada vez que pulsas Inicio (como mucho una vez por minuto) y cuando el televisor se enciende o sale del modo de espera, en cuanto tiene conexión. Desactivado solo comprueba cuando pulsas Buscar actualizaciones.</string>
     <string name="sm_atv_settings">Ajustes de ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher actualizado a %1$s</string>

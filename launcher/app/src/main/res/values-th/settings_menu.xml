@@ -131,7 +131,7 @@
     <string name="sm_language_note">ตัวเรียกใช้ หน้าหลัก และเมนูจะเปลี่ยนทันที ภาษาที่ยังไม่ได้ติดตั้งจะดาวน์โหลดก่อน เลือกอีกครั้งเพื่อเปลี่ยน</string>
     <string name="sm_update_auto">ตรวจอัตโนมัติ</string>
     <string name="sm_update_every">ตรวจทุก</string>
-    <string name="sm_update_auto_note">ตรวจเมื่อทีวีเปิดเครื่องหรือตื่นจากสแตนด์บายด้วย หากปิด จะตรวจเฉพาะเมื่อคุณกดตรวจหาอัปเดต</string>
+    <string name="sm_update_auto_note">และทุกครั้งที่กดปุ่มหน้าหลัก (ไม่เกินนาทีละครั้ง) รวมถึงเมื่อทีวีเปิดหรือตื่นจากโหมดสแตนด์บาย ทันทีที่ออนไลน์ ปิดจะตรวจสอบเมื่อกดตรวจหาอัปเดตเท่านั้น</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>

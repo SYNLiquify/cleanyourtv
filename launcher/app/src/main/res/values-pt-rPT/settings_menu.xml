@@ -131,7 +131,7 @@
     <string name="sm_language_note">O launcher, o ecrã inicial e os menus mudam de imediato. Um idioma não instalado é transferido primeiro; escolha-o de novo para mudar.</string>
     <string name="sm_update_auto">Verificação automática</string>
     <string name="sm_update_every">Verificar a cada</string>
-    <string name="sm_update_auto_note">Também quando a TV liga ou sai do modo de espera. Desativado só verifica quando premir Procurar atualizações.</string>
+    <string name="sm_update_auto_note">Também sempre que prime Início (no máximo uma vez por minuto) e quando a TV liga ou sai do modo de espera, assim que estiver online. Desativado só verifica quando prime Procurar atualizações.</string>
     <string name="sm_atv_settings">Definições do ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher atualizado para %1$s</string>

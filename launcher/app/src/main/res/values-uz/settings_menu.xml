@@ -131,7 +131,7 @@
     <string name="sm_language_note">Launcher, Bosh ekran va menyular darhol almashadi. Oʻrnatilmagan til avval yuklab olinadi; almashtirish uchun uni yana tanlang.</string>
     <string name="sm_update_auto">Avtomatik tekshirish</string>
     <string name="sm_update_every">Tekshirish oraligʻi</string>
-    <string name="sm_update_auto_note">TV yoqilganda yoki kutish rejimidan chiqqanda ham tekshiradi. Oʻchiq boʻlsa, faqat Yangilanishlarni tekshirish bosilganda tekshiradi.</string>
+    <string name="sm_update_auto_note">Shuningdek, har safar Bosh ekran tugmasini bosganingizda (daqiqada koʻpi bilan bir marta) hamda televizor yonganda yoki kutish rejimidan uygʻonganda, internetga ulanishi bilanoq. Oʻchiq holatda faqat Yangilanishlarni tekshirish bosilganda tekshiriladi.</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

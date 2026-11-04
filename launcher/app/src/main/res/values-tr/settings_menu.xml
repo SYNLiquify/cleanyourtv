@@ -131,7 +131,7 @@
     <string name="sm_language_note">Başlatıcı, Ana ekran ve menüler hemen değişir. Yüklü olmayan bir dil önce indirilir; geçmek için yeniden seçin.</string>
     <string name="sm_update_auto">Otomatik denetim</string>
     <string name="sm_update_every">Denetim sıklığı</string>
-    <string name="sm_update_auto_note">TV açıldığında veya bekleme modundan çıktığında da denetler. Kapalıyken yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
+    <string name="sm_update_auto_note">Ayrıca Ana ekran tuşuna her bastığınızda (dakikada en fazla bir kez) ve TV açıldığında ya da bekleme modundan uyandığında, çevrimiçi olur olmaz. Kapalı yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>

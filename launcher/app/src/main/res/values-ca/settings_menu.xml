@@ -131,7 +131,7 @@
     <string name="sm_language_note">El llançador, l\'inici i els seus menús canvien a l\'instant. Un idioma no instal·lat es baixa primer; torna\'l a triar per canviar.</string>
     <string name="sm_update_auto">Comprovacions automàtiques</string>
     <string name="sm_update_every">Comprova cada</string>
-    <string name="sm_update_auto_note">També quan el televisor s\'engega o surt del mode d\'espera. Amb Desactivat, només es comprova quan prems Cerca actualitzacions.</string>
+    <string name="sm_update_auto_note">També cada cop que prems Inici (com a màxim un cop per minut) i quan el televisor s\'engega o surt del repòs, tan bon punt té connexió. Desactivat només comprova quan prems Cerca actualitzacions.</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

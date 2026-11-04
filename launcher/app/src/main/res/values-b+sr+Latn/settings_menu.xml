@@ -131,7 +131,7 @@
     <string name="sm_language_note">Pokretač, Početni ekran i njihovi meniji menjaju se odmah. Jezik koji nije instaliran prvo se preuzima; izaberite ga ponovo da biste prešli.</string>
     <string name="sm_update_auto">Automatske provere</string>
     <string name="sm_update_every">Proveravaj na svakih</string>
-    <string name="sm_update_auto_note">I kada se TV uključi ili probudi iz mirovanja. Kada je isključeno, provera se vrši samo kada pritisnete Proveri ažuriranja.</string>
+    <string name="sm_update_auto_note">Takođe svaki put kad pritisnete Početni ekran (najviše jednom u minutu) i kad se TV uključi ili probudi iz stanja pripravnosti, čim bude na mreži. Isključeno proverava samo kad pritisnete Proveri ažuriranja.</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

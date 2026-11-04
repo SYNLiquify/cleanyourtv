@@ -131,7 +131,7 @@
     <string name="sm_language_note">ランチャー、ホーム、メニューがすぐに切り替わります。未インストールの言語は先にダウンロードされ、もう一度選ぶと切り替わります。</string>
     <string name="sm_update_auto">自動確認</string>
     <string name="sm_update_every">確認の間隔</string>
-    <string name="sm_update_auto_note">テレビの起動時やスタンバイからの復帰時にも確認します。オフにすると「アップデートを確認」を押したときだけ確認します。</string>
+    <string name="sm_update_auto_note">ホームボタンを押すたび（1 分に 1 回まで）と、テレビの起動時やスタンバイからの復帰時にも、オンラインになり次第確認します。オフにすると「アップデートを確認」を押したときだけ確認します。</string>
     <string name="sm_atv_settings">ATV の設定</string>
     <string name="sm_hours">%1$d時間</string>
     <string name="update_done">ランチャーを %1$s に更新しました</string>

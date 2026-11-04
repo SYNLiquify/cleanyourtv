@@ -321,6 +321,13 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             open(i);
         }
     };
+    /** This fork: the TV woke from standby, so check for a launcher update (Updates.checkOnStart). */
+    private final BroadcastReceiver updateWakeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Updates.checkOnStart(MainActivity.this, MainActivity.this::offerUpdate);
+        }
+    };
     private final BroadcastReceiver wakeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -406,6 +413,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             boolean validated = caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
             // open_on_start_network_wait: the boot's app opens on the first validated network.
             if (validated && startPending != null) handler.post(openWhenOnline);
+            // This fork: a launcher update check from the TV starting or waking that failed offline runs now.
+            if (validated) handler.post(() -> Updates.checkIfStartPending(MainActivity.this, MainActivity.this::offerUpdate));
             if (validated == lastValidated) return;
             lastValidated = validated;
             if (wifiNoInternetTint != null) handler.post(MainActivity.this::updateWifiLabel);
@@ -1036,6 +1045,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         } else {
             registerReceiver(packageReceiver, packageFilter);
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(updateWakeReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON), Context.RECEIVER_NOT_EXPORTED);
+        } else {
+            registerReceiver(updateWakeReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON));
+        }
         if (openOnStartOnWake) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 registerReceiver(wakeReceiver, new IntentFilter(Intent.ACTION_SCREEN_ON), Context.RECEIVER_NOT_EXPORTED);
@@ -1144,6 +1158,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (openLibraryIfAsked(intent)) return;
         if (openInputsIfAsked(intent)) return;
         if (intent == null || !intent.hasCategory(Intent.CATEGORY_HOME)) return;
+        // This fork: every Home press checks for a launcher update (at most once a minute; not with checks Off).
+        Updates.checkOnHomePress(this, this::offerUpdate);
         if (gameDay != null && !stopped) gameDay.read();
         grid.scrollToPosition(0);
         lastFocused = 0;
@@ -1205,6 +1221,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             offerUpdate(Updates.offer(this));
         }, 1500);
         Updates.checkIfDue(this, this::offerUpdate);
+        Updates.checkIfStartPending(this, this::offerUpdate);
         if (grid.getAdapter() == null) grid.setAdapter(adapter);   // dropped by onTrimMemory
         switch (tileRefresh.onResume(packagesChangedSinceRebuild())) {
             case REBUILD:
@@ -1494,6 +1511,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (gameDay != null) gameDay.shutdown();
         unregisterReceiver(packageReceiver);
         if (openOnStartOnWake) unregisterReceiver(wakeReceiver);
+        unregisterReceiver(updateWakeReceiver);
         wallpaperPlayer.close();
         ConnectivityManager cm = getSystemService(ConnectivityManager.class);
         TvInputManager tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);

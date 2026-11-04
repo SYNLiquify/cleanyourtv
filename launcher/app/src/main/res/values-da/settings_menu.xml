@@ -131,7 +131,7 @@
     <string name="sm_language_note">Launcheren, Hjem og menuerne skifter med det samme. Et sprog, der ikke er installeret, downloades først; vælg det igen for at skifte.</string>
     <string name="sm_update_auto">Automatisk tjek</string>
     <string name="sm_update_every">Tjek hver</string>
-    <string name="sm_update_auto_note">Også når TV-et tændes eller vågner fra standby. Fra tjekker kun, når du trykker på Søg efter opdateringer.</string>
+    <string name="sm_update_auto_note">Også hver gang du trykker på Hjem (højst én gang i minuttet), og når tv\'et starter eller vågner fra standby, så snart det er online. Fra tjekker kun, når du trykker på Søg efter opdateringer.</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskærm opdateret til %1$s</string>

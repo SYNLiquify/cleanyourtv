@@ -131,7 +131,7 @@
     <string name="sm_language_note">El llanzador, Aniciu y los sos menús camuden al intre. Una llingua ensin instalar báxase primero; escuéyila otra vegada pa camudar.</string>
     <string name="sm_update_auto">Comprobaciones automátiques</string>
     <string name="sm_update_every">Comprobar cada</string>
-    <string name="sm_update_auto_note">Tamién al prender el televisor o al salir del mou d\'espera. Con Non, namás se comprueba al calcar Buscar anovamientos.</string>
+    <string name="sm_update_auto_note">Tamién cada vegada que primes Aniciu (como muncho una vegada per minutu) y cuando la tele s\'anicia o espierta del mou d\'espera, en cuantes que tenga conexón. Desactivao namás comprueba cuando primes Buscar anovamientos.</string>
     <string name="sm_atv_settings">Axustes d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llanzador anováu a %1$s</string>

@@ -131,7 +131,7 @@
     <string name="sm_language_note">Launcher, ekran główny i menu zmieniają się od razu. Niezainstalowany język najpierw się pobiera; wybierz go ponownie, aby przełączyć.</string>
     <string name="sm_update_auto">Automatyczne sprawdzanie</string>
     <string name="sm_update_every">Sprawdzaj co</string>
-    <string name="sm_update_auto_note">Także po włączeniu telewizora lub wybudzeniu z czuwania. Gdy jest wyłączone, sprawdzanie następuje tylko po naciśnięciu Sprawdź aktualizacje.</string>
+    <string name="sm_update_auto_note">Także przy każdym naciśnięciu przycisku Ekran główny (najwyżej raz na minutę) oraz gdy telewizor się włącza lub wybudza z czuwania, gdy tylko będzie online. Wyłączone sprawdza tylko po naciśnięciu Sprawdź aktualizacje.</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

@@ -131,7 +131,7 @@
     <string name="sm_language_note">De launcher, het startscherm en de menu\'s wisselen meteen. Een taal die niet geïnstalleerd is, wordt eerst gedownload; kies hem opnieuw om te wisselen.</string>
     <string name="sm_update_auto">Automatisch controleren</string>
     <string name="sm_update_every">Controleren elke</string>
-    <string name="sm_update_auto_note">Ook als de tv start of uit stand-by komt. Bij Uit wordt alleen gecontroleerd als je op Controleren op updates drukt.</string>
+    <string name="sm_update_auto_note">Ook elke keer dat je op Home drukt (hooguit eens per minuut), en wanneer de tv start of uit stand-by komt, zodra hij online is. Uit controleert alleen als je op Zoeken naar updates drukt.</string>
     <string name="sm_atv_settings">ATV-instellingen</string>
     <string name="sm_hours">%1$d u</string>
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>

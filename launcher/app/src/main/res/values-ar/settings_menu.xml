@@ -131,7 +131,7 @@
     <string name="sm_language_note">يتغيّر المشغّل والشاشة الرئيسية وقوائمها فورًا. تُنزَّل اللغة غير المثبّتة أولًا؛ اخترها مرة أخرى للتبديل.</string>
     <string name="sm_update_auto">التحقق التلقائي</string>
     <string name="sm_update_every">التحقق كل</string>
-    <string name="sm_update_auto_note">وأيضًا عند تشغيل التلفاز أو خروجه من وضع الاستعداد. مع «إيقاف» لا يتم التحقق إلا عند الضغط على «البحث عن تحديثات».</string>
+    <string name="sm_update_auto_note">وأيضًا في كل مرة تضغط فيها على الشاشة الرئيسية (مرة واحدة في الدقيقة على الأكثر)، وعند تشغيل التلفزيون أو استيقاظه من وضع الاستعداد فور اتصاله بالإنترنت. عند الإيقاف يتم التحقق فقط عند الضغط على البحث عن تحديثات.</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>

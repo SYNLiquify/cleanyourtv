@@ -63,7 +63,9 @@ public final class Updates extends BroadcastReceiver {
     private static final String PREFS = "updates";
     private static final String LAST_CHECK = "last_check";
     private static final String CODE = "code", NAME = "name", URL_KEY = "url", SIZE = "size", SHA_KEY = "sha",
-            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated";
+            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated", START_PENDING = "start_pending";
+    /** The least time between two checks that a Home press starts, within GitHub's 60 checks an hour. */
+    static final long HOME_PRESS_GAP_MS = 60_000;
 
     private static final String ACTION_CHECK = "com.gathin.tvhome.UPDATE_CHECK";
     private static final String ACTION_INSTALLED = "com.gathin.tvhome.UPDATE_INSTALL_STATUS";
@@ -176,6 +178,36 @@ public final class Updates extends BroadcastReceiver {
         check(ctx, done);
     }
 
+    /** A Home press (this fork): checks unless checks are Off or the last one was under a minute ago. */
+    static void checkOnHomePress(Context ctx, Consumer<Offer> done) {
+        if (intervalHours(ctx) <= 0) return;
+        long since = System.currentTimeMillis() - lastCheck(ctx);
+        if (since >= 0 && since < HOME_PRESS_GAP_MS) return;
+        check(ctx, done);
+    }
+
+    /**
+     * The TV started or woke up: check, and if that fails (Wi-Fi often connects a little later) keep the check
+     * pending, so Home runs it again as soon as the network is up ({@link #checkIfStartPending}).
+     */
+    static void checkOnStart(Context ctx, Consumer<Offer> done) {
+        if (intervalHours(ctx) <= 0) return;
+        prefs(ctx).edit().putBoolean(START_PENDING, true).apply();
+        check(ctx, done);
+    }
+
+    private static final java.util.concurrent.atomic.AtomicBoolean RETRYING = new java.util.concurrent.atomic.AtomicBoolean();
+
+    /** Runs a start check that has not got through yet (one at a time); Home calls it when the network comes up. */
+    static void checkIfStartPending(Context ctx, Consumer<Offer> done) {
+        if (!prefs(ctx).getBoolean(START_PENDING, false) || intervalHours(ctx) <= 0) return;
+        if (!RETRYING.compareAndSet(false, true)) return;
+        check(ctx, o -> {
+            RETRYING.set(false);
+            if (done != null) done.accept(o);
+        });
+    }
+
     /** Asks GitHub for the latest release; done gets the newer offer, or null, on the main thread. */
     static void check(Context context, Consumer<Offer> done) {
         Context ctx = context.getApplicationContext();
@@ -200,7 +232,7 @@ public final class Updates extends BroadcastReceiver {
                 Matcher s = SHA.matcher(r.optString("body"));
                 if (url == null || !url.startsWith("https://") || !s.find()) throw new IOException("release has no APK or checksum");
                 e.putInt(CODE, code).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
-                        .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR);
+                        .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR).remove(START_PENDING);
                 if (code > installedCode(ctx)) {
                     found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US));
                 }
@@ -374,8 +406,9 @@ public final class Updates extends BroadcastReceiver {
                         android.widget.Toast.LENGTH_LONG).show();
             }
             if (intervalHours(ctx) > 0 && Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+                // Kept pending if the network isn't up yet; Home checks again once it is.
                 PendingResult pending = goAsync();
-                check(ctx, o -> pending.finish());
+                checkOnStart(ctx, o -> pending.finish());
             }
         } else if (ACTION_CHECK.equals(action)) {
             PendingResult pending = goAsync();

@@ -131,7 +131,7 @@
     <string name="sm_language_note">Le lanceur, l\'accueil et ses menus changent aussitôt. Une langue non installée est d\'abord téléchargée ; choisissez-la de nouveau pour changer.</string>
     <string name="sm_update_auto">Vérifications automatiques</string>
     <string name="sm_update_every">Fréquence de vérification</string>
-    <string name="sm_update_auto_note">Aussi au démarrage du téléviseur ou à sa sortie de veille. Sur Désactivé, la vérification n\'a lieu que lorsque vous appuyez sur Rechercher des mises à jour.</string>
+    <string name="sm_update_auto_note">Aussi à chaque appui sur Accueil (au plus une fois par minute), et quand le téléviseur démarre ou sort de veille, dès qu\'il est en ligne. Désactivé ne vérifie que lorsque vous appuyez sur Rechercher des mises à jour.</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Lanceur mis à jour vers %1$s</string>

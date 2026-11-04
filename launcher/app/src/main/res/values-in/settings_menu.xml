@@ -131,7 +131,7 @@
     <string name="sm_language_note">Peluncur, Beranda, dan menunya langsung berganti. Bahasa yang belum terpasang diunduh terlebih dahulu; pilih lagi untuk beralih.</string>
     <string name="sm_update_auto">Pemeriksaan otomatis</string>
     <string name="sm_update_every">Periksa setiap</string>
-    <string name="sm_update_auto_note">Juga saat TV dinyalakan atau bangun dari siaga. Jika Mati, pemeriksaan hanya dilakukan saat Anda menekan Periksa pembaruan.</string>
+    <string name="sm_update_auto_note">Juga setiap kali Anda menekan Beranda (paling sering sekali per menit), dan saat TV menyala atau bangun dari standby, segera setelah online. Nonaktif hanya memeriksa saat Anda menekan Periksa pembaruan.</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

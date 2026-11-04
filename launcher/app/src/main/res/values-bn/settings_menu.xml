@@ -131,7 +131,7 @@
     <string name="sm_language_note">লঞ্চার, হোম ও এর মেনু সঙ্গে সঙ্গে বদলে যায়। ইনস্টল না থাকা ভাষা আগে ডাউনলোড হয়; বদলাতে আবার বেছে নিন।</string>
     <string name="sm_update_auto">অটোমেটিক চেক</string>
     <string name="sm_update_every">চেকের ব্যবধান</string>
-    <string name="sm_update_auto_note">টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলেও। বন্ধ থাকলে শুধু আপডেট চেক করুন চাপলেই চেক হয়।</string>
+    <string name="sm_update_auto_note">এছাড়া প্রতিবার হোম চাপলে (মিনিটে সর্বোচ্চ একবার), আর টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলে, অনলাইন হওয়ামাত্র। বন্ধ থাকলে কেবল আপডেট দেখুন চাপলে দেখা হয়।</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>

@@ -136,7 +136,7 @@
     <string name="sm_language_note">The launcher, Home and its menus switch at once. A language that isn\'t installed downloads first; choose it again to switch.</string>
     <string name="sm_update_auto">Automatic checks</string>
     <string name="sm_update_every">Check every</string>
-    <string name="sm_update_auto_note">Also when the TV starts or wakes from standby. Off checks only when you press Check for updates.</string>
+    <string name="sm_update_auto_note">Also each time you press Home (at most once a minute), and when the TV starts or wakes from standby, as soon as it is online. Off checks only when you press Check for updates.</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

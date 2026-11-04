@@ -131,7 +131,7 @@
     <string name="sm_language_note">Launcher, Startbildschirm und Menüs wechseln sofort. Eine nicht installierte Sprache wird zuerst heruntergeladen; wähle sie erneut, um zu wechseln.</string>
     <string name="sm_update_auto">Automatische Suche</string>
     <string name="sm_update_every">Suchen alle</string>
-    <string name="sm_update_auto_note">Auch beim Einschalten des TVs oder nach dem Standby. Bei Aus wird nur gesucht, wenn du Nach Updates suchen drückst.</string>
+    <string name="sm_update_auto_note">Auch bei jedem Druck auf Home (höchstens einmal pro Minute) und wenn der Fernseher startet oder aus dem Standby aufwacht, sobald er online ist. Aus prüft nur, wenn du auf Nach Updates suchen drückst.</string>
     <string name="sm_atv_settings">ATV-Einstellungen</string>
     <string name="sm_hours">%1$d Std.</string>
     <string name="update_done">Launcher auf %1$s aktualisiert</string>
