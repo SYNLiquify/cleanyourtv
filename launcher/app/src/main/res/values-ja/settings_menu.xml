@@ -129,4 +129,7 @@
     <string name="sm_language">言語</string>
     <string name="sm_language_system">テレビの言語</string>
     <string name="sm_language_note">ホーム、アプリ一覧、メニュー、日付がすぐに切り替わります。英語・スペイン語・日本語はこのランチャー全体に対応。その他の言語では、このフォーク独自の画面(設定、天気、続きを見る、アップデート)は英語のままです。</string>
+    <string name="sm_update_auto">自動確認</string>
+    <string name="sm_update_every">確認の間隔</string>
+    <string name="sm_update_auto_note">テレビの起動時やスタンバイからの復帰時にも確認します。オフにすると「アップデートを確認」を押したときだけ確認します。</string>
 </resources>

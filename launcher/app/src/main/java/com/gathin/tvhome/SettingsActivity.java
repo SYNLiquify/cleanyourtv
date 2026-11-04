@@ -135,7 +135,7 @@ public final class SettingsActivity extends Activity {
         titleLp.bottomMargin = dp(26);
         left.addView(title, titleLp);
         int[] names = {R.string.sm_home, R.string.sm_themes, R.string.sm_weather, R.string.sm_clock, R.string.sm_storage,
-                R.string.sm_system};
+                R.string.sm_system, R.string.sm_updates};
         for (int i = 0; i < names.length; i++) {
             final int index = i;
             TextView b = pill(getString(names[i]));
@@ -146,8 +146,9 @@ public final class SettingsActivity extends Activity {
                 if (focused) showCategory(index);
             });
             b.setOnClickListener(v -> focusPane());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(48));
-            lp.bottomMargin = dp(10);
+            // Seven categories (Updates is the seventh) fit a 1080p screen at 46dp with 8dp between them.
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(46));
+            lp.bottomMargin = dp(8);
             left.addView(b, lp);
             categoryButtons.add(b);
         }
@@ -274,7 +275,8 @@ public final class SettingsActivity extends Activity {
             case 2: buildWeather(); break;
             case 3: buildClock(); break;
             case 4: buildStorage(); break;
-            default: buildSystem(); break;
+            case 5: buildSystem(); break;
+            default: buildUpdates(); break;
         }
     }
 
@@ -1005,7 +1007,6 @@ public final class SettingsActivity extends Activity {
         section(R.string.sm_language);
         pane.addView(actionRow(getString(R.string.sm_language), languageName(prefs.getString(Config.LOCALE_KEY, config.locale)),
                 this::showLanguages));
-        buildUpdates();
         String version = "";
         try {
             version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -1064,25 +1065,20 @@ public final class SettingsActivity extends Activity {
         else focusPane();
     }
 
-    /** Settings > System > Updates (Updates): how often to check the fork, Check now, and Install when there is one. */
+    /**
+     * The Updates category (Updates): Check for updates at the top, with what it found, Install update when there is
+     * one and the installed version; how often the launcher checks by itself at the bottom.
+     */
     private void buildUpdates() {
-        section(R.string.sm_updates);
+        paneTitle.setText(R.string.sm_updates);
         note(getString(R.string.sm_update_note));
-        String[] labels = new String[Updates.INTERVALS.length];
-        int current = 0, hours = Updates.intervalHours(this);
-        for (int i = 0; i < labels.length; i++) {
-            labels[i] = Updates.INTERVALS[i] == 0 ? getString(R.string.sm_off) : Updates.INTERVALS[i] + " h";
-            if (Updates.INTERVALS[i] == hours) current = i;
-        }
-        pane.addView(choiceRow(getString(R.string.sm_update_check), labels, current,
-                i -> Updates.setIntervalHours(this, Updates.INTERVALS[i])));
         Updates.Offer offer = Updates.offer(this);
         TextView status = new TextView(this);
         String now = updateStatus(offer);
-        View check = actionRow(getString(R.string.sm_check_now), now.isEmpty() ? " " : now, () -> {
+        View check = actionRow(getString(R.string.sm_update_check), now.isEmpty() ? " " : now, () -> {
             setRowValue(status, getString(R.string.sm_checking));
             Updates.check(this, found -> {
-                if (category == 5 && back == null) rebuild(5);
+                if (category == 6 && back == null) rebuild(6);
             });
         });
         // actionRow's value view is the second child; keep it to show "Checking…".
@@ -1102,6 +1098,17 @@ public final class SettingsActivity extends Activity {
             }));
         }
         pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this), null));
+
+        section(R.string.sm_update_auto);
+        String[] labels = new String[Updates.INTERVALS.length];
+        int current = 0, hours = Updates.intervalHours(this);
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = Updates.INTERVALS[i] == 0 ? getString(R.string.sm_off) : Updates.INTERVALS[i] + " h";
+            if (Updates.INTERVALS[i] == hours) current = i;
+        }
+        pane.addView(choiceRow(getString(R.string.sm_update_every), labels, current,
+                i -> Updates.setIntervalHours(this, Updates.INTERVALS[i])));
+        note(getString(R.string.sm_update_auto_note));
     }
 
     private String updateStatus(Updates.Offer offer) {
