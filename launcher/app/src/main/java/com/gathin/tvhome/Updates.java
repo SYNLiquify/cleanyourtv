@@ -250,7 +250,14 @@ public final class Updates extends BroadcastReceiver {
                     int flags = PendingIntent.FLAG_UPDATE_CURRENT
                             | (Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0);
                     session.commit(PendingIntent.getBroadcast(ctx, id, status, flags).getIntentSender());
+                    Log.i(TAG, "session " + id + " committed for " + o.name);
                 }
+                // Some firmware (a Hisense on Android 11) commits the session but never sends the "needs the user"
+                // answer below, so the confirm screen never opened. If it has not come in a few seconds, open
+                // Android's confirm screen for this session ourselves: the same intent Android would have sent.
+                MAIN.postDelayed(() -> {
+                    if (confirmOpenedFor != id) openConfirm(ctx, confirmIntent(ctx, id), id);
+                }, CONFIRM_FALLBACK_MS);
                 MAIN.post(() -> progress.update(-1, null));
             } catch (Exception ex) {
                 Log.w(TAG, "install failed: " + ex);
@@ -259,6 +266,30 @@ public final class Updates extends BroadcastReceiver {
                 MAIN.post(() -> progress.update(0, why));
             }
         });
+    }
+
+    private static final long CONFIRM_FALLBACK_MS = 4000;
+    /** The session whose confirm screen was opened, so the answer and the fallback don't open it twice. */
+    private static volatile int confirmOpenedFor = -1;
+
+    /** Android's "install this update?" screen for session id, as PackageInstaller builds it. */
+    private static Intent confirmIntent(Context ctx, int id) {
+        Intent confirm = new Intent("android.content.pm.action.CONFIRM_INSTALL")   // PackageInstaller.ACTION_CONFIRM_INSTALL, hidden from apps
+                .putExtra(PackageInstaller.EXTRA_SESSION_ID, id);
+        android.content.pm.ResolveInfo r = ctx.getPackageManager().resolveActivity(confirm, 0);
+        if (r != null && r.activityInfo != null) confirm.setPackage(r.activityInfo.packageName);
+        return confirm;
+    }
+
+    private static void openConfirm(Context ctx, Intent confirm, int id) {
+        confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            ctx.startActivity(confirm);
+            confirmOpenedFor = id;
+            Log.i(TAG, "opened the installer for session " + id);
+        } catch (RuntimeException e) {
+            Log.w(TAG, "could not open the installer: " + e);
+        }
     }
 
     private static void download(Offer o, File to, Consumer<Integer> percent) throws IOException {
@@ -329,6 +360,7 @@ public final class Updates extends BroadcastReceiver {
     @Override
     public void onReceive(Context ctx, Intent intent) {
         String action = intent.getAction();
+        Log.i(TAG, "received " + action + " status=" + intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -99));
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
             // The TV started (or this launcher was just updated): set the alarm again and check now.
             schedule(ctx);
@@ -353,14 +385,8 @@ public final class Updates extends BroadcastReceiver {
             if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
                 // Android's own "install this update?" screen; one press of Install.
                 Intent confirm = intent.getParcelableExtra(Intent.EXTRA_INTENT);
-                if (confirm != null) {
-                    confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        ctx.startActivity(confirm);
-                    } catch (RuntimeException e) {
-                        Log.w(TAG, "could not open the installer: " + e);
-                    }
-                }
+                int id = intent.getIntExtra(PackageInstaller.EXTRA_SESSION_ID, -1);
+                if (confirm != null && confirmOpenedFor != id) openConfirm(ctx, confirm, id);
             } else if (status != PackageInstaller.STATUS_SUCCESS) {
                 Log.w(TAG, "install ended with " + status + ": " + intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE));
             }
