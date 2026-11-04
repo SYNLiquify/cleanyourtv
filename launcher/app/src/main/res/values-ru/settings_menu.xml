@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s удалён</string>
     <string name="sm_built_in">Встроенный</string>
     <string name="sm_lang_ready">%1$s загружен. Выберите его, чтобы переключиться.</string>
+    <string name="update_confirm_kicker">Обновление лаунчера</string>
+    <string name="update_confirm_title">Установить %1$s?</string>
+    <string name="update_confirm_current">У вас %1$s</string>
+    <string name="update_whats_new">Что нового</string>
+    <string name="update_no_notes">В этом выпуске изменения не указаны.</string>
+    <string name="update_more_notes">и ещё %1$d</string>
+    <string name="update_cancel">Отмена</string>
 </resources>

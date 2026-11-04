@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s odstraněn</string>
     <string name="sm_built_in">Vestavěný</string>
     <string name="sm_lang_ready">%1$s stažen. Vyberte ho a přepněte.</string>
+    <string name="update_confirm_kicker">Aktualizace spouštěče</string>
+    <string name="update_confirm_title">Nainstalovat %1$s?</string>
+    <string name="update_confirm_current">Máte %1$s</string>
+    <string name="update_whats_new">Co je nového</string>
+    <string name="update_no_notes">Toto vydání neuvádí žádné změny.</string>
+    <string name="update_more_notes">a %1$d dalších</string>
+    <string name="update_cancel">Zrušit</string>
 </resources>

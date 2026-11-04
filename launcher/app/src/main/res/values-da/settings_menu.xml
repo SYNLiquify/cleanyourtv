@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s fjernet</string>
     <string name="sm_built_in">Indbygget</string>
     <string name="sm_lang_ready">%1$s er downloadet. Vælg det for at skifte.</string>
+    <string name="update_confirm_kicker">Opdatering af launcher</string>
+    <string name="update_confirm_title">Installér %1$s?</string>
+    <string name="update_confirm_current">Du har %1$s</string>
+    <string name="update_whats_new">Nyheder</string>
+    <string name="update_no_notes">Denne udgivelse nævner ingen ændringer.</string>
+    <string name="update_more_notes">og %1$d mere</string>
+    <string name="update_cancel">Annuller</string>
 </resources>

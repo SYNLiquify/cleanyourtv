@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s הוסרה</string>
     <string name="sm_built_in">מובנית</string>
     <string name="sm_lang_ready">%1$s הורדה. בחרו בה כדי לעבור.</string>
+    <string name="update_confirm_kicker">עדכון למשגר</string>
+    <string name="update_confirm_title">להתקין את %1$s?</string>
+    <string name="update_confirm_current">יש לך %1$s</string>
+    <string name="update_whats_new">מה חדש</string>
+    <string name="update_no_notes">בגרסה זו לא פורטו שינויים.</string>
+    <string name="update_more_notes">ועוד %1$d</string>
+    <string name="update_cancel">ביטול</string>
 </resources>

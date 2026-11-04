@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">Usunięto: %1$s</string>
     <string name="sm_built_in">Wbudowany</string>
     <string name="sm_lang_ready">Pobrano: %1$s. Wybierz, aby przełączyć.</string>
+    <string name="update_confirm_kicker">Aktualizacja launchera</string>
+    <string name="update_confirm_title">Zainstalować %1$s?</string>
+    <string name="update_confirm_current">Masz %1$s</string>
+    <string name="update_whats_new">Co nowego</string>
+    <string name="update_no_notes">To wydanie nie wymienia zmian.</string>
+    <string name="update_more_notes">i %1$d więcej</string>
+    <string name="update_cancel">Anuluj</string>
 </resources>

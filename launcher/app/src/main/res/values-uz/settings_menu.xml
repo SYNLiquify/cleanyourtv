@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s oʻchirildi</string>
     <string name="sm_built_in">Ichki</string>
     <string name="sm_lang_ready">%1$s yuklab olindi. Almashtirish uchun uni tanlang.</string>
+    <string name="update_confirm_kicker">Launcher yangilanishi</string>
+    <string name="update_confirm_title">%1$s oʻrnatilsinmi?</string>
+    <string name="update_confirm_current">Sizda %1$s</string>
+    <string name="update_whats_new">Yangiliklar</string>
+    <string name="update_no_notes">Bu versiyada oʻzgarishlar koʻrsatilmagan.</string>
+    <string name="update_more_notes">va yana %1$d ta</string>
+    <string name="update_cancel">Bekor qilish</string>
 </resources>

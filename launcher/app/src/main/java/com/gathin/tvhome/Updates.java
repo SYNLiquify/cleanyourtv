@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -29,6 +30,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.util.Locale;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -63,7 +67,7 @@ public final class Updates extends BroadcastReceiver {
     private static final String PREFS = "updates";
     private static final String LAST_CHECK = "last_check";
     private static final String CODE = "code", NAME = "name", URL_KEY = "url", SIZE = "size", SHA_KEY = "sha",
-            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated", START_PENDING = "start_pending";
+            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated", START_PENDING = "start_pending", NOTES = "notes";
     /** The least time between two checks that a Home press starts, within GitHub's 60 checks an hour. */
     static final long HOME_PRESS_GAP_MS = 60_000;
 
@@ -78,8 +82,11 @@ public final class Updates extends BroadcastReceiver {
         final int code;
         final String name, url, sha;
         final long size;
+        /** What's new, one change a line (ReleaseNotes); empty when the release lists none. */
+        final List<String> notes;
 
-        Offer(int code, String name, String url, long size, String sha) {
+        Offer(int code, String name, String url, long size, String sha, String notes) {
+            this.notes = notes == null || notes.isEmpty() ? Collections.emptyList() : Arrays.asList(notes.split("\n"));
             this.code = code;
             this.name = name;
             this.url = url;
@@ -125,7 +132,8 @@ public final class Updates extends BroadcastReceiver {
         SharedPreferences p = prefs(ctx);
         int code = p.getInt(CODE, 0);
         if (code <= installedCode(ctx)) return null;
-        return new Offer(code, p.getString(NAME, ""), p.getString(URL_KEY, ""), p.getLong(SIZE, 0), p.getString(SHA_KEY, ""));
+        return new Offer(code, p.getString(NAME, ""), p.getString(URL_KEY, ""), p.getLong(SIZE, 0), p.getString(SHA_KEY, ""),
+                p.getString(NOTES, ""));
     }
 
     static long lastCheck(Context ctx) {
@@ -231,10 +239,11 @@ public final class Updates extends BroadcastReceiver {
                 }
                 Matcher s = SHA.matcher(r.optString("body"));
                 if (url == null || !url.startsWith("https://") || !s.find()) throw new IOException("release has no APK or checksum");
-                e.putInt(CODE, code).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
+                String notes = TextUtils.join("\n", ReleaseNotes.parse(r.optString("body")));
+                e.putInt(CODE, code).putString(NOTES, notes).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
                         .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR).remove(START_PENDING);
                 if (code > installedCode(ctx)) {
-                    found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US));
+                    found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US), notes);
                 }
             } catch (Exception ex) {
                 Log.w(TAG, "check failed: " + ex);

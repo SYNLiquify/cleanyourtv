@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s 삭제됨</string>
     <string name="sm_built_in">기본 제공</string>
     <string name="sm_lang_ready">%1$s 다운로드 완료. 선택하면 전환됩니다.</string>
+    <string name="update_confirm_kicker">런처 업데이트</string>
+    <string name="update_confirm_title">%1$s을(를) 설치할까요?</string>
+    <string name="update_confirm_current">현재 버전: %1$s</string>
+    <string name="update_whats_new">새로운 기능</string>
+    <string name="update_no_notes">이 릴리스에는 변경 사항이 나와 있지 않습니다.</string>
+    <string name="update_more_notes">외 %1$d개</string>
+    <string name="update_cancel">취소</string>
 </resources>

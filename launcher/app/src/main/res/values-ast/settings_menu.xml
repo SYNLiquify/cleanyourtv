@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">Desanicióse %1$s</string>
     <string name="sm_built_in">Integráu</string>
     <string name="sm_lang_ready">Baxóse %1$s. Escuéyilu pa camudar.</string>
+    <string name="update_confirm_kicker">Anovamientu del llanzador</string>
+    <string name="update_confirm_title">¿Instalar %1$s?</string>
+    <string name="update_confirm_current">Tienes %1$s</string>
+    <string name="update_whats_new">Novedaes</string>
+    <string name="update_no_notes">Esta versión nun detalla cambeos.</string>
+    <string name="update_more_notes">y %1$d más</string>
+    <string name="update_cancel">Encaboxar</string>
 </resources>

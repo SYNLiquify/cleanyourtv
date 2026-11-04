@@ -1213,14 +1213,16 @@ public final class SettingsActivity extends Activity {
         }
         pane.addView(check);
         if (offer != null) {
-            pane.addView(actionRow(getString(R.string.update_install), offer.name, () -> {
-                Toast.makeText(this, R.string.update_downloading, Toast.LENGTH_SHORT).show();
-                Updates.install(this, offer, (percent, failure) -> {
-                    if (failure != null) {
-                        Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
-                    }
-                });
-            }));
+            // Install first shows what's new and asks again (UpdateConfirm), then downloads.
+            pane.addView(actionRow(getString(R.string.update_install), offer.name, () ->
+                    UpdateConfirm.show(this, offer, accent, () -> {
+                        Toast.makeText(this, R.string.update_downloading, Toast.LENGTH_SHORT).show();
+                        Updates.install(this, offer, (percent, failure) -> {
+                            if (failure != null) {
+                                Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    })));
         }
         pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this), null));
 

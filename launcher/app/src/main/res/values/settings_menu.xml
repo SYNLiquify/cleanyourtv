@@ -154,4 +154,11 @@
     <string name="sm_lang_removed">%1$s removed</string>
     <string name="sm_built_in">Built in</string>
     <string name="sm_lang_ready">%1$s downloaded. Choose it to switch.</string>
+    <string name="update_confirm_kicker">Launcher update</string>
+    <string name="update_confirm_title">Install %1$s?</string>
+    <string name="update_confirm_current">You have %1$s</string>
+    <string name="update_whats_new">What\'s new</string>
+    <string name="update_no_notes">This release lists no changes.</string>
+    <string name="update_more_notes">and %1$d more</string>
+    <string name="update_cancel">Cancel</string>
 </resources>

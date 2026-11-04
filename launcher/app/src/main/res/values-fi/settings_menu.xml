@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s poistettu</string>
     <string name="sm_built_in">Sisäänrakennettu</string>
     <string name="sm_lang_ready">%1$s ladattu. Vaihda valitsemalla se.</string>
+    <string name="update_confirm_kicker">Käynnistimen päivitys</string>
+    <string name="update_confirm_title">Asennetaanko %1$s?</string>
+    <string name="update_confirm_current">Sinulla on %1$s</string>
+    <string name="update_whats_new">Uutta</string>
+    <string name="update_no_notes">Tämä julkaisu ei luettele muutoksia.</string>
+    <string name="update_more_notes">ja %1$d muuta</string>
+    <string name="update_cancel">Peruuta</string>
 </resources>

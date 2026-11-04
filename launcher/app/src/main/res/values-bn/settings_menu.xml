@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s সরানো হয়েছে</string>
     <string name="sm_built_in">অন্তর্নির্মিত</string>
     <string name="sm_lang_ready">%1$s ডাউনলোড হয়েছে। বদলাতে এটি বেছে নিন।</string>
+    <string name="update_confirm_kicker">লঞ্চার আপডেট</string>
+    <string name="update_confirm_title">%1$s ইনস্টল করবেন?</string>
+    <string name="update_confirm_current">আপনার আছে %1$s</string>
+    <string name="update_whats_new">নতুন কী</string>
+    <string name="update_no_notes">এই রিলিজে কোনো পরিবর্তনের তালিকা নেই।</string>
+    <string name="update_more_notes">এবং আরও %1$dটি</string>
+    <string name="update_cancel">বাতিল</string>
 </resources>

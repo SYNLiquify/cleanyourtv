@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s dihapus</string>
     <string name="sm_built_in">Bawaan</string>
     <string name="sm_lang_ready">%1$s telah diunduh. Pilih untuk beralih.</string>
+    <string name="update_confirm_kicker">Pembaruan peluncur</string>
+    <string name="update_confirm_title">Pasang %1$s?</string>
+    <string name="update_confirm_current">Anda memiliki %1$s</string>
+    <string name="update_whats_new">Yang baru</string>
+    <string name="update_no_notes">Rilis ini tidak mencantumkan perubahan.</string>
+    <string name="update_more_notes">dan %1$d lainnya</string>
+    <string name="update_cancel">Batal</string>
 </resources>

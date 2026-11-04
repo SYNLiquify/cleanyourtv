@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">นำ %1$s ออกแล้ว</string>
     <string name="sm_built_in">ในตัว</string>
     <string name="sm_lang_ready">ดาวน์โหลด %1$s แล้ว เลือกเพื่อเปลี่ยน</string>
+    <string name="update_confirm_kicker">อัปเดตตัวเรียกใช้</string>
+    <string name="update_confirm_title">ติดตั้ง %1$s ไหม</string>
+    <string name="update_confirm_current">คุณมี %1$s</string>
+    <string name="update_whats_new">มีอะไรใหม่</string>
+    <string name="update_no_notes">รุ่นนี้ไม่ได้ระบุการเปลี่ยนแปลง</string>
+    <string name="update_more_notes">และอีก %1$d รายการ</string>
+    <string name="update_cancel">ยกเลิก</string>
 </resources>

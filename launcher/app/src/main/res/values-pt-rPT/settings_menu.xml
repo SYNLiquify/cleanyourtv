@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s removido</string>
     <string name="sm_built_in">Integrado</string>
     <string name="sm_lang_ready">%1$s transferido. Escolha-o para mudar.</string>
+    <string name="update_confirm_kicker">Atualização do launcher</string>
+    <string name="update_confirm_title">Instalar %1$s?</string>
+    <string name="update_confirm_current">Tem %1$s</string>
+    <string name="update_whats_new">Novidades</string>
+    <string name="update_no_notes">Esta versão não lista alterações.</string>
+    <string name="update_more_notes">e mais %1$d</string>
+    <string name="update_cancel">Cancelar</string>
 </resources>

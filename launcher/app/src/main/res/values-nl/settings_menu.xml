@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s verwijderd</string>
     <string name="sm_built_in">Ingebouwd</string>
     <string name="sm_lang_ready">%1$s gedownload. Kies het om te wisselen.</string>
+    <string name="update_confirm_kicker">Launcher-update</string>
+    <string name="update_confirm_title">%1$s installeren?</string>
+    <string name="update_confirm_current">Je hebt %1$s</string>
+    <string name="update_whats_new">Nieuw</string>
+    <string name="update_no_notes">Deze versie noemt geen wijzigingen.</string>
+    <string name="update_more_notes">en nog %1$d</string>
+    <string name="update_cancel">Annuleren</string>
 </resources>

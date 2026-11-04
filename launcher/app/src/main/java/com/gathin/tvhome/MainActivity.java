@@ -4409,7 +4409,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         head.setPadding(pad, Math.round(10 * density), pad, Math.round(8 * density));
         rows.addView(head);
         PopupWindow popup = glassPopup(panel, (int) (300 * density));
-        addSettingsMenuRow(rows, popup, R.string.update_install, () -> installUpdate(offer));
+        // This fork: Install first shows what's new and asks again (UpdateConfirm), then downloads.
+        addSettingsMenuRow(rows, popup, R.string.update_install,
+                () -> UpdateConfirm.show(this, offer, accent, () -> installUpdate(offer)));
         addSettingsMenuRow(rows, popup, R.string.update_later, () -> Updates.dismiss(this, offer));
         panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popup.setWidth(Math.max((int) (300 * density), panel.getMeasuredWidth()));

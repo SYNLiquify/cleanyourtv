@@ -149,4 +149,11 @@
     <string name="sm_lang_removed">%1$s entfernt</string>
     <string name="sm_built_in">Integriert</string>
     <string name="sm_lang_ready">%1$s heruntergeladen. Wähle es aus, um zu wechseln.</string>
+    <string name="update_confirm_kicker">Launcher-Update</string>
+    <string name="update_confirm_title">%1$s installieren?</string>
+    <string name="update_confirm_current">Du hast %1$s</string>
+    <string name="update_whats_new">Neuigkeiten</string>
+    <string name="update_no_notes">Diese Version nennt keine Änderungen.</string>
+    <string name="update_more_notes">und %1$d weitere</string>
+    <string name="update_cancel">Abbrechen</string>
 </resources>
