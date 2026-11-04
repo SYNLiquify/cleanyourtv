@@ -192,6 +192,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private int accent;
     /** Highlight color Adaptive: accent follows the focused app's banner colour (the glow's), set on each focus. */
     private boolean adaptiveAccent;
+    /** The launcher's language (Settings > System > Language), or null for the TV's; see LauncherLocale.applyDefault. */
+    private Locale chosenLocale;
     private int ambientColor = -1;
     private ValueAnimator ambientAnimator;
     /** config.xml glow_snap: the glow takes a new colour in one frame instead of the dip-and-fade. */
@@ -484,6 +486,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         density = getResources().getDisplayMetrics().density;
         // config.xml, overlaid by config.json from a pushed theme (see Config and tools/theme.sh).
         Config cfg = Config.load(this);
+        chosenLocale = LauncherLocale.parse(cfg.locale);
+        LauncherLocale.applyDefault(chosenLocale);
         homeAppKeys = RemoteKeys.parseAppKeys(cfg.appKeys);
         clockFormat = cfg.clockFormat;
         ClockFormat.apply(getWindow().getDecorView(), clockFormat);
@@ -1167,9 +1171,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     @Override
+    public void onConfigurationChanged(android.content.res.Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Android has just put the TV's language back as the default; the date and other formatters follow it.
+        LauncherLocale.applyDefault(chosenLocale);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         resumed = true;
+        LauncherLocale.applyDefault(chosenLocale);
         // A festival that started or ended while Home was in the background: rebuild with or without it.
         if (festive != festival.active(LocalDate.now())) {
             recreate();

@@ -23,6 +23,15 @@ final class LauncherLocale {
         return Locale.forLanguageTag(tag.trim());
     }
 
+    /**
+     * This fork: puts the chosen language back as the process default. Android resets the default to the TV's
+     * language when the process starts or the configuration changes, and the clock's date (TextClock) and other
+     * Context-free formatters read the default, so Home calls this each time it comes to the front.
+     */
+    static void applyDefault(Locale locale) {
+        if (locale != null && !locale.equals(Locale.getDefault())) Locale.setDefault(locale);
+    }
+
     /** base with the configured language, or base itself when locale is off. */
     static Context wrap(Context base) {
         Locale locale = parse(Config.load(base).locale);
