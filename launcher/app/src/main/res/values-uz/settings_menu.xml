@@ -128,7 +128,7 @@
     <string name="sm_version">Versiya</string>
     <string name="sm_language">Til</string>
     <string name="sm_language_system">Televizor tili</string>
-    <string name="sm_language_note">Launcher, Bosh ekran va uning menyulari darhol almashadi.</string>
+    <string name="sm_language_note">Launcher, Bosh ekran va menyular darhol almashadi. Oʻrnatilmagan til avval yuklab olinadi.</string>
     <string name="sm_update_auto">Avtomatik tekshirish</string>
     <string name="sm_update_every">Tekshirish oraligʻi</string>
     <string name="sm_update_auto_note">TV yoqilganda yoki kutish rejimidan chiqqanda ham tekshiradi. Oʻchiq boʻlsa, faqat Yangilanishlarni tekshirish bosilganda tekshiradi.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>
     <string name="update_done_hint">Ishga tushirgich %1$s versiyasiga yangilandi. Qaytish uchun Bosh sahifani bosing.</string>
     <string name="sm_st_languages">Tillar</string>
-    <string name="sm_st_languages_value">%1$d ta mavjud</string>
-    <string name="sm_st_languages_note">Ishga tushirgichga kiritilgan va ilova hajmiga kiradi; Tizim > Til bo‘limida almashtiring.</string>
+    <string name="sm_st_languages_value">%1$d ta oʻrnatilgan</string>
+    <string name="sm_st_languages_note">Ingliz tili ichki; boshqa tillar Tizim > Til boʻlimida yuklab olinadi. Oʻchirish uchun birini tanlang; ishlatilayotgani qoladi.</string>
     <string name="sm_in_use">Ishlatilmoqda</string>
+    <string name="sm_lang_installed">Oʻrnatilgan</string>
+    <string name="sm_lang_not_installed">Oʻrnatilmagan</string>
+    <string name="sm_lang_downloading">Yuklab olinmoqda…</string>
+    <string name="sm_lang_failed_short">Yuklab boʻlmadi</string>
+    <string name="sm_lang_failed">Tilni yuklab boʻlmadi. Ulanishni tekshirib, qayta urinib koʻring.</string>
+    <string name="sm_delete_other_languages">Boshqa tillarni oʻchirish</string>
+    <string name="sm_lang_removed">%1$s oʻchirildi</string>
+    <string name="sm_built_in">Ichki</string>
 </resources>

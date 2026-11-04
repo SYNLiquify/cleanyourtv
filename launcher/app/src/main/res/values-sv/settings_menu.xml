@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Språk</string>
     <string name="sm_language_system">TV:ns språk</string>
-    <string name="sm_language_note">Startskärmen, Hem och dess menyer byter direkt.</string>
+    <string name="sm_language_note">Startprogrammet, Hem och menyerna byter direkt. Ett språk som inte är installerat laddas ned först.</string>
     <string name="sm_update_auto">Automatisk sökning</string>
     <string name="sm_update_every">Sök var</string>
     <string name="sm_update_auto_note">Även när TV:n startar eller vaknar ur viloläge. Av söker bara när du trycker på Sök efter uppdateringar.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Startskärmen uppdaterad till %1$s</string>
     <string name="update_done_hint">Startskärmen uppdaterad till %1$s. Tryck på Hem för att gå tillbaka.</string>
     <string name="sm_st_languages">Språk</string>
-    <string name="sm_st_languages_value">%1$d inkluderade</string>
-    <string name="sm_st_languages_note">Inbyggda i startskärmen och en del av storleken; byt under System > Språk.</string>
+    <string name="sm_st_languages_value">%1$d installerade</string>
+    <string name="sm_st_languages_note">Engelska är inbyggt; andra språk laddas ned under System > Språk. Välj ett för att ta bort det; det som används blir kvar.</string>
     <string name="sm_in_use">Används</string>
+    <string name="sm_lang_installed">Installerade</string>
+    <string name="sm_lang_not_installed">Inte installerade</string>
+    <string name="sm_lang_downloading">Laddar ned…</string>
+    <string name="sm_lang_failed_short">Kunde inte ladda ned</string>
+    <string name="sm_lang_failed">Språket kunde inte laddas ned. Kontrollera anslutningen och försök igen.</string>
+    <string name="sm_delete_other_languages">Radera andra språk</string>
+    <string name="sm_lang_removed">%1$s borttaget</string>
+    <string name="sm_built_in">Inbyggt</string>
 </resources>

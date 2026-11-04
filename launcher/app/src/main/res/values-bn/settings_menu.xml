@@ -128,7 +128,7 @@
     <string name="sm_version">ভার্সন</string>
     <string name="sm_language">ভাষা</string>
     <string name="sm_language_system">টিভির ভাষা</string>
-    <string name="sm_language_note">লঞ্চার, হোম ও এর মেনু সঙ্গে সঙ্গে বদলে যায়।</string>
+    <string name="sm_language_note">লঞ্চার, হোম ও এর মেনু সঙ্গে সঙ্গে বদলে যায়। ইনস্টল না থাকা ভাষা আগে ডাউনলোড হয়।</string>
     <string name="sm_update_auto">অটোমেটিক চেক</string>
     <string name="sm_update_every">চেকের ব্যবধান</string>
     <string name="sm_update_auto_note">টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলেও। বন্ধ থাকলে শুধু আপডেট চেক করুন চাপলেই চেক হয়।</string>
@@ -137,7 +137,15 @@
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>
     <string name="update_done_hint">লঞ্চার %1$s-এ আপডেট হয়েছে। ফিরতে হোম চাপুন।</string>
     <string name="sm_st_languages">ভাষা</string>
-    <string name="sm_st_languages_value">%1$dটি অন্তর্ভুক্ত</string>
-    <string name="sm_st_languages_note">লঞ্চারে অন্তর্ভুক্ত এবং অ্যাপের আকারের অংশ; সিস্টেম > ভাষা থেকে বদলান।</string>
+    <string name="sm_st_languages_value">%1$dটি ইনস্টল করা</string>
+    <string name="sm_st_languages_note">ইংরেজি অন্তর্নির্মিত; অন্য ভাষা সিস্টেম > ভাষা থেকে ডাউনলোড হয়। সরাতে একটি বেছে নিন; ব্যবহৃত ভাষাটি থাকবে।</string>
     <string name="sm_in_use">ব্যবহৃত হচ্ছে</string>
+    <string name="sm_lang_installed">ইনস্টল করা</string>
+    <string name="sm_lang_not_installed">ইনস্টল করা নেই</string>
+    <string name="sm_lang_downloading">ডাউনলোড হচ্ছে…</string>
+    <string name="sm_lang_failed_short">ডাউনলোড করা যায়নি</string>
+    <string name="sm_lang_failed">ভাষাটি ডাউনলোড করা যায়নি। সংযোগ দেখে আবার চেষ্টা করুন।</string>
+    <string name="sm_delete_other_languages">অন্য ভাষাগুলি মুছুন</string>
+    <string name="sm_lang_removed">%1$s সরানো হয়েছে</string>
+    <string name="sm_built_in">অন্তর্নির্মিত</string>
 </resources>

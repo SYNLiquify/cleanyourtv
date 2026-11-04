@@ -128,7 +128,7 @@
     <string name="sm_version">バージョン</string>
     <string name="sm_language">言語</string>
     <string name="sm_language_system">テレビの言語</string>
-    <string name="sm_language_note">ランチャー、ホーム、メニューがすぐに切り替わります。</string>
+    <string name="sm_language_note">ランチャー、ホーム、メニューがすぐに切り替わります。未インストールの言語は先にダウンロードされます。</string>
     <string name="sm_update_auto">自動確認</string>
     <string name="sm_update_every">確認の間隔</string>
     <string name="sm_update_auto_note">テレビの起動時やスタンバイからの復帰時にも確認します。オフにすると「アップデートを確認」を押したときだけ確認します。</string>
@@ -137,7 +137,15 @@
     <string name="update_done">ランチャーを %1$s に更新しました</string>
     <string name="update_done_hint">ランチャーを %1$s に更新しました。ホームボタンで戻れます。</string>
     <string name="sm_st_languages">言語</string>
-    <string name="sm_st_languages_value">%1$d 言語を収録</string>
-    <string name="sm_st_languages_note">ランチャーに含まれ、アプリのサイズに含まれます。システム > 言語 で切り替えられます。</string>
+    <string name="sm_st_languages_value">%1$d 個インストール済み</string>
+    <string name="sm_st_languages_note">英語は内蔵されています。ほかの言語は「システム > 言語」でダウンロードします。選ぶと削除できます（使用中の言語は除く）。</string>
     <string name="sm_in_use">使用中</string>
+    <string name="sm_lang_installed">インストール済み</string>
+    <string name="sm_lang_not_installed">未インストール</string>
+    <string name="sm_lang_downloading">ダウンロード中…</string>
+    <string name="sm_lang_failed_short">ダウンロードできません</string>
+    <string name="sm_lang_failed">言語をダウンロードできませんでした。接続を確認して、もう一度お試しください。</string>
+    <string name="sm_delete_other_languages">ほかの言語を削除</string>
+    <string name="sm_lang_removed">%1$s を削除しました</string>
+    <string name="sm_built_in">内蔵</string>
 </resources>

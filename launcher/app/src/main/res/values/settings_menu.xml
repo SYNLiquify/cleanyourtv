@@ -133,7 +133,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Language</string>
     <string name="sm_language_system">TV\'s language</string>
-    <string name="sm_language_note">The launcher, Home and its menus switch at once.</string>
+    <string name="sm_language_note">The launcher, Home and its menus switch at once. A language that isn\'t installed downloads first.</string>
     <string name="sm_update_auto">Automatic checks</string>
     <string name="sm_update_every">Check every</string>
     <string name="sm_update_auto_note">Also when the TV starts or wakes from standby. Off checks only when you press Check for updates.</string>
@@ -142,7 +142,15 @@
     <string name="update_done">Launcher updated to %1$s</string>
     <string name="update_done_hint">Launcher updated to %1$s. Press Home to go back.</string>
     <string name="sm_st_languages">Languages</string>
-    <string name="sm_st_languages_value">%1$d included</string>
-    <string name="sm_st_languages_note">Built into the launcher and part of its App size; switch between them under System > Language.</string>
+    <string name="sm_st_languages_value">%1$d installed</string>
+    <string name="sm_st_languages_note">English is built in; other languages download under System > Language. Choose one to remove it; the one in use stays.</string>
     <string name="sm_in_use">In use</string>
+    <string name="sm_lang_installed">Installed</string>
+    <string name="sm_lang_not_installed">Not installed</string>
+    <string name="sm_lang_downloading">Downloading…</string>
+    <string name="sm_lang_failed_short">Couldn\'t download</string>
+    <string name="sm_lang_failed">Couldn\'t download the language. Check the connection and try again.</string>
+    <string name="sm_delete_other_languages">Delete other languages</string>
+    <string name="sm_lang_removed">%1$s removed</string>
+    <string name="sm_built_in">Built in</string>
 </resources>

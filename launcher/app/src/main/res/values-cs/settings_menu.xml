@@ -128,7 +128,7 @@
     <string name="sm_version">Verze</string>
     <string name="sm_language">Jazyk</string>
     <string name="sm_language_system">Jazyk televize</string>
-    <string name="sm_language_note">Launcher, obrazovka Domů a její nabídky se přepnou okamžitě.</string>
+    <string name="sm_language_note">Spouštěč, Domovská obrazovka a jejich nabídky se přepnou hned. Nenainstalovaný jazyk se nejdřív stáhne.</string>
     <string name="sm_update_auto">Automatická kontrola</string>
     <string name="sm_update_every">Interval kontroly</string>
     <string name="sm_update_auto_note">Také při zapnutí televize nebo probuzení z pohotovosti. Když je vypnuto, kontroluje se jen po stisknutí Vyhledat aktualizace.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Spouštěč aktualizován na %1$s</string>
     <string name="update_done_hint">Spouštěč aktualizován na %1$s. Stiskněte Domů pro návrat.</string>
     <string name="sm_st_languages">Jazyky</string>
-    <string name="sm_st_languages_value">Zahrnuto: %1$d</string>
-    <string name="sm_st_languages_note">Jsou součástí spouštěče a jeho velikosti; přepnete je v Systém > Jazyk.</string>
+    <string name="sm_st_languages_value">Nainstalováno: %1$d</string>
+    <string name="sm_st_languages_note">Angličtina je vestavěná; ostatní jazyky se stahují v Systém > Jazyk. Vyberte jazyk a odstraňte ho; používaný zůstane.</string>
     <string name="sm_in_use">Používá se</string>
+    <string name="sm_lang_installed">Nainstalované</string>
+    <string name="sm_lang_not_installed">Nenainstalované</string>
+    <string name="sm_lang_downloading">Stahování…</string>
+    <string name="sm_lang_failed_short">Stažení se nezdařilo</string>
+    <string name="sm_lang_failed">Jazyk se nepodařilo stáhnout. Zkontrolujte připojení a zkuste to znovu.</string>
+    <string name="sm_delete_other_languages">Smazat ostatní jazyky</string>
+    <string name="sm_lang_removed">%1$s odstraněn</string>
+    <string name="sm_built_in">Vestavěný</string>
 </resources>

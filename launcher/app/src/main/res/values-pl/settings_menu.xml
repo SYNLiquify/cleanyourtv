@@ -128,7 +128,7 @@
     <string name="sm_version">Wersja</string>
     <string name="sm_language">Język</string>
     <string name="sm_language_system">Język telewizora</string>
-    <string name="sm_language_note">Launcher, ekran główny i jego menu zmienią się od razu.</string>
+    <string name="sm_language_note">Launcher, ekran główny i menu zmieniają się od razu. Niezainstalowany język najpierw się pobiera.</string>
     <string name="sm_update_auto">Automatyczne sprawdzanie</string>
     <string name="sm_update_every">Sprawdzaj co</string>
     <string name="sm_update_auto_note">Także po włączeniu telewizora lub wybudzeniu z czuwania. Gdy jest wyłączone, sprawdzanie następuje tylko po naciśnięciu Sprawdź aktualizacje.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Launcher zaktualizowany do %1$s</string>
     <string name="update_done_hint">Launcher zaktualizowany do %1$s. Naciśnij Home, aby wrócić.</string>
     <string name="sm_st_languages">Języki</string>
-    <string name="sm_st_languages_value">Wbudowane: %1$d</string>
-    <string name="sm_st_languages_note">Wbudowane w launcher i wliczone w jego rozmiar; zmień w System > Język.</string>
+    <string name="sm_st_languages_value">Zainstalowane: %1$d</string>
+    <string name="sm_st_languages_note">Angielski jest wbudowany; pozostałe języki pobierzesz w System > Język. Wybierz język, aby go usunąć; używany zostaje.</string>
     <string name="sm_in_use">Używany</string>
+    <string name="sm_lang_installed">Zainstalowane</string>
+    <string name="sm_lang_not_installed">Niezainstalowane</string>
+    <string name="sm_lang_downloading">Pobieranie…</string>
+    <string name="sm_lang_failed_short">Nie udało się pobrać</string>
+    <string name="sm_lang_failed">Nie udało się pobrać języka. Sprawdź połączenie i spróbuj ponownie.</string>
+    <string name="sm_delete_other_languages">Usuń pozostałe języki</string>
+    <string name="sm_lang_removed">Usunięto: %1$s</string>
+    <string name="sm_built_in">Wbudowany</string>
 </resources>

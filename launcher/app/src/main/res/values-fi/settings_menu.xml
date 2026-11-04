@@ -128,7 +128,7 @@
     <string name="sm_version">Versio</string>
     <string name="sm_language">Kieli</string>
     <string name="sm_language_system">Television kieli</string>
-    <string name="sm_language_note">Käynnistin, kotinäkymä ja sen valikot vaihtuvat heti.</string>
+    <string name="sm_language_note">Käynnistin, aloitusnäyttö ja valikot vaihtuvat heti. Asentamaton kieli ladataan ensin.</string>
     <string name="sm_update_auto">Automaattiset tarkistukset</string>
     <string name="sm_update_every">Tarkistusväli</string>
     <string name="sm_update_auto_note">Myös kun televisio käynnistyy tai herää valmiustilasta. Pois-asetuksella tarkistetaan vain, kun painat Tarkista päivitykset.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>
     <string name="update_done_hint">Käynnistin päivitetty versioon %1$s. Palaa painamalla Koti.</string>
     <string name="sm_st_languages">Kielet</string>
-    <string name="sm_st_languages_value">%1$d mukana</string>
-    <string name="sm_st_languages_note">Sisältyvät käynnistimeen ja sen kokoon; vaihda kohdassa Järjestelmä > Kieli.</string>
+    <string name="sm_st_languages_value">%1$d asennettu</string>
+    <string name="sm_st_languages_note">Englanti on sisäänrakennettu; muut kielet ladataan kohdassa Järjestelmä > Kieli. Valitse kieli poistaaksesi sen; käytössä oleva jää.</string>
     <string name="sm_in_use">Käytössä</string>
+    <string name="sm_lang_installed">Asennetut</string>
+    <string name="sm_lang_not_installed">Ei asennettu</string>
+    <string name="sm_lang_downloading">Ladataan…</string>
+    <string name="sm_lang_failed_short">Lataus epäonnistui</string>
+    <string name="sm_lang_failed">Kieltä ei voitu ladata. Tarkista yhteys ja yritä uudelleen.</string>
+    <string name="sm_delete_other_languages">Poista muut kielet</string>
+    <string name="sm_lang_removed">%1$s poistettu</string>
+    <string name="sm_built_in">Sisäänrakennettu</string>
 </resources>

@@ -128,7 +128,7 @@
     <string name="sm_version">버전</string>
     <string name="sm_language">언어</string>
     <string name="sm_language_system">TV 언어</string>
-    <string name="sm_language_note">런처, 홈, 메뉴가 바로 바뀝니다.</string>
+    <string name="sm_language_note">런처, 홈, 메뉴가 바로 바뀝니다. 설치되지 않은 언어는 먼저 다운로드됩니다.</string>
     <string name="sm_update_auto">자동 확인</string>
     <string name="sm_update_every">확인 주기</string>
     <string name="sm_update_auto_note">TV를 켜거나 대기 모드에서 깨어날 때도 확인합니다. 꺼짐으로 두면 업데이트 확인을 누를 때만 확인합니다.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">런처가 %1$s(으)로 업데이트됨</string>
     <string name="update_done_hint">런처가 %1$s(으)로 업데이트되었습니다. 홈을 눌러 돌아가세요.</string>
     <string name="sm_st_languages">언어</string>
-    <string name="sm_st_languages_value">%1$d개 포함</string>
-    <string name="sm_st_languages_note">런처에 포함되어 앱 크기에 들어갑니다. 시스템 > 언어에서 바꿀 수 있습니다.</string>
+    <string name="sm_st_languages_value">%1$d개 설치됨</string>
+    <string name="sm_st_languages_note">영어는 기본 제공되며 다른 언어는 시스템 > 언어에서 다운로드합니다. 선택하면 삭제되며 사용 중인 언어는 남습니다.</string>
     <string name="sm_in_use">사용 중</string>
+    <string name="sm_lang_installed">설치됨</string>
+    <string name="sm_lang_not_installed">설치 안 됨</string>
+    <string name="sm_lang_downloading">다운로드 중…</string>
+    <string name="sm_lang_failed_short">다운로드할 수 없음</string>
+    <string name="sm_lang_failed">언어를 다운로드할 수 없습니다. 연결을 확인하고 다시 시도하세요.</string>
+    <string name="sm_delete_other_languages">다른 언어 삭제</string>
+    <string name="sm_lang_removed">%1$s 삭제됨</string>
+    <string name="sm_built_in">기본 제공</string>
 </resources>

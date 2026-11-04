@@ -128,7 +128,7 @@
     <string name="sm_version">الإصدار</string>
     <string name="sm_language">اللغة</string>
     <string name="sm_language_system">لغة التلفاز</string>
-    <string name="sm_language_note">يتغيّر المشغّل والرئيسية وقوائمها فورًا.</string>
+    <string name="sm_language_note">يتغيّر المشغّل والشاشة الرئيسية وقوائمها فورًا. تُنزَّل اللغة غير المثبّتة أولًا.</string>
     <string name="sm_update_auto">التحقق التلقائي</string>
     <string name="sm_update_every">التحقق كل</string>
     <string name="sm_update_auto_note">وأيضًا عند تشغيل التلفاز أو خروجه من وضع الاستعداد. مع «إيقاف» لا يتم التحقق إلا عند الضغط على «البحث عن تحديثات».</string>
@@ -137,7 +137,15 @@
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>
     <string name="update_done_hint">تم تحديث المشغّل إلى %1$s. اضغط الرئيسية للعودة.</string>
     <string name="sm_st_languages">اللغات</string>
-    <string name="sm_st_languages_value">%1$d مضمّنة</string>
-    <string name="sm_st_languages_note">مدمجة في المشغّل وجزء من حجم التطبيق؛ بدّل بينها من النظام > اللغة.</string>
+    <string name="sm_st_languages_value">%1$d مثبّتة</string>
+    <string name="sm_st_languages_note">الإنجليزية مدمجة؛ تُنزَّل اللغات الأخرى من النظام > اللغة. اختر لغة لإزالتها؛ اللغة المستخدمة تبقى.</string>
     <string name="sm_in_use">قيد الاستخدام</string>
+    <string name="sm_lang_installed">مثبّتة</string>
+    <string name="sm_lang_not_installed">غير مثبّتة</string>
+    <string name="sm_lang_downloading">جارٍ التنزيل…</string>
+    <string name="sm_lang_failed_short">تعذّر التنزيل</string>
+    <string name="sm_lang_failed">تعذّر تنزيل اللغة. تحقّق من الاتصال وحاول مرة أخرى.</string>
+    <string name="sm_delete_other_languages">حذف اللغات الأخرى</string>
+    <string name="sm_lang_removed">تمت إزالة %1$s</string>
+    <string name="sm_built_in">مدمجة</string>
 </resources>

@@ -32,6 +32,9 @@ android {
         // work\publish-update.ps1) is newer than the last; -PlauncherVersionCode overrides it. 12 without git.
         versionCode forkVersionCode()
         versionName "3.3-fork.${forkVersionCode()}"
+        // This fork: English only in the APK. The other languages stay here as sources and download when picked
+        // (LanguagePacks), which keeps about 400 KB of string tables out of every install.
+        resourceConfigurations += ["en"]
     }
 
     buildTypes {

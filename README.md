@@ -45,7 +45,7 @@ color, sampled from its banner like the glow behind Home.
 | ![Settings, System: ATV settings, Language and Updates, each opening its own page](docs/screenshots/apple-tv-home/settings-system.jpg) | ![System, ATV settings: Android TV settings, network and Wi-Fi, apps, screensaver, default home app](docs/screenshots/apple-tv-home/atv-settings.jpg) |
 | **System**: ATV settings, Language, Updates | **ATV settings**: Android's own settings, a click away |
 | ![Storage, the Languages row: 32 included](docs/screenshots/apple-tv-home/storage-languages.jpg) | |
-| **Storage**: the built-in languages, one row that opens their list | |
+| **Storage**: the installed languages, one row that opens their list | |
 
 ### Updates from this fork
 
@@ -97,11 +97,12 @@ color, sampled from its banner like the glow behind Home.
   - Checks stay within GitHub's rate limit: only when the page is opened, at most every 10 minutes, the raw README first, and the API only when it changed.
 - **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
 - **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
-- **Storage:** the TV's free space, what the launcher uses split by part, the languages built in (a page listing them, the one in use marked), and clean-up buttons for thumbnails, downloaded themes and previews.
+- **Storage:** the TV's free space, what the launcher uses split by part, the installed languages (a page listing them with their size; choose one to remove it), and clean-up buttons for thumbnails, downloaded themes, previews and the languages not in use.
 - **System:** three rows, each opening its own page: **ATV settings** (Android TV settings, network and Wi-Fi, apps, screensaver, default home app), **Language** and **Updates**.
 
 **Language** (Settings > System > Language)
 - The TV's language, or any of 32: English, Español, 日本語 and every language upstream's launcher is translated into (Deutsch, Français, Português, 한국어, 简体中文, Tiếng Việt, Türkçe, Українська and more). It switches at once, Home included.
+- The launcher ships with English only, about 450 KB smaller. The list is split into **Installed** and **Not installed**; picking one that isn't installed downloads it from this fork's GitHub first. The language in use is fetched by itself after an update, and installed ones refresh with each new version.
 - The date and weather next to the clock stay on one line in every language, shrinking a little when a language's words are long.
 - Every one of them covers the whole launcher: the Settings menu, weather, Continue watching, the update card and the reordering pill included. Japanese and this fork's own text in the other languages are new translations; corrections are welcome.
 

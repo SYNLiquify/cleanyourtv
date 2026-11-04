@@ -128,7 +128,7 @@
     <string name="sm_version">Versie</string>
     <string name="sm_language">Taal</string>
     <string name="sm_language_system">Taal van de tv</string>
-    <string name="sm_language_note">De launcher, Home en de menu\'s wisselen meteen.</string>
+    <string name="sm_language_note">De launcher, het startscherm en de menu\'s wisselen meteen. Een taal die niet geïnstalleerd is, wordt eerst gedownload.</string>
     <string name="sm_update_auto">Automatisch controleren</string>
     <string name="sm_update_every">Controleren elke</string>
     <string name="sm_update_auto_note">Ook als de tv start of uit stand-by komt. Bij Uit wordt alleen gecontroleerd als je op Controleren op updates drukt.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>
     <string name="update_done_hint">Launcher bijgewerkt naar %1$s. Druk op Home om terug te gaan.</string>
     <string name="sm_st_languages">Talen</string>
-    <string name="sm_st_languages_value">%1$d inbegrepen</string>
-    <string name="sm_st_languages_note">Ingebouwd in de launcher en onderdeel van de app-grootte; wissel via Systeem > Taal.</string>
+    <string name="sm_st_languages_value">%1$d geïnstalleerd</string>
+    <string name="sm_st_languages_note">Engels is ingebouwd; andere talen download je via Systeem > Taal. Kies er een om hem te verwijderen; de taal in gebruik blijft.</string>
     <string name="sm_in_use">In gebruik</string>
+    <string name="sm_lang_installed">Geïnstalleerd</string>
+    <string name="sm_lang_not_installed">Niet geïnstalleerd</string>
+    <string name="sm_lang_downloading">Downloaden…</string>
+    <string name="sm_lang_failed_short">Downloaden mislukt</string>
+    <string name="sm_lang_failed">De taal kon niet worden gedownload. Controleer de verbinding en probeer het opnieuw.</string>
+    <string name="sm_delete_other_languages">Andere talen verwijderen</string>
+    <string name="sm_lang_removed">%1$s verwijderd</string>
+    <string name="sm_built_in">Ingebouwd</string>
 </resources>

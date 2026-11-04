@@ -128,7 +128,7 @@
     <string name="sm_version">Versión</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma del televisor</string>
-    <string name="sm_language_note">El launcher, Inicio y sus menús cambian al instante.</string>
+    <string name="sm_language_note">El launcher, Inicio y sus menús cambian al instante. Un idioma que no está instalado se descarga primero.</string>
     <string name="sm_update_auto">Comprobaciones automáticas</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">También al encender el televisor o salir del modo de espera. Con No, solo se comprueba al pulsar Buscar actualizaciones.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Launcher actualizado a %1$s</string>
     <string name="update_done_hint">Launcher actualizado a %1$s. Pulsa Inicio para volver.</string>
     <string name="sm_st_languages">Idiomas</string>
-    <string name="sm_st_languages_value">%1$d incluidos</string>
-    <string name="sm_st_languages_note">Incluidos en el launcher y parte de su tamaño de app; cámbialos en Sistema > Idioma.</string>
+    <string name="sm_st_languages_value">%1$d instalados</string>
+    <string name="sm_st_languages_note">El inglés viene integrado; los demás idiomas se descargan en Sistema > Idioma. Elige uno para eliminarlo; el que está en uso se queda.</string>
     <string name="sm_in_use">En uso</string>
+    <string name="sm_lang_installed">Instalados</string>
+    <string name="sm_lang_not_installed">No instalados</string>
+    <string name="sm_lang_downloading">Descargando…</string>
+    <string name="sm_lang_failed_short">No se pudo descargar</string>
+    <string name="sm_lang_failed">No se pudo descargar el idioma. Revisa la conexión e inténtalo de nuevo.</string>
+    <string name="sm_delete_other_languages">Eliminar otros idiomas</string>
+    <string name="sm_lang_removed">%1$s eliminado</string>
+    <string name="sm_built_in">Integrado</string>
 </resources>

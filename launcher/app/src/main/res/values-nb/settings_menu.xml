@@ -128,7 +128,7 @@
     <string name="sm_version">Versjon</string>
     <string name="sm_language">Språk</string>
     <string name="sm_language_system">TV-ens språk</string>
-    <string name="sm_language_note">Startskjermen, Hjem og menyene bytter med en gang.</string>
+    <string name="sm_language_note">Launcheren, Hjem og menyene bytter med en gang. Et språk som ikke er installert, lastes ned først.</string>
     <string name="sm_update_auto">Automatisk sjekk</string>
     <string name="sm_update_every">Sjekk hver</string>
     <string name="sm_update_auto_note">Også når TV-en starter eller våkner fra hvilemodus. Av sjekker bare når du trykker på Se etter oppdateringer.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Startskjermen er oppdatert til %1$s</string>
     <string name="update_done_hint">Startskjermen er oppdatert til %1$s. Trykk Hjem for å gå tilbake.</string>
     <string name="sm_st_languages">Språk</string>
-    <string name="sm_st_languages_value">%1$d inkludert</string>
-    <string name="sm_st_languages_note">Innebygd i startskjermen og en del av størrelsen; bytt under System > Språk.</string>
+    <string name="sm_st_languages_value">%1$d installert</string>
+    <string name="sm_st_languages_note">Engelsk er innebygd; andre språk lastes ned under System > Språk. Velg ett for å fjerne det; det som er i bruk, blir.</string>
     <string name="sm_in_use">I bruk</string>
+    <string name="sm_lang_installed">Installert</string>
+    <string name="sm_lang_not_installed">Ikke installert</string>
+    <string name="sm_lang_downloading">Laster ned…</string>
+    <string name="sm_lang_failed_short">Kunne ikke laste ned</string>
+    <string name="sm_lang_failed">Språket kunne ikke lastes ned. Sjekk tilkoblingen og prøv igjen.</string>
+    <string name="sm_delete_other_languages">Slett andre språk</string>
+    <string name="sm_lang_removed">%1$s fjernet</string>
+    <string name="sm_built_in">Innebygd</string>
 </resources>

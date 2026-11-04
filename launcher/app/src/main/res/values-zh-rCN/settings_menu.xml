@@ -128,7 +128,7 @@
     <string name="sm_version">版本</string>
     <string name="sm_language">语言</string>
     <string name="sm_language_system">电视语言</string>
-    <string name="sm_language_note">桌面、主屏幕及其菜单会立即切换。</string>
+    <string name="sm_language_note">启动器、主屏幕及其菜单会立即切换。未安装的语言会先下载。</string>
     <string name="sm_update_auto">自动检查</string>
     <string name="sm_update_every">检查间隔</string>
     <string name="sm_update_auto_note">电视开机或从待机唤醒时也会检查。关闭后，仅在按下“检查更新”时检查。</string>
@@ -137,7 +137,15 @@
     <string name="update_done">启动器已更新到 %1$s</string>
     <string name="update_done_hint">启动器已更新到 %1$s。按主页键返回。</string>
     <string name="sm_st_languages">语言</string>
-    <string name="sm_st_languages_value">包含 %1$d 种</string>
-    <string name="sm_st_languages_note">内置于启动器，计入应用大小；可在 系统 > 语言 中切换。</string>
+    <string name="sm_st_languages_value">已安装 %1$d 种</string>
+    <string name="sm_st_languages_note">英语为内置语言；其他语言在“系统 > 语言”中下载。选择某种语言即可删除；正在使用的语言会保留。</string>
     <string name="sm_in_use">使用中</string>
+    <string name="sm_lang_installed">已安装</string>
+    <string name="sm_lang_not_installed">未安装</string>
+    <string name="sm_lang_downloading">正在下载…</string>
+    <string name="sm_lang_failed_short">无法下载</string>
+    <string name="sm_lang_failed">无法下载该语言。请检查网络连接后重试。</string>
+    <string name="sm_delete_other_languages">删除其他语言</string>
+    <string name="sm_lang_removed">已移除%1$s</string>
+    <string name="sm_built_in">内置</string>
 </resources>

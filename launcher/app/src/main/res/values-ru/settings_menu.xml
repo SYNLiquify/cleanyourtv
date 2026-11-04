@@ -128,7 +128,7 @@
     <string name="sm_version">Версия</string>
     <string name="sm_language">Язык</string>
     <string name="sm_language_system">Язык телевизора</string>
-    <string name="sm_language_note">Лаунчер, главный экран и меню переключатся сразу.</string>
+    <string name="sm_language_note">Лаунчер, главный экран и меню переключаются сразу. Неустановленный язык сначала загружается.</string>
     <string name="sm_update_auto">Автопроверка</string>
     <string name="sm_update_every">Интервал проверки</string>
     <string name="sm_update_auto_note">Также при включении телевизора или выходе из режима ожидания. Если выключено, проверка только по кнопке «Проверить обновления».</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Лаунчер обновлён до %1$s</string>
     <string name="update_done_hint">Лаунчер обновлён до %1$s. Нажмите «Домой», чтобы вернуться.</string>
     <string name="sm_st_languages">Языки</string>
-    <string name="sm_st_languages_value">Встроено: %1$d</string>
-    <string name="sm_st_languages_note">Встроены в лаунчер и входят в его размер; переключаются в Система > Язык.</string>
+    <string name="sm_st_languages_value">Установлено: %1$d</string>
+    <string name="sm_st_languages_note">Английский встроен; другие языки загружаются в Система > Язык. Выберите язык, чтобы удалить его; используемый останется.</string>
     <string name="sm_in_use">Используется</string>
+    <string name="sm_lang_installed">Установленные</string>
+    <string name="sm_lang_not_installed">Не установленные</string>
+    <string name="sm_lang_downloading">Загрузка…</string>
+    <string name="sm_lang_failed_short">Не удалось загрузить</string>
+    <string name="sm_lang_failed">Не удалось загрузить язык. Проверьте подключение и повторите попытку.</string>
+    <string name="sm_delete_other_languages">Удалить другие языки</string>
+    <string name="sm_lang_removed">%1$s удалён</string>
+    <string name="sm_built_in">Встроенный</string>
 </resources>

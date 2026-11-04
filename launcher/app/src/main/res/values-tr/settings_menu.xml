@@ -128,7 +128,7 @@
     <string name="sm_version">Sürüm</string>
     <string name="sm_language">Dil</string>
     <string name="sm_language_system">TV\'nin dili</string>
-    <string name="sm_language_note">Başlatıcı, Ana Ekran ve menüleri hemen değişir.</string>
+    <string name="sm_language_note">Başlatıcı, Ana ekran ve menüler hemen değişir. Yüklü olmayan bir dil önce indirilir.</string>
     <string name="sm_update_auto">Otomatik denetim</string>
     <string name="sm_update_every">Denetim sıklığı</string>
     <string name="sm_update_auto_note">TV açıldığında veya bekleme modundan çıktığında da denetler. Kapalıyken yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>
     <string name="update_done_hint">Başlatıcı %1$s sürümüne güncellendi. Geri dönmek için Ana Ekran\'a basın.</string>
     <string name="sm_st_languages">Diller</string>
-    <string name="sm_st_languages_value">%1$d dahil</string>
-    <string name="sm_st_languages_note">Başlatıcıya dahil ve uygulama boyutunun parçası; Sistem > Dil\'den değiştirin.</string>
+    <string name="sm_st_languages_value">%1$d yüklü</string>
+    <string name="sm_st_languages_note">İngilizce yerleşiktir; diğer diller Sistem > Dil bölümünden indirilir. Kaldırmak için birini seçin; kullanılan dil kalır.</string>
     <string name="sm_in_use">Kullanımda</string>
+    <string name="sm_lang_installed">Yüklü</string>
+    <string name="sm_lang_not_installed">Yüklü değil</string>
+    <string name="sm_lang_downloading">İndiriliyor…</string>
+    <string name="sm_lang_failed_short">İndirilemedi</string>
+    <string name="sm_lang_failed">Dil indirilemedi. Bağlantıyı kontrol edip tekrar deneyin.</string>
+    <string name="sm_delete_other_languages">Diğer dilleri sil</string>
+    <string name="sm_lang_removed">%1$s kaldırıldı</string>
+    <string name="sm_built_in">Yerleşik</string>
 </resources>

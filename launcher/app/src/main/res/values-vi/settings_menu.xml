@@ -128,7 +128,7 @@
     <string name="sm_version">Phiên bản</string>
     <string name="sm_language">Ngôn ngữ</string>
     <string name="sm_language_system">Ngôn ngữ của TV</string>
-    <string name="sm_language_note">Launcher, Màn hình chính và các menu sẽ đổi ngay.</string>
+    <string name="sm_language_note">Trình chạy, Màn hình chính và các menu đổi ngay. Ngôn ngữ chưa cài đặt sẽ được tải xuống trước.</string>
     <string name="sm_update_auto">Tự động kiểm tra</string>
     <string name="sm_update_every">Kiểm tra mỗi</string>
     <string name="sm_update_auto_note">Cũng kiểm tra khi TV khởi động hoặc thức dậy từ chế độ chờ. Khi tắt, chỉ kiểm tra lúc bạn nhấn Kiểm tra cập nhật.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>
     <string name="update_done_hint">Đã cập nhật launcher lên %1$s. Nhấn Màn hình chính để quay lại.</string>
     <string name="sm_st_languages">Ngôn ngữ</string>
-    <string name="sm_st_languages_value">Có %1$d ngôn ngữ</string>
-    <string name="sm_st_languages_note">Có sẵn trong launcher và nằm trong dung lượng ứng dụng; đổi trong Hệ thống > Ngôn ngữ.</string>
+    <string name="sm_st_languages_value">Đã cài %1$d</string>
+    <string name="sm_st_languages_note">Tiếng Anh được tích hợp sẵn; các ngôn ngữ khác tải xuống trong Hệ thống > Ngôn ngữ. Chọn một ngôn ngữ để xóa; ngôn ngữ đang dùng được giữ lại.</string>
     <string name="sm_in_use">Đang dùng</string>
+    <string name="sm_lang_installed">Đã cài đặt</string>
+    <string name="sm_lang_not_installed">Chưa cài đặt</string>
+    <string name="sm_lang_downloading">Đang tải xuống…</string>
+    <string name="sm_lang_failed_short">Không tải xuống được</string>
+    <string name="sm_lang_failed">Không tải xuống được ngôn ngữ. Hãy kiểm tra kết nối rồi thử lại.</string>
+    <string name="sm_delete_other_languages">Xóa các ngôn ngữ khác</string>
+    <string name="sm_lang_removed">Đã xóa %1$s</string>
+    <string name="sm_built_in">Tích hợp sẵn</string>
 </resources>

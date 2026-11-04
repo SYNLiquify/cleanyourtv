@@ -128,7 +128,7 @@
     <string name="sm_version">Versió</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma del televisor</string>
-    <string name="sm_language_note">El llançador, Inici i els seus menús canvien a l\'instant.</string>
+    <string name="sm_language_note">El llançador, l\'inici i els seus menús canvien a l\'instant. Un idioma no instal·lat es baixa primer.</string>
     <string name="sm_update_auto">Comprovacions automàtiques</string>
     <string name="sm_update_every">Comprova cada</string>
     <string name="sm_update_auto_note">També quan el televisor s\'engega o surt del mode d\'espera. Amb Desactivat, només es comprova quan prems Cerca actualitzacions.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Llançador actualitzat a %1$s</string>
     <string name="update_done_hint">Llançador actualitzat a %1$s. Prem Inici per tornar.</string>
     <string name="sm_st_languages">Idiomes</string>
-    <string name="sm_st_languages_value">%1$d inclosos</string>
-    <string name="sm_st_languages_note">Inclosos al llançador i part de la seva mida; canvia\'ls a Sistema > Idioma.</string>
+    <string name="sm_st_languages_value">%1$d instal·lats</string>
+    <string name="sm_st_languages_note">L\'anglès ve integrat; els altres idiomes es baixen a Sistema > Idioma. Tria\'n un per suprimir-lo; el que és en ús es manté.</string>
     <string name="sm_in_use">En ús</string>
+    <string name="sm_lang_installed">Instal·lats</string>
+    <string name="sm_lang_not_installed">No instal·lats</string>
+    <string name="sm_lang_downloading">S\'està baixant…</string>
+    <string name="sm_lang_failed_short">No s\'ha pogut baixar</string>
+    <string name="sm_lang_failed">No s\'ha pogut baixar l\'idioma. Comprova la connexió i torna-ho a provar.</string>
+    <string name="sm_delete_other_languages">Suprimeix els altres idiomes</string>
+    <string name="sm_lang_removed">S\'ha suprimit %1$s</string>
+    <string name="sm_built_in">Integrat</string>
 </resources>

@@ -128,7 +128,7 @@
     <string name="sm_version">Verzija</string>
     <string name="sm_language">Jezik</string>
     <string name="sm_language_system">Jezik TV-a</string>
-    <string name="sm_language_note">Pokretač, početni ekran i njegovi meniji menjaju se odmah.</string>
+    <string name="sm_language_note">Pokretač, Početni ekran i njihovi meniji menjaju se odmah. Jezik koji nije instaliran prvo se preuzima.</string>
     <string name="sm_update_auto">Automatske provere</string>
     <string name="sm_update_every">Proveravaj na svakih</string>
     <string name="sm_update_auto_note">I kada se TV uključi ili probudi iz mirovanja. Kada je isključeno, provera se vrši samo kada pritisnete Proveri ažuriranja.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Pokretač je ažuriran na %1$s</string>
     <string name="update_done_hint">Pokretač je ažuriran na %1$s. Pritisnite Početna za povratak.</string>
     <string name="sm_st_languages">Jezici</string>
-    <string name="sm_st_languages_value">Uključeno: %1$d</string>
-    <string name="sm_st_languages_note">Ugrađeni u pokretač i deo njegove veličine; menjaju se u Sistem > Jezik.</string>
+    <string name="sm_st_languages_value">Instalirano: %1$d</string>
+    <string name="sm_st_languages_note">Engleski je ugrađen; ostali jezici se preuzimaju u Sistem > Jezik. Izaberite jezik da ga uklonite; onaj koji se koristi ostaje.</string>
     <string name="sm_in_use">U upotrebi</string>
+    <string name="sm_lang_installed">Instalirani</string>
+    <string name="sm_lang_not_installed">Nisu instalirani</string>
+    <string name="sm_lang_downloading">Preuzimanje…</string>
+    <string name="sm_lang_failed_short">Preuzimanje nije uspelo</string>
+    <string name="sm_lang_failed">Jezik nije mogao da se preuzme. Proverite vezu i pokušajte ponovo.</string>
+    <string name="sm_delete_other_languages">Izbriši ostale jezike</string>
+    <string name="sm_lang_removed">%1$s je uklonjen</string>
+    <string name="sm_built_in">Ugrađen</string>
 </resources>

@@ -128,7 +128,7 @@
     <string name="sm_version">Versão</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma da TV</string>
-    <string name="sm_language_note">O launcher, o Início e os menus mudam de imediato.</string>
+    <string name="sm_language_note">O launcher, o ecrã inicial e os menus mudam de imediato. Um idioma não instalado é transferido primeiro.</string>
     <string name="sm_update_auto">Verificação automática</string>
     <string name="sm_update_every">Verificar a cada</string>
     <string name="sm_update_auto_note">Também quando a TV liga ou sai do modo de espera. Desativado só verifica quando premir Procurar atualizações.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Launcher atualizado para %1$s</string>
     <string name="update_done_hint">Launcher atualizado para %1$s. Prima Início para voltar.</string>
     <string name="sm_st_languages">Idiomas</string>
-    <string name="sm_st_languages_value">%1$d incluídos</string>
-    <string name="sm_st_languages_note">Incluídos no launcher e parte do tamanho da aplicação; mude em Sistema > Idioma.</string>
+    <string name="sm_st_languages_value">%1$d instalados</string>
+    <string name="sm_st_languages_note">O inglês vem integrado; os outros idiomas são transferidos em Sistema > Idioma. Escolha um para o remover; o que está em uso fica.</string>
     <string name="sm_in_use">Em utilização</string>
+    <string name="sm_lang_installed">Instalados</string>
+    <string name="sm_lang_not_installed">Não instalados</string>
+    <string name="sm_lang_downloading">A transferir…</string>
+    <string name="sm_lang_failed_short">Não foi possível transferir</string>
+    <string name="sm_lang_failed">Não foi possível transferir o idioma. Verifique a ligação e tente novamente.</string>
+    <string name="sm_delete_other_languages">Eliminar outros idiomas</string>
+    <string name="sm_lang_removed">%1$s removido</string>
+    <string name="sm_built_in">Integrado</string>
 </resources>

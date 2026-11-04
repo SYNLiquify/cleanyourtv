@@ -32,19 +32,34 @@ final class LauncherLocale {
         if (locale != null && !locale.equals(Locale.getDefault())) Locale.setDefault(locale);
     }
 
-    /** base with the configured language, or base itself when locale is off. */
+    /**
+     * The language the launcher shows: the chosen one, else the TV's. This fork ships English only and downloads the
+     * rest (LanguagePacks), so a language without an installed pack shows as English, with the TV's region kept,
+     * and the dates match the text.
+     */
+    static Locale effective(Context base) {
+        Locale locale = wanted(base);
+        if (locale == null) return Locale.ENGLISH;
+        if ("en".equals(locale.getLanguage()) || LanguagePacks.installedTagFor(base, locale) != null) return locale;
+        return new Locale("en", locale.getCountry());
+    }
+
+    /** The chosen language, else the TV's (the system's, as base may already be in the launcher's), installed or not. */
+    static Locale wanted(Context base) {
+        Locale chosen = parse(Config.load(base).locale);
+        return chosen != null ? chosen : android.content.res.Resources.getSystem().getConfiguration().getLocales().get(0);
+    }
+
+    /** base in the launcher's language: an installed pack's text on top, or English. */
     static Context wrap(Context base) {
-        Locale locale = parse(Config.load(base).locale);
-        if (locale == null) {
-            // Back to the TV's language (this fork's Settings > Language can switch it off again): the formatters
-            // follow the default locale, which an earlier choice in this process may still hold.
-            Locale tv = base.getResources().getConfiguration().getLocales().get(0);
-            if (tv != null && !tv.equals(Locale.getDefault())) Locale.setDefault(tv);
-            return base;
-        }
+        Locale locale = effective(base);
         // Formatters that take no Context (the clock's date, the lunar line) follow the default locale.
-        Locale.setDefault(locale);
+        if (!locale.equals(Locale.getDefault())) Locale.setDefault(locale);
+        String tag = LanguagePacks.installedTagFor(base, locale);
+        LanguagePacks.Pack pack = tag == null ? null : LanguagePacks.load(base, tag);
+        if (pack != null) return LanguagePacks.wrap(base, locale, pack);
         Configuration c = new Configuration(base.getResources().getConfiguration());
+        if (locale.equals(c.getLocales().get(0))) return base;
         c.setLocale(locale);
         return base.createConfigurationContext(c);
     }

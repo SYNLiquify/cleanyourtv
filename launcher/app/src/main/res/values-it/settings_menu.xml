@@ -128,7 +128,7 @@
     <string name="sm_version">Versione</string>
     <string name="sm_language">Lingua</string>
     <string name="sm_language_system">Lingua della TV</string>
-    <string name="sm_language_note">Il launcher, la Home e i suoi menu cambiano subito.</string>
+    <string name="sm_language_note">Il launcher, la Home e i suoi menu cambiano subito. Una lingua non installata viene prima scaricata.</string>
     <string name="sm_update_auto">Controlli automatici</string>
     <string name="sm_update_every">Controlla ogni</string>
     <string name="sm_update_auto_note">Anche all\'accensione della TV o al risveglio dallo standby. Con No, il controllo avviene solo quando premi Cerca aggiornamenti.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Launcher aggiornato a %1$s</string>
     <string name="update_done_hint">Launcher aggiornato a %1$s. Premi Home per tornare.</string>
     <string name="sm_st_languages">Lingue</string>
-    <string name="sm_st_languages_value">%1$d incluse</string>
-    <string name="sm_st_languages_note">Integrate nel launcher e parte delle sue dimensioni; cambiale in Sistema > Lingua.</string>
+    <string name="sm_st_languages_value">%1$d installate</string>
+    <string name="sm_st_languages_note">L\'inglese è integrato; le altre lingue si scaricano in Sistema > Lingua. Scegline una per rimuoverla; quella in uso resta.</string>
     <string name="sm_in_use">In uso</string>
+    <string name="sm_lang_installed">Installate</string>
+    <string name="sm_lang_not_installed">Non installate</string>
+    <string name="sm_lang_downloading">Download in corso…</string>
+    <string name="sm_lang_failed_short">Download non riuscito</string>
+    <string name="sm_lang_failed">Impossibile scaricare la lingua. Controlla la connessione e riprova.</string>
+    <string name="sm_delete_other_languages">Elimina le altre lingue</string>
+    <string name="sm_lang_removed">%1$s rimossa</string>
+    <string name="sm_built_in">Integrata</string>
 </resources>

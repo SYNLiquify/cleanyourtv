@@ -128,7 +128,7 @@
     <string name="sm_version">Versión</string>
     <string name="sm_language">Llingua</string>
     <string name="sm_language_system">Llingua del televisor</string>
-    <string name="sm_language_note">El llanzador, Aniciu y los sos menús camuden darréu.</string>
+    <string name="sm_language_note">El llanzador, Aniciu y los sos menús camuden al intre. Una llingua ensin instalar báxase primero.</string>
     <string name="sm_update_auto">Comprobaciones automátiques</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">Tamién al prender el televisor o al salir del mou d\'espera. Con Non, namás se comprueba al calcar Buscar anovamientos.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Llanzador anováu a %1$s</string>
     <string name="update_done_hint">Llanzador anováu a %1$s. Primi Aniciu pa volver.</string>
     <string name="sm_st_languages">Llingües</string>
-    <string name="sm_st_languages_value">%1$d incluyíes</string>
-    <string name="sm_st_languages_note">Inclúyense nel llanzador y formen parte del so tamañu; camuda ente elles en Sistema > Llingua.</string>
+    <string name="sm_st_languages_value">%1$d instalaes</string>
+    <string name="sm_st_languages_note">L\'inglés vien integráu; les otres llingües báxense en Sistema > Llingua. Escueyi una pa desaniciala; la que ta n\'usu queda.</string>
     <string name="sm_in_use">N\'usu</string>
+    <string name="sm_lang_installed">Instalaos</string>
+    <string name="sm_lang_not_installed">Ensin instalar</string>
+    <string name="sm_lang_downloading">Baxando…</string>
+    <string name="sm_lang_failed_short">Nun se pudo baxar</string>
+    <string name="sm_lang_failed">Nun se pudo baxar la llingua. Comprueba la conexón y volvi tentalo.</string>
+    <string name="sm_delete_other_languages">Desaniciar les otres llingües</string>
+    <string name="sm_lang_removed">Desanicióse %1$s</string>
+    <string name="sm_built_in">Integráu</string>
 </resources>

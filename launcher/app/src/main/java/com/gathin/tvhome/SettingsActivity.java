@@ -906,9 +906,9 @@ public final class SettingsActivity extends Activity {
             values.add((TextView) ((ViewGroup) row).getChildAt(1));
             pane.addView(row);
         }
-        // The languages built into the launcher (Settings > System > Language), as a row that opens their list.
+        // English plus the downloaded languages (LanguagePacks), as a row that opens their list.
         pane.addView(actionRow(getString(R.string.sm_st_languages),
-                getString(R.string.sm_st_languages_value, LANGUAGES.length), this::showInstalledLanguages));
+                getString(R.string.sm_st_languages_value, 1 + installedLanguages().size()), this::showInstalledLanguages));
         section(R.string.sm_clean_up);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
         java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
@@ -920,6 +920,13 @@ public final class SettingsActivity extends Activity {
         }));
         pane.addView(actionRow(getString(R.string.sm_delete_downloaded), "", () -> {
             for (ThemeLibrary.Theme t : ThemeLibrary.downloaded(this)) ThemeLibrary.removeDownloaded(this, t.name);
+            Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
+            rebuild(4);
+            focusPane();
+        }));
+        pane.addView(actionRow(getString(R.string.sm_delete_other_languages), "", () -> {
+            String inUse = languageInUse();
+            for (String tag : installedLanguages()) if (!tag.equals(inUse)) LanguagePacks.delete(this, tag);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
             rebuild(4);
             focusPane();
@@ -1026,7 +1033,7 @@ public final class SettingsActivity extends Activity {
      * The languages the launcher is translated into, each in its own name: upstream's translations (res/values-*)
      * plus this fork's Japanese. "" follows the TV. The tags resolve to those folders (id → values-in, he → values-iw).
      */
-    private static final String[][] LANGUAGES = {
+    static final String[][] LANGUAGES = {
             {"en", "English"}, {"es", "Español"}, {"ja", "日本語"},
             {"ar", "العربية"}, {"ast", "Asturianu"}, {"id", "Bahasa Indonesia"}, {"bn", "বাংলা"}, {"ca", "Català"},
             {"cs", "Čeština"}, {"da", "Dansk"}, {"de", "Deutsch"}, {"es-419", "Español (Latinoamérica)"},
@@ -1043,57 +1050,115 @@ public final class SettingsActivity extends Activity {
         return tag;
     }
 
+    /** The downloaded languages, in the list's order. */
+    private List<String> installedLanguages() {
+        java.util.Set<String> have = LanguagePacks.installedTags(this);
+        List<String> out = new ArrayList<>();
+        for (String[] l : LANGUAGES) if (have.contains(l[0])) out.add(l[0]);
+        return out;
+    }
+
+    /** The downloaded language the launcher shows now, or null for English. */
+    private String languageInUse() {
+        return LanguagePacks.installedTagFor(this, LauncherLocale.effective(this));
+    }
+
     /**
-     * Storage > Languages: every language built into the launcher, the one in use marked. They are part of the App
-     * size above (string tables, a few KB each), so nothing here can be removed on its own.
+     * Storage > Languages: English (built in), then each downloaded language with its size; choosing one removes it.
+     * The one in use stays, and System > Language downloads any of them again.
      */
     private void showInstalledLanguages() {
         clearPane();
         paneTitle.setText(R.string.sm_st_languages);
         back = () -> rebuild(4);
         note(getString(R.string.sm_st_languages_note));
-        String chosen = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
-        Locale inUse = chosen.isEmpty() ? getResources().getConfiguration().getLocales().get(0) : Locale.forLanguageTag(chosen);
-        String[] best = null;
-        for (String[] l : LANGUAGES) {
-            Locale candidate = Locale.forLanguageTag(l[0]);
-            if (!candidate.getLanguage().equals(inUse.getLanguage())) continue;
-            boolean regionMatches = candidate.getCountry().isEmpty() || candidate.getCountry().equals(inUse.getCountry());
-            if (regionMatches && (best == null || !candidate.getCountry().isEmpty())) best = l;
-        }
-        for (String[] l : LANGUAGES) {
-            pane.addView(actionRow(l[1], l == best ? getString(R.string.sm_in_use) : "", null));
+        String inUse = languageInUse();
+        pane.addView(actionRow("English", getString(inUse == null ? R.string.sm_in_use : R.string.sm_built_in), null));
+        for (String tag : installedLanguages()) {
+            String name = languageName(tag);
+            boolean used = tag.equals(inUse);
+            pane.addView(actionRow(name, used ? getString(R.string.sm_in_use) : bytes(LanguagePacks.size(this, tag)),
+                    used ? null : () -> {
+                        LanguagePacks.delete(this, tag);
+                        Toast.makeText(this, getString(R.string.sm_lang_removed, name), Toast.LENGTH_SHORT).show();
+                        showInstalledLanguages();
+                    }));
         }
         focusPane();
     }
 
-    /** Settings > System > Language: the TV's language first, then every translation; picking one applies it at once. */
+    /** A language download in progress (one at a time), so a second press waits. */
+    private boolean downloading;
+
+    /**
+     * Settings > System > Language: the TV's language first, then Installed and Not installed. Picking an installed
+     * one applies it at once; a language that is not installed downloads from GitHub first, then applies.
+     */
     private void showLanguages() {
         clearPane();
         paneTitle.setText(R.string.sm_language);
         back = () -> rebuild(5);
         note(getString(R.string.sm_language_note));
         String current = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
-        View focus = null;
-        String[][] all = new String[LANGUAGES.length + 1][];
-        all[0] = new String[]{"", getString(R.string.sm_language_system)};
-        System.arraycopy(LANGUAGES, 0, all, 1, LANGUAGES.length);
-        for (String[] l : all) {
-            String tag = l[0];
-            boolean chosen = tag.equalsIgnoreCase(current);
-            View row = actionRow(l[1], chosen ? "✓" : "", () -> {
-                prefs.edit().putString(Config.LOCALE_KEY, tag).apply();
-                changed();
-                // The menu itself takes the language when it is built again (attachBaseContext); it opens on System.
-                getIntent().putExtra(EXTRA_CATEGORY, 5);
-                recreate();
-            });
-            if (chosen) focus = row;
-            pane.addView(row);
+        java.util.Set<String> have = LanguagePacks.installedTags(this);
+        List<String> tags = new ArrayList<>();
+        for (String[] l : LANGUAGES) tags.add(l[0]);
+        // "TV's language": downloads the TV's language too when there is a translation and it isn't here yet.
+        String tvTag = LanguagePacks.bestTag(tags, android.content.res.Resources.getSystem().getConfiguration().getLocales().get(0));
+        View[] focus = {null};
+        View tv = languageRow("", getString(R.string.sm_language_system), current.isEmpty(),
+                tvTag != null && !have.contains(tvTag) ? tvTag : null);
+        if (current.isEmpty()) focus[0] = tv;
+        pane.addView(tv);
+        for (int pass = 0; pass < 2; pass++) {
+            boolean installedPass = pass == 0;
+            section(installedPass ? R.string.sm_lang_installed : R.string.sm_lang_not_installed);
+            for (String[] l : LANGUAGES) {
+                String tag = l[0];
+                boolean installed = LanguagePacks.builtIn(tag) || have.contains(tag);
+                if (installed != installedPass) continue;
+                boolean chosen = tag.equalsIgnoreCase(current);
+                View row = languageRow(tag, l[1], chosen, installed ? null : tag);
+                if (chosen) focus[0] = row;
+                pane.addView(row);
+            }
         }
-        View first = focus;
-        if (first != null) pane.post(first::requestFocus);
+        if (focus[0] != null) pane.post(focus[0]::requestFocus);
         else focusPane();
+    }
+
+    /** One language: picking it applies tag, after downloading the pack download (null when there is none to get). */
+    private View languageRow(String tag, String name, boolean chosen, String download) {
+        TextView[] value = {null};
+        View row = actionRow(name, chosen ? "✓" : " ", () -> {
+            if (downloading) return;
+            if (download == null) {
+                applyLanguage(tag);
+                return;
+            }
+            downloading = true;
+            value[0].setText(R.string.sm_lang_downloading);
+            LanguagePacks.install(this, download, ok -> {
+                downloading = false;
+                if (isFinishing() || isDestroyed()) return;
+                if (ok) {
+                    applyLanguage(tag);
+                } else {
+                    value[0].setText(R.string.sm_lang_failed_short);
+                    Toast.makeText(this, R.string.sm_lang_failed, Toast.LENGTH_LONG).show();
+                }
+            });
+        });
+        value[0] = (TextView) ((ViewGroup) row).getChildAt(1);
+        return row;
+    }
+
+    private void applyLanguage(String tag) {
+        prefs.edit().putString(Config.LOCALE_KEY, tag).apply();
+        changed();
+        // The menu itself takes the language when it is built again (attachBaseContext); it opens on System.
+        getIntent().putExtra(EXTRA_CATEGORY, 5);
+        recreate();
     }
 
     /** System > ATV settings: the TV's own settings pages, one row each. */

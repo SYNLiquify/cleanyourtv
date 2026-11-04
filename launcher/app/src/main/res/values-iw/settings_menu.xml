@@ -128,7 +128,7 @@
     <string name="sm_version">גרסה</string>
     <string name="sm_language">שפה</string>
     <string name="sm_language_system">שפת הטלוויזיה</string>
-    <string name="sm_language_note">מסך הבית והתפריטים שלו מתחלפים מיד.</string>
+    <string name="sm_language_note">המשגר, מסך הבית והתפריטים מתחלפים מיד. שפה שאינה מותקנת יורדת קודם.</string>
     <string name="sm_update_auto">בדיקות אוטומטיות</string>
     <string name="sm_update_every">בדיקה כל</string>
     <string name="sm_update_auto_note">גם כשהטלוויזיה נדלקת או מתעוררת ממצב המתנה. במצב כבוי, הבדיקה מתבצעת רק כשלוחצים על בדיקת עדכונים.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>
     <string name="update_done_hint">מסך הבית עודכן ל-%1$s. לחצו על בית כדי לחזור.</string>
     <string name="sm_st_languages">שפות</string>
-    <string name="sm_st_languages_value">%1$d כלולות</string>
-    <string name="sm_st_languages_note">מובנות במסך הבית וחלק מגודל האפליקציה; החלפה במערכת > שפה.</string>
+    <string name="sm_st_languages_value">%1$d מותקנות</string>
+    <string name="sm_st_languages_note">אנגלית מובנית; שפות אחרות יורדות דרך מערכת > שפה. בחרו שפה כדי להסיר אותה; השפה שבשימוש נשארת.</string>
     <string name="sm_in_use">בשימוש</string>
+    <string name="sm_lang_installed">מותקנות</string>
+    <string name="sm_lang_not_installed">לא מותקנות</string>
+    <string name="sm_lang_downloading">מוריד…</string>
+    <string name="sm_lang_failed_short">ההורדה נכשלה</string>
+    <string name="sm_lang_failed">לא ניתן היה להוריד את השפה. בדקו את החיבור ונסו שוב.</string>
+    <string name="sm_delete_other_languages">מחיקת שפות אחרות</string>
+    <string name="sm_lang_removed">%1$s הוסרה</string>
+    <string name="sm_built_in">מובנית</string>
 </resources>

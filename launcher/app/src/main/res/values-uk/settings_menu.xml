@@ -128,7 +128,7 @@
     <string name="sm_version">Версія</string>
     <string name="sm_language">Мова</string>
     <string name="sm_language_system">Мова телевізора</string>
-    <string name="sm_language_note">Лаунчер, головний екран і його меню перемкнуться одразу.</string>
+    <string name="sm_language_note">Лаунчер, головний екран і меню перемикаються одразу. Невстановлена мова спершу завантажується.</string>
     <string name="sm_update_auto">Автоматична перевірка</string>
     <string name="sm_update_every">Перевіряти кожні</string>
     <string name="sm_update_auto_note">Також під час увімкнення телевізора чи виходу з режиму очікування. Якщо вимкнено, перевірка лише після натискання «Перевірити оновлення».</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Лаунчер оновлено до %1$s</string>
     <string name="update_done_hint">Лаунчер оновлено до %1$s. Натисніть «Додому», щоб повернутися.</string>
     <string name="sm_st_languages">Мови</string>
-    <string name="sm_st_languages_value">Вбудовано: %1$d</string>
-    <string name="sm_st_languages_note">Вбудовані в лаунчер і входять у його розмір; перемикаються в Система > Мова.</string>
+    <string name="sm_st_languages_value">Встановлено: %1$d</string>
+    <string name="sm_st_languages_note">Англійська вбудована; інші мови завантажуються в Система > Мова. Виберіть мову, щоб видалити її; та, що використовується, залишиться.</string>
     <string name="sm_in_use">Використовується</string>
+    <string name="sm_lang_installed">Встановлені</string>
+    <string name="sm_lang_not_installed">Не встановлені</string>
+    <string name="sm_lang_downloading">Завантаження…</string>
+    <string name="sm_lang_failed_short">Не вдалося завантажити</string>
+    <string name="sm_lang_failed">Не вдалося завантажити мову. Перевірте з\'єднання й спробуйте ще раз.</string>
+    <string name="sm_delete_other_languages">Видалити інші мови</string>
+    <string name="sm_lang_removed">%1$s видалено</string>
+    <string name="sm_built_in">Вбудована</string>
 </resources>

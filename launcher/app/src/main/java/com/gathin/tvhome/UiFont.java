@@ -14,6 +14,9 @@ final class UiFont {
 
     static Typeface get(Context context, int fontString) {
         Resources res = context.getResources();
+        // This fork: a downloaded language that names a system family (Vietnamese) overrides the bundled font.
+        String pack = LanguagePacks.override(res, fontString);
+        if (pack != null && !pack.startsWith("res/") && !pack.startsWith("@")) return Typeface.create(pack, Typeface.NORMAL);
         TypedValue value = new TypedValue();
         res.getValue(fontString, value, true);
         String name = String.valueOf(value.string);

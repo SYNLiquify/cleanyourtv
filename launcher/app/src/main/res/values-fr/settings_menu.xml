@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Langue</string>
     <string name="sm_language_system">Langue du téléviseur</string>
-    <string name="sm_language_note">Le launcher, l\'accueil et ses menus changent immédiatement.</string>
+    <string name="sm_language_note">Le lanceur, l\'accueil et ses menus changent aussitôt. Une langue non installée est d\'abord téléchargée.</string>
     <string name="sm_update_auto">Vérifications automatiques</string>
     <string name="sm_update_every">Fréquence de vérification</string>
     <string name="sm_update_auto_note">Aussi au démarrage du téléviseur ou à sa sortie de veille. Sur Désactivé, la vérification n\'a lieu que lorsque vous appuyez sur Rechercher des mises à jour.</string>
@@ -137,7 +137,15 @@
     <string name="update_done">Lanceur mis à jour vers %1$s</string>
     <string name="update_done_hint">Lanceur mis à jour vers %1$s. Appuyez sur Accueil pour revenir.</string>
     <string name="sm_st_languages">Langues</string>
-    <string name="sm_st_languages_value">%1$d incluses</string>
-    <string name="sm_st_languages_note">Intégrées au lanceur et comprises dans sa taille ; changez-les dans Système > Langue.</string>
+    <string name="sm_st_languages_value">%1$d installées</string>
+    <string name="sm_st_languages_note">L\'anglais est intégré ; les autres langues se téléchargent dans Système > Langue. Choisissez-en une pour la supprimer ; celle utilisée reste.</string>
     <string name="sm_in_use">Utilisée</string>
+    <string name="sm_lang_installed">Installées</string>
+    <string name="sm_lang_not_installed">Non installées</string>
+    <string name="sm_lang_downloading">Téléchargement…</string>
+    <string name="sm_lang_failed_short">Échec du téléchargement</string>
+    <string name="sm_lang_failed">Impossible de télécharger la langue. Vérifiez la connexion et réessayez.</string>
+    <string name="sm_delete_other_languages">Supprimer les autres langues</string>
+    <string name="sm_lang_removed">%1$s supprimée</string>
+    <string name="sm_built_in">Intégrée</string>
 </resources>
