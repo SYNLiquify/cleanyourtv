@@ -1619,8 +1619,27 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             reorderBanner.setAlpha(0f);
             FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-            lp.topMargin = Math.round(30 * density);
             root.addView(reorderBanner, lp);
+        }
+        if (shown) {
+            // Under the top bar (clock, date and pills), so it covers none of them.
+            View bar = findViewById(R.id.topButtons);
+            int[] at = new int[2];
+            int[] rootAt = new int[2];
+            bar.getLocationInWindow(at);
+            root.getLocationInWindow(rootAt);
+            int bottom = at[1] - rootAt[1] + bar.getHeight();
+            if (clockBlock != null) {
+                int[] c = new int[2];
+                clockBlock.getLocationInWindow(c);
+                bottom = Math.max(bottom, c[1] - rootAt[1] + clockBlock.getHeight());
+            }
+            FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) reorderBanner.getLayoutParams();
+            int top = bottom + Math.round(28 * density);
+            if (lp.topMargin != top) {
+                lp.topMargin = top;
+                reorderBanner.setLayoutParams(lp);
+            }
         }
         reorderBanner.animate().cancel();
         if (!animations || reducedMotion) reorderBanner.setAlpha(shown ? 1f : 0f);

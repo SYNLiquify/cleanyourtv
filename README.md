@@ -1,3 +1,104 @@
+# This fork: an Apple TV-style home with Continue watching, weather, a Settings menu and highlight colors
+
+A fork of CleanYourTV's launcher, listed in the main repo's [SHOWCASE](https://github.com/Gathin23/cleanyourtv/blob/main/SHOWCASE.md).
+It runs on an **onn. 4K Streaming Box (2023), Google TV 14** and a **Hisense SmartTV 4K (songshan), Android 11**.
+The debloat tools, TV lists and docs are the same as upstream; only the launcher changes.
+[FORK.md](FORK.md) has the details: every setting, and every network request and when it runs.
+
+<p align="center">
+  <img src="docs/screenshots/apple-tv-home/home-adaptive-youtube.jpg" alt="Home with the dock focused on YouTube: the focus glow, the glow behind Home and the pill outlines are YouTube red" width="900">
+</p>
+
+### Adaptive highlight color
+
+With **Adaptive**, the focus glow, the top-bar pills, menus and the Continue watching ring take the focused app's own
+color, sampled from its banner like the glow behind Home.
+
+| | |
+|---|---|
+| ![Nuvio focused: everything turns Nuvio blue](docs/screenshots/apple-tv-home/home-adaptive-nuvio.jpg) | ![TV Bro focused: everything turns TV Bro yellow](docs/screenshots/apple-tv-home/home-adaptive-tvbro.jpg) |
+| **Nuvio**: blue | **TV Bro**: yellow |
+| ![The Inputs menu filled with the focused app's blue](docs/screenshots/apple-tv-home/inputs-menu.jpg) | ![A tile's hold-OK menu in TV Bro's yellow, with dark text for contrast](docs/screenshots/apple-tv-home/tile-menu.jpg) |
+| **Inputs menu**: HDMI, AV and Live TV in the app's color | **Hold OK on a tile**: Replace, Move, App info |
+
+### Home
+
+| | |
+|---|---|
+| ![Down from the dock: the Continue watching row of thumbnail cards with time left and progress](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![Down again: the app grid, four across under the dock's width](docs/screenshots/apple-tv-home/app-grid.jpg) |
+| **Continue watching** (Nuvio): time left, Up next, progress. *Titles and thumbnails blurred for privacy* | **App grid**: rows span the dock's width; the glow follows the focused app |
+| ![While moving apps, a pill under the top bar says Reordering apps, press Back to cancel](docs/screenshots/apple-tv-home/reorder-banner.jpg) | ![The clock screensaver with the date and the weather](docs/screenshots/apple-tv-home/screensaver.jpg) |
+| **Reordering**: a pill says how to finish | **Screensaver**: clock, date and weather |
+
+### Settings menu
+
+| | |
+|---|---|
+| ![Settings, Home: highlight color swatches, Adaptive first](docs/screenshots/apple-tv-home/settings-highlight.jpg) | ![The custom color picker: hue, saturation and brightness sliders with a live preview](docs/screenshots/apple-tv-home/custom-color.jpg) |
+| **Highlight color**: Adaptive, White and eight presets | **Custom color**: sliders for the remote, a preview, or a hex code |
+| ![Settings, Home: dock apps, apps per row, Continue watching, dock background, animations](docs/screenshots/apple-tv-home/settings-layout.jpg) | ![Settings, Themes: the GitHub status with Refresh, and the downloaded themes](docs/screenshots/apple-tv-home/themes.jpg) |
+| **Home**: layout and look | **Themes**: GitHub status, Refresh, Downloaded |
+| ![Settings, Themes: previews of every theme in the repo](docs/screenshots/apple-tv-home/themes-gallery.jpg) | ![Settings, Weather: units, conditions, high and low, location](docs/screenshots/apple-tv-home/settings-weather.jpg) |
+| **Themes**: every theme in the repo, applied in place | **Weather**: °F/°C, what to show, location |
+| ![Settings, Clock: time format, greetings, custom greetings that rotate](docs/screenshots/apple-tv-home/settings-clock.jpg) | ![Settings, Storage: the TV's free space and what the launcher uses](docs/screenshots/apple-tv-home/settings-storage.jpg) |
+| **Clock**: 12/24-hour, greetings that rotate | **Storage**: space used, with clean-up buttons |
+| ![Settings, System: shortcuts to Android TV settings, network, apps, screensaver and default home](docs/screenshots/apple-tv-home/settings-system.jpg) | |
+| **System**: Android's own settings, a click away | |
+
+### What's new
+
+**Home**
+- The focused dock rests at the screen's bottom edge, about 8% larger. The clock and the focused app's big name line up with the dock's left edge.
+- Down glides the dock up under the clock in about 0.4 s while it shrinks back and the rows below grow; Up reverses it.
+- The app grid spans exactly the dock's width, 4 across by default (`grid_columns`).
+- Up and Down land on the nearest tile on screen, since the dock and the grid can have different column counts.
+- While apps are being reordered, a pill under the top bar reads "Reordering apps, press Back to cancel".
+
+**Highlight color** (Settings > Home)
+- What a focused tile's glass, pill, menu row and Continue watching card turn, plus the pills' outline.
+- **Adaptive**: each focused app's own color, sampled from its banner like the glow behind Home.
+- White (the original look) and eight presets: blue, sky, green, yellow, orange, red, pink and purple.
+- **Custom color**: hue, saturation and brightness sliders made for the remote (Left/Right, hold to go faster), a live preview, and a hex code field.
+- Text on a light color turns dark so it stays readable.
+
+**Continue watching**
+- A sideways row of up to 20 thumbnail cards under the dock, read from an app's preview channel. Each card shows the show or film name, season and episode with the episode title, a time-left pill ("Up next" when not started) and a progress line. OK opens the title in the app.
+- The row is cut off at the dock's right edge and lines up with the grid's first column.
+- Thumbnails are cached on the TV and deleted once a title leaves the list.
+- **Only Nuvio for now**. Other apps that publish a continue-watching preview channel, such as Stremio, can be added in `continue_watching_apps`; they are untested so far.
+
+**Weather**
+- A line under the date on Home and on the clock screensaver: temperature, conditions, and today's high and low.
+- Location from the public IP, or a city picked in Settings. Cached for a day; the weather itself for 30 minutes.
+
+**Settings menu** (the top bar's Settings button; Android's own settings stay under System)
+- **Home:** dock apps (1–6), apps per row (2–6), Continue watching on/off, dock background opacity, animations, highlight color, reorder apps.
+- **Themes:** a preview of every theme in this repo, applied in place.
+  - Applied themes are kept on the TV under **Downloaded**, with Default first. Each can be deleted, except the one in use.
+  - A bold "Up to date with GitHub" status with a **Refresh** button.
+  - Checks stay within GitHub's rate limit: only when the page is opened, at most every 10 minutes, the raw README first, and the API only when it changed.
+- **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
+- **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
+- **Storage:** the TV's free space, what the launcher uses split by part, and clean-up buttons for thumbnails, downloaded themes and previews.
+- **System:** Android TV settings, network, apps, screensaver and default home app.
+
+**Network use.** Unlike upstream, this fork has the `INTERNET` permission. It connects only for:
+- the weather: ipwho.is and Open-Meteo;
+- theme files from this repo on GitHub;
+- the Continue watching app's own thumbnail URLs.
+
+All of it runs only while Home, the screensaver or the Settings menu is on screen; nothing runs in the background.
+
+**Build and install** as upstream (`launcher/build-and-install.sh`, or `.ps1` on Windows). For Continue watching, also run:
+
+```bash
+adb shell pm grant com.gathin.tvhome android.permission.READ_TV_LISTINGS
+```
+
+---
+
+*The upstream README follows.*
+
 <p align="center">
   <a href="https://cleanyour.tv"><img src="https://raw.githubusercontent.com/Gathin23/cleanyourtv/main/docs/banner.png" alt="CleanYourTV. Your TV, minus the ads. Strip the bloatware from any Android TV or Google TV over Wi-Fi and replace the ad-filled home screen with a clean launcher that looks like an Apple TV. No root, no cable, nothing uninstalled, and a one-line restore." width="800"></a>
 </p>

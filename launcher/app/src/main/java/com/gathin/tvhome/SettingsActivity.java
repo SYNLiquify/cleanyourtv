@@ -1300,6 +1300,8 @@ public final class SettingsActivity extends Activity {
             final int index = i;
             TextView p = pill(options[i]);
             p.setMinWidth(dp(58));
+            // Five or more word choices (Rotate: Each visit … 60 min) would squeeze the row's label to "Ro…".
+            if (options.length >= 5) p.setPadding(dp(14), 0, dp(14), 0);
             p.setSelected(i == selected);
             p.setOnClickListener(v -> {
                 for (TextView other : pills) other.setSelected(other == v);

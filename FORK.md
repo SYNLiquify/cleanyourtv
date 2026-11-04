@@ -1,25 +1,23 @@
-# Apple TV-style home with Continue watching, weather and a Settings menu
+# Apple TV-style home with Continue watching, weather, a Settings menu and highlight colors
 
-A fork of this repo's launcher (`launcher/`), built and tested on an **onn. 4K Streaming Box (2023, YOC), Google TV 14**.
-Everything else in the repo (the debloat tools, lists and docs) is unchanged.
+A fork of this repo's launcher (`launcher/`), built and tested on an **onn. 4K Streaming Box (2023, YOC), Google TV 14**
+and a **Hisense SmartTV 4K (songshan), Android 11**. Everything else in the repo (the debloat tools, lists and docs) is
+unchanged.
 
-![Home with the dock focused](docs/screenshots/apple-tv-home/home-dock-focused.png)
+![Home with the dock focused, in YouTube's red with the Adaptive highlight color](docs/screenshots/apple-tv-home/home-adaptive-youtube.jpg)
 
 ## Screenshots
 
-All taken on the onn box. In the Continue watching shots, the titles, episode names and thumbnails are blurred for
-privacy; the time-left pills and progress bars are left as they are.
+The full gallery is at the top of [README.md](README.md): the Adaptive highlight on several apps, the menus, Continue
+watching, the app grid, the reorder banner, the screensaver and every Settings page. All were taken on the Hisense;
+in the Continue watching shots the titles, episode names and thumbnails are blurred for privacy.
 
 | | |
 |---|---|
-| ![Dock focused, at the bottom edge with the app's name and the clock lined up on its left](docs/screenshots/apple-tv-home/home-dock-focused.png) | ![Down from the dock: Continue watching under it, the app grid below](docs/screenshots/apple-tv-home/home-continue-watching.png) |
-| **Dock focused**: at the bottom edge, enlarged, the app's name and the clock lined up on its left | **Continue watching**: Down from the dock; thumbnail cards with time left and progress |
-| ![The app grid, four across, spanning the dock's width](docs/screenshots/apple-tv-home/home-app-grid.png) | ![Settings, Home page](docs/screenshots/apple-tv-home/settings-home.png) |
-| **App grid**: the rows span the dock's width | **Settings > Home**: dock and grid sizes, Continue watching, look |
-| ![Settings, Themes page](docs/screenshots/apple-tv-home/settings-themes.png) | ![Settings, Weather page](docs/screenshots/apple-tv-home/settings-weather.png) |
-| **Settings > Themes**: Downloaded (Default first) and every theme in this repo | **Settings > Weather**: units, what to show, location |
-| ![Settings, Clock page](docs/screenshots/apple-tv-home/settings-clock.png) | ![Settings, Storage page](docs/screenshots/apple-tv-home/settings-storage.png) |
-| **Settings > Clock**: 12/24-hour, greetings that rotate | **Settings > Storage**: the TV's space and the launcher's share |
+| ![Continue watching under the dock](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![Settings, Home: the highlight color swatches](docs/screenshots/apple-tv-home/settings-highlight.jpg) |
+| **Continue watching** | **Highlight color** |
+| ![Settings, Themes: every theme in the repo](docs/screenshots/apple-tv-home/themes-gallery.jpg) | ![The custom color picker](docs/screenshots/apple-tv-home/custom-color.jpg) |
+| **Themes** | **Custom color** |
 
 ## What it adds
 
@@ -28,7 +26,7 @@ privacy; the time-left pills and progress bars are left as they are.
   app's name lined up on its left edge. Down glides it up under the clock (eased, about 0.4 s) as it shrinks back and
   the rows below grow; Up reverses it.
 - The rows under the dock span exactly the dock's width, 4 across by default (`grid_columns` in `config.xml`).
-- While apps are being reordered, a pill at the top says so and that Back ends it.
+- While apps are being reordered, a pill under the top bar says so and that Back ends it.
 
 **Continue watching** (`continue_watching_apps` in `config.xml`, set to Nuvio here)
 - A sideways-scrolling row of up to 20 cards under the dock, read from the preview channel the app publishes to the
