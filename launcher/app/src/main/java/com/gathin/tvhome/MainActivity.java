@@ -4417,7 +4417,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             if (clock.getFormat12Hour() != null) clock.setFormat12Hour(clock.getFormat12Hour().toString().replace('\n', ' '));
             if (clock.getFormat24Hour() != null) clock.setFormat24Hour(clock.getFormat24Hour().toString().replace('\n', ' '));
         }
-        date.setSingleLine(true);
+        // One line without setSingleLine, which would swap textAllCaps' transformation for its own (lower-case date).
         date.setMaxLines(1);
         dateBasePx = date.getTextSize();
         weatherBasePx = wx.getTextSize();
@@ -4444,8 +4444,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         int[] at = new int[2], barAt = new int[2];
         date.getLocationInWindow(at);
         bar.getLocationInWindow(barAt);
-        float room = barAt[0] - at[0] - 28 * density;
+        // The column beside the clock is as wide as the clock block leaves it; the pills can be further away.
+        View column = (View) date.getParent();
+        float room = Math.min(barAt[0] - at[0] - 28 * density,
+                column.getWidth() - column.getPaddingLeft() - column.getPaddingRight() - 2 * density);
         if (room <= 0) return;
+        room *= 0.97f;   // a little slack: TextView rounds glyph widths up when it lays out
         float scale = Math.min(1f, room / Math.max(1f, naturalWidth(date, dateBasePx)));
         if (wx.getVisibility() == View.VISIBLE && wx.length() > 0) {
             scale = Math.min(scale, room / Math.max(1f, naturalWidth(wx, weatherBasePx)));
