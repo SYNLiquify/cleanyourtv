@@ -47,6 +47,9 @@ final class Weather {
 
     private final Context context;
     private final Handler main;
+    /** The screen's own context for the line's words, so they follow the launcher's language (LauncherLocale); the
+     *  application context (context) is not wrapped and would always give the TV's. */
+    private final Context words;
     private final TextView view;
     private final SharedPreferences prefs;
     private final SharedPreferences settings;
@@ -56,6 +59,7 @@ final class Weather {
 
     Weather(Context context, Handler main, TextView view) {
         this.context = context.getApplicationContext();
+        this.words = context;
         this.main = main;
         this.view = view;
         prefs = this.context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -142,12 +146,12 @@ final class Weather {
         }
         // Read in °F; shown in the unit chosen in Settings, with the parts it keeps.
         boolean celsius = "c".equals(settings.getString(UNITS_KEY, "f"));
-        StringBuilder text = new StringBuilder(context.getString(celsius ? R.string.weather_temp_c : R.string.weather_temp_f,
+        StringBuilder text = new StringBuilder(words.getString(celsius ? R.string.weather_temp_c : R.string.weather_temp_f,
                 unit(prefs.getInt("temp", 0), celsius)));
-        String sep = context.getString(R.string.weather_separator);
+        String sep = words.getString(R.string.weather_separator);
         if (settings.getBoolean(CONDITIONS_KEY, true)) text.append(sep).append(sky(prefs.getInt("code", 0)));
         if (settings.getBoolean(HILO_KEY, true)) {
-            text.append(sep).append(context.getString(R.string.weather_hilo,
+            text.append(sep).append(words.getString(R.string.weather_hilo,
                     unit(prefs.getInt("hi", 0), celsius), unit(prefs.getInt("lo", 0), celsius)));
         }
         if (!TextUtils.equals(view.getText(), text)) view.setText(text);
@@ -242,7 +246,7 @@ final class Weather {
         else if (code == 85 || code == 86) res = R.string.weather_snow_showers;
         else if (code >= 95) res = R.string.weather_thunderstorm;
         else res = R.string.weather_cloudy;
-        return context.getString(res);
+        return words.getString(res);
     }
 
     private static String get(String url) throws IOException {

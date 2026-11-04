@@ -28,7 +28,7 @@
     <string name="reordering_banner">アプリを並べ替え中。戻るで終了</string>
     <string name="sm_on">オン</string>
     <string name="sm_off">オフ</string>
-    <string name="sm_dock_apps">ドックのアプリ数</string>
+    <string name="sm_dock_apps">ドック数</string>
     <string name="sm_grid_apps">1行のアプリ数</string>
     <string name="sm_continue_watching">続きを見る</string>
     <string name="sm_dock_band">ドックの背景</string>

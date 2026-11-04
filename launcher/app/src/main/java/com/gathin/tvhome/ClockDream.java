@@ -10,6 +10,12 @@ public class ClockDream extends DreamService {
 
     private ClockScene scene;
 
+    /** This fork: the screensaver's date and weather in the launcher's language (Settings > System > Language). */
+    @Override
+    protected void attachBaseContext(android.content.Context base) {
+        super.attachBaseContext(LauncherLocale.wrap(base));
+    }
+
     @Override
     public void onAttachedToWindow() {
         super.onAttachedToWindow();
