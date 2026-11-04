@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Continue watching row under the dock (ContinueRow, config.xml continue_watching_apps). -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <item type="id" name="cw_image_url" />
-    <string name="cw_label" translatable="false">Continue watching</string>
-    <string name="cw_movie" translatable="false">Movie</string>
-    <string name="cw_season_episode" translatable="false">S%1$s E%2$s</string>
-    <string name="cw_episode_only" translatable="false">Episode %1$s</string>
-    <string name="cw_season_only" translatable="false">Season %1$s</string>
-    <string name="cw_left_m" translatable="false">%1$d min left</string>
-    <string name="cw_left_h" translatable="false">%1$d h left</string>
-    <string name="cw_left_hm" translatable="false">%1$d h %2$d min left</string>
-    <string name="cw_almost_done" translatable="false">Almost done</string>
-    <string name="cw_up_next" translatable="false">Up next</string>
-    <string name="cw_watched" translatable="false">%1$d%% watched</string>
+    <string name="cw_label">Continue watching</string>
+    <string name="cw_movie">Movie</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">Episode %1$s</string>
+    <string name="cw_season_only">Season %1$s</string>
+    <string name="cw_left_m">%1$d min left</string>
+    <string name="cw_left_h">%1$d h left</string>
+    <string name="cw_left_hm">%1$d h %2$d min left</string>
+    <string name="cw_almost_done">Almost done</string>
+    <string name="cw_up_next">Up next</string>
+    <string name="cw_watched">%1$d%% watched</string>
 </resources>

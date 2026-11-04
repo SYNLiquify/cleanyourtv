@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Japanese (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">続きを見る</string>
+    <string name="cw_movie">映画</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">第%1$s話</string>
+    <string name="cw_season_only">シーズン%1$s</string>
+    <string name="cw_left_m">残り%1$d分</string>
+    <string name="cw_left_h">残り%1$d時間</string>
+    <string name="cw_left_hm">残り%1$d時間%2$d分</string>
+    <string name="cw_almost_done">もうすぐ終わり</string>
+    <string name="cw_up_next">次のエピソード</string>
+    <string name="cw_watched">%1$d%% 視聴済み</string>
+</resources>

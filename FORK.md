@@ -56,7 +56,7 @@ in the Continue watching shots the titles, episode names and thumbnails are blur
 - Weather: on/off, °F/°C, conditions and high/low on/off, location by city search, refresh.
 - Clock: 12/24-hour, greeting by time of day, custom greetings that rotate (each visit, or every 5–60 minutes), or off.
 - Storage: the TV's free space and what the launcher uses, by part, with clean-up buttons.
-- System: Android TV settings, network, apps, screensaver, default home app, and Updates: how often to check this fork for a new launcher (off, 1, 3, 6, 12 or 24 hours; 1 by default), Check now, Install update, and the installed version.
+- System: Android TV settings, network, apps, screensaver, default home app, Language (the TV's, or any of 32: English, Spanish, Japanese and every language upstream's launcher has; this fork's own pages are translated into Spanish and Japanese only), and Updates: how often to check this fork for a new launcher (off, 1, 3, 6, 12 or 24 hours; 1 by default), Check now, Install update, and the installed version.
 
 **Updates** (`Updates.java`)
 - Builds are published as GitHub releases of this fork, tagged `launcher-<versionCode>`, with the APK as `cleanyourtv-launcher.apk` and `sha256: <hex>` in the notes. The version code is the branch's commit count (`launcher/app/build.gradle`).

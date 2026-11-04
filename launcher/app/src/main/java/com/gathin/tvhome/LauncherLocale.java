@@ -26,7 +26,13 @@ final class LauncherLocale {
     /** base with the configured language, or base itself when locale is off. */
     static Context wrap(Context base) {
         Locale locale = parse(Config.load(base).locale);
-        if (locale == null) return base;
+        if (locale == null) {
+            // Back to the TV's language (this fork's Settings > Language can switch it off again): the formatters
+            // follow the default locale, which an earlier choice in this process may still hold.
+            Locale tv = base.getResources().getConfiguration().getLocales().get(0);
+            if (tv != null && !tv.equals(Locale.getDefault())) Locale.setDefault(tv);
+            return base;
+        }
         // Formatters that take no Context (the clock's date, the lunar line) follow the default locale.
         Locale.setDefault(locale);
         Configuration c = new Configuration(base.getResources().getConfiguration());

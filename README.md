@@ -80,7 +80,11 @@ color, sampled from its banner like the glow behind Home.
 - **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
 - **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
 - **Storage:** the TV's free space, what the launcher uses split by part, and clean-up buttons for thumbnails, downloaded themes and previews.
-- **System:** Android TV settings, network, apps, screensaver and default home app, plus **Updates**.
+- **System:** Android TV settings, network, apps, screensaver and default home app, plus **Language** and **Updates**.
+
+**Language** (Settings > System > Language)
+- The TV's language, or any of 32: English, Español, 日本語 and every language upstream's launcher is translated into (Deutsch, Français, Português, 한국어, 简体中文, Tiếng Việt, Türkçe, Українська and more). It switches at once, Home included.
+- English, Spanish and Japanese cover the whole launcher. In the other languages, upstream's parts are translated and this fork's own pages (Settings, weather, Continue watching, updates) stay in English for now.
 
 **Updates from this fork**
 - The launcher checks this fork's GitHub releases when the TV starts or wakes, and every hour by default. Settings > System > Updates sets the interval (off, 1, 3, 6, 12 or 24 hours) and has **Check now**.

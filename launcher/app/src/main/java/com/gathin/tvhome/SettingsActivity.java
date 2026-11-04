@@ -49,6 +49,8 @@ import java.util.function.IntConsumer;
  */
 public final class SettingsActivity extends Activity {
 
+    /** The category to open on (the language picker reopens the menu on System). */
+    static final String EXTRA_CATEGORY = "category";
     static final String GRID_COLUMNS_KEY = "grid_columns";
     static final String CONTINUE_WATCHING_KEY = "continue_watching";
     static final String GREETING_MODE_KEY = "greeting_mode";
@@ -179,7 +181,8 @@ public final class SettingsActivity extends Activity {
         root.getViewTreeObserver().addOnGlobalFocusChangeListener((was, now) -> {
             if (category == 1 && back == null && now != null && isInside(now, pane)) onThemesEntered();
         });
-        categoryButtons.get(0).requestFocus();
+        int start = Math.max(0, Math.min(categoryButtons.size() - 1, getIntent().getIntExtra(EXTRA_CATEGORY, 0)));
+        categoryButtons.get(start).requestFocus();
     }
 
     @Override
@@ -999,6 +1002,9 @@ public final class SettingsActivity extends Activity {
                 open(SystemSettings.intent(this, Settings.ACTION_DREAM_SETTINGS))));
         pane.addView(actionRow(getString(R.string.sm_default_home), "", () ->
                 open(new Intent(this, HomeSettingsActivity.class))));
+        section(R.string.sm_language);
+        pane.addView(actionRow(getString(R.string.sm_language), languageName(prefs.getString(Config.LOCALE_KEY, config.locale)),
+                this::showLanguages));
         buildUpdates();
         String version = "";
         try {
@@ -1006,6 +1012,56 @@ public final class SettingsActivity extends Activity {
         } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
         }
         note(getString(R.string.sm_about, version));
+    }
+
+    /**
+     * The languages the launcher is translated into, each in its own name: upstream's translations (res/values-*)
+     * plus this fork's Japanese. "" follows the TV. The tags resolve to those folders (id → values-in, he → values-iw).
+     */
+    private static final String[][] LANGUAGES = {
+            {"en", "English"}, {"es", "Español"}, {"ja", "日本語"},
+            {"ar", "العربية"}, {"ast", "Asturianu"}, {"id", "Bahasa Indonesia"}, {"bn", "বাংলা"}, {"ca", "Català"},
+            {"cs", "Čeština"}, {"da", "Dansk"}, {"de", "Deutsch"}, {"es-419", "Español (Latinoamérica)"},
+            {"fr", "Français"}, {"it", "Italiano"}, {"ko", "한국어"}, {"nl", "Nederlands"}, {"nb", "Norsk bokmål"},
+            {"uz", "Oʻzbekcha"}, {"pl", "Polski"}, {"pt-BR", "Português (Brasil)"}, {"pt-PT", "Português (Portugal)"},
+            {"ru", "Русский"}, {"sr-Latn", "Srpski (latinica)"}, {"fi", "Suomi"}, {"sv", "Svenska"},
+            {"vi", "Tiếng Việt"}, {"tr", "Türkçe"}, {"uk", "Українська"}, {"he", "עברית"}, {"th", "ไทย"},
+            {"zh-CN", "简体中文"}, {"zh-TW", "繁體中文"},
+    };
+
+    private String languageName(String tag) {
+        if (tag == null || tag.trim().isEmpty()) return getString(R.string.sm_language_system);
+        for (String[] l : LANGUAGES) if (l[0].equalsIgnoreCase(tag.trim())) return l[1];
+        return tag;
+    }
+
+    /** Settings > System > Language: the TV's language first, then every translation; picking one applies it at once. */
+    private void showLanguages() {
+        clearPane();
+        paneTitle.setText(R.string.sm_language);
+        back = () -> rebuild(5);
+        note(getString(R.string.sm_language_note));
+        String current = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
+        View focus = null;
+        String[][] all = new String[LANGUAGES.length + 1][];
+        all[0] = new String[]{"", getString(R.string.sm_language_system)};
+        System.arraycopy(LANGUAGES, 0, all, 1, LANGUAGES.length);
+        for (String[] l : all) {
+            String tag = l[0];
+            boolean chosen = tag.equalsIgnoreCase(current);
+            View row = actionRow(l[1], chosen ? "✓" : "", () -> {
+                prefs.edit().putString(Config.LOCALE_KEY, tag).apply();
+                changed();
+                // The menu itself takes the language when it is built again (attachBaseContext); it opens on System.
+                getIntent().putExtra(EXTRA_CATEGORY, 5);
+                recreate();
+            });
+            if (chosen) focus = row;
+            pane.addView(row);
+        }
+        View first = focus;
+        if (first != null) pane.post(first::requestFocus);
+        else focusPane();
     }
 
     /** Settings > System > Updates (Updates): how often to check the fork, Check now, and Install when there is one. */
