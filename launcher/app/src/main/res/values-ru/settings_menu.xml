@@ -128,7 +128,7 @@
     <string name="sm_version">Версия</string>
     <string name="sm_language">Язык</string>
     <string name="sm_language_system">Язык телевизора</string>
-    <string name="sm_language_note">Лаунчер, главный экран и меню переключаются сразу. Неустановленный язык сначала загружается.</string>
+    <string name="sm_language_note">Лаунчер, главный экран и меню переключаются сразу. Неустановленный язык сначала загружается; выберите его ещё раз, чтобы переключиться.</string>
     <string name="sm_update_auto">Автопроверка</string>
     <string name="sm_update_every">Интервал проверки</string>
     <string name="sm_update_auto_note">Также при включении телевизора или выходе из режима ожидания. Если выключено, проверка только по кнопке «Проверить обновления».</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Удалить другие языки</string>
     <string name="sm_lang_removed">%1$s удалён</string>
     <string name="sm_built_in">Встроенный</string>
+    <string name="sm_lang_ready">%1$s загружен. Выберите его, чтобы переключиться.</string>
 </resources>

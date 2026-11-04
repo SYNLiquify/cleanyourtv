@@ -128,7 +128,7 @@
     <string name="sm_version">Versió</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma del televisor</string>
-    <string name="sm_language_note">El llançador, l\'inici i els seus menús canvien a l\'instant. Un idioma no instal·lat es baixa primer.</string>
+    <string name="sm_language_note">El llançador, l\'inici i els seus menús canvien a l\'instant. Un idioma no instal·lat es baixa primer; torna\'l a triar per canviar.</string>
     <string name="sm_update_auto">Comprovacions automàtiques</string>
     <string name="sm_update_every">Comprova cada</string>
     <string name="sm_update_auto_note">També quan el televisor s\'engega o surt del mode d\'espera. Amb Desactivat, només es comprova quan prems Cerca actualitzacions.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Suprimeix els altres idiomes</string>
     <string name="sm_lang_removed">S\'ha suprimit %1$s</string>
     <string name="sm_built_in">Integrat</string>
+    <string name="sm_lang_ready">S\'ha baixat %1$s. Tria\'l per canviar.</string>
 </resources>

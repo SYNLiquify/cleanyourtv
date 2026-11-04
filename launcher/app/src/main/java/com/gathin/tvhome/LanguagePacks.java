@@ -267,6 +267,7 @@ final class LanguagePacks {
                 }
                 if (files == 0 || p.strings.isEmpty()) throw new IOException("no translation found for " + tag);
                 save(ctx, tag, p);
+                Log.i(TAG, "installed " + tag + ": " + p.strings.size() + " strings from " + files + " files");
                 synchronized (CACHE) {
                     CACHE.put(tag, p);
                 }
@@ -300,7 +301,9 @@ final class LanguagePacks {
         fetchedWanted = true;
         List<String> available = new ArrayList<>();
         for (String[] l : SettingsActivity.LANGUAGES) available.add(l[0]);
-        String wanted = bestTag(available, LauncherLocale.wanted(ctx));
+        Locale want = LauncherLocale.wanted(ctx);
+        String wanted = bestTag(available, want);
+        Log.i(TAG, "language wanted " + want + ": pack " + wanted + (wanted != null && installed(ctx, wanted) ? " (installed)" : ""));
         if (wanted == null || installed(ctx, wanted)) return;
         install(ctx, wanted, ok -> {
             if (ok && !home.isFinishing() && !home.isDestroyed()) home.recreate();

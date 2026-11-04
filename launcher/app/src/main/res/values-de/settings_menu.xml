@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Sprache</string>
     <string name="sm_language_system">Sprache des TVs</string>
-    <string name="sm_language_note">Launcher, Startbildschirm und Menüs wechseln sofort. Eine nicht installierte Sprache wird zuerst heruntergeladen.</string>
+    <string name="sm_language_note">Launcher, Startbildschirm und Menüs wechseln sofort. Eine nicht installierte Sprache wird zuerst heruntergeladen; wähle sie erneut, um zu wechseln.</string>
     <string name="sm_update_auto">Automatische Suche</string>
     <string name="sm_update_every">Suchen alle</string>
     <string name="sm_update_auto_note">Auch beim Einschalten des TVs oder nach dem Standby. Bei Aus wird nur gesucht, wenn du Nach Updates suchen drückst.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Andere Sprachen löschen</string>
     <string name="sm_lang_removed">%1$s entfernt</string>
     <string name="sm_built_in">Integriert</string>
+    <string name="sm_lang_ready">%1$s heruntergeladen. Wähle es aus, um zu wechseln.</string>
 </resources>

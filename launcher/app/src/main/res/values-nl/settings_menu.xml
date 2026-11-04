@@ -128,7 +128,7 @@
     <string name="sm_version">Versie</string>
     <string name="sm_language">Taal</string>
     <string name="sm_language_system">Taal van de tv</string>
-    <string name="sm_language_note">De launcher, het startscherm en de menu\'s wisselen meteen. Een taal die niet geïnstalleerd is, wordt eerst gedownload.</string>
+    <string name="sm_language_note">De launcher, het startscherm en de menu\'s wisselen meteen. Een taal die niet geïnstalleerd is, wordt eerst gedownload; kies hem opnieuw om te wisselen.</string>
     <string name="sm_update_auto">Automatisch controleren</string>
     <string name="sm_update_every">Controleren elke</string>
     <string name="sm_update_auto_note">Ook als de tv start of uit stand-by komt. Bij Uit wordt alleen gecontroleerd als je op Controleren op updates drukt.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Andere talen verwijderen</string>
     <string name="sm_lang_removed">%1$s verwijderd</string>
     <string name="sm_built_in">Ingebouwd</string>
+    <string name="sm_lang_ready">%1$s gedownload. Kies het om te wisselen.</string>
 </resources>

@@ -128,7 +128,7 @@
     <string name="sm_version">버전</string>
     <string name="sm_language">언어</string>
     <string name="sm_language_system">TV 언어</string>
-    <string name="sm_language_note">런처, 홈, 메뉴가 바로 바뀝니다. 설치되지 않은 언어는 먼저 다운로드됩니다.</string>
+    <string name="sm_language_note">런처, 홈, 메뉴가 바로 바뀝니다. 설치되지 않은 언어는 먼저 다운로드되며, 다시 선택하면 전환됩니다.</string>
     <string name="sm_update_auto">자동 확인</string>
     <string name="sm_update_every">확인 주기</string>
     <string name="sm_update_auto_note">TV를 켜거나 대기 모드에서 깨어날 때도 확인합니다. 꺼짐으로 두면 업데이트 확인을 누를 때만 확인합니다.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">다른 언어 삭제</string>
     <string name="sm_lang_removed">%1$s 삭제됨</string>
     <string name="sm_built_in">기본 제공</string>
+    <string name="sm_lang_ready">%1$s 다운로드 완료. 선택하면 전환됩니다.</string>
 </resources>

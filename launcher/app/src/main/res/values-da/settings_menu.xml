@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Sprog</string>
     <string name="sm_language_system">TV-ets sprog</string>
-    <string name="sm_language_note">Launcheren, Hjem og menuerne skifter med det samme. Et sprog, der ikke er installeret, downloades først.</string>
+    <string name="sm_language_note">Launcheren, Hjem og menuerne skifter med det samme. Et sprog, der ikke er installeret, downloades først; vælg det igen for at skifte.</string>
     <string name="sm_update_auto">Automatisk tjek</string>
     <string name="sm_update_every">Tjek hver</string>
     <string name="sm_update_auto_note">Også når TV-et tændes eller vågner fra standby. Fra tjekker kun, når du trykker på Søg efter opdateringer.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Slet andre sprog</string>
     <string name="sm_lang_removed">%1$s fjernet</string>
     <string name="sm_built_in">Indbygget</string>
+    <string name="sm_lang_ready">%1$s er downloadet. Vælg det for at skifte.</string>
 </resources>

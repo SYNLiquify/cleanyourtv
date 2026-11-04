@@ -128,7 +128,7 @@
     <string name="sm_version">الإصدار</string>
     <string name="sm_language">اللغة</string>
     <string name="sm_language_system">لغة التلفاز</string>
-    <string name="sm_language_note">يتغيّر المشغّل والشاشة الرئيسية وقوائمها فورًا. تُنزَّل اللغة غير المثبّتة أولًا.</string>
+    <string name="sm_language_note">يتغيّر المشغّل والشاشة الرئيسية وقوائمها فورًا. تُنزَّل اللغة غير المثبّتة أولًا؛ اخترها مرة أخرى للتبديل.</string>
     <string name="sm_update_auto">التحقق التلقائي</string>
     <string name="sm_update_every">التحقق كل</string>
     <string name="sm_update_auto_note">وأيضًا عند تشغيل التلفاز أو خروجه من وضع الاستعداد. مع «إيقاف» لا يتم التحقق إلا عند الضغط على «البحث عن تحديثات».</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">حذف اللغات الأخرى</string>
     <string name="sm_lang_removed">تمت إزالة %1$s</string>
     <string name="sm_built_in">مدمجة</string>
+    <string name="sm_lang_ready">تم تنزيل %1$s. اختره للتبديل.</string>
 </resources>

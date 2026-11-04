@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Språk</string>
     <string name="sm_language_system">TV:ns språk</string>
-    <string name="sm_language_note">Startprogrammet, Hem och menyerna byter direkt. Ett språk som inte är installerat laddas ned först.</string>
+    <string name="sm_language_note">Startprogrammet, Hem och menyerna byter direkt. Ett språk som inte är installerat laddas ned först; välj det igen för att byta.</string>
     <string name="sm_update_auto">Automatisk sökning</string>
     <string name="sm_update_every">Sök var</string>
     <string name="sm_update_auto_note">Även när TV:n startar eller vaknar ur viloläge. Av söker bara när du trycker på Sök efter uppdateringar.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Radera andra språk</string>
     <string name="sm_lang_removed">%1$s borttaget</string>
     <string name="sm_built_in">Inbyggt</string>
+    <string name="sm_lang_ready">%1$s har laddats ned. Välj det för att byta.</string>
 </resources>

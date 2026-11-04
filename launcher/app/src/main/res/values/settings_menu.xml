@@ -133,7 +133,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Language</string>
     <string name="sm_language_system">TV\'s language</string>
-    <string name="sm_language_note">The launcher, Home and its menus switch at once. A language that isn\'t installed downloads first.</string>
+    <string name="sm_language_note">The launcher, Home and its menus switch at once. A language that isn\'t installed downloads first; choose it again to switch.</string>
     <string name="sm_update_auto">Automatic checks</string>
     <string name="sm_update_every">Check every</string>
     <string name="sm_update_auto_note">Also when the TV starts or wakes from standby. Off checks only when you press Check for updates.</string>
@@ -153,4 +153,5 @@
     <string name="sm_delete_other_languages">Delete other languages</string>
     <string name="sm_lang_removed">%1$s removed</string>
     <string name="sm_built_in">Built in</string>
+    <string name="sm_lang_ready">%1$s downloaded. Choose it to switch.</string>
 </resources>

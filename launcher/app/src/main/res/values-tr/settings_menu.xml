@@ -128,7 +128,7 @@
     <string name="sm_version">Sürüm</string>
     <string name="sm_language">Dil</string>
     <string name="sm_language_system">TV\'nin dili</string>
-    <string name="sm_language_note">Başlatıcı, Ana ekran ve menüler hemen değişir. Yüklü olmayan bir dil önce indirilir.</string>
+    <string name="sm_language_note">Başlatıcı, Ana ekran ve menüler hemen değişir. Yüklü olmayan bir dil önce indirilir; geçmek için yeniden seçin.</string>
     <string name="sm_update_auto">Otomatik denetim</string>
     <string name="sm_update_every">Denetim sıklığı</string>
     <string name="sm_update_auto_note">TV açıldığında veya bekleme modundan çıktığında da denetler. Kapalıyken yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Diğer dilleri sil</string>
     <string name="sm_lang_removed">%1$s kaldırıldı</string>
     <string name="sm_built_in">Yerleşik</string>
+    <string name="sm_lang_ready">%1$s indirildi. Geçmek için seçin.</string>
 </resources>

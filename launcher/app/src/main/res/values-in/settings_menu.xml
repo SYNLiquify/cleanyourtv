@@ -128,7 +128,7 @@
     <string name="sm_version">Versi</string>
     <string name="sm_language">Bahasa</string>
     <string name="sm_language_system">Bahasa TV</string>
-    <string name="sm_language_note">Peluncur, Beranda, dan menunya langsung berganti. Bahasa yang belum terpasang diunduh terlebih dahulu.</string>
+    <string name="sm_language_note">Peluncur, Beranda, dan menunya langsung berganti. Bahasa yang belum terpasang diunduh terlebih dahulu; pilih lagi untuk beralih.</string>
     <string name="sm_update_auto">Pemeriksaan otomatis</string>
     <string name="sm_update_every">Periksa setiap</string>
     <string name="sm_update_auto_note">Juga saat TV dinyalakan atau bangun dari siaga. Jika Mati, pemeriksaan hanya dilakukan saat Anda menekan Periksa pembaruan.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Hapus bahasa lain</string>
     <string name="sm_lang_removed">%1$s dihapus</string>
     <string name="sm_built_in">Bawaan</string>
+    <string name="sm_lang_ready">%1$s telah diunduh. Pilih untuk beralih.</string>
 </resources>

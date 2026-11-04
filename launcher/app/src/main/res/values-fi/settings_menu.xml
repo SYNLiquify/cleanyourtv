@@ -128,7 +128,7 @@
     <string name="sm_version">Versio</string>
     <string name="sm_language">Kieli</string>
     <string name="sm_language_system">Television kieli</string>
-    <string name="sm_language_note">Käynnistin, aloitusnäyttö ja valikot vaihtuvat heti. Asentamaton kieli ladataan ensin.</string>
+    <string name="sm_language_note">Käynnistin, aloitusnäyttö ja valikot vaihtuvat heti. Asentamaton kieli ladataan ensin; vaihda valitsemalla se uudelleen.</string>
     <string name="sm_update_auto">Automaattiset tarkistukset</string>
     <string name="sm_update_every">Tarkistusväli</string>
     <string name="sm_update_auto_note">Myös kun televisio käynnistyy tai herää valmiustilasta. Pois-asetuksella tarkistetaan vain, kun painat Tarkista päivitykset.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Poista muut kielet</string>
     <string name="sm_lang_removed">%1$s poistettu</string>
     <string name="sm_built_in">Sisäänrakennettu</string>
+    <string name="sm_lang_ready">%1$s ladattu. Vaihda valitsemalla se.</string>
 </resources>

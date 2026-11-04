@@ -128,7 +128,7 @@
     <string name="sm_version">Versão</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma da TV</string>
-    <string name="sm_language_note">O launcher, a tela inicial e os menus mudam na hora. Um idioma não instalado é baixado primeiro.</string>
+    <string name="sm_language_note">O launcher, a tela inicial e os menus mudam na hora. Um idioma não instalado é baixado primeiro; escolha-o de novo para mudar.</string>
     <string name="sm_update_auto">Verificação automática</string>
     <string name="sm_update_every">Verificar a cada</string>
     <string name="sm_update_auto_note">Também quando a TV liga ou sai do modo de espera. Desativado verifica só quando você pressiona Procurar atualizações.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Excluir outros idiomas</string>
     <string name="sm_lang_removed">%1$s removido</string>
     <string name="sm_built_in">Integrado</string>
+    <string name="sm_lang_ready">%1$s baixado. Escolha-o para mudar.</string>
 </resources>

@@ -128,7 +128,7 @@
     <string name="sm_version">גרסה</string>
     <string name="sm_language">שפה</string>
     <string name="sm_language_system">שפת הטלוויזיה</string>
-    <string name="sm_language_note">המשגר, מסך הבית והתפריטים מתחלפים מיד. שפה שאינה מותקנת יורדת קודם.</string>
+    <string name="sm_language_note">המשגר, מסך הבית והתפריטים מתחלפים מיד. שפה שאינה מותקנת יורדת קודם; בחרו בה שוב כדי לעבור.</string>
     <string name="sm_update_auto">בדיקות אוטומטיות</string>
     <string name="sm_update_every">בדיקה כל</string>
     <string name="sm_update_auto_note">גם כשהטלוויזיה נדלקת או מתעוררת ממצב המתנה. במצב כבוי, הבדיקה מתבצעת רק כשלוחצים על בדיקת עדכונים.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">מחיקת שפות אחרות</string>
     <string name="sm_lang_removed">%1$s הוסרה</string>
     <string name="sm_built_in">מובנית</string>
+    <string name="sm_lang_ready">%1$s הורדה. בחרו בה כדי לעבור.</string>
 </resources>

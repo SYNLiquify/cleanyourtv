@@ -128,7 +128,7 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Langue</string>
     <string name="sm_language_system">Langue du téléviseur</string>
-    <string name="sm_language_note">Le lanceur, l\'accueil et ses menus changent aussitôt. Une langue non installée est d\'abord téléchargée.</string>
+    <string name="sm_language_note">Le lanceur, l\'accueil et ses menus changent aussitôt. Une langue non installée est d\'abord téléchargée ; choisissez-la de nouveau pour changer.</string>
     <string name="sm_update_auto">Vérifications automatiques</string>
     <string name="sm_update_every">Fréquence de vérification</string>
     <string name="sm_update_auto_note">Aussi au démarrage du téléviseur ou à sa sortie de veille. Sur Désactivé, la vérification n\'a lieu que lorsque vous appuyez sur Rechercher des mises à jour.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Supprimer les autres langues</string>
     <string name="sm_lang_removed">%1$s supprimée</string>
     <string name="sm_built_in">Intégrée</string>
+    <string name="sm_lang_ready">%1$s téléchargée. Choisissez-la pour changer.</string>
 </resources>

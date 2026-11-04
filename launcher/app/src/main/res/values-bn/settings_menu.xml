@@ -128,7 +128,7 @@
     <string name="sm_version">ভার্সন</string>
     <string name="sm_language">ভাষা</string>
     <string name="sm_language_system">টিভির ভাষা</string>
-    <string name="sm_language_note">লঞ্চার, হোম ও এর মেনু সঙ্গে সঙ্গে বদলে যায়। ইনস্টল না থাকা ভাষা আগে ডাউনলোড হয়।</string>
+    <string name="sm_language_note">লঞ্চার, হোম ও এর মেনু সঙ্গে সঙ্গে বদলে যায়। ইনস্টল না থাকা ভাষা আগে ডাউনলোড হয়; বদলাতে আবার বেছে নিন।</string>
     <string name="sm_update_auto">অটোমেটিক চেক</string>
     <string name="sm_update_every">চেকের ব্যবধান</string>
     <string name="sm_update_auto_note">টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলেও। বন্ধ থাকলে শুধু আপডেট চেক করুন চাপলেই চেক হয়।</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">অন্য ভাষাগুলি মুছুন</string>
     <string name="sm_lang_removed">%1$s সরানো হয়েছে</string>
     <string name="sm_built_in">অন্তর্নির্মিত</string>
+    <string name="sm_lang_ready">%1$s ডাউনলোড হয়েছে। বদলাতে এটি বেছে নিন।</string>
 </resources>

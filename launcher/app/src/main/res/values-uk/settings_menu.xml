@@ -128,7 +128,7 @@
     <string name="sm_version">Версія</string>
     <string name="sm_language">Мова</string>
     <string name="sm_language_system">Мова телевізора</string>
-    <string name="sm_language_note">Лаунчер, головний екран і меню перемикаються одразу. Невстановлена мова спершу завантажується.</string>
+    <string name="sm_language_note">Лаунчер, головний екран і меню перемикаються одразу. Невстановлена мова спершу завантажується; виберіть її ще раз, щоб перемкнутися.</string>
     <string name="sm_update_auto">Автоматична перевірка</string>
     <string name="sm_update_every">Перевіряти кожні</string>
     <string name="sm_update_auto_note">Також під час увімкнення телевізора чи виходу з режиму очікування. Якщо вимкнено, перевірка лише після натискання «Перевірити оновлення».</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Видалити інші мови</string>
     <string name="sm_lang_removed">%1$s видалено</string>
     <string name="sm_built_in">Вбудована</string>
+    <string name="sm_lang_ready">%1$s завантажено. Виберіть її, щоб перемкнутися.</string>
 </resources>

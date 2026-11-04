@@ -128,7 +128,7 @@
     <string name="sm_version">Phiên bản</string>
     <string name="sm_language">Ngôn ngữ</string>
     <string name="sm_language_system">Ngôn ngữ của TV</string>
-    <string name="sm_language_note">Trình chạy, Màn hình chính và các menu đổi ngay. Ngôn ngữ chưa cài đặt sẽ được tải xuống trước.</string>
+    <string name="sm_language_note">Trình chạy, Màn hình chính và các menu đổi ngay. Ngôn ngữ chưa cài đặt sẽ được tải xuống trước; chọn lại để chuyển.</string>
     <string name="sm_update_auto">Tự động kiểm tra</string>
     <string name="sm_update_every">Kiểm tra mỗi</string>
     <string name="sm_update_auto_note">Cũng kiểm tra khi TV khởi động hoặc thức dậy từ chế độ chờ. Khi tắt, chỉ kiểm tra lúc bạn nhấn Kiểm tra cập nhật.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Xóa các ngôn ngữ khác</string>
     <string name="sm_lang_removed">Đã xóa %1$s</string>
     <string name="sm_built_in">Tích hợp sẵn</string>
+    <string name="sm_lang_ready">Đã tải xuống %1$s. Chọn để chuyển.</string>
 </resources>

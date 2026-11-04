@@ -1092,23 +1092,24 @@ public final class SettingsActivity extends Activity {
 
     /**
      * Settings > System > Language: the TV's language first, then Installed and Not installed. Picking an installed
-     * one applies it at once; a language that is not installed downloads from GitHub first, then applies.
+     * one applies it at once; picking one that is not installed downloads it from GitHub and moves it to Installed,
+     * where picking it again switches to it.
      */
     private void showLanguages() {
+        showLanguages(null);
+    }
+
+    /** The list, with focus on focusTag (a language just downloaded), else on the language in use. */
+    private void showLanguages(String focusTag) {
         clearPane();
         paneTitle.setText(R.string.sm_language);
         back = () -> rebuild(5);
         note(getString(R.string.sm_language_note));
         String current = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
         java.util.Set<String> have = LanguagePacks.installedTags(this);
-        List<String> tags = new ArrayList<>();
-        for (String[] l : LANGUAGES) tags.add(l[0]);
-        // "TV's language": downloads the TV's language too when there is a translation and it isn't here yet.
-        String tvTag = LanguagePacks.bestTag(tags, android.content.res.Resources.getSystem().getConfiguration().getLocales().get(0));
-        View[] focus = {null};
-        View tv = languageRow("", getString(R.string.sm_language_system), current.isEmpty(),
-                tvTag != null && !have.contains(tvTag) ? tvTag : null);
-        if (current.isEmpty()) focus[0] = tv;
+        View focus = null;
+        View tv = languageRow("", getString(R.string.sm_language_system), current.isEmpty(), false);
+        if (current.isEmpty()) focus = tv;
         pane.addView(tv);
         for (int pass = 0; pass < 2; pass++) {
             boolean installedPass = pass == 0;
@@ -1118,31 +1119,34 @@ public final class SettingsActivity extends Activity {
                 boolean installed = LanguagePacks.builtIn(tag) || have.contains(tag);
                 if (installed != installedPass) continue;
                 boolean chosen = tag.equalsIgnoreCase(current);
-                View row = languageRow(tag, l[1], chosen, installed ? null : tag);
-                if (chosen) focus[0] = row;
+                View row = languageRow(tag, l[1], chosen, !installed);
+                if (focusTag != null ? tag.equals(focusTag) : chosen) focus = row;
                 pane.addView(row);
             }
         }
-        if (focus[0] != null) pane.post(focus[0]::requestFocus);
+        View first = focus;
+        if (first != null) pane.post(first::requestFocus);
         else focusPane();
     }
 
-    /** One language: picking it applies tag, after downloading the pack download (null when there is none to get). */
-    private View languageRow(String tag, String name, boolean chosen, String download) {
+    /** One language: picking it applies tag, or, when download, only downloads it (picked again, it applies). */
+    private View languageRow(String tag, String name, boolean chosen, boolean download) {
         TextView[] value = {null};
         View row = actionRow(name, chosen ? "✓" : " ", () -> {
             if (downloading) return;
-            if (download == null) {
+            if (!download) {
                 applyLanguage(tag);
                 return;
             }
             downloading = true;
             value[0].setText(R.string.sm_lang_downloading);
-            LanguagePacks.install(this, download, ok -> {
+            LanguagePacks.install(this, tag, ok -> {
                 downloading = false;
                 if (isFinishing() || isDestroyed()) return;
                 if (ok) {
-                    applyLanguage(tag);
+                    Toast.makeText(this, getString(R.string.sm_lang_ready, name), Toast.LENGTH_LONG).show();
+                    // Still on this list (not another page): show the language under Installed, focused.
+                    if (category == 5 && getString(R.string.sm_language).contentEquals(paneTitle.getText())) showLanguages(tag);
                 } else {
                     value[0].setText(R.string.sm_lang_failed_short);
                     Toast.makeText(this, R.string.sm_lang_failed, Toast.LENGTH_LONG).show();

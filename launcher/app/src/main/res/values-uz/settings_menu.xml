@@ -128,7 +128,7 @@
     <string name="sm_version">Versiya</string>
     <string name="sm_language">Til</string>
     <string name="sm_language_system">Televizor tili</string>
-    <string name="sm_language_note">Launcher, Bosh ekran va menyular darhol almashadi. Oʻrnatilmagan til avval yuklab olinadi.</string>
+    <string name="sm_language_note">Launcher, Bosh ekran va menyular darhol almashadi. Oʻrnatilmagan til avval yuklab olinadi; almashtirish uchun uni yana tanlang.</string>
     <string name="sm_update_auto">Avtomatik tekshirish</string>
     <string name="sm_update_every">Tekshirish oraligʻi</string>
     <string name="sm_update_auto_note">TV yoqilganda yoki kutish rejimidan chiqqanda ham tekshiradi. Oʻchiq boʻlsa, faqat Yangilanishlarni tekshirish bosilganda tekshiradi.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Boshqa tillarni oʻchirish</string>
     <string name="sm_lang_removed">%1$s oʻchirildi</string>
     <string name="sm_built_in">Ichki</string>
+    <string name="sm_lang_ready">%1$s yuklab olindi. Almashtirish uchun uni tanlang.</string>
 </resources>

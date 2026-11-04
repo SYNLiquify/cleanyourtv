@@ -102,7 +102,7 @@ color, sampled from its banner like the glow behind Home.
 
 **Language** (Settings > System > Language)
 - The TV's language, or any of 32: English, Español, 日本語 and every language upstream's launcher is translated into (Deutsch, Français, Português, 한국어, 简体中文, Tiếng Việt, Türkçe, Українська and more). It switches at once, Home included.
-- The launcher ships with English only, about 450 KB smaller. The list is split into **Installed** and **Not installed**; picking one that isn't installed downloads it from this fork's GitHub first. The language in use is fetched by itself after an update, and installed ones refresh with each new version.
+- The launcher ships with English only, about 450 KB smaller. The list is split into **Installed** and **Not installed**; picking one that isn't installed downloads it from this fork's GitHub and moves it to Installed, where you pick it again to switch. The language in use is fetched by itself after an update, and installed ones refresh with each new version.
 - The date and weather next to the clock stay on one line in every language, shrinking a little when a language's words are long.
 - Every one of them covers the whole launcher: the Settings menu, weather, Continue watching, the update card and the reordering pill included. Japanese and this fork's own text in the other languages are new translations; corrections are welcome.
 

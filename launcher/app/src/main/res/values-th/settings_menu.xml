@@ -128,7 +128,7 @@
     <string name="sm_version">เวอร์ชัน</string>
     <string name="sm_language">ภาษา</string>
     <string name="sm_language_system">ภาษาของทีวี</string>
-    <string name="sm_language_note">ตัวเรียกใช้ หน้าหลัก และเมนูจะเปลี่ยนทันที ภาษาที่ยังไม่ได้ติดตั้งจะดาวน์โหลดก่อน</string>
+    <string name="sm_language_note">ตัวเรียกใช้ หน้าหลัก และเมนูจะเปลี่ยนทันที ภาษาที่ยังไม่ได้ติดตั้งจะดาวน์โหลดก่อน เลือกอีกครั้งเพื่อเปลี่ยน</string>
     <string name="sm_update_auto">ตรวจอัตโนมัติ</string>
     <string name="sm_update_every">ตรวจทุก</string>
     <string name="sm_update_auto_note">ตรวจเมื่อทีวีเปิดเครื่องหรือตื่นจากสแตนด์บายด้วย หากปิด จะตรวจเฉพาะเมื่อคุณกดตรวจหาอัปเดต</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">ลบภาษาอื่น</string>
     <string name="sm_lang_removed">นำ %1$s ออกแล้ว</string>
     <string name="sm_built_in">ในตัว</string>
+    <string name="sm_lang_ready">ดาวน์โหลด %1$s แล้ว เลือกเพื่อเปลี่ยน</string>
 </resources>

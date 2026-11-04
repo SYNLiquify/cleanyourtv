@@ -128,7 +128,7 @@
     <string name="sm_version">Versión</string>
     <string name="sm_language">Llingua</string>
     <string name="sm_language_system">Llingua del televisor</string>
-    <string name="sm_language_note">El llanzador, Aniciu y los sos menús camuden al intre. Una llingua ensin instalar báxase primero.</string>
+    <string name="sm_language_note">El llanzador, Aniciu y los sos menús camuden al intre. Una llingua ensin instalar báxase primero; escuéyila otra vegada pa camudar.</string>
     <string name="sm_update_auto">Comprobaciones automátiques</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">Tamién al prender el televisor o al salir del mou d\'espera. Con Non, namás se comprueba al calcar Buscar anovamientos.</string>
@@ -148,4 +148,5 @@
     <string name="sm_delete_other_languages">Desaniciar les otres llingües</string>
     <string name="sm_lang_removed">Desanicióse %1$s</string>
     <string name="sm_built_in">Integráu</string>
+    <string name="sm_lang_ready">Baxóse %1$s. Escuéyilu pa camudar.</string>
 </resources>
