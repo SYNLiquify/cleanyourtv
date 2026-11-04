@@ -73,6 +73,10 @@ public final class SettingsActivity extends Activity {
     }
 
     private SharedPreferences prefs;
+    /** Accent: the highlight colour this menu and Home use; 0 is white. */
+    private int accent;
+    /** Highlight color Adaptive: Home follows each app's colour; this menu stays white. */
+    private boolean adaptive;
     private Config config;
     private float density;
     private final Handler main = new Handler(Looper.getMainLooper());
@@ -94,6 +98,8 @@ public final class SettingsActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         prefs = getSharedPreferences(Config.SETTINGS_NAME, MODE_PRIVATE);
+        accent = Accent.get(this);
+        adaptive = Accent.adaptive(this);
         config = Config.load(this);
         density = getResources().getDisplayMetrics().density;
 
@@ -203,6 +209,7 @@ public final class SettingsActivity extends Activity {
         if (event.getAction() == KeyEvent.ACTION_DOWN && focus != null) {
             int key = event.getKeyCode();
             if (key == KeyEvent.KEYCODE_DPAD_LEFT && isInside(focus, pane) && !(focus instanceof EditText)
+                    && !(focus instanceof ColorSlider)
                     && FocusFinder.getInstance().findNextFocus(pane, focus, View.FOCUS_LEFT) == null) {
                 if (category >= 0) categoryButtons.get(category).requestFocus();
                 return true;
@@ -319,6 +326,13 @@ public final class SettingsActivity extends Activity {
             e.apply();
             changed();
         }));
+        section(R.string.sm_highlight);
+        note(getString(R.string.sm_highlight_note));
+        pane.addView(swatchRow());
+        boolean preset = false;
+        for (int c : Accent.PRESETS) preset |= c == accent;
+        preset |= adaptive;
+        pane.addView(actionRow(getString(R.string.sm_custom_color), preset ? "" : Accent.hex(accent), this::showColorPicker));
         section(R.string.sm_apps);
         pane.addView(actionRow(getString(R.string.sm_reorder), "", () -> {
             setResult(RESULT_OK, new Intent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true));
@@ -522,7 +536,7 @@ public final class SettingsActivity extends Activity {
         View ring = new View(this);
         GradientDrawable ringShape = new GradientDrawable();
         ringShape.setCornerRadius(radius + gap);
-        ringShape.setStroke(dp(3), 0xF2FFFFFF);
+        ringShape.setStroke(dp(3), Accent.ring(accent));
         ring.setBackground(ringShape);
         ring.setAlpha(0f);
         FrameLayout.LayoutParams ringLp = new FrameLayout.LayoutParams(-1, -1);
@@ -1033,6 +1047,241 @@ public final class SettingsActivity extends Activity {
         field.requestFocus();
     }
 
+    // ---- highlight colour ---------------------------------------------------------------------------------
+
+    /** The preset colours as round swatches, white first; the chosen one ringed, the focused one zoomed. */
+    private View swatchRow() {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setClipChildren(false);
+        row.setClipToPadding(false);
+        int size = dp(42);   // ten swatches fit the pane with a focused one's zoom
+        row.addView(swatch(getString(R.string.sm_adaptive), wheel(), adaptive, v -> {
+            adaptive = true;
+            Accent.setAdaptive(this);
+            restyle(0);
+            rebuild(0);
+            focusSwatch(getString(R.string.sm_adaptive));
+        }), swatchLp(size));
+        for (int c : Accent.PRESETS) {
+            GradientDrawable fill = new GradientDrawable();
+            fill.setShape(GradientDrawable.OVAL);
+            fill.setColor(c == 0 ? 0xFFF2F2F2 : c);
+            String name = c == 0 ? getString(R.string.sm_white_default) : Accent.hex(c);
+            row.addView(swatch(name, fill, !adaptive && c == accent, v -> {
+                applyAccent(c);
+                rebuild(0);
+                focusSwatch(name);
+            }), swatchLp(size));
+        }
+        LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
+        rowLp.topMargin = dp(8);
+        rowLp.bottomMargin = dp(4);
+        row.setLayoutParams(rowLp);
+        return row;
+    }
+
+    private LinearLayout.LayoutParams swatchLp(int size) {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
+        lp.setMarginEnd(dp(10));
+        return lp;
+    }
+
+    /** A round swatch: the colour inset in a ring that shows when chosen, and brightens and zooms with focus. */
+    private View swatch(String name, Drawable colour, boolean chosen, View.OnClickListener pick) {
+        FrameLayout swatch = new FrameLayout(this);
+        swatch.setFocusable(true);
+        swatch.setClickable(true);
+        swatch.setContentDescription(name);
+        StateListDrawable frame = new StateListDrawable();
+        GradientDrawable focusedRing = new GradientDrawable();
+        focusedRing.setShape(GradientDrawable.OVAL);
+        focusedRing.setStroke(dp(3), 0xFFFFFFFF);
+        GradientDrawable chosenRing = new GradientDrawable();
+        chosenRing.setShape(GradientDrawable.OVAL);
+        chosenRing.setStroke(dp(2), 0x99FFFFFF);
+        frame.addState(new int[]{android.R.attr.state_focused}, focusedRing);
+        frame.addState(new int[]{android.R.attr.state_selected}, chosenRing);
+        frame.addState(new int[]{}, new GradientDrawable());
+        swatch.setBackground(frame);
+        View dot = new View(this);
+        dot.setBackground(colour);
+        FrameLayout.LayoutParams dotLp = new FrameLayout.LayoutParams(-1, -1);
+        dotLp.setMargins(dp(6), dp(6), dp(6), dp(6));
+        swatch.addView(dot, dotLp);
+        swatch.setSelected(chosen);
+        swatch.setOnFocusChangeListener((v, focused) -> {
+            v.animate().scaleX(focused ? 1.15f : 1f).scaleY(focused ? 1.15f : 1f).setDuration(120).start();
+            if (focused) scrollIntoView((View) v.getParent());
+        });
+        swatch.setOnClickListener(pick);
+        return swatch;
+    }
+
+    /** Adaptive's swatch: a colour wheel. */
+    private static Drawable wheel() {
+        GradientDrawable g = new GradientDrawable();
+        g.setShape(GradientDrawable.OVAL);
+        g.setGradientType(GradientDrawable.SWEEP_GRADIENT);
+        g.setColors(new int[]{0xFFFF453A, 0xFFFFD60A, 0xFF30D158, 0xFF64D2FF, 0xFF0A84FF, 0xFFBF5AF2, 0xFFFF375F, 0xFFFF453A});
+        return g;
+    }
+
+    /** After the page is rebuilt in the new colour, focus goes back to the swatch that was picked. */
+    private void focusSwatch(String name) {
+        pane.post(() -> {
+            View found = findSwatch(pane, name);
+            if (found != null) found.requestFocus();
+        });
+    }
+
+    private static View findSwatch(View v, String description) {
+        if (description.contentEquals(v.getContentDescription() == null ? "" : v.getContentDescription())) return v;
+        if (v instanceof ViewGroup) {
+            ViewGroup g = (ViewGroup) v;
+            for (int i = 0; i < g.getChildCount(); i++) {
+                View f = findSwatch(g.getChildAt(i), description);
+                if (f != null) return f;
+            }
+        }
+        return null;
+    }
+
+    /** Saves the colour, and repaints this menu in it: the category pills now, the page when it is rebuilt. */
+    private void applyAccent(int c) {
+        adaptive = false;
+        Accent.set(this, c);
+        restyle(c == 0 ? 0 : 0xFF000000 | c);
+    }
+
+    private void restyle(int c) {
+        accent = c;
+        changed();
+        for (TextView b : categoryButtons) {
+            b.setBackground(glass(dp(22)));
+            b.setTextColor(ink(INK));
+        }
+    }
+
+    /**
+     * The custom colour, for the remote: hue, saturation and brightness sliders (Left and Right; hold to go faster),
+     * a preview of a focused pill in the colour, Use this color, and a hex code for an exact one.
+     */
+    private void showColorPicker() {
+        clearPane();
+        paneTitle.setText(R.string.sm_custom_color);
+        back = () -> rebuild(0);
+        float[] hsv = new float[3];
+        android.graphics.Color.colorToHSV(accent == 0 ? 0xFF0A84FF : accent, hsv);
+
+        LinearLayout previewRow = new LinearLayout(this);
+        previewRow.setOrientation(LinearLayout.HORIZONTAL);
+        previewRow.setGravity(Gravity.CENTER_VERTICAL);
+        TextView sample = text(17, R.string.font_medium, INK);
+        sample.setText(R.string.sm_preview);
+        sample.setGravity(Gravity.CENTER);
+        sample.setPadding(dp(26), 0, dp(26), 0);
+        GradientDrawable sampleBg = new GradientDrawable();
+        sampleBg.setCornerRadius(dp(23));
+        sample.setBackground(sampleBg);
+        previewRow.addView(sample, new LinearLayout.LayoutParams(-2, dp(46)));
+        TextView outline = text(17, R.string.font_medium, INK);
+        outline.setText(R.string.sm_preview);
+        outline.setGravity(Gravity.CENTER);
+        outline.setPadding(dp(26), 0, dp(26), 0);
+        GradientDrawable outlineBg = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x2EFFFFFF, 0x14FFFFFF});
+        outlineBg.setCornerRadius(dp(23));
+        outline.setBackground(outlineBg);
+        LinearLayout.LayoutParams outlineLp = new LinearLayout.LayoutParams(-2, dp(46));
+        outlineLp.setMarginStart(dp(14));
+        previewRow.addView(outline, outlineLp);
+        TextView hexLabel = text(18, R.string.font_regular, 0xB3FFFFFF);
+        hexLabel.setLetterSpacing(0.06f);
+        LinearLayout.LayoutParams hexLp = new LinearLayout.LayoutParams(-2, -2);
+        hexLp.setMarginStart(dp(22));
+        previewRow.addView(hexLabel, hexLp);
+        LinearLayout.LayoutParams previewLp = new LinearLayout.LayoutParams(-1, -2);
+        previewLp.bottomMargin = dp(10);
+        pane.addView(previewRow, previewLp);
+
+        ColorSlider hue = new ColorSlider(this, ColorSlider.HUE);
+        ColorSlider sat = new ColorSlider(this, ColorSlider.SATURATION);
+        ColorSlider val = new ColorSlider(this, ColorSlider.BRIGHTNESS);
+        Runnable update = () -> {
+            int c = android.graphics.Color.HSVToColor(hsv);
+            sampleBg.setColor(Accent.fill(c));
+            sample.setTextColor(Accent.onFill(c));
+            outlineBg.setStroke(Math.max(1, dp(1.5f)), Accent.edge(c, 0x38FFFFFF));
+            hexLabel.setText(Accent.hex(c));
+            hue.set(hsv[0], hsv[0], hsv[1], hsv[2]);
+            sat.set(hsv[1] * 100f, hsv[0], hsv[1], hsv[2]);
+            val.set(hsv[2] * 100f, hsv[0], hsv[1], hsv[2]);
+        };
+        ColorSlider.Listener listener = (slider, value) -> {
+            if (slider == hue) hsv[0] = Math.min(value, 359.9f);
+            else if (slider == sat) hsv[1] = value / 100f;
+            else hsv[2] = value / 100f;
+            update.run();
+        };
+        int[] labels = {R.string.sm_hue, R.string.sm_saturation, R.string.sm_brightness};
+        ColorSlider[] sliders = {hue, sat, val};
+        for (int i = 0; i < sliders.length; i++) {
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setGravity(Gravity.CENTER_VERTICAL);
+            TextView name = text(18, R.string.font_regular, INK);
+            name.setText(labels[i]);
+            row.addView(name, new LinearLayout.LayoutParams(dp(140), -2));
+            sliders[i].setListener(listener);
+            ColorSlider slider = sliders[i];
+            slider.setOnFocusChangeListener((v, focused) -> {
+                name.setTextColor(focused ? INK : 0xB3FFFFFF);
+                if (focused) scrollIntoView(row);
+            });
+            name.setTextColor(0xB3FFFFFF);
+            row.addView(slider, new LinearLayout.LayoutParams(0, dp(48), 1f));
+            LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
+            rowLp.topMargin = dp(10);
+            pane.addView(row, rowLp);
+        }
+        update.run();
+
+        LinearLayout buttons = new LinearLayout(this);
+        buttons.setOrientation(LinearLayout.HORIZONTAL);
+        LinearLayout.LayoutParams buttonsLp = new LinearLayout.LayoutParams(-2, -2);
+        buttonsLp.topMargin = dp(24);
+        pane.addView(buttons, buttonsLp);
+        TextView use = pill(getString(R.string.sm_use_color));
+        use.setOnClickListener(v -> {
+            applyAccent(android.graphics.Color.HSVToColor(hsv));
+            back = null;
+            rebuild(0);
+            focusPane();
+        });
+        buttons.addView(use, new LinearLayout.LayoutParams(-2, dp(46)));
+        TextView hex = pill(getString(R.string.sm_hex));
+        hex.setOnClickListener(v -> editText(getString(R.string.sm_hex), getString(R.string.sm_hex_hint),
+                Accent.hex(android.graphics.Color.HSVToColor(hsv)), false, typed -> {
+                    int c = Accent.parse(typed);
+                    if (c == -1) Toast.makeText(this, R.string.sm_hex_bad, Toast.LENGTH_LONG).show();
+                    else applyAccent(c);
+                }));
+        LinearLayout.LayoutParams hexButtonLp = new LinearLayout.LayoutParams(-2, dp(46));
+        hexButtonLp.setMarginStart(dp(12));
+        buttons.addView(hex, hexButtonLp);
+        TextView cancel = pill(getString(R.string.sm_cancel));
+        cancel.setOnClickListener(v -> {
+            back = null;
+            rebuild(0);
+            focusPane();
+        });
+        LinearLayout.LayoutParams cancelLp = new LinearLayout.LayoutParams(-2, dp(46));
+        cancelLp.setMarginStart(dp(12));
+        buttons.addView(cancel, cancelLp);
+        hue.requestFocus();
+    }
+
     // ---- rows ------------------------------------------------------------------------------------------
 
     /** A label and a set of pills, the chosen one outlined; OK on a pill picks it. selected -1: none marked. */
@@ -1161,21 +1410,22 @@ public final class SettingsActivity extends Activity {
     private Drawable glass(int radius) {
         StateListDrawable s = new StateListDrawable();
         GradientDrawable focused = new GradientDrawable();
-        focused.setColor(0xF5FFFFFF);
+        focused.setColor(Accent.fill(accent));
         focused.setCornerRadius(radius);
         GradientDrawable chosen = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x47FFFFFF, 0x29FFFFFF});
         chosen.setCornerRadius(radius);
-        chosen.setStroke(Math.max(1, Math.round(1.5f * density)), 0xD9FFFFFF);
+        chosen.setStroke(Math.max(1, Math.round(1.5f * density)), accent == 0 ? 0xD9FFFFFF : Accent.ring(accent));
         GradientDrawable rest = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x2EFFFFFF, 0x14FFFFFF});
         rest.setCornerRadius(radius);
-        rest.setStroke(Math.max(1, dp(1)), 0x38FFFFFF);
+        rest.setStroke(Math.max(1, dp(1)), Accent.edge(accent, 0x38FFFFFF));
         s.addState(new int[]{android.R.attr.state_focused}, focused);
         s.addState(new int[]{android.R.attr.state_selected}, chosen);
         s.addState(new int[]{}, rest);
         return s;
     }
 
-    private static ColorStateList ink(int rest) {
+    private ColorStateList ink(int rest) {
+        if (accent != 0) return Accent.ink(accent, rest);
         return new ColorStateList(new int[][]{{android.R.attr.state_focused}, {}}, new int[]{INK_FOCUSED, rest});
     }
 
@@ -1196,7 +1446,7 @@ public final class SettingsActivity extends Activity {
         GradientDrawable focused = new GradientDrawable();
         focused.setColor(0x33FFFFFF);
         focused.setCornerRadius(dp(16));
-        focused.setStroke(dp(2), 0xF2FFFFFF);
+        focused.setStroke(dp(2), Accent.ring(accent));
         GradientDrawable rest = new GradientDrawable();
         rest.setColor(0x1FFFFFFF);
         rest.setCornerRadius(dp(16));

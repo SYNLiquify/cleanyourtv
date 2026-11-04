@@ -725,6 +725,14 @@ public class AppAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         return e.ambient;
     }
 
+    /** ambientColorAt for the first tile of this package, or 0 when it has none (Continue watching's ring). */
+    int ambientColorForPackage(String pkg) {
+        for (int i = 0; i < items.size(); i++) {
+            if (pkg != null && pkg.equals(items.get(i).pkg)) return ambientColorAt(i);
+        }
+        return 0;
+    }
+
     /** Share of the tile height the icon takes in uniform_tiles mode (onCreateViewHolder). */
     private static final float ICON_SHARE = 0.62f;
 

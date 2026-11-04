@@ -103,4 +103,18 @@
     <string name="sm_screensaver" translatable="false">Screensaver</string>
     <string name="sm_default_home" translatable="false">Default home app</string>
     <string name="sm_about" translatable="false">Launcher %1$s · this fork</string>
+    <string name="sm_highlight" translatable="false">Highlight color</string>
+    <string name="sm_highlight_note" translatable="false">What a focused tile, pill, menu row or card turns, and the pills\' outline. The wheel, Adaptive, takes each app\'s own color, like the glow behind Home.</string>
+    <string name="sm_custom_color" translatable="false">Custom color</string>
+    <string name="sm_hue" translatable="false">Hue</string>
+    <string name="sm_saturation" translatable="false">Saturation</string>
+    <string name="sm_brightness" translatable="false">Brightness</string>
+    <string name="sm_use_color" translatable="false">Use this color</string>
+    <string name="sm_hex" translatable="false">Hex code</string>
+    <string name="sm_hex_hint" translatable="false">#3A7BFF</string>
+    <string name="sm_hex_bad" translatable="false">That isn\'t a color. Use a code like #3A7BFF.</string>
+    <string name="sm_cancel" translatable="false">Cancel</string>
+    <string name="sm_preview" translatable="false">Preview</string>
+    <string name="sm_white_default" translatable="false">White (default)</string>
+    <string name="sm_adaptive" translatable="false">Adaptive</string>
 </resources>

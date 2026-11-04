@@ -98,6 +98,8 @@ final class ContinueRow {
         void onContinueDown(float centerX);
         /** The number of cards changed (0 hides the row); Home makes room for it or gives the room back. */
         void onContinueCountChanged(int count);
+        /** The focus ring's colour for a card of this app (Settings > Home > Highlight color). */
+        int ringColor(String pkg);
     }
 
     private final Context context;
@@ -490,7 +492,8 @@ final class ContinueRow {
         rest.setStroke(Math.round(density), 0x1FFFFFFF);
         GradientDrawable lit = new GradientDrawable();
         lit.setCornerRadius(radius);
-        lit.setStroke(Math.round(2.5f * density), 0xF2FFFFFF);
+        int litWidth = Math.round(2.5f * density);
+        lit.setStroke(litWidth, Accent.ring(Accent.get(context)));
         card.setForeground(rest);
 
         ImageView image = new ImageView(context);
@@ -552,6 +555,10 @@ final class ContinueRow {
         card.setTag(new Object[]{image, title, episode, episodeTitle, left, line});
 
         card.setOnFocusChangeListener((v, focused) -> {
+            if (focused) {
+                int at = list.getChildAdapterPosition(v);
+                if (at >= 0 && at < items.size()) lit.setStroke(litWidth, host.ringColor(items.get(at).pkg));
+            }
             v.setForeground(focused ? lit : rest);
             v.animate().scaleX(focused ? 1.05f : 1f).scaleY(focused ? 1.05f : 1f).setDuration(150).start();
             v.setTranslationZ(focused ? 1f : 0f);

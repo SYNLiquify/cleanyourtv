@@ -569,6 +569,7 @@ final class AppLibraryDialog {
         menuPanel.setPivotY(0f);
         menuPanel.setScaleY(0.92f);
         menuPanel.setTranslationY(-dp(8));
+        Accent.restyle(menuPanel, activity.getResources().getDisplayMetrics().density, Accent.get(activity));
         menu.showAtLocation(activity.getWindow().getDecorView(), Gravity.TOP | Gravity.START, x, y);
         menuPanel.animate().alpha(1f).scaleY(1f).translationY(0f).setDuration(reducedMotion ? Motion.REDUCED_MS : 220)
                 .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();

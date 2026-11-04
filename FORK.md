@@ -46,7 +46,13 @@ privacy; the time-left pills and progress bars are left as they are.
 - A line under the date on Home and on the clock screensaver: temperature, conditions, today's high and low.
 
 **Settings menu** (the top bar's Settings button; Android's settings stay a long press away and under System)
-- Home: dock apps 1–6, apps per row 2–6, Continue watching on/off, dock background, animations, reorder.
+- Home: dock apps 1–6, apps per row 2–6, Continue watching on/off, dock background, animations, reorder, and the
+  highlight color.
+- Highlight color: what a focused tile's glass, a pill, a menu row and a Continue watching card turn, and the pills'
+  outline. Swatches for white (the default), eight presets and **Adaptive**, which takes each focused app's own
+  color, sampled from its banner like the glow behind Home. **Custom color** has hue, saturation and brightness
+  sliders made for the remote (Left/Right, hold to go faster), a live preview, and a hex code field. Text on a
+  light color turns dark.
 - Themes: previews of every theme in this repo's `themes/`, applied in place. Applied themes are kept on the TV under
   Downloaded (Default first) and can be deleted, except the one in use. A bold status line with a Refresh button.
 - Weather: on/off, °F/°C, conditions and high/low on/off, location by city search, refresh.

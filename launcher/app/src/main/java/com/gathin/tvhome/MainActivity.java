@@ -188,6 +188,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private String heroArtKey;
     /** The focus glow's colour while the cinematic shelf tints it, 0 for plain white glass. */
     private int glassAccent;
+    /** Settings > Home > Highlight colour (Accent): 0 is the launcher's own white. */
+    private int accent;
+    /** Highlight color Adaptive: accent follows the focused app's banner colour (the glow's), set on each focus. */
+    private boolean adaptiveAccent;
     private int ambientColor = -1;
     private ValueAnimator ambientAnimator;
     /** config.xml glow_snap: the glow takes a new colour in one frame instead of the dip-and-fade. */
@@ -532,7 +536,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         sky.setIntensity(cfg.skyIntensity);
         glass = findViewById(R.id.glass);
         glass.setStyle(cfg.glassStyle);
+        accent = Accent.get(this);
+        adaptiveAccent = Accent.adaptive(this);
         if (festive) glass.setAccent(festival.accentColor());
+        else if (accent != 0) glass.setAccent(accent);
+        glassAccent = festive ? 0 : accent;
         ambient = findViewById(R.id.ambient);
         // The glow is one bitmap, so its alpha can be applied while drawing it. Otherwise every frame of
         // a fade renders it into a full-screen offscreen buffer first.
@@ -920,6 +928,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             libraryFromTopBar = true;   // closing it goes back to this button, not to the pill after the last row
         });
         btnLibraryTop.setVisibility(cfg.libraryButton && cfg.appLibrary ? View.VISIBLE : View.GONE);
+        restyleTopPills();
         addTopBarApps(cfg.topBarApps, cfg.launchActions);
         iconOnlyButtons = cfg.iconOnlyButtons;
         topMenu = cfg.topMenu;
@@ -1779,7 +1788,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         drop();
         reordering = false;
         adapter.setReordering(false);
-        glass.setAccent(festive ? festival.accentColor() : 0);
+        glass.setAccent(festive ? festival.accentColor() : accent);
         btnReorder.setActivated(false);
         List<String> keys = adapter.movableKeys();
         List<String> before = orderAtStart;
@@ -1963,11 +1972,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glassTargetY = y;
         // Cinematic shelf: the highlight glows in the dock app's colour, plain white in the grid (and on the dock with
         // cinematic_white_focus). app_glow: every tile. In a single row every tile is the dock's kind.
-        boolean coloured = (appGlow || cinematic && !cinematicWhiteFocus && (singleRow || position < COLUMNS)) && !festive;
-        int accent = coloured ? adapter.ambientColorAt(position) : 0;
-        if ((cinematic || appGlow) && !festive && accent != glassAccent) {
-            glassAccent = accent;
-            glass.setAccent(accent);
+        boolean coloured = (adaptiveAccent || appGlow || cinematic && !cinematicWhiteFocus && (singleRow || position < COLUMNS))
+                && !festive;
+        int tint = coloured ? adapter.ambientColorAt(position) : accent;
+        if (adaptiveAccent && !festive && tint != accent) {
+            // Adaptive: the pills, menus and Continue watching ring take this app's colour too.
+            accent = tint;
+            restyleTopPills();
+        }
+        if ((cinematic || appGlow || adaptiveAccent) && !festive && tint != glassAccent) {
+            glassAccent = tint;
+            glass.setAccent(tint);
         }
         if (!glassShown) {
             springX.cancel();
@@ -2662,6 +2677,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 if (dockDecoration.setExtraBottom(room)) grid.invalidateItemDecorations();
                 grid.requestLayout();
             }
+
+            @Override public int ringColor(String pkg) {
+                if (!adaptiveAccent || festive) return Accent.ring(accent);
+                // Adaptive: the card's own app's colour, sampled from its tile like the glow; white without one.
+                int c = adapter.ambientColorForPackage(pkg);
+                if (c != 0) {
+                    accent = c;
+                    restyleTopPills();
+                }
+                return Accent.ring(c);
+            }
         }, handler, apps);
         // On the root, under the glass, so the row runs to the screen's edges; placeContinueRow clips it at the
         // grid's top, where the grid's own wrapper clips the tiles.
@@ -3013,6 +3039,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             button.setOnClickListener(v -> open(new Intent(target)));
             // After the network pill and the VPN pill; the Hebrew bar runs the other way, so before both there.
             bar.addView(button, bar.indexOfChild(getResources().getBoolean(R.bool.rtl_menu_bar) ? btnVpn : btnWifi));
+            Accent.stylePill(button, density, accent);
             topAppButtons.add(button);
         }
     }
@@ -4026,6 +4053,19 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         folded.add(view);
     }
 
+    /**
+     * Highlight colour: the top bar's pills fill with it on focus and wear it as their outline. The VPN pill keeps
+     * its own green or plain look (VpnBadge sets it on every network change). Adaptive calls this on each tile.
+     */
+    private void restyleTopPills() {
+        if (accent == 0) return;
+        ViewGroup bar = findViewById(R.id.topButtons);
+        for (int i = 0; i < bar.getChildCount(); i++) {
+            View b = bar.getChildAt(i);
+            if (b instanceof TextView && b.getId() != R.id.btnVpn) Accent.stylePill((TextView) b, density, accent);
+        }
+    }
+
     private PopupWindow glassPopup(View panel, int width) {
         final PopupWindow popup = new PopupWindow(panel, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
         popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));   // needed for Back to dismiss
@@ -4041,6 +4081,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     /** Drop in: fade and unfold from the top edge, hanging under the anchor pill. */
     private void dropIn(PopupWindow popup, View panel, View anchor, int gravity) {
+        Accent.restyle(panel, density, accent);
         panel.setAlpha(0f);
         panel.setPivotY(0f);
         panel.setScaleY(0.92f);
@@ -4283,6 +4324,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             panel.setPivotY(height);
             panel.setScaleY(0.92f);
             panel.setTranslationY(8 * density);
+            Accent.restyle(panel, density, accent);
             popup.showAtLocation(root, Gravity.NO_GRAVITY, at[0], Math.max(0, at[1] - gap - height));
             panel.animate().alpha(1f).scaleY(1f).translationY(0f).setDuration(220)
                     .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();
