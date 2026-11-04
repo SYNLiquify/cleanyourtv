@@ -79,15 +79,17 @@ color, sampled from its banner like the glow behind Home.
   - Checks stay within GitHub's rate limit: only when the page is opened, at most every 10 minutes, the raw README first, and the API only when it changed.
 - **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
 - **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
-- **Storage:** the TV's free space, what the launcher uses split by part, and clean-up buttons for thumbnails, downloaded themes and previews.
+- **Storage:** the TV's free space, what the launcher uses split by part, the languages built in (a page listing them, the one in use marked), and clean-up buttons for thumbnails, downloaded themes and previews.
 - **System:** three rows, each opening its own page: **ATV settings** (Android TV settings, network and Wi-Fi, apps, screensaver, default home app), **Language** and **Updates**.
 
 **Language** (Settings > System > Language)
 - The TV's language, or any of 32: English, Español, 日本語 and every language upstream's launcher is translated into (Deutsch, Français, Português, 한국어, 简体中文, Tiếng Việt, Türkçe, Українська and more). It switches at once, Home included.
+- The date and weather next to the clock stay on one line in every language, shrinking a little when a language's words are long.
 - Every one of them covers the whole launcher: the Settings menu, weather, Continue watching, the update card and the reordering pill included. Japanese and this fork's own text in the other languages are new translations; corrections are welcome.
 
 **Updates from this fork**
 - The launcher checks this fork's GitHub releases when the TV starts or wakes, and every hour by default. Settings > System > Updates has **Check for updates** at the top and the interval (off, 1, 3, 6, 12 or 24 hours) below.
+- When an update has installed, a notice says so over whatever app Android left on screen (press Home to go back), and Home confirms the new version once.
 - A newer version is offered on Home (**Install update** or **Later**) and under Settings > System > Updates. The APK is downloaded, checked against the SHA-256 in the release notes, and handed to Android's installer, which asks for one press of **Install**: a sideloaded app can't update itself silently.
 - What each TV has stays as it is: the Inputs pill still appears only on a TV with HDMI or a tuner, and every Settings choice, dock order and theme is kept on the TV across updates.
 

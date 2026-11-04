@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">TV를 켜거나 대기 모드에서 깨어날 때도 확인합니다. 꺼짐으로 두면 업데이트 확인을 누를 때만 확인합니다.</string>
     <string name="sm_atv_settings">ATV 설정</string>
     <string name="sm_hours">%1$d시간</string>
+    <string name="update_done">런처가 %1$s(으)로 업데이트됨</string>
+    <string name="update_done_hint">런처가 %1$s(으)로 업데이트되었습니다. 홈을 눌러 돌아가세요.</string>
+    <string name="sm_st_languages">언어</string>
+    <string name="sm_st_languages_value">%1$d개 포함</string>
+    <string name="sm_st_languages_note">런처에 포함되어 앱 크기에 들어갑니다. 시스템 > 언어에서 바꿀 수 있습니다.</string>
+    <string name="sm_in_use">사용 중</string>
 </resources>

@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">גם כשהטלוויזיה נדלקת או מתעוררת ממצב המתנה. במצב כבוי, הבדיקה מתבצעת רק כשלוחצים על בדיקת עדכונים.</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
+    <string name="update_done">מסך הבית עודכן ל-%1$s</string>
+    <string name="update_done_hint">מסך הבית עודכן ל-%1$s. לחצו על בית כדי לחזור.</string>
+    <string name="sm_st_languages">שפות</string>
+    <string name="sm_st_languages_value">%1$d כלולות</string>
+    <string name="sm_st_languages_note">מובנות במסך הבית וחלק מגודל האפליקציה; החלפה במערכת > שפה.</string>
+    <string name="sm_in_use">בשימוש</string>
 </resources>

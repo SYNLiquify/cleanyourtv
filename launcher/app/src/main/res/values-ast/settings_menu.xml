@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Tamién al prender el televisor o al salir del mou d\'espera. Con Non, namás se comprueba al calcar Buscar anovamientos.</string>
     <string name="sm_atv_settings">Axustes d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Llanzador anováu a %1$s</string>
+    <string name="update_done_hint">Llanzador anováu a %1$s. Primi Aniciu pa volver.</string>
+    <string name="sm_st_languages">Llingües</string>
+    <string name="sm_st_languages_value">%1$d incluyíes</string>
+    <string name="sm_st_languages_note">Inclúyense nel llanzador y formen parte del so tamañu; camuda ente elles en Sistema > Llingua.</string>
+    <string name="sm_in_use">N\'usu</string>
 </resources>

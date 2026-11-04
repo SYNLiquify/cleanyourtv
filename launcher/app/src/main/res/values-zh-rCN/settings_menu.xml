@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">电视开机或从待机唤醒时也会检查。关闭后，仅在按下“检查更新”时检查。</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
+    <string name="update_done">启动器已更新到 %1$s</string>
+    <string name="update_done_hint">启动器已更新到 %1$s。按主页键返回。</string>
+    <string name="sm_st_languages">语言</string>
+    <string name="sm_st_languages_value">包含 %1$d 种</string>
+    <string name="sm_st_languages_note">内置于启动器，计入应用大小；可在 系统 > 语言 中切换。</string>
+    <string name="sm_in_use">使用中</string>
 </resources>

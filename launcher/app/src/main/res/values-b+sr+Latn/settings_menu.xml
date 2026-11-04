@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">I kada se TV uključi ili probudi iz mirovanja. Kada je isključeno, provera se vrši samo kada pritisnete Proveri ažuriranja.</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Pokretač je ažuriran na %1$s</string>
+    <string name="update_done_hint">Pokretač je ažuriran na %1$s. Pritisnite Početna za povratak.</string>
+    <string name="sm_st_languages">Jezici</string>
+    <string name="sm_st_languages_value">Uključeno: %1$d</string>
+    <string name="sm_st_languages_note">Ugrađeni u pokretač i deo njegove veličine; menjaju se u Sistem > Jezik.</string>
+    <string name="sm_in_use">U upotrebi</string>
 </resources>

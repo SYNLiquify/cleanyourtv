@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Também quando a TV liga ou sai do modo de espera. Desativado verifica só quando você pressiona Procurar atualizações.</string>
     <string name="sm_atv_settings">Configurações do ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Launcher atualizado para %1$s</string>
+    <string name="update_done_hint">Launcher atualizado para %1$s. Pressione Início para voltar.</string>
+    <string name="sm_st_languages">Idiomas</string>
+    <string name="sm_st_languages_value">%1$d incluídos</string>
+    <string name="sm_st_languages_note">Incluídos no launcher e parte do tamanho do app; troque em Sistema > Idioma.</string>
+    <string name="sm_in_use">Em uso</string>
 </resources>

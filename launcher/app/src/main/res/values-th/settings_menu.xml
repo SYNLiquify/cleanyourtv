@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">ตรวจเมื่อทีวีเปิดเครื่องหรือตื่นจากสแตนด์บายด้วย หากปิด จะตรวจเฉพาะเมื่อคุณกดตรวจหาอัปเดต</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
+    <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>
+    <string name="update_done_hint">อัปเดตลอนเชอร์เป็น %1$s แล้ว กดหน้าหลักเพื่อกลับ</string>
+    <string name="sm_st_languages">ภาษา</string>
+    <string name="sm_st_languages_value">มี %1$d ภาษา</string>
+    <string name="sm_st_languages_note">รวมอยู่ในลอนเชอร์และขนาดแอป เปลี่ยนได้ที่ ระบบ > ภาษา</string>
+    <string name="sm_in_use">กำลังใช้</string>
 </resources>

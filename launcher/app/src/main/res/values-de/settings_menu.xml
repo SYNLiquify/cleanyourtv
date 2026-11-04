@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Auch beim Einschalten des TVs oder nach dem Standby. Bei Aus wird nur gesucht, wenn du Nach Updates suchen drückst.</string>
     <string name="sm_atv_settings">ATV-Einstellungen</string>
     <string name="sm_hours">%1$d Std.</string>
+    <string name="update_done">Launcher auf %1$s aktualisiert</string>
+    <string name="update_done_hint">Launcher auf %1$s aktualisiert. Drücke Home, um zurückzukehren.</string>
+    <string name="sm_st_languages">Sprachen</string>
+    <string name="sm_st_languages_value">%1$d enthalten</string>
+    <string name="sm_st_languages_note">Im Launcher enthalten und Teil seiner App-Größe; wechseln unter System > Sprache.</string>
+    <string name="sm_in_use">In Verwendung</string>
 </resources>

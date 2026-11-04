@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলেও। বন্ধ থাকলে শুধু আপডেট চেক করুন চাপলেই চেক হয়।</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
+    <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>
+    <string name="update_done_hint">লঞ্চার %1$s-এ আপডেট হয়েছে। ফিরতে হোম চাপুন।</string>
+    <string name="sm_st_languages">ভাষা</string>
+    <string name="sm_st_languages_value">%1$dটি অন্তর্ভুক্ত</string>
+    <string name="sm_st_languages_note">লঞ্চারে অন্তর্ভুক্ত এবং অ্যাপের আকারের অংশ; সিস্টেম > ভাষা থেকে বদলান।</string>
+    <string name="sm_in_use">ব্যবহৃত হচ্ছে</string>
 </resources>

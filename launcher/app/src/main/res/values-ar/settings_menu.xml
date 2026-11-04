@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">وأيضًا عند تشغيل التلفاز أو خروجه من وضع الاستعداد. مع «إيقاف» لا يتم التحقق إلا عند الضغط على «البحث عن تحديثات».</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
+    <string name="update_done">تم تحديث المشغّل إلى %1$s</string>
+    <string name="update_done_hint">تم تحديث المشغّل إلى %1$s. اضغط الرئيسية للعودة.</string>
+    <string name="sm_st_languages">اللغات</string>
+    <string name="sm_st_languages_value">%1$d مضمّنة</string>
+    <string name="sm_st_languages_note">مدمجة في المشغّل وجزء من حجم التطبيق؛ بدّل بينها من النظام > اللغة.</string>
+    <string name="sm_in_use">قيد الاستخدام</string>
 </resources>

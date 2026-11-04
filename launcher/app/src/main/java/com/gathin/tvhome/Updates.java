@@ -63,7 +63,7 @@ public final class Updates extends BroadcastReceiver {
     private static final String PREFS = "updates";
     private static final String LAST_CHECK = "last_check";
     private static final String CODE = "code", NAME = "name", URL_KEY = "url", SIZE = "size", SHA_KEY = "sha",
-            DISMISSED = "dismissed", ERROR = "error";
+            DISMISSED = "dismissed", ERROR = "error", JUST_UPDATED = "just_updated";
 
     private static final String ACTION_CHECK = "com.gathin.tvhome.UPDATE_CHECK";
     private static final String ACTION_INSTALLED = "com.gathin.tvhome.UPDATE_INSTALL_STATUS";
@@ -142,6 +142,15 @@ public final class Updates extends BroadcastReceiver {
 
     static void dismiss(Context ctx, Offer o) {
         if (o != null) prefs(ctx).edit().putInt(DISMISSED, o.code).apply();
+    }
+
+    /** The version an update just installed, until Home has shown it once; null otherwise. */
+    static String justUpdated(Context ctx) {
+        return prefs(ctx).getString(JUST_UPDATED, null);
+    }
+
+    static void clearJustUpdated(Context ctx) {
+        prefs(ctx).edit().remove(JUST_UPDATED).apply();
     }
 
     // ---- checking -------------------------------------------------------------------------------------------
@@ -323,6 +332,15 @@ public final class Updates extends BroadcastReceiver {
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
             // The TV started (or this launcher was just updated): set the alarm again and check now.
             schedule(ctx);
+            if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
+                // The installer may leave another app in front: say over it that the update is in and Home is
+                // back, in the launcher's language; Home confirms it with a card next time it opens.
+                String version = installedName(ctx);
+                prefs(ctx).edit().putString(JUST_UPDATED, version).apply();
+                Context words = LauncherLocale.wrap(ctx);
+                android.widget.Toast.makeText(words, words.getString(R.string.update_done_hint, version),
+                        android.widget.Toast.LENGTH_LONG).show();
+            }
             if (intervalHours(ctx) > 0 && Intent.ACTION_BOOT_COMPLETED.equals(action)) {
                 PendingResult pending = goAsync();
                 check(ctx, o -> pending.finish());

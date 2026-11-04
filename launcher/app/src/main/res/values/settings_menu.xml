@@ -139,4 +139,10 @@
     <string name="sm_update_auto_note">Also when the TV starts or wakes from standby. Off checks only when you press Check for updates.</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Launcher updated to %1$s</string>
+    <string name="update_done_hint">Launcher updated to %1$s. Press Home to go back.</string>
+    <string name="sm_st_languages">Languages</string>
+    <string name="sm_st_languages_value">%1$d included</string>
+    <string name="sm_st_languages_note">Built into the launcher and part of its App size; switch between them under System > Language.</string>
+    <string name="sm_in_use">In use</string>
 </resources>

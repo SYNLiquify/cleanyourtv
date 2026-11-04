@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Также при включении телевизора или выходе из режима ожидания. Если выключено, проверка только по кнопке «Проверить обновления».</string>
     <string name="sm_atv_settings">Настройки ATV</string>
     <string name="sm_hours">%1$d ч</string>
+    <string name="update_done">Лаунчер обновлён до %1$s</string>
+    <string name="update_done_hint">Лаунчер обновлён до %1$s. Нажмите «Домой», чтобы вернуться.</string>
+    <string name="sm_st_languages">Языки</string>
+    <string name="sm_st_languages_value">Встроено: %1$d</string>
+    <string name="sm_st_languages_note">Встроены в лаунчер и входят в его размер; переключаются в Система > Язык.</string>
+    <string name="sm_in_use">Используется</string>
 </resources>

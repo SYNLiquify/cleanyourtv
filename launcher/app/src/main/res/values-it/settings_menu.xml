@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Anche all\'accensione della TV o al risveglio dallo standby. Con No, il controllo avviene solo quando premi Cerca aggiornamenti.</string>
     <string name="sm_atv_settings">Impostazioni ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Launcher aggiornato a %1$s</string>
+    <string name="update_done_hint">Launcher aggiornato a %1$s. Premi Home per tornare.</string>
+    <string name="sm_st_languages">Lingue</string>
+    <string name="sm_st_languages_value">%1$d incluse</string>
+    <string name="sm_st_languages_note">Integrate nel launcher e parte delle sue dimensioni; cambiale in Sistema > Lingua.</string>
+    <string name="sm_in_use">In uso</string>
 </resources>

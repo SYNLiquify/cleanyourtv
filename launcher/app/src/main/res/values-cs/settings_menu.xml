@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Také při zapnutí televize nebo probuzení z pohotovosti. Když je vypnuto, kontroluje se jen po stisknutí Vyhledat aktualizace.</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Spouštěč aktualizován na %1$s</string>
+    <string name="update_done_hint">Spouštěč aktualizován na %1$s. Stiskněte Domů pro návrat.</string>
+    <string name="sm_st_languages">Jazyky</string>
+    <string name="sm_st_languages_value">Zahrnuto: %1$d</string>
+    <string name="sm_st_languages_note">Jsou součástí spouštěče a jeho velikosti; přepnete je v Systém > Jazyk.</string>
+    <string name="sm_in_use">Používá se</string>
 </resources>

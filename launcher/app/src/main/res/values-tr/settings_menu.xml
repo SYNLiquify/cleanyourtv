@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">TV açıldığında veya bekleme modundan çıktığında da denetler. Kapalıyken yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
+    <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>
+    <string name="update_done_hint">Başlatıcı %1$s sürümüne güncellendi. Geri dönmek için Ana Ekran\'a basın.</string>
+    <string name="sm_st_languages">Diller</string>
+    <string name="sm_st_languages_value">%1$d dahil</string>
+    <string name="sm_st_languages_note">Başlatıcıya dahil ve uygulama boyutunun parçası; Sistem > Dil\'den değiştirin.</string>
+    <string name="sm_in_use">Kullanımda</string>
 </resources>

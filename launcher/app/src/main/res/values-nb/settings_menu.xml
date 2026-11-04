@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Også når TV-en starter eller våkner fra hvilemodus. Av sjekker bare når du trykker på Se etter oppdateringer.</string>
     <string name="sm_atv_settings">ATV-innstillinger</string>
     <string name="sm_hours">%1$d t</string>
+    <string name="update_done">Startskjermen er oppdatert til %1$s</string>
+    <string name="update_done_hint">Startskjermen er oppdatert til %1$s. Trykk Hjem for å gå tilbake.</string>
+    <string name="sm_st_languages">Språk</string>
+    <string name="sm_st_languages_value">%1$d inkludert</string>
+    <string name="sm_st_languages_note">Innebygd i startskjermen og en del av størrelsen; bytt under System > Språk.</string>
+    <string name="sm_in_use">I bruk</string>
 </resources>

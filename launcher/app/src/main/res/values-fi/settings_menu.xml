@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Myös kun televisio käynnistyy tai herää valmiustilasta. Pois-asetuksella tarkistetaan vain, kun painat Tarkista päivitykset.</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Käynnistin päivitetty versioon %1$s</string>
+    <string name="update_done_hint">Käynnistin päivitetty versioon %1$s. Palaa painamalla Koti.</string>
+    <string name="sm_st_languages">Kielet</string>
+    <string name="sm_st_languages_value">%1$d mukana</string>
+    <string name="sm_st_languages_note">Sisältyvät käynnistimeen ja sen kokoon; vaihda kohdassa Järjestelmä > Kieli.</string>
+    <string name="sm_in_use">Käytössä</string>
 </resources>

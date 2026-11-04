@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Aussi au démarrage du téléviseur ou à sa sortie de veille. Sur Désactivé, la vérification n\'a lieu que lorsque vous appuyez sur Rechercher des mises à jour.</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Lanceur mis à jour vers %1$s</string>
+    <string name="update_done_hint">Lanceur mis à jour vers %1$s. Appuyez sur Accueil pour revenir.</string>
+    <string name="sm_st_languages">Langues</string>
+    <string name="sm_st_languages_value">%1$d incluses</string>
+    <string name="sm_st_languages_note">Intégrées au lanceur et comprises dans sa taille ; changez-les dans Système > Langue.</string>
+    <string name="sm_in_use">Utilisée</string>
 </resources>

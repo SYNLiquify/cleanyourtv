@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Også når TV-et tændes eller vågner fra standby. Fra tjekker kun, når du trykker på Søg efter opdateringer.</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
+    <string name="update_done">Startskærm opdateret til %1$s</string>
+    <string name="update_done_hint">Startskærm opdateret til %1$s. Tryk på Hjem for at vende tilbage.</string>
+    <string name="sm_st_languages">Sprog</string>
+    <string name="sm_st_languages_value">%1$d inkluderet</string>
+    <string name="sm_st_languages_note">Indbygget i startskærmen og en del af dens størrelse; skift under System > Sprog.</string>
+    <string name="sm_in_use">I brug</string>
 </resources>

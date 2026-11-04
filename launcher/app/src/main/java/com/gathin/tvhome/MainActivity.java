@@ -621,6 +621,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         shamsi = cfg.shamsiDate;
         lunarDate = findViewById(R.id.lunarDate);
         weather = new Weather(this, handler, findViewById(R.id.weather));   // shown or not as Settings say
+        setUpDateFit();
         lunar = cfg.lunarDate;
         lunarOffset = Lunar.offsetFor(cfg.lunarUtcOffset, Locale.getDefault());
         if (lunar) lunarDate.setVisibility(View.VISIBLE);
@@ -1198,7 +1199,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         promptsPaused = false;
         // Launcher updates from the fork (Updates): offer one already found, and check when the interval has passed,
         // which also covers the TV waking from standby.
-        handler.postDelayed(() -> offerUpdate(Updates.offer(this)), 1500);
+        handler.postDelayed(() -> {
+            showUpdatedCard();
+            offerUpdate(Updates.offer(this));
+        }, 1500);
         Updates.checkIfDue(this, this::offerUpdate);
         if (grid.getAdapter() == null) grid.setAdapter(adapter);   // dropped by onTrimMemory
         switch (tileRefresh.onResume(packagesChangedSinceRebuild())) {
@@ -4388,6 +4392,103 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         PopupWindow popup = glassPopup(panel, (int) (300 * density));
         addSettingsMenuRow(rows, popup, R.string.update_install, () -> installUpdate(offer));
         addSettingsMenuRow(rows, popup, R.string.update_later, () -> Updates.dismiss(this, offer));
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (300 * density), panel.getMeasuredWidth()));
+        Accent.restyle(panel, density, accent);
+        popup.showAtLocation(root, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, Math.round(120 * density));
+        rows.getChildAt(1).requestFocus();
+    }
+
+    /** The date's and the weather line's text size as laid out, before fitDateLine shrinks them. */
+    private float dateBasePx, weatherBasePx;
+
+    /**
+     * This fork: the date and the weather line beside the clock stay on one line in every language and shrink to fit
+     * the room left of the top bar's pills, instead of wrapping (Spanish, German, Portuguese, Russian, Ukrainian and
+     * Asturian put the weekday on its own line) or ending in "…". They shrink only as far as needed, to 60% at most.
+     */
+    private void setUpDateFit() {
+        TextView date = findViewById(R.id.date);
+        TextView wx = findViewById(R.id.weather);
+        View bar = findViewById(R.id.topButtons);
+        if (date == null || wx == null || bar == null) return;
+        if (date instanceof android.widget.TextClock) {
+            android.widget.TextClock clock = (android.widget.TextClock) date;
+            if (clock.getFormat12Hour() != null) clock.setFormat12Hour(clock.getFormat12Hour().toString().replace('\n', ' '));
+            if (clock.getFormat24Hour() != null) clock.setFormat24Hour(clock.getFormat24Hour().toString().replace('\n', ' '));
+        }
+        date.setSingleLine(true);
+        date.setMaxLines(1);
+        dateBasePx = date.getTextSize();
+        weatherBasePx = wx.getTextSize();
+        Runnable fit = () -> handler.post(this::fitDateLine);
+        android.text.TextWatcher watcher = new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
+            @Override public void afterTextChanged(android.text.Editable s) { fit.run(); }
+        };
+        date.addTextChangedListener(watcher);
+        wx.addTextChangedListener(watcher);
+        View.OnLayoutChangeListener moved = (v, l, t, r, b, ol, ot, or, ob) -> {
+            if (l != ol || r != or) fit.run();
+        };
+        bar.addOnLayoutChangeListener(moved);
+        ((View) date.getParent()).addOnLayoutChangeListener(moved);
+    }
+
+    private void fitDateLine() {
+        TextView date = findViewById(R.id.date);
+        TextView wx = findViewById(R.id.weather);
+        View bar = findViewById(R.id.topButtons);
+        if (date == null || wx == null || bar == null || bar.getWidth() == 0 || dateBasePx <= 0) return;
+        int[] at = new int[2], barAt = new int[2];
+        date.getLocationInWindow(at);
+        bar.getLocationInWindow(barAt);
+        float room = barAt[0] - at[0] - 28 * density;
+        if (room <= 0) return;
+        float scale = Math.min(1f, room / Math.max(1f, naturalWidth(date, dateBasePx)));
+        if (wx.getVisibility() == View.VISIBLE && wx.length() > 0) {
+            scale = Math.min(scale, room / Math.max(1f, naturalWidth(wx, weatherBasePx)));
+        }
+        scale = Math.max(0.6f, scale);
+        setPxIfChanged(date, dateBasePx * scale);
+        setPxIfChanged(wx, weatherBasePx * scale);
+    }
+
+    /** The text's width at the given size, capitals and letter spacing included. */
+    private static float naturalWidth(TextView v, float px) {
+        TextPaint p = new TextPaint(v.getPaint());
+        p.setTextSize(px);
+        // As shown: the view's transformation (textAllCaps) applied, which isAllCaps() would need API 28 to tell.
+        CharSequence text = v.getTransformationMethod() != null
+                ? v.getTransformationMethod().getTransformation(v.getText(), v) : v.getText();
+        return p.measureText(text, 0, text.length());
+    }
+
+    private static void setPxIfChanged(TextView v, float px) {
+        if (Math.abs(v.getTextSize() - px) > 0.5f) v.setTextSize(TypedValue.COMPLEX_UNIT_PX, px);
+    }
+
+    /**
+     * After an update (Updates, MY_PACKAGE_REPLACED): a card on Home saying which version is now installed, once.
+     * The installer can leave another app in front; the toast at install time says to come back, this confirms it.
+     */
+    private void showUpdatedCard() {
+        String version = Updates.justUpdated(this);
+        if (version == null || !resumed || reordering || openPopup != null || cardPrompt != null) return;
+        Updates.clearJustUpdated(this);
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        TextView head = new TextView(this);
+        head.setText(getString(R.string.update_done, version));
+        head.setTypeface(UiFont.get(this, R.string.font_medium));
+        head.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        head.setTextColor(0xB3FFFFFF);
+        int pad = Math.round(14 * density);
+        head.setPadding(pad, Math.round(10 * density), pad, Math.round(8 * density));
+        rows.addView(head);
+        PopupWindow popup = glassPopup(panel, (int) (300 * density));
+        addSettingsMenuRow(rows, popup, android.R.string.ok, () -> { });
         panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         popup.setWidth(Math.max((int) (300 * density), panel.getMeasuredWidth()));
         Accent.restyle(panel, density, accent);

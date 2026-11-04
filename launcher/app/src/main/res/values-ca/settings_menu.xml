@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">També quan el televisor s\'engega o surt del mode d\'espera. Amb Desactivat, només es comprova quan prems Cerca actualitzacions.</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Llançador actualitzat a %1$s</string>
+    <string name="update_done_hint">Llançador actualitzat a %1$s. Prem Inici per tornar.</string>
+    <string name="sm_st_languages">Idiomes</string>
+    <string name="sm_st_languages_value">%1$d inclosos</string>
+    <string name="sm_st_languages_note">Inclosos al llançador i part de la seva mida; canvia\'ls a Sistema > Idioma.</string>
+    <string name="sm_in_use">En ús</string>
 </resources>

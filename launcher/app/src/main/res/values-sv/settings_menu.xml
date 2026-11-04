@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Även när TV:n startar eller vaknar ur viloläge. Av söker bara när du trycker på Sök efter uppdateringar.</string>
     <string name="sm_atv_settings">ATV-inställningar</string>
     <string name="sm_hours">%1$d tim</string>
+    <string name="update_done">Startskärmen uppdaterad till %1$s</string>
+    <string name="update_done_hint">Startskärmen uppdaterad till %1$s. Tryck på Hem för att gå tillbaka.</string>
+    <string name="sm_st_languages">Språk</string>
+    <string name="sm_st_languages_value">%1$d inkluderade</string>
+    <string name="sm_st_languages_note">Inbyggda i startskärmen och en del av storleken; byt under System > Språk.</string>
+    <string name="sm_in_use">Används</string>
 </resources>

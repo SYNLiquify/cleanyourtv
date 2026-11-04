@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">テレビの起動時やスタンバイからの復帰時にも確認します。オフにすると「アップデートを確認」を押したときだけ確認します。</string>
     <string name="sm_atv_settings">ATV の設定</string>
     <string name="sm_hours">%1$d時間</string>
+    <string name="update_done">ランチャーを %1$s に更新しました</string>
+    <string name="update_done_hint">ランチャーを %1$s に更新しました。ホームボタンで戻れます。</string>
+    <string name="sm_st_languages">言語</string>
+    <string name="sm_st_languages_value">%1$d 言語を収録</string>
+    <string name="sm_st_languages_note">ランチャーに含まれ、アプリのサイズに含まれます。システム > 言語 で切り替えられます。</string>
+    <string name="sm_in_use">使用中</string>
 </resources>

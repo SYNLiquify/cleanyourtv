@@ -906,6 +906,9 @@ public final class SettingsActivity extends Activity {
             values.add((TextView) ((ViewGroup) row).getChildAt(1));
             pane.addView(row);
         }
+        // The languages built into the launcher (Settings > System > Language), as a row that opens their list.
+        pane.addView(actionRow(getString(R.string.sm_st_languages),
+                getString(R.string.sm_st_languages_value, LANGUAGES.length), this::showInstalledLanguages));
         section(R.string.sm_clean_up);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
         java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
@@ -1038,6 +1041,30 @@ public final class SettingsActivity extends Activity {
         if (tag == null || tag.trim().isEmpty()) return getString(R.string.sm_language_system);
         for (String[] l : LANGUAGES) if (l[0].equalsIgnoreCase(tag.trim())) return l[1];
         return tag;
+    }
+
+    /**
+     * Storage > Languages: every language built into the launcher, the one in use marked. They are part of the App
+     * size above (string tables, a few KB each), so nothing here can be removed on its own.
+     */
+    private void showInstalledLanguages() {
+        clearPane();
+        paneTitle.setText(R.string.sm_st_languages);
+        back = () -> rebuild(4);
+        note(getString(R.string.sm_st_languages_note));
+        String chosen = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
+        Locale inUse = chosen.isEmpty() ? getResources().getConfiguration().getLocales().get(0) : Locale.forLanguageTag(chosen);
+        String[] best = null;
+        for (String[] l : LANGUAGES) {
+            Locale candidate = Locale.forLanguageTag(l[0]);
+            if (!candidate.getLanguage().equals(inUse.getLanguage())) continue;
+            boolean regionMatches = candidate.getCountry().isEmpty() || candidate.getCountry().equals(inUse.getCountry());
+            if (regionMatches && (best == null || !candidate.getCountry().isEmpty())) best = l;
+        }
+        for (String[] l : LANGUAGES) {
+            pane.addView(actionRow(l[1], l == best ? getString(R.string.sm_in_use) : "", null));
+        }
+        focusPane();
     }
 
     /** Settings > System > Language: the TV's language first, then every translation; picking one applies it at once. */

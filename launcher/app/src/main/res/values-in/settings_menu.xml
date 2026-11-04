@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Juga saat TV dinyalakan atau bangun dari siaga. Jika Mati, pemeriksaan hanya dilakukan saat Anda menekan Periksa pembaruan.</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
+    <string name="update_done">Peluncur diperbarui ke %1$s</string>
+    <string name="update_done_hint">Peluncur diperbarui ke %1$s. Tekan Beranda untuk kembali.</string>
+    <string name="sm_st_languages">Bahasa</string>
+    <string name="sm_st_languages_value">%1$d tersedia</string>
+    <string name="sm_st_languages_note">Bawaan peluncur dan termasuk ukuran aplikasinya; ganti di Sistem > Bahasa.</string>
+    <string name="sm_in_use">Digunakan</string>
 </resources>

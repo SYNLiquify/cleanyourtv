@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">También al encender el televisor o salir del modo de espera. Con No, solo se comprueba al pulsar Buscar actualizaciones.</string>
     <string name="sm_atv_settings">Ajustes de ATV</string>
     <string name="sm_hours">%1$d h</string>
+    <string name="update_done">Launcher actualizado a %1$s</string>
+    <string name="update_done_hint">Launcher actualizado a %1$s. Pulsa Inicio para volver.</string>
+    <string name="sm_st_languages">Idiomas</string>
+    <string name="sm_st_languages_value">%1$d incluidos</string>
+    <string name="sm_st_languages_note">Incluidos en el launcher y parte de su tamaño de app; cámbialos en Sistema > Idioma.</string>
+    <string name="sm_in_use">En uso</string>
 </resources>

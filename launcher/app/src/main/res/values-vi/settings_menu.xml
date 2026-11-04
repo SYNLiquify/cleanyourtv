@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Cũng kiểm tra khi TV khởi động hoặc thức dậy từ chế độ chờ. Khi tắt, chỉ kiểm tra lúc bạn nhấn Kiểm tra cập nhật.</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
+    <string name="update_done">Đã cập nhật launcher lên %1$s</string>
+    <string name="update_done_hint">Đã cập nhật launcher lên %1$s. Nhấn Màn hình chính để quay lại.</string>
+    <string name="sm_st_languages">Ngôn ngữ</string>
+    <string name="sm_st_languages_value">Có %1$d ngôn ngữ</string>
+    <string name="sm_st_languages_note">Có sẵn trong launcher và nằm trong dung lượng ứng dụng; đổi trong Hệ thống > Ngôn ngữ.</string>
+    <string name="sm_in_use">Đang dùng</string>
 </resources>

@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">電視開機或從待機喚醒時也會檢查。關閉時，只在按下「檢查更新」時檢查。</string>
     <string name="sm_atv_settings">ATV 設定</string>
     <string name="sm_hours">%1$d 小時</string>
+    <string name="update_done">啟動器已更新至 %1$s</string>
+    <string name="update_done_hint">啟動器已更新至 %1$s。按主畫面鍵返回。</string>
+    <string name="sm_st_languages">語言</string>
+    <string name="sm_st_languages_value">包含 %1$d 種</string>
+    <string name="sm_st_languages_note">內建於啟動器，計入應用程式大小；可在 系統 > 語言 中切換。</string>
+    <string name="sm_in_use">使用中</string>
 </resources>

@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">TV yoqilganda yoki kutish rejimidan chiqqanda ham tekshiradi. Oʻchiq boʻlsa, faqat Yangilanishlarni tekshirish bosilganda tekshiradi.</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
+    <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>
+    <string name="update_done_hint">Ishga tushirgich %1$s versiyasiga yangilandi. Qaytish uchun Bosh sahifani bosing.</string>
+    <string name="sm_st_languages">Tillar</string>
+    <string name="sm_st_languages_value">%1$d ta mavjud</string>
+    <string name="sm_st_languages_note">Ishga tushirgichga kiritilgan va ilova hajmiga kiradi; Tizim > Til bo‘limida almashtiring.</string>
+    <string name="sm_in_use">Ishlatilmoqda</string>
 </resources>

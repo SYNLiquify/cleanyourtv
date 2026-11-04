@@ -134,4 +134,10 @@
     <string name="sm_update_auto_note">Także po włączeniu telewizora lub wybudzeniu z czuwania. Gdy jest wyłączone, sprawdzanie następuje tylko po naciśnięciu Sprawdź aktualizacje.</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
+    <string name="update_done">Launcher zaktualizowany do %1$s</string>
+    <string name="update_done_hint">Launcher zaktualizowany do %1$s. Naciśnij Home, aby wrócić.</string>
+    <string name="sm_st_languages">Języki</string>
+    <string name="sm_st_languages_value">Wbudowane: %1$d</string>
+    <string name="sm_st_languages_note">Wbudowane w launcher i wliczone w jego rozmiar; zmień w System > Język.</string>
+    <string name="sm_in_use">Używany</string>
 </resources>
