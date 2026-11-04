@@ -219,6 +219,16 @@ public final class SettingsActivity extends Activity {
                 if (category >= 0) categoryButtons.get(category).requestFocus();
                 return true;
             }
+            // Down past a page's last row (Up past its first) stays on the page instead of landing on a category in
+            // the list on the left, which would switch the page. Left goes to the list.
+            if ((key == KeyEvent.KEYCODE_DPAD_DOWN || key == KeyEvent.KEYCODE_DPAD_UP) && isInside(focus, pane)
+                    && FocusFinder.getInstance().findNextFocus(pane, focus,
+                    key == KeyEvent.KEYCODE_DPAD_DOWN ? View.FOCUS_DOWN : View.FOCUS_UP) == null) {
+                if (key == KeyEvent.KEYCODE_DPAD_DOWN) scroll.fullScroll(View.FOCUS_DOWN);
+                else scroll.smoothScrollTo(0, 0);
+                focus.requestFocus();
+                return true;
+            }
             if (categoryButtons.contains(focus)) {
                 int i = categoryButtons.indexOf(focus);
                 if (key == KeyEvent.KEYCODE_DPAD_UP && i == 0) return true;
@@ -1435,7 +1445,8 @@ public final class SettingsActivity extends Activity {
         for (int i = 0; i < options.length; i++) {
             final int index = i;
             TextView p = pill(options[i]);
-            p.setMinWidth(dp(58));
+            // Six or more choices (Dock apps 1-6, Check every Off-24 h) leave the label more room with slimmer pills.
+            p.setMinWidth(dp(options.length >= 6 ? 50 : 58));
             // Five or more word choices (Rotate: Each visit … 60 min) would squeeze the row's label to "Ro…".
             if (options.length >= 5) p.setPadding(dp(14), 0, dp(14), 0);
             p.setSelected(i == selected);
@@ -1447,7 +1458,7 @@ public final class SettingsActivity extends Activity {
                 if (focused) scrollIntoView(row);
             });
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
-            lp.setMarginStart(dp(10));
+            lp.setMarginStart(dp(options.length >= 6 ? 8 : 10));
             row.addView(p, lp);
             pills.add(p);
         }
