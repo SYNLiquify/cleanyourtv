@@ -117,4 +117,18 @@
     <string name="sm_preview" translatable="false">Preview</string>
     <string name="sm_white_default" translatable="false">White (default)</string>
     <string name="sm_adaptive" translatable="false">Adaptive</string>
+    <string name="update_available" translatable="false">Launcher update available: %1$s</string>
+    <string name="update_install" translatable="false">Install update</string>
+    <string name="update_later" translatable="false">Later</string>
+    <string name="update_downloading" translatable="false">Downloading the update…</string>
+    <string name="update_failed" translatable="false">Update failed: %1$s</string>
+    <string name="sm_updates" translatable="false">Updates</string>
+    <string name="sm_update_check" translatable="false">Check for updates</string>
+    <string name="sm_update_note" translatable="false">From your fork\'s releases on GitHub. Android asks you to confirm each install.</string>
+    <string name="sm_check_now" translatable="false">Check now</string>
+    <string name="sm_checking" translatable="false">Checking…</string>
+    <string name="sm_up_to_date" translatable="false">Up to date</string>
+    <string name="sm_update_ready" translatable="false">%1$s available</string>
+    <string name="sm_update_error" translatable="false">Couldn\'t check</string>
+    <string name="sm_version" translatable="false">Version</string>
 </resources>

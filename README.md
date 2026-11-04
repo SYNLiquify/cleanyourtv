@@ -80,14 +80,20 @@ color, sampled from its banner like the glow behind Home.
 - **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
 - **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
 - **Storage:** the TV's free space, what the launcher uses split by part, and clean-up buttons for thumbnails, downloaded themes and previews.
-- **System:** Android TV settings, network, apps, screensaver and default home app.
+- **System:** Android TV settings, network, apps, screensaver and default home app, plus **Updates**.
+
+**Updates from this fork**
+- The launcher checks this fork's GitHub releases when the TV starts or wakes, and every hour by default. Settings > System > Updates sets the interval (off, 1, 3, 6, 12 or 24 hours) and has **Check now**.
+- A newer version is offered on Home (**Install update** or **Later**) and under Settings > System > Updates. The APK is downloaded, checked against the SHA-256 in the release notes, and handed to Android's installer, which asks for one press of **Install**: a sideloaded app can't update itself silently.
+- What each TV has stays as it is: the Inputs pill still appears only on a TV with HDMI or a tuner, and every Settings choice, dock order and theme is kept on the TV across updates.
 
 **Network use.** Unlike upstream, this fork has the `INTERNET` permission. It connects only for:
 - the weather: ipwho.is and Open-Meteo;
 - theme files from this repo on GitHub;
-- the Continue watching app's own thumbnail URLs.
+- the Continue watching app's own thumbnail URLs;
+- update checks: this fork's latest release on api.github.com, and the APK from github.com when you install one.
 
-All of it runs only while Home, the screensaver or the Settings menu is on screen; nothing runs in the background.
+Apart from the update check (at power-on and on its interval, unless turned off), all of it runs only while Home, the screensaver or the Settings menu is on screen.
 
 **Build and install** as upstream (`launcher/build-and-install.sh`, or `.ps1` on Windows). For Continue watching, also run:
 

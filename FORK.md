@@ -56,7 +56,12 @@ in the Continue watching shots the titles, episode names and thumbnails are blur
 - Weather: on/off, °F/°C, conditions and high/low on/off, location by city search, refresh.
 - Clock: 12/24-hour, greeting by time of day, custom greetings that rotate (each visit, or every 5–60 minutes), or off.
 - Storage: the TV's free space and what the launcher uses, by part, with clean-up buttons.
-- System: Android TV settings, network, apps, screensaver, default home app.
+- System: Android TV settings, network, apps, screensaver, default home app, and Updates: how often to check this fork for a new launcher (off, 1, 3, 6, 12 or 24 hours; 1 by default), Check now, Install update, and the installed version.
+
+**Updates** (`Updates.java`)
+- Builds are published as GitHub releases of this fork, tagged `launcher-<versionCode>`, with the APK as `cleanyourtv-launcher.apk` and `sha256: <hex>` in the notes. The version code is the branch's commit count (`launcher/app/build.gradle`).
+- The launcher checks at boot, when Home comes back after the interval (so also after standby), and on an inexact alarm every interval. A newer release is offered once on Home and stays under Settings.
+- Installing downloads the APK, checks its size and SHA-256, and opens Android's installer for one press of Install. It needs `appops set com.gathin.tvhome REQUEST_INSTALL_PACKAGES allow` (or allowing the launcher under Install unknown apps), and an APK signed with the same key as the installed launcher.
 
 ## Network use
 
@@ -70,8 +75,10 @@ Unlike the upstream launcher, this fork has the `INTERNET` permission. It is use
 | Theme list | `raw.githubusercontent.com` (themes README), `api.github.com` (repo tree) | Only on opening the Themes page or pressing Refresh, at most every 10 minutes; the API only when the README changed, or once a day |
 | Theme previews and wallpapers | `raw.githubusercontent.com` | When a preview changed, or a theme is applied |
 | Continue watching thumbnails | The image URLs the app publishes (https only, 4 MB cap, cached up to 40 MB) | When a new title appears |
+| Update check | `api.github.com` (this fork's latest release) | At boot, when Home returns after the interval, and every interval (1 hour by default); never with checks off |
+| Update download | `github.com` release asset (32 MB cap, SHA-256 checked) | Only when Install update is chosen |
 
-No accounts, keys, analytics or background services: nothing is fetched while Home is not on screen.
+No accounts, keys or analytics. Apart from the update check (an alarm at the chosen interval), nothing is fetched while Home is not on screen.
 
 ## Build and install
 

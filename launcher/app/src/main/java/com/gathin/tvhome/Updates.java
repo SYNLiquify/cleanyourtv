@@ -1,0 +1,351 @@
+package com.gathin.tvhome;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageInstaller;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.SystemClock;
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.security.MessageDigest;
+import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * Launcher updates from the fork's GitHub releases (this fork). work\publish-update.ps1 builds the launcher on the PC
+ * that installed it (the same signing key, or Android refuses the update), and publishes it as a release tagged
+ * "launcher-<versionCode>" with the APK and its SHA-256 in the notes.
+ *
+ * The launcher asks GitHub for the latest release when the TV starts (BOOT_COMPLETED), when Home comes back after the
+ * interval has passed (so also after standby), and on an inexact alarm every interval (Settings > System > Updates:
+ * off, or 1-24 hours; 1 hour by default). A newer one is offered on Home and under Settings > System > Updates.
+ * Installing downloads the APK, checks its size and SHA-256, and hands it to Android's package installer, which asks
+ * for one press of Install: a sideloaded app cannot update itself silently. Nothing is fetched with checks off.
+ */
+public final class Updates extends BroadcastReceiver {
+
+    static final String TAG = "TvHomeUpdate";
+    static final String REPO = "SYNLiquify/cleanyourtv";
+    private static final String LATEST = "https://api.github.com/repos/" + REPO + "/releases/latest";
+    private static final String ASSET = "cleanyourtv-launcher.apk";
+    private static final Pattern TAG_CODE = Pattern.compile("launcher-(\\d+)");
+    private static final Pattern SHA = Pattern.compile("sha256:\\s*([0-9a-fA-F]{64})");
+    private static final int TIMEOUT_MS = 15000;
+    private static final long MAX_APK = 32L * 1024 * 1024;
+
+    static final String INTERVAL_KEY = "update_interval_hours";
+    static final int DEFAULT_HOURS = 1;
+    static final int[] INTERVALS = {0, 1, 3, 6, 12, 24};
+    private static final String PREFS = "updates";
+    private static final String LAST_CHECK = "last_check";
+    private static final String CODE = "code", NAME = "name", URL_KEY = "url", SIZE = "size", SHA_KEY = "sha",
+            DISMISSED = "dismissed", ERROR = "error";
+
+    private static final String ACTION_CHECK = "com.gathin.tvhome.UPDATE_CHECK";
+    private static final String ACTION_INSTALLED = "com.gathin.tvhome.UPDATE_INSTALL_STATUS";
+
+    private static final ExecutorService WORKER = Executors.newSingleThreadExecutor();
+    private static final Handler MAIN = new Handler(Looper.getMainLooper());
+
+    /** What GitHub offers, if it is newer than this build. */
+    static final class Offer {
+        final int code;
+        final String name, url, sha;
+        final long size;
+
+        Offer(int code, String name, String url, long size, String sha) {
+            this.code = code;
+            this.name = name;
+            this.url = url;
+            this.size = size;
+            this.sha = sha;
+        }
+    }
+
+    // ---- settings -------------------------------------------------------------------------------------------
+
+    static int intervalHours(Context ctx) {
+        return ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE).getInt(INTERVAL_KEY, DEFAULT_HOURS);
+    }
+
+    static void setIntervalHours(Context ctx, int hours) {
+        ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE).edit().putInt(INTERVAL_KEY, hours).apply();
+        schedule(ctx);
+    }
+
+    private static SharedPreferences prefs(Context ctx) {
+        return ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+    }
+
+    static int installedCode(Context ctx) {
+        try {
+            PackageInfo p = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+            return Build.VERSION.SDK_INT >= 28 ? (int) p.getLongVersionCode() : p.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            return 0;
+        }
+    }
+
+    static String installedName(Context ctx) {
+        try {
+            return ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
+    }
+
+    /** The newer release last seen, or null (none, or this build is already as new). */
+    static Offer offer(Context ctx) {
+        SharedPreferences p = prefs(ctx);
+        int code = p.getInt(CODE, 0);
+        if (code <= installedCode(ctx)) return null;
+        return new Offer(code, p.getString(NAME, ""), p.getString(URL_KEY, ""), p.getLong(SIZE, 0), p.getString(SHA_KEY, ""));
+    }
+
+    static long lastCheck(Context ctx) {
+        return prefs(ctx).getLong(LAST_CHECK, 0);
+    }
+
+    /** The last check's failure, or null when it worked. */
+    static String lastError(Context ctx) {
+        return prefs(ctx).getString(ERROR, null);
+    }
+
+    /** Home offers each version once; Later hides it there (Settings still shows it). */
+    static boolean dismissed(Context ctx, Offer o) {
+        return o != null && prefs(ctx).getInt(DISMISSED, 0) >= o.code;
+    }
+
+    static void dismiss(Context ctx, Offer o) {
+        if (o != null) prefs(ctx).edit().putInt(DISMISSED, o.code).apply();
+    }
+
+    // ---- checking -------------------------------------------------------------------------------------------
+
+    /** Sets (or with checks off, cancels) the repeating alarm that checks in the background. */
+    static void schedule(Context ctx) {
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pi = PendingIntent.getBroadcast(ctx, 0, new Intent(ctx, Updates.class).setAction(ACTION_CHECK),
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        am.cancel(pi);
+        int hours = intervalHours(ctx);
+        if (hours <= 0) return;
+        long every = hours * AlarmManager.INTERVAL_HOUR;
+        am.setInexactRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + every, every, pi);
+    }
+
+    /** Checks when the interval has passed since the last check (Home coming back, the TV waking up). */
+    static void checkIfDue(Context ctx, Consumer<Offer> done) {
+        int hours = intervalHours(ctx);
+        if (hours <= 0) return;
+        long since = System.currentTimeMillis() - lastCheck(ctx);
+        if (since >= 0 && since < hours * AlarmManager.INTERVAL_HOUR) return;
+        check(ctx, done);
+    }
+
+    /** Asks GitHub for the latest release; done gets the newer offer, or null, on the main thread. */
+    static void check(Context context, Consumer<Offer> done) {
+        Context ctx = context.getApplicationContext();
+        WORKER.execute(() -> {
+            Offer found = null;
+            SharedPreferences.Editor e = prefs(ctx).edit().putLong(LAST_CHECK, System.currentTimeMillis());
+            try {
+                JSONObject r = new JSONObject(get(LATEST));
+                Matcher m = TAG_CODE.matcher(r.optString("tag_name"));
+                if (!m.matches()) throw new IOException("no launcher release");
+                int code = Integer.parseInt(m.group(1));
+                String url = null;
+                long size = 0;
+                JSONArray assets = r.optJSONArray("assets");
+                for (int i = 0; assets != null && i < assets.length(); i++) {
+                    JSONObject a = assets.getJSONObject(i);
+                    if (ASSET.equals(a.optString("name"))) {
+                        url = a.optString("browser_download_url");
+                        size = a.optLong("size");
+                    }
+                }
+                Matcher s = SHA.matcher(r.optString("body"));
+                if (url == null || !url.startsWith("https://") || !s.find()) throw new IOException("release has no APK or checksum");
+                e.putInt(CODE, code).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
+                        .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR);
+                if (code > installedCode(ctx)) {
+                    found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US));
+                }
+            } catch (Exception ex) {
+                Log.w(TAG, "check failed: " + ex);
+                e.putString(ERROR, ex.getMessage() == null ? ex.toString() : ex.getMessage());
+            }
+            e.apply();
+            Offer result = found;
+            if (done != null) MAIN.post(() -> done.accept(result));
+        });
+    }
+
+    // ---- installing ---------------------------------------------------------------------------------------
+
+    interface Progress {
+        /** percent 0-100 while downloading; -1 when the installer has the APK; a message on failure. */
+        void update(int percent, String failure);
+    }
+
+    /**
+     * Downloads the offer, checks it, and opens Android's installer for it. The launcher's process ends when the
+     * update goes in; Home comes back on the new version.
+     */
+    static void install(Context context, Offer o, Progress progress) {
+        Context ctx = context.getApplicationContext();
+        WORKER.execute(() -> {
+            File apk = new File(ctx.getCacheDir(), "update.apk");
+            try {
+                download(o, apk, p -> MAIN.post(() -> progress.update(p, null)));
+                if (o.size > 0 && apk.length() != o.size) throw new IOException("download incomplete");
+                if (!o.sha.equalsIgnoreCase(sha256(apk))) throw new IOException("checksum does not match");
+                PackageInstaller pi = ctx.getPackageManager().getPackageInstaller();
+                PackageInstaller.SessionParams params =
+                        new PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL);
+                params.setAppPackageName(ctx.getPackageName());
+                params.setSize(apk.length());
+                int id = pi.createSession(params);
+                try (PackageInstaller.Session session = pi.openSession(id)) {
+                    try (InputStream in = new FileInputStream(apk);
+                         OutputStream out = session.openWrite("base.apk", 0, apk.length())) {
+                        byte[] buf = new byte[64 * 1024];
+                        for (int n; (n = in.read(buf)) > 0; ) out.write(buf, 0, n);
+                        session.fsync(out);
+                    }
+                    Intent status = new Intent(ctx, Updates.class).setAction(ACTION_INSTALLED);
+                    int flags = PendingIntent.FLAG_UPDATE_CURRENT
+                            | (Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0);
+                    session.commit(PendingIntent.getBroadcast(ctx, id, status, flags).getIntentSender());
+                }
+                MAIN.post(() -> progress.update(-1, null));
+            } catch (Exception ex) {
+                Log.w(TAG, "install failed: " + ex);
+                apk.delete();
+                String why = ex.getMessage() == null ? ex.toString() : ex.getMessage();
+                MAIN.post(() -> progress.update(0, why));
+            }
+        });
+    }
+
+    private static void download(Offer o, File to, Consumer<Integer> percent) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new URL(o.url).openConnection();
+        c.setConnectTimeout(TIMEOUT_MS);
+        c.setReadTimeout(TIMEOUT_MS);
+        c.setInstanceFollowRedirects(true);
+        try {
+            if (c.getResponseCode() != HttpURLConnection.HTTP_OK) throw new IOException("HTTP " + c.getResponseCode());
+            long total = c.getContentLengthLong() > 0 ? c.getContentLengthLong() : o.size;
+            if (total > MAX_APK) throw new IOException("APK too large");
+            try (InputStream in = c.getInputStream(); OutputStream out = new FileOutputStream(to)) {
+                byte[] buf = new byte[64 * 1024];
+                long got = 0;
+                int last = -1;
+                for (int n; (n = in.read(buf)) > 0; ) {
+                    got += n;
+                    if (got > MAX_APK) throw new IOException("APK too large");
+                    out.write(buf, 0, n);
+                    int p = total > 0 ? (int) (got * 100 / total) : 0;
+                    if (p != last) {
+                        last = p;
+                        percent.accept(p);
+                    }
+                }
+            }
+        } finally {
+            c.disconnect();
+        }
+    }
+
+    private static String sha256(File f) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        try (InputStream in = new FileInputStream(f)) {
+            byte[] buf = new byte[64 * 1024];
+            for (int n; (n = in.read(buf)) > 0; ) md.update(buf, 0, n);
+        }
+        StringBuilder sb = new StringBuilder();
+        for (byte b : md.digest()) sb.append(String.format(Locale.US, "%02x", b));
+        return sb.toString();
+    }
+
+    private static String get(String url) throws IOException {
+        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+        c.setConnectTimeout(TIMEOUT_MS);
+        c.setReadTimeout(TIMEOUT_MS);
+        c.setRequestProperty("Accept", "application/vnd.github+json");
+        try {
+            if (c.getResponseCode() != HttpURLConnection.HTTP_OK) throw new IOException("GitHub answered " + c.getResponseCode());
+            try (InputStream in = c.getInputStream()) {
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                byte[] buf = new byte[8192];
+                int total = 0;
+                for (int n; (n = in.read(buf)) > 0; ) {
+                    total += n;
+                    if (total > 512 * 1024) throw new IOException("answer too large");
+                    out.write(buf, 0, n);
+                }
+                return out.toString("UTF-8");
+            }
+        } finally {
+            c.disconnect();
+        }
+    }
+
+    // ---- broadcasts ---------------------------------------------------------------------------------------
+
+    @Override
+    public void onReceive(Context ctx, Intent intent) {
+        String action = intent.getAction();
+        if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
+            // The TV started (or this launcher was just updated): set the alarm again and check now.
+            schedule(ctx);
+            if (intervalHours(ctx) > 0 && Intent.ACTION_BOOT_COMPLETED.equals(action)) {
+                PendingResult pending = goAsync();
+                check(ctx, o -> pending.finish());
+            }
+        } else if (ACTION_CHECK.equals(action)) {
+            PendingResult pending = goAsync();
+            check(ctx, o -> pending.finish());
+        } else if (ACTION_INSTALLED.equals(action)) {
+            int status = intent.getIntExtra(PackageInstaller.EXTRA_STATUS, PackageInstaller.STATUS_FAILURE);
+            if (status == PackageInstaller.STATUS_PENDING_USER_ACTION) {
+                // Android's own "install this update?" screen; one press of Install.
+                Intent confirm = intent.getParcelableExtra(Intent.EXTRA_INTENT);
+                if (confirm != null) {
+                    confirm.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    try {
+                        ctx.startActivity(confirm);
+                    } catch (RuntimeException e) {
+                        Log.w(TAG, "could not open the installer: " + e);
+                    }
+                }
+            } else if (status != PackageInstaller.STATUS_SUCCESS) {
+                Log.w(TAG, "install ended with " + status + ": " + intent.getStringExtra(PackageInstaller.EXTRA_STATUS_MESSAGE));
+            }
+        }
+    }
+}

@@ -999,12 +999,64 @@ public final class SettingsActivity extends Activity {
                 open(SystemSettings.intent(this, Settings.ACTION_DREAM_SETTINGS))));
         pane.addView(actionRow(getString(R.string.sm_default_home), "", () ->
                 open(new Intent(this, HomeSettingsActivity.class))));
+        buildUpdates();
         String version = "";
         try {
             version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
         }
         note(getString(R.string.sm_about, version));
+    }
+
+    /** Settings > System > Updates (Updates): how often to check the fork, Check now, and Install when there is one. */
+    private void buildUpdates() {
+        section(R.string.sm_updates);
+        note(getString(R.string.sm_update_note));
+        String[] labels = new String[Updates.INTERVALS.length];
+        int current = 0, hours = Updates.intervalHours(this);
+        for (int i = 0; i < labels.length; i++) {
+            labels[i] = Updates.INTERVALS[i] == 0 ? getString(R.string.sm_off) : Updates.INTERVALS[i] + " h";
+            if (Updates.INTERVALS[i] == hours) current = i;
+        }
+        pane.addView(choiceRow(getString(R.string.sm_update_check), labels, current,
+                i -> Updates.setIntervalHours(this, Updates.INTERVALS[i])));
+        Updates.Offer offer = Updates.offer(this);
+        TextView status = new TextView(this);
+        String now = updateStatus(offer);
+        View check = actionRow(getString(R.string.sm_check_now), now.isEmpty() ? " " : now, () -> {
+            setRowValue(status, getString(R.string.sm_checking));
+            Updates.check(this, found -> {
+                if (category == 5 && back == null) rebuild(5);
+            });
+        });
+        // actionRow's value view is the second child; keep it to show "Checking…".
+        if (check instanceof LinearLayout && ((LinearLayout) check).getChildCount() > 2) {
+            View v = ((LinearLayout) check).getChildAt(1);
+            if (v instanceof TextView) status.setTag(v);
+        }
+        pane.addView(check);
+        if (offer != null) {
+            pane.addView(actionRow(getString(R.string.update_install), offer.name, () -> {
+                Toast.makeText(this, R.string.update_downloading, Toast.LENGTH_SHORT).show();
+                Updates.install(this, offer, (percent, failure) -> {
+                    if (failure != null) {
+                        Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
+                    }
+                });
+            }));
+        }
+        pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this), null));
+    }
+
+    private String updateStatus(Updates.Offer offer) {
+        if (offer != null) return getString(R.string.sm_update_ready, offer.name.isEmpty() ? String.valueOf(offer.code) : offer.name);
+        if (Updates.lastCheck(this) == 0) return "";
+        return Updates.lastError(this) != null ? getString(R.string.sm_update_error) : getString(R.string.sm_up_to_date);
+    }
+
+    /** Shows text in an actionRow's value view, remembered in holder's tag. */
+    private static void setRowValue(TextView holder, String text) {
+        if (holder.getTag() instanceof TextView) ((TextView) holder.getTag()).setText(text);
     }
 
     /** A page with one text field: Save keeps what was typed (empty clears, where clearing is allowed). */

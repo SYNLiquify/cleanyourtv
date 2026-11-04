@@ -27,6 +27,10 @@
     <!-- This fork only, not upstream: the Continue watching thumbnails are https:// images (ContinueImages).
          Nothing else in the launcher opens a connection. -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- This fork: launcher updates from the fork's GitHub releases (Updates): the installer hand-off, and a check
+         at boot. -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <!-- Android 11+ package visibility: lets the launcher list the TV apps it shows as tiles, and the
          apps that declare a module card (docs/specs/card.md). -->
@@ -265,5 +269,14 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/input_key_service" />
         </service>
+        <!-- This fork: launcher updates (Updates): the hourly alarm, the check at boot, and the installer's answer. -->
+        <receiver
+            android:name=".Updates"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

@@ -537,6 +537,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glass = findViewById(R.id.glass);
         glass.setStyle(cfg.glassStyle);
         accent = Accent.get(this);
+        Updates.schedule(this);   // the background check's alarm; boot and an update set it again
         adaptiveAccent = Accent.adaptive(this);
         if (festive) glass.setAccent(festival.accentColor());
         else if (accent != 0) glass.setAccent(accent);
@@ -1183,6 +1184,10 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         restartIdleClock();
         promptsPaused = false;
+        // Launcher updates from the fork (Updates): offer one already found, and check when the interval has passed,
+        // which also covers the TV waking from standby.
+        handler.postDelayed(() -> offerUpdate(Updates.offer(this)), 1500);
+        Updates.checkIfDue(this, this::offerUpdate);
         if (grid.getAdapter() == null) grid.setAdapter(adapter);   // dropped by onTrimMemory
         switch (tileRefresh.onResume(packagesChangedSinceRebuild())) {
             case REBUILD:
@@ -4349,6 +4354,43 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                     .setInterpolator(new android.view.animation.DecelerateInterpolator(1.6f)).start();
         }
         rows.getChildAt(0).requestFocus();
+    }
+
+    /**
+     * A newer launcher on the fork (Updates): a small glass card under the top bar, Install or Later. Each version is
+     * offered once here (Later hides it); Settings > System > Updates keeps it.
+     */
+    private void offerUpdate(Updates.Offer offer) {
+        if (offer == null || !resumed || reordering || openPopup != null || cardPrompt != null
+                || Updates.dismissed(this, offer)) return;
+        View panel = getLayoutInflater().inflate(R.layout.popup_inputs, root, false);
+        LinearLayout rows = panel.findViewById(R.id.rows);
+        TextView head = new TextView(this);
+        head.setText(getString(R.string.update_available, offer.name.isEmpty() ? String.valueOf(offer.code) : offer.name));
+        head.setTypeface(UiFont.get(this, R.string.font_medium));
+        head.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        head.setTextColor(0xB3FFFFFF);
+        int pad = Math.round(14 * density);
+        head.setPadding(pad, Math.round(10 * density), pad, Math.round(8 * density));
+        rows.addView(head);
+        PopupWindow popup = glassPopup(panel, (int) (300 * density));
+        addSettingsMenuRow(rows, popup, R.string.update_install, () -> installUpdate(offer));
+        addSettingsMenuRow(rows, popup, R.string.update_later, () -> Updates.dismiss(this, offer));
+        panel.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+        popup.setWidth(Math.max((int) (300 * density), panel.getMeasuredWidth()));
+        Accent.restyle(panel, density, accent);
+        popup.showAtLocation(root, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, Math.round(120 * density));
+        rows.getChildAt(1).requestFocus();
+    }
+
+    /** Downloads the update with a toast for progress; Android's installer then asks for one press of Install. */
+    private void installUpdate(Updates.Offer offer) {
+        Toast.makeText(this, R.string.update_downloading, Toast.LENGTH_SHORT).show();
+        Updates.install(this, offer, (percent, failure) -> {
+            if (failure != null) {
+                Toast.makeText(this, getString(R.string.update_failed, failure), Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void addSettingsMenuRow(LinearLayout rows, PopupWindow popup, int title, Runnable action) {

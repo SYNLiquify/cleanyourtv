@@ -2,6 +2,21 @@ plugins {
     id 'com.android.application'
 }
 
+// This fork: the launcher's versionCode, the number of commits on the branch (see defaultConfig).
+def forkVersionCode() {
+    def override = providers.gradleProperty('launcherVersionCode').getOrNull()
+    if (override != null) return override.toInteger()
+    try {
+        def out = providers.exec {
+            commandLine 'git', 'rev-list', '--count', 'HEAD'
+            ignoreExitValue = true
+        }.standardOutput.asText.get().trim()
+        return out.isInteger() ? Math.max(12, out.toInteger()) : 12
+    } catch (Exception ignored) {
+        return 12
+    }
+}
+
 android {
     namespace 'com.gathin.tvhome'
     compileSdk 34
@@ -13,8 +28,10 @@ android {
         applicationId providers.gradleProperty('launcherApplicationId').getOrElse('com.gathin.tvhome')
         minSdk 26
         targetSdk 34
-        versionCode 12
-        versionName '3.3'
+        // This fork: the version is the branch's commit count, so every build published as an update (Updates,
+        // work\publish-update.ps1) is newer than the last; -PlauncherVersionCode overrides it. 12 without git.
+        versionCode forkVersionCode()
+        versionName "3.3-fork.${forkVersionCode()}"
     }
 
     buildTypes {

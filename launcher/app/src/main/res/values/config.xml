@@ -17,10 +17,13 @@
 
     <!-- Apps pinned to the dock row at the bottom, in this order. Missing apps are skipped. -->
     <string-array name="dock_apps">
-        <item>com.netflix.ninja</item>
-        <item>com.amazon.amazonvideo.livingroom</item>
-        <item>com.google.android.youtube.tv</item>
-        <item>in.startv.hotstar</item>
+        <!-- This fork: one list for the onn box and the Hisense TV; each TV has one of the two file managers, and an
+             app that is not installed is skipped, so both get TizenTube, Nuvio, their file manager and TV Bro. -->
+        <item>io.gh.reisxd.tizentube.cobalt</item>
+        <item>com.nuvio.tv</item>
+        <item>com.mixplorer.silver</item>
+        <item>com.alphainventor.filemanager</item>
+        <item>com.phlox.tvwebbrowser</item>
     </string-array>
     <!-- Continue watching row under the dock: these apps' preview programs (Nuvio publishes its Continue watching
          list as one), a sideways-scrolling row of up to 20 thumbnail cards with title, season/episode, time left
