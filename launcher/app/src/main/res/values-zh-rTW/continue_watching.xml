@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Traditional Chinese, Taiwan (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">繼續觀看</string>
+    <string name="cw_movie">電影</string>
+    <string name="cw_season_episode">第%1$s季 第%2$s集</string>
+    <string name="cw_episode_only">第%1$s集</string>
+    <string name="cw_season_only">第%1$s季</string>
+    <string name="cw_left_m">剩下 %1$d 分鐘</string>
+    <string name="cw_left_h">剩下 %1$d 小時</string>
+    <string name="cw_left_hm">剩下 %1$d 小時 %2$d 分鐘</string>
+    <string name="cw_almost_done">快看完了</string>
+    <string name="cw_up_next">接下來</string>
+    <string name="cw_watched">已觀看 %1$d%%</string>
+</resources>

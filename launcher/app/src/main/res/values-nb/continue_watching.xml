@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Norwegian Bokmål (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Fortsett å se</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">Episode %1$s</string>
+    <string name="cw_season_only">Sesong %1$s</string>
+    <string name="cw_left_m">%1$d min igjen</string>
+    <string name="cw_left_h">%1$d t igjen</string>
+    <string name="cw_left_hm">%1$d t %2$d min igjen</string>
+    <string name="cw_almost_done">Nesten ferdig</string>
+    <string name="cw_up_next">Neste</string>
+    <string name="cw_watched">%1$d%% sett</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Max %1$d°  Min %2$d°</string>
+    <string name="weather_clear">Dégagé</string>
+    <string name="weather_mainly_clear">Plutôt dégagé</string>
+    <string name="weather_partly_cloudy">Partiellement nuageux</string>
+    <string name="weather_overcast">Couvert</string>
+    <string name="weather_cloudy">Nuageux</string>
+    <string name="weather_fog">Brouillard</string>
+    <string name="weather_drizzle">Bruine</string>
+    <string name="weather_rain">Pluie</string>
+    <string name="weather_snow">Neige</string>
+    <string name="weather_showers">Averses</string>
+    <string name="weather_snow_showers">Averses de neige</string>
+    <string name="weather_thunderstorm">Orages</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Indonesian (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Lanjutkan menonton</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">M%1$s E%2$s</string>
+    <string name="cw_episode_only">Episode %1$s</string>
+    <string name="cw_season_only">Musim %1$s</string>
+    <string name="cw_left_m">Sisa %1$d mnt</string>
+    <string name="cw_left_h">Sisa %1$d jam</string>
+    <string name="cw_left_hm">Sisa %1$d jam %2$d mnt</string>
+    <string name="cw_almost_done">Hampir selesai</string>
+    <string name="cw_up_next">Berikutnya</string>
+    <string name="cw_watched">%1$d%% ditonton</string>
+</resources>

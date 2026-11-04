@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thai (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">ดูต่อ</string>
+    <string name="cw_movie">ภาพยนตร์</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">ตอนที่ %1$s</string>
+    <string name="cw_season_only">ซีซัน %1$s</string>
+    <string name="cw_left_m">เหลือ %1$d นาที</string>
+    <string name="cw_left_h">เหลือ %1$d ชม.</string>
+    <string name="cw_left_hm">เหลือ %1$d ชม. %2$d นาที</string>
+    <string name="cw_almost_done">ใกล้จบแล้ว</string>
+    <string name="cw_up_next">ถัดไป</string>
+    <string name="cw_watched">ดูแล้ว %1$d%%</string>
+</resources>

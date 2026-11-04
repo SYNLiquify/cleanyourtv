@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">İzlemeye devam et</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s B%2$s</string>
+    <string name="cw_episode_only">Bölüm %1$s</string>
+    <string name="cw_season_only">Sezon %1$s</string>
+    <string name="cw_left_m">%1$d dk kaldı</string>
+    <string name="cw_left_h">%1$d sa kaldı</string>
+    <string name="cw_left_hm">%1$d sa %2$d dk kaldı</string>
+    <string name="cw_almost_done">Neredeyse bitti</string>
+    <string name="cw_up_next">Sıradaki</string>
+    <string name="cw_watched">%%%1$d izlendi</string>
+</resources>

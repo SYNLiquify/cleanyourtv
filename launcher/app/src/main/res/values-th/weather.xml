@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Thai (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">สูง %1$d°  ต่ำ %2$d°</string>
+    <string name="weather_clear">แจ่มใส</string>
+    <string name="weather_mainly_clear">ค่อนข้างแจ่มใส</string>
+    <string name="weather_partly_cloudy">มีเมฆบางส่วน</string>
+    <string name="weather_overcast">เมฆครึ้ม</string>
+    <string name="weather_cloudy">มีเมฆมาก</string>
+    <string name="weather_fog">หมอก</string>
+    <string name="weather_drizzle">ฝนปรอย</string>
+    <string name="weather_rain">ฝนตก</string>
+    <string name="weather_snow">หิมะตก</string>
+    <string name="weather_showers">ฝนตกเป็นช่วงๆ</string>
+    <string name="weather_snow_showers">หิมะตกเป็นช่วงๆ</string>
+    <string name="weather_thunderstorm">พายุฝนฟ้าคะนอง</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hebrew (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">מקס׳ %1$d°  מינ׳ %2$d°</string>
+    <string name="weather_clear">בהיר</string>
+    <string name="weather_mainly_clear">בהיר ברובו</string>
+    <string name="weather_partly_cloudy">מעונן חלקית</string>
+    <string name="weather_overcast">מעונן לגמרי</string>
+    <string name="weather_cloudy">מעונן</string>
+    <string name="weather_fog">ערפל</string>
+    <string name="weather_drizzle">טפטוף</string>
+    <string name="weather_rain">גשם</string>
+    <string name="weather_snow">שלג</string>
+    <string name="weather_showers">ממטרים</string>
+    <string name="weather_snow_showers">ממטרי שלג</string>
+    <string name="weather_thunderstorm">סופות רעמים</string>
+</resources>

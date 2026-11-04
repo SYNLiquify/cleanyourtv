@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ukrainian (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Макс %1$d°  Мін %2$d°</string>
+    <string name="weather_clear">Ясно</string>
+    <string name="weather_mainly_clear">Переважно ясно</string>
+    <string name="weather_partly_cloudy">Мінлива хмарність</string>
+    <string name="weather_overcast">Похмуро</string>
+    <string name="weather_cloudy">Хмарно</string>
+    <string name="weather_fog">Туман</string>
+    <string name="weather_drizzle">Мряка</string>
+    <string name="weather_rain">Дощ</string>
+    <string name="weather_snow">Сніг</string>
+    <string name="weather_showers">Злива</string>
+    <string name="weather_snow_showers">Короткочасний сніг</string>
+    <string name="weather_thunderstorm">Гроза</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Serbian, Latin script (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Nastavi gledanje</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">Epizoda %1$s</string>
+    <string name="cw_season_only">Sezona %1$s</string>
+    <string name="cw_left_m">Još %1$d min</string>
+    <string name="cw_left_h">Još %1$d h</string>
+    <string name="cw_left_hm">Još %1$d h %2$d min</string>
+    <string name="cw_almost_done">Skoro gotovo</string>
+    <string name="cw_up_next">Sledeće</string>
+    <string name="cw_watched">Odgledano %1$d%%</string>
+</resources>

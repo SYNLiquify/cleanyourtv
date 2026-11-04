@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Czech (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Pokračovat ve sledování</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">Díl %1$s</string>
+    <string name="cw_season_only">Řada %1$s</string>
+    <string name="cw_left_m">Zbývá %1$d min</string>
+    <string name="cw_left_h">Zbývá %1$d h</string>
+    <string name="cw_left_hm">Zbývá %1$d h %2$d min</string>
+    <string name="cw_almost_done">Skoro dokončeno</string>
+    <string name="cw_up_next">Následuje</string>
+    <string name="cw_watched">Zhlédnuto %1$d%%</string>
+</resources>

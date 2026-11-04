@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Danish (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Høj %1$d°  Lav %2$d°</string>
+    <string name="weather_clear">Klart</string>
+    <string name="weather_mainly_clear">Overvejende klart</string>
+    <string name="weather_partly_cloudy">Delvis skyet</string>
+    <string name="weather_overcast">Overskyet</string>
+    <string name="weather_cloudy">Skyet</string>
+    <string name="weather_fog">Tåge</string>
+    <string name="weather_drizzle">Støvregn</string>
+    <string name="weather_rain">Regn</string>
+    <string name="weather_snow">Sne</string>
+    <string name="weather_showers">Byger</string>
+    <string name="weather_snow_showers">Snebyger</string>
+    <string name="weather_thunderstorm">Tordenvejr</string>
+</resources>

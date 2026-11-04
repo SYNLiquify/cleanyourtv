@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Italian (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Max %1$d°  Min %2$d°</string>
+    <string name="weather_clear">Sereno</string>
+    <string name="weather_mainly_clear">Prevalentemente sereno</string>
+    <string name="weather_partly_cloudy">Parzialmente nuvoloso</string>
+    <string name="weather_overcast">Coperto</string>
+    <string name="weather_cloudy">Nuvoloso</string>
+    <string name="weather_fog">Nebbia</string>
+    <string name="weather_drizzle">Pioviggine</string>
+    <string name="weather_rain">Pioggia</string>
+    <string name="weather_snow">Neve</string>
+    <string name="weather_showers">Rovesci</string>
+    <string name="weather_snow_showers">Rovesci di neve</string>
+    <string name="weather_thunderstorm">Temporali</string>
+</resources>

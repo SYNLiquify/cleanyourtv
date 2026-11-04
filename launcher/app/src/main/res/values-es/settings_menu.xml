@@ -128,8 +128,10 @@
     <string name="sm_version">Versión</string>
     <string name="sm_language">Idioma</string>
     <string name="sm_language_system">Idioma del televisor</string>
-    <string name="sm_language_note">Inicio, la biblioteca de apps, los menús y las fechas cambian al instante. Inglés, español y japonés cubren todo este launcher; en los demás idiomas, las páginas propias de este fork (Ajustes, tiempo, Seguir viendo, actualizaciones) siguen en inglés.</string>
+    <string name="sm_language_note">El launcher, Inicio y sus menús cambian al instante.</string>
     <string name="sm_update_auto">Comprobaciones automáticas</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">También al encender el televisor o salir del modo de espera. Con No, solo se comprueba al pulsar Buscar actualizaciones.</string>
+    <string name="sm_atv_settings">Ajustes de ATV</string>
+    <string name="sm_hours">%1$d h</string>
 </resources>

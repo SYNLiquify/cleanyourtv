@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Simplified Chinese (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">高 %1$d°  低 %2$d°</string>
+    <string name="weather_clear">晴</string>
+    <string name="weather_mainly_clear">大部晴朗</string>
+    <string name="weather_partly_cloudy">局部多云</string>
+    <string name="weather_overcast">阴</string>
+    <string name="weather_cloudy">多云</string>
+    <string name="weather_fog">雾</string>
+    <string name="weather_drizzle">毛毛雨</string>
+    <string name="weather_rain">雨</string>
+    <string name="weather_snow">雪</string>
+    <string name="weather_showers">阵雨</string>
+    <string name="weather_snow_showers">阵雪</string>
+    <string name="weather_thunderstorm">雷阵雨</string>
+</resources>

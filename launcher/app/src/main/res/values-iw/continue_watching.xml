@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hebrew (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">המשך צפייה</string>
+    <string name="cw_movie">סרט</string>
+    <string name="cw_season_episode">ע%1$s פ%2$s</string>
+    <string name="cw_episode_only">פרק %1$s</string>
+    <string name="cw_season_only">עונה %1$s</string>
+    <string name="cw_left_m">נותרו %1$d דק׳</string>
+    <string name="cw_left_h">נותרו %1$d שע׳</string>
+    <string name="cw_left_hm">נותרו %1$d שע׳ %2$d דק׳</string>
+    <string name="cw_almost_done">כמעט נגמר</string>
+    <string name="cw_up_next">הבא בתור</string>
+    <string name="cw_watched">נצפו %1$d%%</string>
+</resources>

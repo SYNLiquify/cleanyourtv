@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bengali (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">দেখা চালিয়ে যান</string>
+    <string name="cw_movie">মুভি</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">পর্ব %1$s</string>
+    <string name="cw_season_only">সিজন %1$s</string>
+    <string name="cw_left_m">%1$d মিনিট বাকি</string>
+    <string name="cw_left_h">%1$d ঘণ্টা বাকি</string>
+    <string name="cw_left_hm">%1$d ঘণ্টা %2$d মিনিট বাকি</string>
+    <string name="cw_almost_done">প্রায় শেষ</string>
+    <string name="cw_up_next">এরপর</string>
+    <string name="cw_watched">%1$d%% দেখা হয়েছে</string>
+</resources>

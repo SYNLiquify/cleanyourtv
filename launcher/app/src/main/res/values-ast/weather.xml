@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Asturian (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Máx %1$d°  Mín %2$d°</string>
+    <string name="weather_clear">Despexáu</string>
+    <string name="weather_mainly_clear">Mayormente despexáu</string>
+    <string name="weather_partly_cloudy">Parcialmente ñubláu</string>
+    <string name="weather_overcast">Cubiertu</string>
+    <string name="weather_cloudy">Ñubláu</string>
+    <string name="weather_fog">Borrina</string>
+    <string name="weather_drizzle">Orbayu</string>
+    <string name="weather_rain">Lluvia</string>
+    <string name="weather_snow">Ñeve</string>
+    <string name="weather_showers">Chaparrones</string>
+    <string name="weather_snow_showers">Chaparrones de ñeve</string>
+    <string name="weather_thunderstorm">Tormentes</string>
+</resources>

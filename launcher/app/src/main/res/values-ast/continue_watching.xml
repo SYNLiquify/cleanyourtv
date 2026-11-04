@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Asturian (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Siguir viendo</string>
+    <string name="cw_movie">Película</string>
+    <string name="cw_season_episode">T%1$s E%2$s</string>
+    <string name="cw_episode_only">Episodiu %1$s</string>
+    <string name="cw_season_only">Temporada %1$s</string>
+    <string name="cw_left_m">Queden %1$d min</string>
+    <string name="cw_left_h">Queden %1$d h</string>
+    <string name="cw_left_hm">Queden %1$d h %2$d min</string>
+    <string name="cw_almost_done">Cuasi acabáu</string>
+    <string name="cw_up_next">Darréu</string>
+    <string name="cw_watched">%1$d%% vistu</string>
+</resources>

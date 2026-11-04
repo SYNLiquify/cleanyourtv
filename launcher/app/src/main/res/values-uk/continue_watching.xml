@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ukrainian (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Продовжити перегляд</string>
+    <string name="cw_movie">Фільм</string>
+    <string name="cw_season_episode">С%1$s Е%2$s</string>
+    <string name="cw_episode_only">Серія %1$s</string>
+    <string name="cw_season_only">Сезон %1$s</string>
+    <string name="cw_left_m">Залишилося %1$d хв</string>
+    <string name="cw_left_h">Залишилося %1$d год</string>
+    <string name="cw_left_hm">Залишилося %1$d год %2$d хв</string>
+    <string name="cw_almost_done">Майже завершено</string>
+    <string name="cw_up_next">Далі</string>
+    <string name="cw_watched">Переглянуто %1$d%%</string>
+</resources>

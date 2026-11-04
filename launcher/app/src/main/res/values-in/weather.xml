@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Indonesian (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Maks %1$d°  Min %2$d°</string>
+    <string name="weather_clear">Cerah</string>
+    <string name="weather_mainly_clear">Sebagian besar cerah</string>
+    <string name="weather_partly_cloudy">Cerah berawan</string>
+    <string name="weather_overcast">Mendung</string>
+    <string name="weather_cloudy">Berawan</string>
+    <string name="weather_fog">Kabut</string>
+    <string name="weather_drizzle">Gerimis</string>
+    <string name="weather_rain">Hujan</string>
+    <string name="weather_snow">Salju</string>
+    <string name="weather_showers">Hujan sesaat</string>
+    <string name="weather_snow_showers">Hujan salju sesaat</string>
+    <string name="weather_thunderstorm">Badai petir</string>
+</resources>

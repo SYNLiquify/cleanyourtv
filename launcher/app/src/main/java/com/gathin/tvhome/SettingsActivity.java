@@ -77,6 +77,8 @@ public final class SettingsActivity extends Activity {
     private SharedPreferences prefs;
     /** Accent: the highlight colour this menu and Home use; 0 is white. */
     private int accent;
+    /** The System > Updates page is on screen (a finished check redraws it). */
+    private boolean updatesOpen;
     /** Highlight color Adaptive: Home follows each app's colour; this menu stays white. */
     private boolean adaptive;
     private Config config;
@@ -135,7 +137,7 @@ public final class SettingsActivity extends Activity {
         titleLp.bottomMargin = dp(26);
         left.addView(title, titleLp);
         int[] names = {R.string.sm_home, R.string.sm_themes, R.string.sm_weather, R.string.sm_clock, R.string.sm_storage,
-                R.string.sm_system, R.string.sm_updates};
+                R.string.sm_system};
         for (int i = 0; i < names.length; i++) {
             final int index = i;
             TextView b = pill(getString(names[i]));
@@ -146,9 +148,8 @@ public final class SettingsActivity extends Activity {
                 if (focused) showCategory(index);
             });
             b.setOnClickListener(v -> focusPane());
-            // Seven categories (Updates is the seventh) fit a 1080p screen at 46dp with 8dp between them.
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(46));
-            lp.bottomMargin = dp(8);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(48));
+            lp.bottomMargin = dp(10);
             left.addView(b, lp);
             categoryButtons.add(b);
         }
@@ -265,6 +266,7 @@ public final class SettingsActivity extends Activity {
     private void showCategory(int index, boolean force) {
         if (index == category && back == null && !force) return;
         back = null;
+        updatesOpen = false;
         category = index;
         for (int i = 0; i < categoryButtons.size(); i++) categoryButtons.get(i).setSelected(i == index);
         clearPane();
@@ -275,8 +277,7 @@ public final class SettingsActivity extends Activity {
             case 2: buildWeather(); break;
             case 3: buildClock(); break;
             case 4: buildStorage(); break;
-            case 5: buildSystem(); break;
-            default: buildUpdates(); break;
+            default: buildSystem(); break;
         }
     }
 
@@ -994,19 +995,12 @@ public final class SettingsActivity extends Activity {
 
     private void buildSystem() {
         paneTitle.setText(R.string.sm_system);
-        pane.addView(actionRow(getString(R.string.sm_tv_settings), "", () ->
-                open(SystemSettings.intent(this, Settings.ACTION_SETTINGS))));
-        pane.addView(actionRow(getString(R.string.sm_network), "", () ->
-                open(SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS))));
-        pane.addView(actionRow(getString(R.string.sm_apps_settings), "", () ->
-                open(SystemSettings.intent(this, Settings.ACTION_APPLICATION_SETTINGS))));
-        pane.addView(actionRow(getString(R.string.sm_screensaver), "", () ->
-                open(SystemSettings.intent(this, Settings.ACTION_DREAM_SETTINGS))));
-        pane.addView(actionRow(getString(R.string.sm_default_home), "", () ->
-                open(new Intent(this, HomeSettingsActivity.class))));
-        section(R.string.sm_language);
+        pane.addView(actionRow(getString(R.string.sm_atv_settings), "", this::showAtvSettings));
         pane.addView(actionRow(getString(R.string.sm_language), languageName(prefs.getString(Config.LOCALE_KEY, config.locale)),
                 this::showLanguages));
+        Updates.Offer offer = Updates.offer(this);
+        pane.addView(actionRow(getString(R.string.sm_updates),
+                offer != null ? updateStatus(offer) : Updates.installedName(this), this::showUpdates));
         String version = "";
         try {
             version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
@@ -1065,12 +1059,37 @@ public final class SettingsActivity extends Activity {
         else focusPane();
     }
 
+    /** System > ATV settings: the TV's own settings pages, one row each. */
+    private void showAtvSettings() {
+        clearPane();
+        paneTitle.setText(R.string.sm_atv_settings);
+        back = () -> rebuild(5);
+        pane.addView(actionRow(getString(R.string.sm_tv_settings), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_network), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_apps_settings), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_APPLICATION_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_screensaver), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_DREAM_SETTINGS))));
+        pane.addView(actionRow(getString(R.string.sm_default_home), "", () ->
+                open(new Intent(this, HomeSettingsActivity.class))));
+        focusPane();
+    }
+
     /**
-     * The Updates category (Updates): Check for updates at the top, with what it found, Install update when there is
-     * one and the installed version; how often the launcher checks by itself at the bottom.
+     * System > Updates (Updates): Check for updates at the top, with what it found, Install update when there is one
+     * and the installed version; how often the launcher checks by itself at the bottom.
      */
-    private void buildUpdates() {
+    private void showUpdates() {
+        int scrollY = back != null && updatesOpen ? scroll.getScrollY() : 0;
+        clearPane();
         paneTitle.setText(R.string.sm_updates);
+        updatesOpen = true;
+        back = () -> {
+            updatesOpen = false;
+            rebuild(5);
+        };
         note(getString(R.string.sm_update_note));
         Updates.Offer offer = Updates.offer(this);
         TextView status = new TextView(this);
@@ -1078,7 +1097,7 @@ public final class SettingsActivity extends Activity {
         View check = actionRow(getString(R.string.sm_update_check), now.isEmpty() ? " " : now, () -> {
             setRowValue(status, getString(R.string.sm_checking));
             Updates.check(this, found -> {
-                if (category == 6 && back == null) rebuild(6);
+                if (category == 5 && updatesOpen) showUpdates();
             });
         });
         // actionRow's value view is the second child; keep it to show "Checking…".
@@ -1103,12 +1122,14 @@ public final class SettingsActivity extends Activity {
         String[] labels = new String[Updates.INTERVALS.length];
         int current = 0, hours = Updates.intervalHours(this);
         for (int i = 0; i < labels.length; i++) {
-            labels[i] = Updates.INTERVALS[i] == 0 ? getString(R.string.sm_off) : Updates.INTERVALS[i] + " h";
+            labels[i] = Updates.INTERVALS[i] == 0 ? getString(R.string.sm_off) : getString(R.string.sm_hours, Updates.INTERVALS[i]);
             if (Updates.INTERVALS[i] == hours) current = i;
         }
         pane.addView(choiceRow(getString(R.string.sm_update_every), labels, current,
                 i -> Updates.setIntervalHours(this, Updates.INTERVALS[i])));
         note(getString(R.string.sm_update_auto_note));
+        if (scrollY > 0) scroll.post(() -> scroll.scrollTo(0, scrollY));
+        else focusPane();
     }
 
     private String updateStatus(Updates.Offer offer) {
@@ -1453,10 +1474,10 @@ public final class SettingsActivity extends Activity {
         TextView name = text(18, R.string.font_regular, INK);
         name.setText(label);
         name.setDuplicateParentStateEnabled(true);
-        // A label written right to left (العربية, עברית in the language list) still starts at the row's start: the
-        // menu's direction, not the text's, decides the side.
-        name.setTextDirection(View.TEXT_DIRECTION_LOCALE);
-        name.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+        // A label written right to left (العربية, עברית in the language list) still starts at the row's left edge.
+        // Absolute LEFT: the launcher does not declare RTL support, so Android ignores a text direction set here and
+        // START would follow the label's own (right-to-left) direction.
+        name.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
         name.setTextColor(ink(INK));
         name.setSingleLine(true);
         name.setEllipsize(TextUtils.TruncateAt.END);

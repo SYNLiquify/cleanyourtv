@@ -133,8 +133,10 @@
     <string name="sm_version">Version</string>
     <string name="sm_language">Language</string>
     <string name="sm_language_system">TV\'s language</string>
-    <string name="sm_language_note">Home, the app library, menus and dates switch at once. English, Spanish and Japanese cover all of this launcher; in the other languages, this fork\'s own pages (Settings, weather, Continue watching, updates) stay in English.</string>
+    <string name="sm_language_note">The launcher, Home and its menus switch at once.</string>
     <string name="sm_update_auto">Automatic checks</string>
     <string name="sm_update_every">Check every</string>
     <string name="sm_update_auto_note">Also when the TV starts or wakes from standby. Off checks only when you press Check for updates.</string>
+    <string name="sm_atv_settings">ATV settings</string>
+    <string name="sm_hours">%1$d h</string>
 </resources>

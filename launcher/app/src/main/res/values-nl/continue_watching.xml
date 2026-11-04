@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Dutch (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Verder kijken</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s A%2$s</string>
+    <string name="cw_episode_only">Aflevering %1$s</string>
+    <string name="cw_season_only">Seizoen %1$s</string>
+    <string name="cw_left_m">Nog %1$d min</string>
+    <string name="cw_left_h">Nog %1$d u</string>
+    <string name="cw_left_hm">Nog %1$d u %2$d min</string>
+    <string name="cw_almost_done">Bijna klaar</string>
+    <string name="cw_up_next">Hierna</string>
+    <string name="cw_watched">%1$d%% gekeken</string>
+</resources>

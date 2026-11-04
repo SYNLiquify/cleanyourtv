@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Vietnamese (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Xem tiếp</string>
+    <string name="cw_movie">Phim</string>
+    <string name="cw_season_episode">M%1$s T%2$s</string>
+    <string name="cw_episode_only">Tập %1$s</string>
+    <string name="cw_season_only">Mùa %1$s</string>
+    <string name="cw_left_m">Còn %1$d phút</string>
+    <string name="cw_left_h">Còn %1$d giờ</string>
+    <string name="cw_left_hm">Còn %1$d giờ %2$d phút</string>
+    <string name="cw_almost_done">Sắp xong</string>
+    <string name="cw_up_next">Tiếp theo</string>
+    <string name="cw_watched">Đã xem %1$d%%</string>
+</resources>

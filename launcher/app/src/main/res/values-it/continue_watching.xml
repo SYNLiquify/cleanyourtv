@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Italian (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Continua a guardare</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">Episodio %1$s</string>
+    <string name="cw_season_only">Stagione %1$s</string>
+    <string name="cw_left_m">Ancora %1$d min</string>
+    <string name="cw_left_h">Ancora %1$d h</string>
+    <string name="cw_left_hm">Ancora %1$d h %2$d min</string>
+    <string name="cw_almost_done">Quasi finito</string>
+    <string name="cw_up_next">A seguire</string>
+    <string name="cw_watched">Visto al %1$d%%</string>
+</resources>

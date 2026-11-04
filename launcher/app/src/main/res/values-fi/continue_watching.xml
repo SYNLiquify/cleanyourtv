@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Finnish (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Jatka katselua</string>
+    <string name="cw_movie">Elokuva</string>
+    <string name="cw_season_episode">K%1$s J%2$s</string>
+    <string name="cw_episode_only">Jakso %1$s</string>
+    <string name="cw_season_only">Kausi %1$s</string>
+    <string name="cw_left_m">%1$d min jäljellä</string>
+    <string name="cw_left_h">%1$d h jäljellä</string>
+    <string name="cw_left_hm">%1$d h %2$d min jäljellä</string>
+    <string name="cw_almost_done">Lähes katsottu</string>
+    <string name="cw_up_next">Seuraavaksi</string>
+    <string name="cw_watched">%1$d %% katsottu</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Catalan (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Màx. %1$d°  Mín. %2$d°</string>
+    <string name="weather_clear">Serè</string>
+    <string name="weather_mainly_clear">Majoritàriament serè</string>
+    <string name="weather_partly_cloudy">Parcialment ennuvolat</string>
+    <string name="weather_overcast">Cobert</string>
+    <string name="weather_cloudy">Ennuvolat</string>
+    <string name="weather_fog">Boira</string>
+    <string name="weather_drizzle">Plugim</string>
+    <string name="weather_rain">Pluja</string>
+    <string name="weather_snow">Neu</string>
+    <string name="weather_showers">Xàfecs</string>
+    <string name="weather_snow_showers">Xàfecs de neu</string>
+    <string name="weather_thunderstorm">Tempestes</string>
+</resources>

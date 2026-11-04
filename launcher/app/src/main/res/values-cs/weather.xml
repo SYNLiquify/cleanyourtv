@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Czech (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Max %1$d°  Min %2$d°</string>
+    <string name="weather_clear">Jasno</string>
+    <string name="weather_mainly_clear">Převážně jasno</string>
+    <string name="weather_partly_cloudy">Polojasno</string>
+    <string name="weather_overcast">Zataženo</string>
+    <string name="weather_cloudy">Oblačno</string>
+    <string name="weather_fog">Mlha</string>
+    <string name="weather_drizzle">Mrholení</string>
+    <string name="weather_rain">Déšť</string>
+    <string name="weather_snow">Sníh</string>
+    <string name="weather_showers">Přeháňky</string>
+    <string name="weather_snow_showers">Sněhové přeháňky</string>
+    <string name="weather_thunderstorm">Bouřky</string>
+</resources>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Polish (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Maks. %1$d°  Min. %2$d°</string>
+    <string name="weather_clear">Bezchmurnie</string>
+    <string name="weather_mainly_clear">Przeważnie bezchmurnie</string>
+    <string name="weather_partly_cloudy">Częściowe zachmurzenie</string>
+    <string name="weather_overcast">Całkowite zachmurzenie</string>
+    <string name="weather_cloudy">Pochmurno</string>
+    <string name="weather_fog">Mgła</string>
+    <string name="weather_drizzle">Mżawka</string>
+    <string name="weather_rain">Deszcz</string>
+    <string name="weather_snow">Śnieg</string>
+    <string name="weather_showers">Przelotny deszcz</string>
+    <string name="weather_snow_showers">Przelotny śnieg</string>
+    <string name="weather_thunderstorm">Burze</string>
+</resources>

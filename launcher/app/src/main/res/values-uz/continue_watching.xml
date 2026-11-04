@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Uzbek (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">Tomoshani davom ettirish</string>
+    <string name="cw_movie">Film</string>
+    <string name="cw_season_episode">S%1$s E%2$s</string>
+    <string name="cw_episode_only">%1$s-qism</string>
+    <string name="cw_season_only">%1$s-mavsum</string>
+    <string name="cw_left_m">%1$d daq qoldi</string>
+    <string name="cw_left_h">%1$d soat qoldi</string>
+    <string name="cw_left_hm">%1$d soat %2$d daq qoldi</string>
+    <string name="cw_almost_done">Deyarli tugadi</string>
+    <string name="cw_up_next">Keyingisi</string>
+    <string name="cw_watched">%1$d%% koʻrildi</string>
+</resources>

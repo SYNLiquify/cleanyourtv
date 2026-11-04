@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arabic (this fork): the Continue watching row. -->
+<resources>
+    <string name="cw_label">متابعة المشاهدة</string>
+    <string name="cw_movie">فيلم</string>
+    <string name="cw_season_episode">م%1$s ح%2$s</string>
+    <string name="cw_episode_only">الحلقة %1$s</string>
+    <string name="cw_season_only">الموسم %1$s</string>
+    <string name="cw_left_m">متبقٍ %1$d دقيقة</string>
+    <string name="cw_left_h">متبقٍ %1$d ساعة</string>
+    <string name="cw_left_hm">متبقٍ %1$d ساعة و%2$d دقيقة</string>
+    <string name="cw_almost_done">أوشك على الانتهاء</string>
+    <string name="cw_up_next">التالي</string>
+    <string name="cw_watched">تمت مشاهدة %1$d%%</string>
+</resources>

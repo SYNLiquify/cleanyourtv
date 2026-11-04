@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Bengali (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">সর্বোচ্চ %1$d°  সর্বনিম্ন %2$d°</string>
+    <string name="weather_clear">পরিষ্কার</string>
+    <string name="weather_mainly_clear">প্রায় পরিষ্কার</string>
+    <string name="weather_partly_cloudy">আংশিক মেঘলা</string>
+    <string name="weather_overcast">ঘন মেঘলা</string>
+    <string name="weather_cloudy">মেঘলা</string>
+    <string name="weather_fog">কুয়াশা</string>
+    <string name="weather_drizzle">গুঁড়ি গুঁড়ি বৃষ্টি</string>
+    <string name="weather_rain">বৃষ্টি</string>
+    <string name="weather_snow">তুষারপাত</string>
+    <string name="weather_showers">থেমে থেমে বৃষ্টি</string>
+    <string name="weather_snow_showers">থেমে থেমে তুষারপাত</string>
+    <string name="weather_thunderstorm">বজ্রঝড়</string>
+</resources>

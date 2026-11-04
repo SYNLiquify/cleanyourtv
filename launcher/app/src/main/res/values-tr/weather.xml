@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish (this fork): the weather line. -->
+<resources>
+    <string name="weather_temp_f">%1$d°F</string>
+    <string name="weather_temp_c">%1$d°C</string>
+    <string name="weather_separator">"  ·  "</string>
+    <string name="weather_hilo">Y %1$d°  D %2$d°</string>
+    <string name="weather_clear">Açık</string>
+    <string name="weather_mainly_clear">Çoğunlukla açık</string>
+    <string name="weather_partly_cloudy">Parçalı bulutlu</string>
+    <string name="weather_overcast">Kapalı</string>
+    <string name="weather_cloudy">Bulutlu</string>
+    <string name="weather_fog">Sis</string>
+    <string name="weather_drizzle">Çisenti</string>
+    <string name="weather_rain">Yağmur</string>
+    <string name="weather_snow">Kar</string>
+    <string name="weather_showers">Sağanak</string>
+    <string name="weather_snow_showers">Kar sağanağı</string>
+    <string name="weather_thunderstorm">Gök gürültülü fırtına</string>
+</resources>
