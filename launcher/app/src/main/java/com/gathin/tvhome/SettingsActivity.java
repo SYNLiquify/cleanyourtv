@@ -1453,6 +1453,10 @@ public final class SettingsActivity extends Activity {
         TextView name = text(18, R.string.font_regular, INK);
         name.setText(label);
         name.setDuplicateParentStateEnabled(true);
+        // A label written right to left (العربية, עברית in the language list) still starts at the row's start: the
+        // menu's direction, not the text's, decides the side.
+        name.setTextDirection(View.TEXT_DIRECTION_LOCALE);
+        name.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
         name.setTextColor(ink(INK));
         name.setSingleLine(true);
         name.setEllipsize(TextUtils.TruncateAt.END);
