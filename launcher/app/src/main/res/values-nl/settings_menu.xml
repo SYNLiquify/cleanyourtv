@@ -11,15 +11,7 @@
     <string name="sm_storage">Opslag</string>
     <string name="sm_measuring">Meten…</string>
     <string name="sm_this_tv">Deze tv</string>
-    <string name="sm_tv_usage">%1$s van %2$s gebruikt · %3$s vrij</string>
-    <string name="sm_launcher_storage">De launcher</string>
-    <string name="sm_st_total">Launcher in totaal</string>
     <string name="sm_st_app">App</string>
-    <string name="sm_st_theme_in_use">Huidig thema (achtergronden)</string>
-    <string name="sm_st_downloaded">Gedownloade thema\'s</string>
-    <string name="sm_st_previews">Themavoorbeelden</string>
-    <string name="sm_st_thumbnails">Miniaturen van Verder kijken</string>
-    <string name="sm_st_other">Instellingen, weer en andere gegevens</string>
     <string name="sm_clean_up">Opruimen</string>
     <string name="sm_clear_thumbnails">Miniaturen van Verder kijken wissen</string>
     <string name="sm_delete_downloaded">Alle gedownloade thema\'s verwijderen</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Update downloaden</string>
     <string name="update_progress">Downloaden… %1$d%%</string>
     <string name="update_opening">Android-installatieprogramma wordt geopend…</string>
+    <string name="sm_seg_launcher">Launcher</string>
+    <string name="sm_seg_apps_system">Apps en systeem</string>
+    <string name="sm_seg_free">Vrij</string>
+    <string name="sm_used_of">%1$s van %2$s gebruikt</string>
+    <string name="sm_seg_wallpapers">Achtergronden</string>
+    <string name="sm_seg_themes">Thema\'s</string>
+    <string name="sm_seg_previews">Voorbeelden</string>
+    <string name="sm_seg_thumbnails">Miniaturen</string>
+    <string name="sm_seg_other">Overig</string>
 </resources>

@@ -11,15 +11,7 @@
     <string name="sm_storage">אחסון</string>
     <string name="sm_measuring">מתבצעת מדידה…</string>
     <string name="sm_this_tv">הטלוויזיה הזו</string>
-    <string name="sm_tv_usage">%1$s בשימוש מתוך %2$s · %3$s פנויים</string>
-    <string name="sm_launcher_storage">מסך הבית</string>
-    <string name="sm_st_total">מסך הבית בסך הכול</string>
     <string name="sm_st_app">אפליקציה</string>
-    <string name="sm_st_theme_in_use">ערכת הנושא הפעילה (טפטים)</string>
-    <string name="sm_st_downloaded">ערכות נושא שהורדו</string>
-    <string name="sm_st_previews">תצוגות מקדימות של ערכות נושא</string>
-    <string name="sm_st_thumbnails">תמונות ממוזערות של המשך צפייה</string>
-    <string name="sm_st_other">הגדרות, מזג אוויר ונתונים אחרים</string>
     <string name="sm_clean_up">פינוי מקום</string>
     <string name="sm_clear_thumbnails">ניקוי התמונות הממוזערות של המשך צפייה</string>
     <string name="sm_delete_downloaded">מחיקת כל ערכות הנושא שהורדו</string>
@@ -158,4 +150,13 @@
     <string name="update_download">הורדת העדכון</string>
     <string name="update_progress">מוריד… %1$d%%</string>
     <string name="update_opening">פותח את מתקין Android…</string>
+    <string name="sm_seg_launcher">משגר</string>
+    <string name="sm_seg_apps_system">אפליקציות ומערכת</string>
+    <string name="sm_seg_free">פנוי</string>
+    <string name="sm_used_of">%1$s מתוך %2$s בשימוש</string>
+    <string name="sm_seg_wallpapers">טפטים</string>
+    <string name="sm_seg_themes">ערכות נושא</string>
+    <string name="sm_seg_previews">תצוגות מקדימות</string>
+    <string name="sm_seg_thumbnails">תמונות ממוזערות</string>
+    <string name="sm_seg_other">אחר</string>
 </resources>

@@ -11,15 +11,7 @@
     <string name="sm_storage">Сховище</string>
     <string name="sm_measuring">Обчислення…</string>
     <string name="sm_this_tv">Цей телевізор</string>
-    <string name="sm_tv_usage">Використано %1$s з %2$s · вільно %3$s</string>
-    <string name="sm_launcher_storage">Лаунчер</string>
-    <string name="sm_st_total">Лаунчер загалом</string>
     <string name="sm_st_app">Застосунок</string>
-    <string name="sm_st_theme_in_use">Поточна тема (шпалери)</string>
-    <string name="sm_st_downloaded">Завантажені теми</string>
-    <string name="sm_st_previews">Попередні перегляди тем</string>
-    <string name="sm_st_thumbnails">Мініатюри «Продовжити перегляд»</string>
-    <string name="sm_st_other">Налаштування, погода та інші дані</string>
     <string name="sm_clean_up">Очищення</string>
     <string name="sm_clear_thumbnails">Очистити мініатюри «Продовжити перегляд»</string>
     <string name="sm_delete_downloaded">Видалити всі завантажені теми</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Завантажити оновлення</string>
     <string name="update_progress">Завантаження… %1$d%%</string>
     <string name="update_opening">Відкривається інсталятор Android…</string>
+    <string name="sm_seg_launcher">Лаунчер</string>
+    <string name="sm_seg_apps_system">Додатки й система</string>
+    <string name="sm_seg_free">Вільно</string>
+    <string name="sm_used_of">Використано %1$s з %2$s</string>
+    <string name="sm_seg_wallpapers">Шпалери</string>
+    <string name="sm_seg_themes">Теми</string>
+    <string name="sm_seg_previews">Попередні перегляди</string>
+    <string name="sm_seg_thumbnails">Мініатюри</string>
+    <string name="sm_seg_other">Інше</string>
 </resources>

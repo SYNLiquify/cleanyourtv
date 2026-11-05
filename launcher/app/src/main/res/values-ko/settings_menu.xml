@@ -11,15 +11,7 @@
     <string name="sm_storage">저장공간</string>
     <string name="sm_measuring">계산 중…</string>
     <string name="sm_this_tv">이 TV</string>
-    <string name="sm_tv_usage">%2$s 중 %1$s 사용 · %3$s 남음</string>
-    <string name="sm_launcher_storage">런처</string>
-    <string name="sm_st_total">런처 전체</string>
     <string name="sm_st_app">앱</string>
-    <string name="sm_st_theme_in_use">사용 중인 테마 (배경화면)</string>
-    <string name="sm_st_downloaded">다운로드한 테마</string>
-    <string name="sm_st_previews">테마 미리보기</string>
-    <string name="sm_st_thumbnails">이어서 보기 썸네일</string>
-    <string name="sm_st_other">설정, 날씨 및 기타 데이터</string>
     <string name="sm_clean_up">정리</string>
     <string name="sm_clear_thumbnails">이어서 보기 썸네일 지우기</string>
     <string name="sm_delete_downloaded">다운로드한 테마 모두 삭제</string>
@@ -158,4 +150,13 @@
     <string name="update_download">업데이트 다운로드</string>
     <string name="update_progress">다운로드 중… %1$d%%</string>
     <string name="update_opening">Android 설치 프로그램을 여는 중…</string>
+    <string name="sm_seg_launcher">런처</string>
+    <string name="sm_seg_apps_system">앱 및 시스템</string>
+    <string name="sm_seg_free">여유 공간</string>
+    <string name="sm_used_of">%2$s 중 %1$s 사용</string>
+    <string name="sm_seg_wallpapers">배경화면</string>
+    <string name="sm_seg_themes">테마</string>
+    <string name="sm_seg_previews">미리보기</string>
+    <string name="sm_seg_thumbnails">썸네일</string>
+    <string name="sm_seg_other">기타</string>
 </resources>

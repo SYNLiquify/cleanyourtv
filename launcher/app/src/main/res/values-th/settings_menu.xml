@@ -11,15 +11,7 @@
     <string name="sm_storage">พื้นที่เก็บข้อมูล</string>
     <string name="sm_measuring">กำลังคำนวณ…</string>
     <string name="sm_this_tv">ทีวีเครื่องนี้</string>
-    <string name="sm_tv_usage">ใช้ไป %1$s จาก %2$s · ว่าง %3$s</string>
-    <string name="sm_launcher_storage">ลอนเชอร์</string>
-    <string name="sm_st_total">ลอนเชอร์ทั้งหมด</string>
     <string name="sm_st_app">แอป</string>
-    <string name="sm_st_theme_in_use">ธีมที่ใช้อยู่ (ภาพพื้นหลัง)</string>
-    <string name="sm_st_downloaded">ธีมที่ดาวน์โหลดไว้</string>
-    <string name="sm_st_previews">ภาพตัวอย่างธีม</string>
-    <string name="sm_st_thumbnails">ภาพย่อของดูต่อ</string>
-    <string name="sm_st_other">การตั้งค่า สภาพอากาศ และข้อมูลอื่นๆ</string>
     <string name="sm_clean_up">ล้างข้อมูล</string>
     <string name="sm_clear_thumbnails">ล้างภาพย่อของดูต่อ</string>
     <string name="sm_delete_downloaded">ลบธีมที่ดาวน์โหลดไว้ทั้งหมด</string>
@@ -158,4 +150,13 @@
     <string name="update_download">ดาวน์โหลดอัปเดต</string>
     <string name="update_progress">กำลังดาวน์โหลด… %1$d%%</string>
     <string name="update_opening">กำลังเปิดตัวติดตั้งของ Android…</string>
+    <string name="sm_seg_launcher">ตัวเรียกใช้</string>
+    <string name="sm_seg_apps_system">แอปและระบบ</string>
+    <string name="sm_seg_free">ว่าง</string>
+    <string name="sm_used_of">ใช้ไป %1$s จาก %2$s</string>
+    <string name="sm_seg_wallpapers">วอลเปเปอร์</string>
+    <string name="sm_seg_themes">ธีม</string>
+    <string name="sm_seg_previews">ตัวอย่าง</string>
+    <string name="sm_seg_thumbnails">ภาพขนาดย่อ</string>
+    <string name="sm_seg_other">อื่นๆ</string>
 </resources>

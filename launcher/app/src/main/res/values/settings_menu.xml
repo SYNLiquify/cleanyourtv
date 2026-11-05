@@ -11,15 +11,7 @@
     <string name="sm_storage">Storage</string>
     <string name="sm_measuring">Measuring…</string>
     <string name="sm_this_tv">This TV</string>
-    <string name="sm_tv_usage">%1$s used of %2$s · %3$s free</string>
-    <string name="sm_launcher_storage">The launcher</string>
-    <string name="sm_st_total">Launcher in total</string>
     <string name="sm_st_app">App</string>
-    <string name="sm_st_theme_in_use">Theme in use (wallpapers)</string>
-    <string name="sm_st_downloaded">Downloaded themes</string>
-    <string name="sm_st_previews">Theme previews</string>
-    <string name="sm_st_thumbnails">Continue watching thumbnails</string>
-    <string name="sm_st_other">Settings, weather and other data</string>
     <string name="sm_clean_up">Clean up</string>
     <string name="sm_clear_thumbnails">Clear Continue watching thumbnails</string>
     <string name="sm_delete_downloaded">Delete all downloaded themes</string>
@@ -163,4 +155,13 @@
     <string name="update_download">Download update</string>
     <string name="update_progress">Downloading… %1$d%%</string>
     <string name="update_opening">Opening Android\'s installer…</string>
+    <string name="sm_seg_launcher">Launcher</string>
+    <string name="sm_seg_apps_system">Apps &amp; system</string>
+    <string name="sm_seg_free">Free</string>
+    <string name="sm_used_of">%1$s of %2$s used</string>
+    <string name="sm_seg_wallpapers">Wallpapers</string>
+    <string name="sm_seg_themes">Themes</string>
+    <string name="sm_seg_previews">Previews</string>
+    <string name="sm_seg_thumbnails">Thumbnails</string>
+    <string name="sm_seg_other">Other</string>
 </resources>

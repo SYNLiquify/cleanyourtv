@@ -11,15 +11,7 @@
     <string name="sm_storage">Tallennustila</string>
     <string name="sm_measuring">Mitataan…</string>
     <string name="sm_this_tv">Tämä televisio</string>
-    <string name="sm_tv_usage">%1$s / %2$s käytössä · %3$s vapaana</string>
-    <string name="sm_launcher_storage">Käynnistin</string>
-    <string name="sm_st_total">Käynnistin yhteensä</string>
     <string name="sm_st_app">Sovellus</string>
-    <string name="sm_st_theme_in_use">Käytössä oleva teema (taustakuvat)</string>
-    <string name="sm_st_downloaded">Ladatut teemat</string>
-    <string name="sm_st_previews">Teemojen esikatselut</string>
-    <string name="sm_st_thumbnails">Jatka katselua -pikkukuvat</string>
-    <string name="sm_st_other">Asetukset, sää ja muut tiedot</string>
     <string name="sm_clean_up">Siivoa</string>
     <string name="sm_clear_thumbnails">Tyhjennä Jatka katselua -pikkukuvat</string>
     <string name="sm_delete_downloaded">Poista kaikki ladatut teemat</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Lataa päivitys</string>
     <string name="update_progress">Ladataan… %1$d %%</string>
     <string name="update_opening">Avataan Androidin asennusohjelmaa…</string>
+    <string name="sm_seg_launcher">Käynnistin</string>
+    <string name="sm_seg_apps_system">Sovellukset ja järjestelmä</string>
+    <string name="sm_seg_free">Vapaana</string>
+    <string name="sm_used_of">%1$s / %2$s käytössä</string>
+    <string name="sm_seg_wallpapers">Taustakuvat</string>
+    <string name="sm_seg_themes">Teemat</string>
+    <string name="sm_seg_previews">Esikatselut</string>
+    <string name="sm_seg_thumbnails">Pikkukuvat</string>
+    <string name="sm_seg_other">Muut</string>
 </resources>

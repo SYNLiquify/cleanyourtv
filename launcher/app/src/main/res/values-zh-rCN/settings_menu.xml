@@ -11,15 +11,7 @@
     <string name="sm_storage">存储空间</string>
     <string name="sm_measuring">正在计算…</string>
     <string name="sm_this_tv">这台电视</string>
-    <string name="sm_tv_usage">已用 %1$s，共 %2$s · 可用 %3$s</string>
-    <string name="sm_launcher_storage">桌面</string>
-    <string name="sm_st_total">桌面总计</string>
     <string name="sm_st_app">应用本身</string>
-    <string name="sm_st_theme_in_use">当前主题（壁纸）</string>
-    <string name="sm_st_downloaded">已下载的主题</string>
-    <string name="sm_st_previews">主题预览图</string>
-    <string name="sm_st_thumbnails">继续观看缩略图</string>
-    <string name="sm_st_other">设置、天气及其他数据</string>
     <string name="sm_clean_up">清理</string>
     <string name="sm_clear_thumbnails">清除继续观看缩略图</string>
     <string name="sm_delete_downloaded">删除所有已下载的主题</string>
@@ -158,4 +150,13 @@
     <string name="update_download">下载更新</string>
     <string name="update_progress">正在下载… %1$d%%</string>
     <string name="update_opening">正在打开 Android 安装程序…</string>
+    <string name="sm_seg_launcher">启动器</string>
+    <string name="sm_seg_apps_system">应用和系统</string>
+    <string name="sm_seg_free">可用</string>
+    <string name="sm_used_of">已使用 %1$s（共 %2$s）</string>
+    <string name="sm_seg_wallpapers">壁纸</string>
+    <string name="sm_seg_themes">主题</string>
+    <string name="sm_seg_previews">预览</string>
+    <string name="sm_seg_thumbnails">缩略图</string>
+    <string name="sm_seg_other">其他</string>
 </resources>

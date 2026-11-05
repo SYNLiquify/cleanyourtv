@@ -11,15 +11,7 @@
     <string name="sm_storage">التخزين</string>
     <string name="sm_measuring">جارٍ القياس…</string>
     <string name="sm_this_tv">هذا التلفاز</string>
-    <string name="sm_tv_usage">مستخدم %1$s من %2$s · %3$s متاح</string>
-    <string name="sm_launcher_storage">المشغّل</string>
-    <string name="sm_st_total">المشغّل إجمالًا</string>
     <string name="sm_st_app">التطبيق</string>
-    <string name="sm_st_theme_in_use">السمة المستخدمة (الخلفيات)</string>
-    <string name="sm_st_downloaded">السمات المنزّلة</string>
-    <string name="sm_st_previews">معاينات السمات</string>
-    <string name="sm_st_thumbnails">صور متابعة المشاهدة المصغّرة</string>
-    <string name="sm_st_other">الإعدادات والطقس وبيانات أخرى</string>
     <string name="sm_clean_up">تنظيف</string>
     <string name="sm_clear_thumbnails">مسح صور متابعة المشاهدة المصغّرة</string>
     <string name="sm_delete_downloaded">حذف كل السمات المنزّلة</string>
@@ -158,4 +150,13 @@
     <string name="update_download">تنزيل التحديث</string>
     <string name="update_progress">جارٍ التنزيل… %1$d%%</string>
     <string name="update_opening">جارٍ فتح أداة التثبيت في Android…</string>
+    <string name="sm_seg_launcher">المشغّل</string>
+    <string name="sm_seg_apps_system">التطبيقات والنظام</string>
+    <string name="sm_seg_free">متاح</string>
+    <string name="sm_used_of">%1$s مستخدمة من %2$s</string>
+    <string name="sm_seg_wallpapers">الخلفيات</string>
+    <string name="sm_seg_themes">السمات</string>
+    <string name="sm_seg_previews">المعاينات</string>
+    <string name="sm_seg_thumbnails">الصور المصغّرة</string>
+    <string name="sm_seg_other">أخرى</string>
 </resources>

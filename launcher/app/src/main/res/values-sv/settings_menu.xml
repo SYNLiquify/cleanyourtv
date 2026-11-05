@@ -11,15 +11,7 @@
     <string name="sm_storage">Lagring</string>
     <string name="sm_measuring">Mäter…</string>
     <string name="sm_this_tv">Den här TV:n</string>
-    <string name="sm_tv_usage">%1$s använt av %2$s · %3$s ledigt</string>
-    <string name="sm_launcher_storage">Startskärmen</string>
-    <string name="sm_st_total">Startskärmen totalt</string>
     <string name="sm_st_app">App</string>
-    <string name="sm_st_theme_in_use">Tema som används (bakgrundsbilder)</string>
-    <string name="sm_st_downloaded">Nedladdade teman</string>
-    <string name="sm_st_previews">Förhandsvisningar av teman</string>
-    <string name="sm_st_thumbnails">Miniatyrer för Fortsätt titta</string>
-    <string name="sm_st_other">Inställningar, väder och annan data</string>
     <string name="sm_clean_up">Rensa</string>
     <string name="sm_clear_thumbnails">Rensa miniatyrer för Fortsätt titta</string>
     <string name="sm_delete_downloaded">Ta bort alla nedladdade teman</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Ladda ned uppdatering</string>
     <string name="update_progress">Laddar ned… %1$d %%</string>
     <string name="update_opening">Öppnar Androids installationsprogram…</string>
+    <string name="sm_seg_launcher">Startprogram</string>
+    <string name="sm_seg_apps_system">Appar och system</string>
+    <string name="sm_seg_free">Ledigt</string>
+    <string name="sm_used_of">%1$s av %2$s används</string>
+    <string name="sm_seg_wallpapers">Bakgrunder</string>
+    <string name="sm_seg_themes">Teman</string>
+    <string name="sm_seg_previews">Förhandsvisningar</string>
+    <string name="sm_seg_thumbnails">Miniatyrer</string>
+    <string name="sm_seg_other">Övrigt</string>
 </resources>

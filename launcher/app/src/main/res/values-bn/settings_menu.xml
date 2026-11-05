@@ -11,15 +11,7 @@
     <string name="sm_storage">স্টোরেজ</string>
     <string name="sm_measuring">মাপা হচ্ছে…</string>
     <string name="sm_this_tv">এই টিভি</string>
-    <string name="sm_tv_usage">%2$s-এর মধ্যে %1$s ব্যবহৃত · %3$s খালি</string>
-    <string name="sm_launcher_storage">লঞ্চার</string>
-    <string name="sm_st_total">লঞ্চার মোট</string>
     <string name="sm_st_app">অ্যাপ</string>
-    <string name="sm_st_theme_in_use">চালু থিম (ওয়ালপেপার)</string>
-    <string name="sm_st_downloaded">ডাউনলোড করা থিম</string>
-    <string name="sm_st_previews">থিমের প্রিভিউ</string>
-    <string name="sm_st_thumbnails">দেখা চালিয়ে যান-এর থাম্বনেইল</string>
-    <string name="sm_st_other">সেটিংস, আবহাওয়া ও অন্যান্য ডেটা</string>
     <string name="sm_clean_up">পরিষ্কার করুন</string>
     <string name="sm_clear_thumbnails">দেখা চালিয়ে যান-এর থাম্বনেইল মুছুন</string>
     <string name="sm_delete_downloaded">ডাউনলোড করা সব থিম মুছুন</string>
@@ -158,4 +150,13 @@
     <string name="update_download">আপডেট ডাউনলোড করুন</string>
     <string name="update_progress">ডাউনলোড হচ্ছে… %1$d%%</string>
     <string name="update_opening">Android ইনস্টলার খুলছে…</string>
+    <string name="sm_seg_launcher">লঞ্চার</string>
+    <string name="sm_seg_apps_system">অ্যাপ ও সিস্টেম</string>
+    <string name="sm_seg_free">খালি</string>
+    <string name="sm_used_of">%2$s-এর মধ্যে %1$s ব্যবহৃত</string>
+    <string name="sm_seg_wallpapers">ওয়ালপেপার</string>
+    <string name="sm_seg_themes">থিম</string>
+    <string name="sm_seg_previews">প্রিভিউ</string>
+    <string name="sm_seg_thumbnails">থাম্বনেইল</string>
+    <string name="sm_seg_other">অন্যান্য</string>
 </resources>

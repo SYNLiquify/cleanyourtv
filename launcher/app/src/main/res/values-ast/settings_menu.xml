@@ -11,15 +11,7 @@
     <string name="sm_storage">Almacenamientu</string>
     <string name="sm_measuring">Midiendo…</string>
     <string name="sm_this_tv">Esti televisor</string>
-    <string name="sm_tv_usage">%1$s usaos de %2$s · %3$s llibres</string>
-    <string name="sm_launcher_storage">El llanzador</string>
-    <string name="sm_st_total">Llanzador en total</string>
     <string name="sm_st_app">Aplicación</string>
-    <string name="sm_st_theme_in_use">Tema n\'usu (fondos)</string>
-    <string name="sm_st_downloaded">Temes baxaos</string>
-    <string name="sm_st_previews">Vistes previes de temes</string>
-    <string name="sm_st_thumbnails">Miniatures de Siguir viendo</string>
-    <string name="sm_st_other">Axustes, tiempu y otros datos</string>
     <string name="sm_clean_up">Lliberar espaciu</string>
     <string name="sm_clear_thumbnails">Borrar les miniatures de Siguir viendo</string>
     <string name="sm_delete_downloaded">Desaniciar tolos temes baxaos</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Baxar l\'anovamientu</string>
     <string name="update_progress">Baxando… %1$d %%</string>
     <string name="update_opening">Abriendo l\'instalador d\'Android…</string>
+    <string name="sm_seg_launcher">Llanzador</string>
+    <string name="sm_seg_apps_system">Aplicaciones y sistema</string>
+    <string name="sm_seg_free">Llibre</string>
+    <string name="sm_used_of">%1$s usaos de %2$s</string>
+    <string name="sm_seg_wallpapers">Fondos</string>
+    <string name="sm_seg_themes">Temes</string>
+    <string name="sm_seg_previews">Previsualizaciones</string>
+    <string name="sm_seg_thumbnails">Miniatures</string>
+    <string name="sm_seg_other">Otros</string>
 </resources>

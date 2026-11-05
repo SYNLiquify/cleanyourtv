@@ -11,15 +11,7 @@
     <string name="sm_storage">Xotira</string>
     <string name="sm_measuring">Hisoblanmoqda…</string>
     <string name="sm_this_tv">Shu televizor</string>
-    <string name="sm_tv_usage">%2$s dan %1$s band · %3$s boʻsh</string>
-    <string name="sm_launcher_storage">Launcher</string>
-    <string name="sm_st_total">Launcher jami</string>
     <string name="sm_st_app">Ilova</string>
-    <string name="sm_st_theme_in_use">Joriy mavzu (fon rasmlari)</string>
-    <string name="sm_st_downloaded">Yuklab olingan mavzular</string>
-    <string name="sm_st_previews">Mavzu namunalari</string>
-    <string name="sm_st_thumbnails">Tomoshani davom ettirish rasmlari</string>
-    <string name="sm_st_other">Sozlamalar, ob-havo va boshqa maʼlumotlar</string>
     <string name="sm_clean_up">Tozalash</string>
     <string name="sm_clear_thumbnails">Tomoshani davom ettirish rasmlarini tozalash</string>
     <string name="sm_delete_downloaded">Barcha yuklab olingan mavzularni oʻchirish</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Yangilanishni yuklab olish</string>
     <string name="update_progress">Yuklab olinmoqda… %1$d%%</string>
     <string name="update_opening">Android oʻrnatuvchisi ochilmoqda…</string>
+    <string name="sm_seg_launcher">Launcher</string>
+    <string name="sm_seg_apps_system">Ilovalar va tizim</string>
+    <string name="sm_seg_free">Boʻsh</string>
+    <string name="sm_used_of">%2$s dan %1$s band</string>
+    <string name="sm_seg_wallpapers">Fon rasmlari</string>
+    <string name="sm_seg_themes">Mavzular</string>
+    <string name="sm_seg_previews">Koʻrib chiqishlar</string>
+    <string name="sm_seg_thumbnails">Miniaturalar</string>
+    <string name="sm_seg_other">Boshqa</string>
 </resources>

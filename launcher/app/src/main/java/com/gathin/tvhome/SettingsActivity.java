@@ -883,35 +883,41 @@ public final class SettingsActivity extends Activity {
         return android.text.format.Formatter.formatShortFileSize(this, n);
     }
 
+    /** The bar colours, after iOS's storage page: one per part, in the order the bar draws them. */
+    private static final int[] STORAGE_COLORS = {0xFFFF453A, 0xFFFF9F0A, 0xFFFFD60A, 0xFF30D158, 0xFF64D2FF,
+            0xFF0A84FF, 0xFF8E8E93};
+
     /**
-     * The TV's storage with a bar, then what the launcher takes and of what, then clean-up. The sizes are read off the
-     * main thread; the page shows placeholders until they are in.
+     * Storage, laid out like iOS's: a card for the TV (used of total, the launcher's share), a card for the launcher
+     * with one bar split into its parts and a legend under it, then the Languages row (its list removes them one by
+     * one) and clean-up. The sizes are read off the main thread; the cards fill in when they are.
      */
     private void buildStorage() {
         paneTitle.setText(R.string.sm_storage);
-        TextView summary = text(18, R.string.font_regular, INK);
-        summary.setText(R.string.sm_measuring);
-        section(R.string.sm_this_tv);
-        pane.addView(summary);
-        UsageBar bar = new UsageBar(this);
-        LinearLayout.LayoutParams barLp = new LinearLayout.LayoutParams(-1, dp(10));
-        barLp.topMargin = dp(12);
-        pane.addView(bar, barLp);
-        section(R.string.sm_launcher_storage);
-        int[] labels = {R.string.sm_st_total, R.string.sm_st_app, R.string.sm_st_theme_in_use, R.string.sm_st_downloaded,
-                R.string.sm_st_previews, R.string.sm_st_thumbnails, R.string.sm_st_other};
-        List<TextView> values = new ArrayList<>();
-        for (int label : labels) {
-            View row = actionRow(getString(label), "…", null);
-            values.add((TextView) ((ViewGroup) row).getChildAt(1));
-            pane.addView(row);
-        }
-        // English plus the downloaded languages (LanguagePacks), as a row that opens their list.
-        pane.addView(actionRow(getString(R.string.sm_st_languages),
-                getString(R.string.sm_st_languages_value, 1 + installedLanguages().size()), this::showInstalledLanguages));
-        section(R.string.sm_clean_up);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
         java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
+
+        TextView[] tvUsed = {null};
+        SegmentBar tvBar = new SegmentBar(this);
+        LinearLayout tvLegend = new LinearLayout(this);
+        pane.addView(storageCard(getString(R.string.sm_this_tv), tvUsed, tvBar, tvLegend));
+
+        TextView[] launcherTotal = {null};
+        SegmentBar launcherBar = new SegmentBar(this);
+        LinearLayout launcherLegend = new LinearLayout(this);
+        View launcherCard = storageCard(getString(R.string.sm_seg_launcher), launcherTotal, launcherBar, launcherLegend);
+        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-1, -2);
+        cardLp.topMargin = dp(18);
+        pane.addView(launcherCard, cardLp);
+
+        // The downloaded languages (LanguagePacks), as a row that opens their list; they are on the bar as well.
+        View languages = actionRow(getString(R.string.sm_st_languages),
+                getString(R.string.sm_st_languages_value, 1 + installedLanguages().size()), this::showInstalledLanguages);
+        // The row keeps its own height (actionRow's layout params); only the gap above the cards changes.
+        ((LinearLayout.LayoutParams) languages.getLayoutParams()).topMargin = dp(18);
+        pane.addView(languages);
+
+        section(R.string.sm_clean_up);
         pane.addView(actionRow(getString(R.string.sm_clear_thumbnails), "", () -> {
             delete(thumbnails);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
@@ -946,14 +952,16 @@ public final class SettingsActivity extends Activity {
             rebuild(4);
             focusPane();
         }));
+
+        List<String> packs = installedLanguages();
         background.execute(() -> {
             android.os.StatFs fs = new android.os.StatFs(android.os.Environment.getDataDirectory().getPath());
             long total = fs.getTotalBytes(), free = fs.getAvailableBytes();
             long app = new java.io.File(getPackageCodePath()).length();
             java.io.File external = Config.dir(this);
-            long inUse = 0;
+            long wallpapers = 0;
             if (external != null) {
-                inUse = size(new java.io.File(external, Config.FILE_NAME)) + size(new java.io.File(external, Config.WALLPAPER_NAME))
+                wallpapers = size(new java.io.File(external, Config.FILE_NAME)) + size(new java.io.File(external, Config.WALLPAPER_NAME))
                         + size(new java.io.File(external, "wallpapers"));
             }
             long downloaded = 0, previews = 0;
@@ -964,52 +972,157 @@ public final class SettingsActivity extends Activity {
                 previews += all - kept;
             }
             long thumbs = size(thumbnails);
+            long langs = 0;
+            for (String tag : packs) langs += LanguagePacks.size(this, tag);
             long data = size(getDataDir()) + size(external);
-            long other = Math.max(0, data - inUse - downloaded - previews - thumbs);
+            long other = Math.max(0, data - wallpapers - downloaded - previews - thumbs - langs);
             long launcher = app + data;
-            long[] sizes = {launcher, app, inUse, downloaded, previews, thumbs, other};
+            long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, other};
             main.post(() -> {
                 if (isFinishing() || category != 4) return;
-                summary.setText(getString(R.string.sm_tv_usage, bytes(total - free), bytes(total), bytes(free)));
-                bar.set(total > 0 ? (total - free) / (float) total : 0f, total > 0 ? launcher / (float) total : 0f);
-                for (int i = 0; i < sizes.length; i++) values.get(i).setText(bytes(sizes[i]));
+                long used = total - free;
+                tvUsed[0].setText(getString(R.string.sm_used_of, bytes(used), bytes(total)));
+                tvBar.set(total, new long[]{launcher, Math.max(0, used - launcher)},
+                        new int[]{0xFF0A84FF, 0xFFAEAEB2});
+                legend(tvLegend, new int[]{R.string.sm_seg_launcher, R.string.sm_seg_apps_system, R.string.sm_seg_free},
+                        new long[]{launcher, Math.max(0, used - launcher), free},
+                        new int[]{0xFF0A84FF, 0xFFAEAEB2, 0x33FFFFFF});
+                launcherTotal[0].setText(bytes(launcher));
+                launcherBar.set(launcher, parts, STORAGE_COLORS);
+                legend(launcherLegend, new int[]{R.string.sm_st_app, R.string.sm_seg_wallpapers, R.string.sm_seg_themes,
+                        R.string.sm_seg_previews, R.string.sm_seg_thumbnails, R.string.sm_st_languages,
+                        R.string.sm_seg_other}, parts, STORAGE_COLORS);
             });
         });
     }
 
-    /** The storage bar: all used space in soft white, the launcher's share in solid white at its start. */
-    private static final class UsageBar extends View {
-        private final android.graphics.Paint track = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
-        private final android.graphics.Paint used = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
-        private final android.graphics.Paint mine = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
-        private final android.graphics.RectF r = new android.graphics.RectF();
-        private float usedShare, launcherShare;
+    /** A rounded card: title on the left, a figure on the right (filled in later), the bar, then its legend. */
+    private View storageCard(String title, TextView[] figure, SegmentBar bar, LinearLayout legend) {
+        LinearLayout card = new LinearLayout(this);
+        card.setOrientation(LinearLayout.VERTICAL);
+        card.setPadding(dp(26), dp(22), dp(26), dp(20));
+        android.graphics.drawable.GradientDrawable bg = new android.graphics.drawable.GradientDrawable();
+        bg.setColor(0x1AFFFFFF);
+        bg.setStroke(Math.max(1, dp(1)), 0x1FFFFFFF);
+        bg.setCornerRadius(dp(22));
+        card.setBackground(bg);
 
-        UsageBar(Context ctx) {
+        LinearLayout head = new LinearLayout(this);
+        head.setOrientation(LinearLayout.HORIZONTAL);
+        head.setGravity(Gravity.CENTER_VERTICAL);
+        TextView name = text(22, R.string.font_regular, INK);
+        name.setText(title);
+        head.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
+        TextView value = text(17, R.string.font_regular, 0x8CFFFFFF);
+        value.setText(R.string.sm_measuring);
+        head.addView(value);
+        figure[0] = value;
+        card.addView(head);
+
+        LinearLayout.LayoutParams barLp = new LinearLayout.LayoutParams(-1, dp(22));
+        barLp.topMargin = dp(16);
+        card.addView(bar, barLp);
+
+        legend.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams legendLp = new LinearLayout.LayoutParams(-1, -2);
+        legendLp.topMargin = dp(12);
+        card.addView(legend, legendLp);
+        return card;
+    }
+
+    /**
+     * The legend under a bar: a dot, the part's name and its size, as many to a line as fit (measured), the rest on
+     * the next; parts of 0 bytes are left out.
+     */
+    private void legend(LinearLayout legend, int[] labels, long[] sizes, int[] colors) {
+        legend.removeAllViews();
+        int room = legend.getWidth() > 0 ? legend.getWidth() : dp(900);
+        LinearLayout line = null;
+        int inLine = 0, used = 0;
+        for (int i = 0; i < labels.length; i++) {
+            if (sizes[i] <= 0) continue;
+            TextView name = text(15, R.string.font_regular, 0xE6FFFFFF);
+            name.setText(getString(labels[i]));
+            name.setSingleLine(true);
+            TextView size = text(13, R.string.font_regular, 0x80FFFFFF);
+            size.setText(bytes(sizes[i]));
+            size.setSingleLine(true);
+            name.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            size.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            int width = dp(11 + 8 + 6) + name.getMeasuredWidth() + size.getMeasuredWidth();
+            if (line == null || used + dp(22) + width > room) {
+                line = new LinearLayout(this);
+                line.setOrientation(LinearLayout.HORIZONTAL);
+                line.setGravity(Gravity.CENTER_VERTICAL);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+                if (legend.getChildCount() > 0) lp.topMargin = dp(8);
+                legend.addView(line, lp);
+                inLine = 0;
+                used = 0;
+            }
+            used += width + (inLine > 0 ? dp(22) : 0);
+            View dot = new View(this);
+            android.graphics.drawable.GradientDrawable d = new android.graphics.drawable.GradientDrawable();
+            d.setShape(android.graphics.drawable.GradientDrawable.OVAL);
+            d.setColor(colors[i]);
+            dot.setBackground(d);
+            LinearLayout.LayoutParams dotLp = new LinearLayout.LayoutParams(dp(11), dp(11));
+            if (inLine > 0) dotLp.setMarginStart(dp(22));
+            line.addView(dot, dotLp);
+            LinearLayout.LayoutParams nameLp = new LinearLayout.LayoutParams(-2, -2);
+            nameLp.setMarginStart(dp(8));
+            line.addView(name, nameLp);
+            LinearLayout.LayoutParams sizeLp = new LinearLayout.LayoutParams(-2, -2);
+            sizeLp.setMarginStart(dp(6));
+            line.addView(size, sizeLp);
+            inLine++;
+        }
+    }
+
+    /**
+     * One bar split into parts, as iOS draws storage: each part in its colour, in order from the left, a thin gap
+     * between them, the rest of the whole as an empty track. A part too small to see still gets a sliver.
+     */
+    private static final class SegmentBar extends View {
+        private final android.graphics.Paint paint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
+        private final android.graphics.RectF r = new android.graphics.RectF();
+        private final android.graphics.Path clip = new android.graphics.Path();
+        private long whole;
+        private long[] parts = new long[0];
+        private int[] colors = new int[0];
+
+        SegmentBar(Context ctx) {
             super(ctx);
-            track.setColor(0x26FFFFFF);
-            used.setColor(0x80FFFFFF);
-            mine.setColor(0xFFFFFFFF);
         }
 
-        void set(float usedShare, float launcherShare) {
-            this.usedShare = usedShare;
-            this.launcherShare = launcherShare;
+        void set(long whole, long[] parts, int[] colors) {
+            this.whole = whole;
+            this.parts = parts;
+            this.colors = colors;
             invalidate();
         }
 
         @Override protected void onDraw(android.graphics.Canvas c) {
-            float h = getHeight(), rad = h / 2f, w = getWidth();
+            float w = getWidth(), h = getHeight(), rad = h / 4f;
+            float density = getResources().getDisplayMetrics().density;
             r.set(0, 0, w, h);
-            c.drawRoundRect(r, rad, rad, track);
-            if (usedShare > 0) {
-                r.right = Math.max(h, w * usedShare);
-                c.drawRoundRect(r, rad, rad, used);
+            paint.setColor(0x26FFFFFF);
+            c.drawRoundRect(r, rad, rad, paint);
+            if (whole <= 0) return;
+            clip.reset();
+            clip.addRoundRect(r, rad, rad, android.graphics.Path.Direction.CW);
+            c.save();
+            c.clipPath(clip);
+            float x = 0, gap = 2 * density, sliver = 3 * density;
+            for (int i = 0; i < parts.length; i++) {
+                if (parts[i] <= 0) continue;
+                float width = Math.max(sliver, w * parts[i] / (float) whole);
+                if (x >= w) break;
+                paint.setColor(colors[i]);
+                c.drawRect(x, 0, Math.min(w, x + width), h, paint);
+                x += width + gap;
             }
-            if (launcherShare > 0) {
-                r.right = Math.max(h, w * launcherShare);
-                c.drawRoundRect(r, rad, rad, mine);
-            }
+            c.restore();
         }
     }
 

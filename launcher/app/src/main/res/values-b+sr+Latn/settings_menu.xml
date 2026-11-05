@@ -11,15 +11,7 @@
     <string name="sm_storage">Skladište</string>
     <string name="sm_measuring">Merenje…</string>
     <string name="sm_this_tv">Ovaj TV</string>
-    <string name="sm_tv_usage">Zauzeto %1$s od %2$s · %3$s slobodno</string>
-    <string name="sm_launcher_storage">Pokretač</string>
-    <string name="sm_st_total">Pokretač ukupno</string>
     <string name="sm_st_app">Aplikacija</string>
-    <string name="sm_st_theme_in_use">Aktivna tema (pozadine)</string>
-    <string name="sm_st_downloaded">Preuzete teme</string>
-    <string name="sm_st_previews">Pregledi tema</string>
-    <string name="sm_st_thumbnails">Sličice za Nastavi gledanje</string>
-    <string name="sm_st_other">Podešavanja, vreme i ostali podaci</string>
     <string name="sm_clean_up">Čišćenje</string>
     <string name="sm_clear_thumbnails">Obriši sličice za Nastavi gledanje</string>
     <string name="sm_delete_downloaded">Izbriši sve preuzete teme</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Preuzmi ažuriranje</string>
     <string name="update_progress">Preuzimanje… %1$d%%</string>
     <string name="update_opening">Otvara se Android instaler…</string>
+    <string name="sm_seg_launcher">Pokretač</string>
+    <string name="sm_seg_apps_system">Aplikacije i sistem</string>
+    <string name="sm_seg_free">Slobodno</string>
+    <string name="sm_used_of">Iskorišćeno %1$s od %2$s</string>
+    <string name="sm_seg_wallpapers">Pozadine</string>
+    <string name="sm_seg_themes">Teme</string>
+    <string name="sm_seg_previews">Pregledi</string>
+    <string name="sm_seg_thumbnails">Sličice</string>
+    <string name="sm_seg_other">Ostalo</string>
 </resources>

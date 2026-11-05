@@ -11,15 +11,7 @@
     <string name="sm_storage">Накопитель</string>
     <string name="sm_measuring">Подсчёт…</string>
     <string name="sm_this_tv">Этот телевизор</string>
-    <string name="sm_tv_usage">Занято %1$s из %2$s · свободно %3$s</string>
-    <string name="sm_launcher_storage">Лаунчер</string>
-    <string name="sm_st_total">Лаунчер всего</string>
     <string name="sm_st_app">Приложение</string>
-    <string name="sm_st_theme_in_use">Текущая тема (обои)</string>
-    <string name="sm_st_downloaded">Загруженные темы</string>
-    <string name="sm_st_previews">Превью тем</string>
-    <string name="sm_st_thumbnails">Миниатюры «Продолжить просмотр»</string>
-    <string name="sm_st_other">Настройки, погода и другие данные</string>
     <string name="sm_clean_up">Очистка</string>
     <string name="sm_clear_thumbnails">Удалить миниатюры «Продолжить просмотр»</string>
     <string name="sm_delete_downloaded">Удалить все загруженные темы</string>
@@ -158,4 +150,13 @@
     <string name="update_download">Скачать обновление</string>
     <string name="update_progress">Загрузка… %1$d %%</string>
     <string name="update_opening">Открывается установщик Android…</string>
+    <string name="sm_seg_launcher">Лаунчер</string>
+    <string name="sm_seg_apps_system">Приложения и система</string>
+    <string name="sm_seg_free">Свободно</string>
+    <string name="sm_used_of">Занято %1$s из %2$s</string>
+    <string name="sm_seg_wallpapers">Обои</string>
+    <string name="sm_seg_themes">Темы</string>
+    <string name="sm_seg_previews">Превью</string>
+    <string name="sm_seg_thumbnails">Миниатюры</string>
+    <string name="sm_seg_other">Другое</string>
 </resources>
