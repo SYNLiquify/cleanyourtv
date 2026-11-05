@@ -894,7 +894,7 @@ public final class SettingsActivity extends Activity {
     /**
      * Storage, laid out like iOS's: a card for the launcher with one bar split into its parts and a legend under it,
      * then the Languages row (its list removes them one by one), the TV's own storage settings, and clean-up. Every part the launcher keeps has its own name in the legend,
-     * shown even at 0 bytes, so nothing is lumped together. The sizes are read off the main thread; the card fills in
+     * so nothing is lumped together; empty parts stay hidden until they hold something. The sizes are read off the main thread; the card fills in
      * when they are.
      */
     private void buildStorage() {
@@ -1029,7 +1029,7 @@ public final class SettingsActivity extends Activity {
 
     /**
      * The legend under a bar: a dot, the part's name and its size, as many to a line as fit (measured), the rest on
-     * the next. Parts of 0 bytes are listed too, so the whole launcher is accounted for.
+     * the next. A part of 0 bytes is left out until it holds something.
      */
     private void legend(LinearLayout legend, int[] labels, long[] sizes, int[] colors) {
         legend.removeAllViews();
@@ -1037,6 +1037,7 @@ public final class SettingsActivity extends Activity {
         LinearLayout line = null;
         int inLine = 0, used = 0;
         for (int i = 0; i < labels.length; i++) {
+            if (sizes[i] <= 0) continue;   // a part with nothing in it appears once it holds something
             TextView name = text(15, R.string.font_regular, 0xE6FFFFFF);
             name.setText(getString(labels[i]));
             name.setSingleLine(true);
