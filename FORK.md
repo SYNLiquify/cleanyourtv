@@ -63,6 +63,18 @@ in the Continue watching shots the titles, episode names and thumbnails are blur
 - The launcher checks at boot, when Home comes back after the interval (so also after standby), and on an inexact alarm every interval. A newer release is offered once on Home and stays under Settings.
 - Installing downloads the APK, checks its size and SHA-256, and opens Android's installer for one press of Install. It needs `appops set com.gathin.tvhome REQUEST_INSTALL_PACKAGES allow` (or allowing the launcher under Install unknown apps), and an APK signed with the same key as the installed launcher.
 
+**Remote buttons for one TV** (`device.json`, beside a theme's `config.json` in the launcher's files folder)
+- Remote-key settings that belong to one TV, not a theme: `settings_key_keycodes`, `settings_key_panel`, `app_keys`,
+  `key_filter`, `consume_volume_keys` and `restore_key_services` win over config.xml and the theme. Applying a theme
+  leaves the file alone and resets no on-TV choices. Without the file nothing changes.
+- `settings_key_broadcast`: a firmware broadcast that reports each remote key in an int extra `keycode`;
+  HomeKeyService opens Settings when it reports one of `settings_key_keycodes`. Hisense songshan (Android 11) sends
+  `com.hisense.INTERCEPT_BUTTON_OPERATING` for every key. Its volume handler takes Volume Up/Down before any key
+  filter, so a filtering helper never sees them and held volume stops repeating. That TV runs the helper without the
+  filter, and its gear button (keycode 83, for the disabled Google TV home) comes through the broadcast:
+  `{"settings_key_keycodes": [83], "settings_key_panel": true, "key_filter": false,
+  "settings_key_broadcast": "com.hisense.INTERCEPT_BUTTON_OPERATING"}`, with HomeKeyService enabled.
+
 ## Network use
 
 Unlike the upstream launcher, this fork has the `INTERNET` permission. It is used only for:

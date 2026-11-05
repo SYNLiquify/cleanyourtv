@@ -38,6 +38,8 @@ import java.util.Set;
 final class Config {
     private static final String TAG = "TvHome.Config";
     static final String FILE_NAME = "config.json";
+    /** This fork: this TV's own remote-key settings, kept across theme switches (see load). */
+    static final String DEVICE_FILE_NAME = "device.json";
     static final String WALLPAPER_NAME = "wallpaper.jpg";
     static final String SETTINGS_NAME = "launcher_settings";
     static final String ROWS_BELOW_DOCK_KEY = "rows_below_dock";
@@ -181,6 +183,11 @@ final class Config {
     final boolean gamepadPassthrough;
     /** With keyFilter on, the key services swallow Volume Up/Down and repeat a held one themselves (consume_volume_keys). */
     final boolean consumeVolumeKeys;
+    /** This fork, device.json settings_key_broadcast: a firmware broadcast that reports each remote key in an int
+     *  extra "keycode". HomeKeyService opens Settings when it reports one of settingsKeycodes, which works with
+     *  key_filter off (Hisense songshan, Android 11: with a key filter on, held volume keys stop repeating). Empty:
+     *  none. Set after construction, from device.json only. */
+    String settingsKeyBroadcast = "";
     /** Stock launcher whose home screen is sent back here if the firmware revives it (config.xml stock_home_redirect). */
     final String stockHomeRedirect;
     /** A Live TV window the firmware opens by itself at power-on is sent back to Home (power_on_home). */
@@ -655,6 +662,18 @@ final class Config {
             glowStyle = string(json, "glow_style", glowStyle);
             glassStyle = string(json, "glass_style", glassStyle);
         }
+        // This fork: device.json, beside config.json, holds this TV's remote-key settings. It wins over the theme,
+        // is left alone by a theme switch or reset, and changes no on-TV choices (it is not part of the theme check).
+        JSONObject device = mounted && dir != null ? read(new File(dir, DEVICE_FILE_NAME)) : null;
+        String settingsKeyBroadcast = device == null ? "" : string(device, "settings_key_broadcast", "").trim();
+        if (device != null) {
+            settingsKeycodes = intArray(device, "settings_key_keycodes", settingsKeycodes);
+            settingsKeyPanel = bool(device, "settings_key_panel", settingsKeyPanel);
+            restoreKeyServices = bool(device, "restore_key_services", restoreKeyServices);
+            appKeys = stringList(device, "app_keys", appKeys);
+            keyFilter = bool(device, "key_filter", keyFilter);
+            consumeVolumeKeys = bool(device, "consume_volume_keys", consumeVolumeKeys);
+        }
         // A top-bar app is moved there, not copied: it leaves the grid.
         for (String pkg : topBarApps) if (!hidden.contains(pkg)) hidden.add(pkg);
         // A theme push or reset invalidates choices made on the TV. On first use, remember the
@@ -707,7 +726,7 @@ final class Config {
         Festival festival = json == null ? Festival.NONE : Festival.parse(festivalName(json),
                 string(json, "festival_until", ""), string(json, "greeting", ""), string(json, "accent_color", ""));
 
-        return new Config(dock, fillDock, hidden, libraryApps, libraryExcludedApps, liveTv, liveTvAction, liveTvInputId, packageMap(launchActions), packageMap(appLabels),
+        Config loaded = new Config(dock, fillDock, hidden, libraryApps, libraryExcludedApps, liveTv, liveTvAction, liveTvInputId, packageMap(launchActions), packageMap(appLabels),
                 packageMap(appBanners), panelService, panelAction, panelExtra, coocaaSources, inputAction, inputSources, inputUriScheme, Math.max(1, columns),
                 Math.max(0, rowsBelow), animations, advancedEffects, shamsi, greetingName, moduleCards, reducedMotion, bootToLiveTv,
                 openOnStartChoice, dockTitle, dockRow, topMenu, launcherSettingsButton, reorderButton, showNetworkPill, showInputsPill,
@@ -722,6 +741,8 @@ final class Config {
                 Math.max(0, Math.min(90, clockWallpaperDim)), clockGlow, glassStyle, singleRow && dockRow, dockBandAll, lunar, lunarOffset,
                 dateBelowClock, vpnPill, locale, powerOnHomeAlways, inputsConnectedOnly, inputsCecStateOnly,
                 Math.max(0, Math.min(600, openOnStartNetworkWait)), openOnStartOnWake, iconOnlyVpn, clockFormat, backOpensClock, glowSnap);
+        loaded.settingsKeyBroadcast = settingsKeyBroadcast;
+        return loaded;
     }
 
     /**

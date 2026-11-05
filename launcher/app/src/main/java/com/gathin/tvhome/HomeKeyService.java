@@ -121,6 +121,51 @@ public class HomeKeyService extends AccessibilityService {
         }
     }
 
+    /** settings_key_broadcast (device.json): the firmware's key report, for a Settings button with key_filter off. */
+    private BroadcastReceiver keyReport;
+    private String keyReportAction = "";
+    /** The report comes for the press and again for the release: one opening per press. */
+    private long keyReportOpened;
+
+    private void watchKeyReports(String action) {
+        if (action.equals(keyReportAction)) return;
+        stopWatchingKeyReports();
+        if (action.isEmpty()) return;
+        keyReport = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int code = intent.getIntExtra("keycode", -1);
+                boolean settings = false;
+                for (int c : settingsKeycodes) if (c == code) settings = true;
+                long now = SystemClock.uptimeMillis();
+                if (!settings || now - keyReportOpened < KEY_REPORT_GAP_MS) return;
+                keyReportOpened = now;
+                openSettings();
+            }
+        };
+        IntentFilter filter = new IntentFilter(action);
+        // The firmware's own broadcast, from the system: exported is what lets it in.
+        if (Build.VERSION.SDK_INT >= 33) registerReceiver(keyReport, filter, Context.RECEIVER_EXPORTED);
+        else registerReceiver(keyReport, filter);
+        keyReportAction = action;
+    }
+
+    private void stopWatchingKeyReports() {
+        if (keyReport != null) unregisterReceiver(keyReport);
+        keyReport = null;
+        keyReportAction = "";
+    }
+
+    private void openSettings() {
+        Intent open = settingsPanel ? new Intent(this, QuickSettingsActivity.class)
+                : SystemSettings.intent(this, Settings.ACTION_SETTINGS);
+        try {
+            startActivity(open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+        } catch (ActivityNotFoundException | SecurityException unavailable) {
+            Toast.makeText(this, R.string.not_available, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void stopWaitingForUnlock() {
         if (unlockReceiver == null) return;
         unregisterReceiver(unlockReceiver);
@@ -140,6 +185,7 @@ public class HomeKeyService extends AccessibilityService {
         if (running == this) running = null;
         RemoteKeys.release(this);
         stopWaitingForUnlock();
+        stopWatchingKeyReports();
         if (screenOnReceiver != null) unregisterReceiver(screenOnReceiver);
         if (standbyExit != null) {
             try {
@@ -191,6 +237,7 @@ public class HomeKeyService extends AccessibilityService {
         if (repairRecord) ServiceRepair.connected(this, getClass());
         settingsKeycodes = config.settingsKeycodes;
         settingsPanel = config.settingsKeyPanel;
+        watchKeyReports(config.settingsKeyBroadcast);
         consumeVolumeKeys = config.consumeVolumeKeys;
         appKeys = RemoteKeys.parseAppKeys(config.appKeys);
         appScancodes = RemoteKeys.parseAppScancodes(config.appKeys);
@@ -265,15 +312,7 @@ public class HomeKeyService extends AccessibilityService {
                 holdAppScancodes.get(event.getScanCode()))) return true;
         // The stock launcher handled the remote's Settings button; with it disabled the button does nothing.
         if (isSettingsKey(event)) {
-            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) {
-                Intent open = settingsPanel ? new Intent(this, QuickSettingsActivity.class)
-                        : SystemSettings.intent(this, Settings.ACTION_SETTINGS);
-                try {
-                    startActivity(open.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-                } catch (ActivityNotFoundException | SecurityException unavailable) {
-                    Toast.makeText(this, R.string.not_available, Toast.LENGTH_SHORT).show();
-                }
-            }
+            if (event.getAction() == KeyEvent.ACTION_UP && !event.isCanceled()) openSettings();
             return true;
         }
         if (RemoteKeys.handle(this, event, inFront(appKeys, frontAppKeys, event.getKeyCode()),
@@ -396,6 +435,8 @@ public class HomeKeyService extends AccessibilityService {
 
     /** Lets the system see the key, so a long press still does what the firmware gives it. */
     private static final long HOME_KEY_DELAY_MS = 250;
+    /** settings_key_broadcast: reports this close together are one press (its press and its release). */
+    private static final long KEY_REPORT_GAP_MS = 1500;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     /** stock_home_redirect on the Home key: when the stock home is already on screen (it came up at boot, before
