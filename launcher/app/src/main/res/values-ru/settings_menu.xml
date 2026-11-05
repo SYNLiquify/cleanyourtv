@@ -10,7 +10,6 @@
     <string name="sm_system">Система</string>
     <string name="sm_storage">Накопитель</string>
     <string name="sm_measuring">Подсчёт…</string>
-    <string name="sm_this_tv">Этот телевизор</string>
     <string name="sm_st_app">Приложение</string>
     <string name="sm_clean_up">Очистка</string>
     <string name="sm_clear_thumbnails">Удалить миниатюры «Продолжить просмотр»</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Загрузка… %1$d %%</string>
     <string name="update_opening">Открывается установщик Android…</string>
     <string name="sm_seg_launcher">Лаунчер</string>
-    <string name="sm_seg_apps_system">Приложения и система</string>
-    <string name="sm_seg_free">Свободно</string>
-    <string name="sm_used_of">Занято %1$s из %2$s</string>
     <string name="sm_seg_wallpapers">Обои</string>
     <string name="sm_seg_themes">Темы</string>
     <string name="sm_seg_previews">Превью</string>
     <string name="sm_seg_thumbnails">Миниатюры</string>
     <string name="sm_seg_other">Другое</string>
+    <string name="sm_android_storage">Настройки хранилища Android</string>
 </resources>

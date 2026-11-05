@@ -10,7 +10,6 @@
     <string name="sm_system">Systeem</string>
     <string name="sm_storage">Opslag</string>
     <string name="sm_measuring">Meten…</string>
-    <string name="sm_this_tv">Deze tv</string>
     <string name="sm_st_app">App</string>
     <string name="sm_clean_up">Opruimen</string>
     <string name="sm_clear_thumbnails">Miniaturen van Verder kijken wissen</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Downloaden… %1$d%%</string>
     <string name="update_opening">Android-installatieprogramma wordt geopend…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_apps_system">Apps en systeem</string>
-    <string name="sm_seg_free">Vrij</string>
-    <string name="sm_used_of">%1$s van %2$s gebruikt</string>
     <string name="sm_seg_wallpapers">Achtergronden</string>
     <string name="sm_seg_themes">Thema\'s</string>
     <string name="sm_seg_previews">Voorbeelden</string>
     <string name="sm_seg_thumbnails">Miniaturen</string>
     <string name="sm_seg_other">Overig</string>
+    <string name="sm_android_storage">Opslaginstellingen van Android</string>
 </resources>

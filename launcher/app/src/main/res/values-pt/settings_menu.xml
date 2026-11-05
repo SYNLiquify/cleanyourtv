@@ -10,7 +10,6 @@
     <string name="sm_system">Sistema</string>
     <string name="sm_storage">Armazenamento</string>
     <string name="sm_measuring">Medindo…</string>
-    <string name="sm_this_tv">Esta TV</string>
     <string name="sm_st_app">App</string>
     <string name="sm_clean_up">Liberar espaço</string>
     <string name="sm_clear_thumbnails">Limpar miniaturas de Continuar assistindo</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Baixando… %1$d%%</string>
     <string name="update_opening">Abrindo o instalador do Android…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_apps_system">Apps e sistema</string>
-    <string name="sm_seg_free">Livre</string>
-    <string name="sm_used_of">%1$s de %2$s usados</string>
     <string name="sm_seg_wallpapers">Planos de fundo</string>
     <string name="sm_seg_themes">Temas</string>
     <string name="sm_seg_previews">Prévias</string>
     <string name="sm_seg_thumbnails">Miniaturas</string>
     <string name="sm_seg_other">Outros</string>
+    <string name="sm_android_storage">Configurações de armazenamento do Android</string>
 </resources>

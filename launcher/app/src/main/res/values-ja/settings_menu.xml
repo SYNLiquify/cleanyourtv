@@ -10,7 +10,6 @@
     <string name="sm_system">システム</string>
     <string name="sm_storage">ストレージ</string>
     <string name="sm_measuring">計測中…</string>
-    <string name="sm_this_tv">このテレビ</string>
     <string name="sm_st_app">アプリ本体</string>
     <string name="sm_clean_up">整理</string>
     <string name="sm_clear_thumbnails">続きを見るのサムネイルを消去</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">ダウンロード中… %1$d%%</string>
     <string name="update_opening">Android のインストーラを開いています…</string>
     <string name="sm_seg_launcher">ランチャー</string>
-    <string name="sm_seg_apps_system">アプリとシステム</string>
-    <string name="sm_seg_free">空き</string>
-    <string name="sm_used_of">%2$s 中 %1$s 使用</string>
     <string name="sm_seg_wallpapers">壁紙</string>
     <string name="sm_seg_themes">テーマ</string>
     <string name="sm_seg_previews">プレビュー</string>
     <string name="sm_seg_thumbnails">サムネイル</string>
     <string name="sm_seg_other">その他</string>
+    <string name="sm_android_storage">Android のストレージ設定</string>
 </resources>

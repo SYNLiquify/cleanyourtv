@@ -10,7 +10,6 @@
     <string name="sm_system">מערכת</string>
     <string name="sm_storage">אחסון</string>
     <string name="sm_measuring">מתבצעת מדידה…</string>
-    <string name="sm_this_tv">הטלוויזיה הזו</string>
     <string name="sm_st_app">אפליקציה</string>
     <string name="sm_clean_up">פינוי מקום</string>
     <string name="sm_clear_thumbnails">ניקוי התמונות הממוזערות של המשך צפייה</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">מוריד… %1$d%%</string>
     <string name="update_opening">פותח את מתקין Android…</string>
     <string name="sm_seg_launcher">משגר</string>
-    <string name="sm_seg_apps_system">אפליקציות ומערכת</string>
-    <string name="sm_seg_free">פנוי</string>
-    <string name="sm_used_of">%1$s מתוך %2$s בשימוש</string>
     <string name="sm_seg_wallpapers">טפטים</string>
     <string name="sm_seg_themes">ערכות נושא</string>
     <string name="sm_seg_previews">תצוגות מקדימות</string>
     <string name="sm_seg_thumbnails">תמונות ממוזערות</string>
     <string name="sm_seg_other">אחר</string>
+    <string name="sm_android_storage">הגדרות האחסון של Android</string>
 </resources>

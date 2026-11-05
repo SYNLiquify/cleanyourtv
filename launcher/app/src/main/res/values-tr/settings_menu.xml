@@ -10,7 +10,6 @@
     <string name="sm_system">Sistem</string>
     <string name="sm_storage">Depolama</string>
     <string name="sm_measuring">Ölçülüyor…</string>
-    <string name="sm_this_tv">Bu TV</string>
     <string name="sm_st_app">Uygulama</string>
     <string name="sm_clean_up">Temizlik</string>
     <string name="sm_clear_thumbnails">İzlemeye devam et küçük resimlerini temizle</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">İndiriliyor… %%%1$d</string>
     <string name="update_opening">Android yükleyicisi açılıyor…</string>
     <string name="sm_seg_launcher">Başlatıcı</string>
-    <string name="sm_seg_apps_system">Uygulamalar ve sistem</string>
-    <string name="sm_seg_free">Boş</string>
-    <string name="sm_used_of">%2$s alanın %1$s kadarı kullanılıyor</string>
     <string name="sm_seg_wallpapers">Duvar kâğıtları</string>
     <string name="sm_seg_themes">Temalar</string>
     <string name="sm_seg_previews">Önizlemeler</string>
     <string name="sm_seg_thumbnails">Küçük resimler</string>
     <string name="sm_seg_other">Diğer</string>
+    <string name="sm_android_storage">Android depolama ayarları</string>
 </resources>

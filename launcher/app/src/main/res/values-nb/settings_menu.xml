@@ -10,7 +10,6 @@
     <string name="sm_system">System</string>
     <string name="sm_storage">Lagring</string>
     <string name="sm_measuring">Måler…</string>
-    <string name="sm_this_tv">Denne TV-en</string>
     <string name="sm_st_app">App</string>
     <string name="sm_clean_up">Rydd opp</string>
     <string name="sm_clear_thumbnails">Fjern miniatyrbilder for Fortsett å se</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Laster ned… %1$d %%</string>
     <string name="update_opening">Åpner Android-installasjonsprogrammet…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_apps_system">Apper og system</string>
-    <string name="sm_seg_free">Ledig</string>
-    <string name="sm_used_of">%1$s av %2$s brukt</string>
     <string name="sm_seg_wallpapers">Bakgrunner</string>
     <string name="sm_seg_themes">Temaer</string>
     <string name="sm_seg_previews">Forhåndsvisninger</string>
     <string name="sm_seg_thumbnails">Miniatyrbilder</string>
     <string name="sm_seg_other">Annet</string>
+    <string name="sm_android_storage">Lagringsinnstillinger for Android</string>
 </resources>

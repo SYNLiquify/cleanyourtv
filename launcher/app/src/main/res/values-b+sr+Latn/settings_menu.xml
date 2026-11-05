@@ -10,7 +10,6 @@
     <string name="sm_system">Sistem</string>
     <string name="sm_storage">Skladište</string>
     <string name="sm_measuring">Merenje…</string>
-    <string name="sm_this_tv">Ovaj TV</string>
     <string name="sm_st_app">Aplikacija</string>
     <string name="sm_clean_up">Čišćenje</string>
     <string name="sm_clear_thumbnails">Obriši sličice za Nastavi gledanje</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Preuzimanje… %1$d%%</string>
     <string name="update_opening">Otvara se Android instaler…</string>
     <string name="sm_seg_launcher">Pokretač</string>
-    <string name="sm_seg_apps_system">Aplikacije i sistem</string>
-    <string name="sm_seg_free">Slobodno</string>
-    <string name="sm_used_of">Iskorišćeno %1$s od %2$s</string>
     <string name="sm_seg_wallpapers">Pozadine</string>
     <string name="sm_seg_themes">Teme</string>
     <string name="sm_seg_previews">Pregledi</string>
     <string name="sm_seg_thumbnails">Sličice</string>
     <string name="sm_seg_other">Ostalo</string>
+    <string name="sm_android_storage">Android podešavanja memorije</string>
 </resources>

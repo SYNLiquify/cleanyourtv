@@ -888,27 +888,18 @@ public final class SettingsActivity extends Activity {
             0xFF0A84FF, 0xFF8E8E93};
 
     /**
-     * Storage, laid out like iOS's: a card for the TV (used of total, the launcher's share), a card for the launcher
-     * with one bar split into its parts and a legend under it, then the Languages row (its list removes them one by
-     * one) and clean-up. The sizes are read off the main thread; the cards fill in when they are.
+     * Storage, laid out like iOS's: a card for the launcher with one bar split into its parts and a legend under it,
+     * then the Languages row (its list removes them one by one), the TV's own storage settings, and clean-up. The sizes are read off the main thread; the cards fill in when they are.
      */
     private void buildStorage() {
         paneTitle.setText(R.string.sm_storage);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
         java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
 
-        TextView[] tvUsed = {null};
-        SegmentBar tvBar = new SegmentBar(this);
-        LinearLayout tvLegend = new LinearLayout(this);
-        pane.addView(storageCard(getString(R.string.sm_this_tv), tvUsed, tvBar, tvLegend));
-
         TextView[] launcherTotal = {null};
         SegmentBar launcherBar = new SegmentBar(this);
         LinearLayout launcherLegend = new LinearLayout(this);
-        View launcherCard = storageCard(getString(R.string.sm_seg_launcher), launcherTotal, launcherBar, launcherLegend);
-        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-1, -2);
-        cardLp.topMargin = dp(18);
-        pane.addView(launcherCard, cardLp);
+        pane.addView(storageCard(getString(R.string.sm_seg_launcher), launcherTotal, launcherBar, launcherLegend));
 
         // The downloaded languages (LanguagePacks), as a row that opens their list; they are on the bar as well.
         View languages = actionRow(getString(R.string.sm_st_languages),
@@ -916,6 +907,9 @@ public final class SettingsActivity extends Activity {
         // The row keeps its own height (actionRow's layout params); only the gap above the cards changes.
         ((LinearLayout.LayoutParams) languages.getLayoutParams()).topMargin = dp(18);
         pane.addView(languages);
+        // The TV's own storage page, for everything that is not the launcher.
+        pane.addView(actionRow(getString(R.string.sm_android_storage), "", () ->
+                open(SystemSettings.intent(this, Settings.ACTION_INTERNAL_STORAGE_SETTINGS))));
 
         section(R.string.sm_clean_up);
         pane.addView(actionRow(getString(R.string.sm_clear_thumbnails), "", () -> {
@@ -955,8 +949,6 @@ public final class SettingsActivity extends Activity {
 
         List<String> packs = installedLanguages();
         background.execute(() -> {
-            android.os.StatFs fs = new android.os.StatFs(android.os.Environment.getDataDirectory().getPath());
-            long total = fs.getTotalBytes(), free = fs.getAvailableBytes();
             long app = new java.io.File(getPackageCodePath()).length();
             java.io.File external = Config.dir(this);
             long wallpapers = 0;
@@ -980,13 +972,6 @@ public final class SettingsActivity extends Activity {
             long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, other};
             main.post(() -> {
                 if (isFinishing() || category != 4) return;
-                long used = total - free;
-                tvUsed[0].setText(getString(R.string.sm_used_of, bytes(used), bytes(total)));
-                tvBar.set(total, new long[]{launcher, Math.max(0, used - launcher)},
-                        new int[]{0xFF0A84FF, 0xFFAEAEB2});
-                legend(tvLegend, new int[]{R.string.sm_seg_launcher, R.string.sm_seg_apps_system, R.string.sm_seg_free},
-                        new long[]{launcher, Math.max(0, used - launcher), free},
-                        new int[]{0xFF0A84FF, 0xFFAEAEB2, 0x33FFFFFF});
                 launcherTotal[0].setText(bytes(launcher));
                 launcherBar.set(launcher, parts, STORAGE_COLORS);
                 legend(launcherLegend, new int[]{R.string.sm_st_app, R.string.sm_seg_wallpapers, R.string.sm_seg_themes,

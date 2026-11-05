@@ -10,7 +10,6 @@
     <string name="sm_system">Sistema</string>
     <string name="sm_storage">Emmagatzematge</string>
     <string name="sm_measuring">S\'està mesurant…</string>
-    <string name="sm_this_tv">Aquest televisor</string>
     <string name="sm_st_app">Aplicació</string>
     <string name="sm_clean_up">Allibera espai</string>
     <string name="sm_clear_thumbnails">Esborra les miniatures de Continua mirant</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">S\'està baixant… %1$d %%</string>
     <string name="update_opening">S\'està obrint l\'instal·lador d\'Android…</string>
     <string name="sm_seg_launcher">Llançador</string>
-    <string name="sm_seg_apps_system">Aplicacions i sistema</string>
-    <string name="sm_seg_free">Lliure</string>
-    <string name="sm_used_of">%1$s de %2$s utilitzats</string>
     <string name="sm_seg_wallpapers">Fons</string>
     <string name="sm_seg_themes">Temes</string>
     <string name="sm_seg_previews">Previsualitzacions</string>
     <string name="sm_seg_thumbnails">Miniatures</string>
     <string name="sm_seg_other">Altres</string>
+    <string name="sm_android_storage">Configuració d\'emmagatzematge d\'Android</string>
 </resources>

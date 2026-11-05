@@ -10,7 +10,6 @@
     <string name="sm_system">Tizim</string>
     <string name="sm_storage">Xotira</string>
     <string name="sm_measuring">Hisoblanmoqda…</string>
-    <string name="sm_this_tv">Shu televizor</string>
     <string name="sm_st_app">Ilova</string>
     <string name="sm_clean_up">Tozalash</string>
     <string name="sm_clear_thumbnails">Tomoshani davom ettirish rasmlarini tozalash</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Yuklab olinmoqda… %1$d%%</string>
     <string name="update_opening">Android oʻrnatuvchisi ochilmoqda…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_apps_system">Ilovalar va tizim</string>
-    <string name="sm_seg_free">Boʻsh</string>
-    <string name="sm_used_of">%2$s dan %1$s band</string>
     <string name="sm_seg_wallpapers">Fon rasmlari</string>
     <string name="sm_seg_themes">Mavzular</string>
     <string name="sm_seg_previews">Koʻrib chiqishlar</string>
     <string name="sm_seg_thumbnails">Miniaturalar</string>
     <string name="sm_seg_other">Boshqa</string>
+    <string name="sm_android_storage">Android xotira sozlamalari</string>
 </resources>

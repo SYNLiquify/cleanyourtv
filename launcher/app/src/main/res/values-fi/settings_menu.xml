@@ -10,7 +10,6 @@
     <string name="sm_system">Järjestelmä</string>
     <string name="sm_storage">Tallennustila</string>
     <string name="sm_measuring">Mitataan…</string>
-    <string name="sm_this_tv">Tämä televisio</string>
     <string name="sm_st_app">Sovellus</string>
     <string name="sm_clean_up">Siivoa</string>
     <string name="sm_clear_thumbnails">Tyhjennä Jatka katselua -pikkukuvat</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Ladataan… %1$d %%</string>
     <string name="update_opening">Avataan Androidin asennusohjelmaa…</string>
     <string name="sm_seg_launcher">Käynnistin</string>
-    <string name="sm_seg_apps_system">Sovellukset ja järjestelmä</string>
-    <string name="sm_seg_free">Vapaana</string>
-    <string name="sm_used_of">%1$s / %2$s käytössä</string>
     <string name="sm_seg_wallpapers">Taustakuvat</string>
     <string name="sm_seg_themes">Teemat</string>
     <string name="sm_seg_previews">Esikatselut</string>
     <string name="sm_seg_thumbnails">Pikkukuvat</string>
     <string name="sm_seg_other">Muut</string>
+    <string name="sm_android_storage">Androidin tallennustila-asetukset</string>
 </resources>

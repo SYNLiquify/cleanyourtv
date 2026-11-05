@@ -10,7 +10,6 @@
     <string name="sm_system">ระบบ</string>
     <string name="sm_storage">พื้นที่เก็บข้อมูล</string>
     <string name="sm_measuring">กำลังคำนวณ…</string>
-    <string name="sm_this_tv">ทีวีเครื่องนี้</string>
     <string name="sm_st_app">แอป</string>
     <string name="sm_clean_up">ล้างข้อมูล</string>
     <string name="sm_clear_thumbnails">ล้างภาพย่อของดูต่อ</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">กำลังดาวน์โหลด… %1$d%%</string>
     <string name="update_opening">กำลังเปิดตัวติดตั้งของ Android…</string>
     <string name="sm_seg_launcher">ตัวเรียกใช้</string>
-    <string name="sm_seg_apps_system">แอปและระบบ</string>
-    <string name="sm_seg_free">ว่าง</string>
-    <string name="sm_used_of">ใช้ไป %1$s จาก %2$s</string>
     <string name="sm_seg_wallpapers">วอลเปเปอร์</string>
     <string name="sm_seg_themes">ธีม</string>
     <string name="sm_seg_previews">ตัวอย่าง</string>
     <string name="sm_seg_thumbnails">ภาพขนาดย่อ</string>
     <string name="sm_seg_other">อื่นๆ</string>
+    <string name="sm_android_storage">การตั้งค่าพื้นที่เก็บข้อมูลของ Android</string>
 </resources>

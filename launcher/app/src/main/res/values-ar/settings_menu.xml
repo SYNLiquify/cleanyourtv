@@ -10,7 +10,6 @@
     <string name="sm_system">النظام</string>
     <string name="sm_storage">التخزين</string>
     <string name="sm_measuring">جارٍ القياس…</string>
-    <string name="sm_this_tv">هذا التلفاز</string>
     <string name="sm_st_app">التطبيق</string>
     <string name="sm_clean_up">تنظيف</string>
     <string name="sm_clear_thumbnails">مسح صور متابعة المشاهدة المصغّرة</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">جارٍ التنزيل… %1$d%%</string>
     <string name="update_opening">جارٍ فتح أداة التثبيت في Android…</string>
     <string name="sm_seg_launcher">المشغّل</string>
-    <string name="sm_seg_apps_system">التطبيقات والنظام</string>
-    <string name="sm_seg_free">متاح</string>
-    <string name="sm_used_of">%1$s مستخدمة من %2$s</string>
     <string name="sm_seg_wallpapers">الخلفيات</string>
     <string name="sm_seg_themes">السمات</string>
     <string name="sm_seg_previews">المعاينات</string>
     <string name="sm_seg_thumbnails">الصور المصغّرة</string>
     <string name="sm_seg_other">أخرى</string>
+    <string name="sm_android_storage">إعدادات التخزين في Android</string>
 </resources>

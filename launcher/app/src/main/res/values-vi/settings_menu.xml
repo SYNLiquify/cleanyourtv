@@ -10,7 +10,6 @@
     <string name="sm_system">Hệ thống</string>
     <string name="sm_storage">Bộ nhớ</string>
     <string name="sm_measuring">Đang tính…</string>
-    <string name="sm_this_tv">TV này</string>
     <string name="sm_st_app">Ứng dụng</string>
     <string name="sm_clean_up">Dọn dẹp</string>
     <string name="sm_clear_thumbnails">Xóa ảnh thu nhỏ của Xem tiếp</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Đang tải xuống… %1$d%%</string>
     <string name="update_opening">Đang mở trình cài đặt Android…</string>
     <string name="sm_seg_launcher">Trình chạy</string>
-    <string name="sm_seg_apps_system">Ứng dụng và hệ thống</string>
-    <string name="sm_seg_free">Trống</string>
-    <string name="sm_used_of">Đã dùng %1$s / %2$s</string>
     <string name="sm_seg_wallpapers">Hình nền</string>
     <string name="sm_seg_themes">Chủ đề</string>
     <string name="sm_seg_previews">Bản xem trước</string>
     <string name="sm_seg_thumbnails">Hình thu nhỏ</string>
     <string name="sm_seg_other">Khác</string>
+    <string name="sm_android_storage">Cài đặt bộ nhớ Android</string>
 </resources>

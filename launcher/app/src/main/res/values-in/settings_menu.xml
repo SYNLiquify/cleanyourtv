@@ -10,7 +10,6 @@
     <string name="sm_system">Sistem</string>
     <string name="sm_storage">Penyimpanan</string>
     <string name="sm_measuring">Mengukur…</string>
-    <string name="sm_this_tv">TV ini</string>
     <string name="sm_st_app">Aplikasi</string>
     <string name="sm_clean_up">Bersihkan</string>
     <string name="sm_clear_thumbnails">Hapus thumbnail Lanjutkan menonton</string>
@@ -151,12 +150,10 @@
     <string name="update_progress">Mengunduh… %1$d%%</string>
     <string name="update_opening">Membuka penginstal Android…</string>
     <string name="sm_seg_launcher">Peluncur</string>
-    <string name="sm_seg_apps_system">Aplikasi &amp; sistem</string>
-    <string name="sm_seg_free">Kosong</string>
-    <string name="sm_used_of">%1$s dari %2$s terpakai</string>
     <string name="sm_seg_wallpapers">Wallpaper</string>
     <string name="sm_seg_themes">Tema</string>
     <string name="sm_seg_previews">Pratinjau</string>
     <string name="sm_seg_thumbnails">Thumbnail</string>
     <string name="sm_seg_other">Lainnya</string>
+    <string name="sm_android_storage">Setelan penyimpanan Android</string>
 </resources>
