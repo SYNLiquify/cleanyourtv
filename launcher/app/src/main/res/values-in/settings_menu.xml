@@ -150,10 +150,13 @@
     <string name="update_progress">Mengunduh… %1$d%%</string>
     <string name="update_opening">Membuka penginstal Android…</string>
     <string name="sm_seg_launcher">Peluncur</string>
-    <string name="sm_seg_wallpapers">Wallpaper</string>
-    <string name="sm_seg_themes">Tema</string>
-    <string name="sm_seg_previews">Pratinjau</string>
-    <string name="sm_seg_thumbnails">Thumbnail</string>
-    <string name="sm_seg_other">Lainnya</string>
+    <string name="sm_seg_wallpapers">Wallpaper yang dipakai</string>
+    <string name="sm_seg_themes">Tema yang diunduh</string>
+    <string name="sm_seg_previews">Pratinjau tema</string>
+    <string name="sm_seg_thumbnails">Thumbnail Lanjutkan menonton</string>
     <string name="sm_android_storage">Setelan penyimpanan Android</string>
+    <string name="sm_seg_settings">Setelan &amp; cuaca</string>
+    <string name="sm_seg_update">Unduhan pembaruan</string>
+    <string name="sm_seg_temp">File sementara</string>
+    <string name="sm_seg_runtime">Runtime aplikasi</string>
 </resources>

@@ -150,10 +150,13 @@
     <string name="update_progress">A transferir… %1$d%%</string>
     <string name="update_opening">A abrir o instalador do Android…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_wallpapers">Fundos</string>
-    <string name="sm_seg_themes">Temas</string>
-    <string name="sm_seg_previews">Pré-visualizações</string>
-    <string name="sm_seg_thumbnails">Miniaturas</string>
-    <string name="sm_seg_other">Outros</string>
+    <string name="sm_seg_wallpapers">Fundos em uso</string>
+    <string name="sm_seg_themes">Temas transferidos</string>
+    <string name="sm_seg_previews">Pré-visualizações de temas</string>
+    <string name="sm_seg_thumbnails">Miniaturas de Continuar a ver</string>
     <string name="sm_android_storage">Definições de armazenamento do Android</string>
+    <string name="sm_seg_settings">Definições e meteorologia</string>
+    <string name="sm_seg_update">Atualização transferida</string>
+    <string name="sm_seg_temp">Ficheiros temporários</string>
+    <string name="sm_seg_runtime">Execução da app</string>
 </resources>

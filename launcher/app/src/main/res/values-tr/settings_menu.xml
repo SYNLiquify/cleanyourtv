@@ -150,10 +150,13 @@
     <string name="update_progress">İndiriliyor… %%%1$d</string>
     <string name="update_opening">Android yükleyicisi açılıyor…</string>
     <string name="sm_seg_launcher">Başlatıcı</string>
-    <string name="sm_seg_wallpapers">Duvar kâğıtları</string>
-    <string name="sm_seg_themes">Temalar</string>
-    <string name="sm_seg_previews">Önizlemeler</string>
-    <string name="sm_seg_thumbnails">Küçük resimler</string>
-    <string name="sm_seg_other">Diğer</string>
+    <string name="sm_seg_wallpapers">Kullanılan duvar kâğıtları</string>
+    <string name="sm_seg_themes">İndirilen temalar</string>
+    <string name="sm_seg_previews">Tema önizlemeleri</string>
+    <string name="sm_seg_thumbnails">İzlemeye devam et küçük resimleri</string>
     <string name="sm_android_storage">Android depolama ayarları</string>
+    <string name="sm_seg_settings">Ayarlar ve hava durumu</string>
+    <string name="sm_seg_update">Güncelleme indirmesi</string>
+    <string name="sm_seg_temp">Geçici dosyalar</string>
+    <string name="sm_seg_runtime">Uygulama çalışma verileri</string>
 </resources>

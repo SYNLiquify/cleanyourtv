@@ -150,10 +150,13 @@
     <string name="update_progress">Yuklab olinmoqda… %1$d%%</string>
     <string name="update_opening">Android oʻrnatuvchisi ochilmoqda…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_wallpapers">Fon rasmlari</string>
-    <string name="sm_seg_themes">Mavzular</string>
-    <string name="sm_seg_previews">Koʻrib chiqishlar</string>
-    <string name="sm_seg_thumbnails">Miniaturalar</string>
-    <string name="sm_seg_other">Boshqa</string>
+    <string name="sm_seg_wallpapers">Ishlatilayotgan fon rasmlari</string>
+    <string name="sm_seg_themes">Yuklab olingan mavzular</string>
+    <string name="sm_seg_previews">Mavzu koʻrinishlari</string>
+    <string name="sm_seg_thumbnails">Koʻrishni davom ettirish miniaturalari</string>
     <string name="sm_android_storage">Android xotira sozlamalari</string>
+    <string name="sm_seg_settings">Sozlamalar va ob-havo</string>
+    <string name="sm_seg_update">Yangilanish yuklamasi</string>
+    <string name="sm_seg_temp">Vaqtinchalik fayllar</string>
+    <string name="sm_seg_runtime">Ilova ishlash maʼlumotlari</string>
 </resources>

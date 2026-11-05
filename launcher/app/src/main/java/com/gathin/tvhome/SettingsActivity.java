@@ -885,11 +885,17 @@ public final class SettingsActivity extends Activity {
 
     /** The bar colours, after iOS's storage page: one per part, in the order the bar draws them. */
     private static final int[] STORAGE_COLORS = {0xFFFF453A, 0xFFFF9F0A, 0xFFFFD60A, 0xFF30D158, 0xFF64D2FF,
-            0xFF0A84FF, 0xFF8E8E93};
+            0xFF0A84FF, 0xFFBF5AF2, 0xFFFF375F, 0xFF5E5CE6, 0xFF8E8E93};
+    /** The legend's names, one per part, in STORAGE_COLORS' order. */
+    private static final int[] STORAGE_LABELS = {R.string.sm_st_app, R.string.sm_seg_wallpapers, R.string.sm_seg_themes,
+            R.string.sm_seg_previews, R.string.sm_seg_thumbnails, R.string.sm_st_languages, R.string.sm_seg_settings,
+            R.string.sm_seg_update, R.string.sm_seg_temp, R.string.sm_seg_runtime};
 
     /**
      * Storage, laid out like iOS's: a card for the launcher with one bar split into its parts and a legend under it,
-     * then the Languages row (its list removes them one by one), the TV's own storage settings, and clean-up. The sizes are read off the main thread; the cards fill in when they are.
+     * then the Languages row (its list removes them one by one), the TV's own storage settings, and clean-up. Every part the launcher keeps has its own name in the legend,
+     * shown even at 0 bytes, so nothing is lumped together. The sizes are read off the main thread; the card fills in
+     * when they are.
      */
     private void buildStorage() {
         paneTitle.setText(R.string.sm_storage);
@@ -966,17 +972,23 @@ public final class SettingsActivity extends Activity {
             long thumbs = size(thumbnails);
             long langs = 0;
             for (String tag : packs) langs += LanguagePacks.size(this, tag);
+            // Settings and weather: the preferences (every setting, the weather and update state) and the small files
+            // Home keeps (app order, library, cards), that is everything in files/ but themes and languages.
+            long settings = size(new java.io.File(getDataDir(), "shared_prefs"))
+                    + Math.max(0, size(getFilesDir()) - size(themeStore) - size(new java.io.File(getFilesDir(), "languages")));
+            // An update's APK stays in the cache after it is installed, until Android or Clean up clears it.
+            long update = size(new java.io.File(getCacheDir(), "update.apk"));
+            long temp = Math.max(0, size(getCacheDir()) - thumbs - update);
             long data = size(getDataDir()) + size(external);
-            long other = Math.max(0, data - wallpapers - downloaded - previews - thumbs - langs);
+            // What is left is Android's own for this app: compiled code (code_cache) and its runtime files.
+            long runtime = Math.max(0, data - wallpapers - downloaded - previews - thumbs - langs - settings - update - temp);
             long launcher = app + data;
-            long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, other};
+            long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, settings, update, temp, runtime};
             main.post(() -> {
                 if (isFinishing() || category != 4) return;
                 launcherTotal[0].setText(bytes(launcher));
                 launcherBar.set(launcher, parts, STORAGE_COLORS);
-                legend(launcherLegend, new int[]{R.string.sm_st_app, R.string.sm_seg_wallpapers, R.string.sm_seg_themes,
-                        R.string.sm_seg_previews, R.string.sm_seg_thumbnails, R.string.sm_st_languages,
-                        R.string.sm_seg_other}, parts, STORAGE_COLORS);
+                legend(launcherLegend, STORAGE_LABELS, parts, STORAGE_COLORS);
             });
         });
     }
@@ -1017,7 +1029,7 @@ public final class SettingsActivity extends Activity {
 
     /**
      * The legend under a bar: a dot, the part's name and its size, as many to a line as fit (measured), the rest on
-     * the next; parts of 0 bytes are left out.
+     * the next. Parts of 0 bytes are listed too, so the whole launcher is accounted for.
      */
     private void legend(LinearLayout legend, int[] labels, long[] sizes, int[] colors) {
         legend.removeAllViews();
@@ -1025,7 +1037,6 @@ public final class SettingsActivity extends Activity {
         LinearLayout line = null;
         int inLine = 0, used = 0;
         for (int i = 0; i < labels.length; i++) {
-            if (sizes[i] <= 0) continue;
             TextView name = text(15, R.string.font_regular, 0xE6FFFFFF);
             name.setText(getString(labels[i]));
             name.setSingleLine(true);

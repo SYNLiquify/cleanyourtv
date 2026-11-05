@@ -150,10 +150,13 @@
     <string name="update_progress">Baxando… %1$d %%</string>
     <string name="update_opening">Abriendo l\'instalador d\'Android…</string>
     <string name="sm_seg_launcher">Llanzador</string>
-    <string name="sm_seg_wallpapers">Fondos</string>
-    <string name="sm_seg_themes">Temes</string>
-    <string name="sm_seg_previews">Previsualizaciones</string>
-    <string name="sm_seg_thumbnails">Miniatures</string>
-    <string name="sm_seg_other">Otros</string>
+    <string name="sm_seg_wallpapers">Fondos n\'usu</string>
+    <string name="sm_seg_themes">Temes baxaos</string>
+    <string name="sm_seg_previews">Previsualizaciones de temes</string>
+    <string name="sm_seg_thumbnails">Miniatures de Siguir viendo</string>
     <string name="sm_android_storage">Axustes d\'almacenamientu d\'Android</string>
+    <string name="sm_seg_settings">Axustes y tiempu</string>
+    <string name="sm_seg_update">Descarga d\'anovamientu</string>
+    <string name="sm_seg_temp">Ficheros temporales</string>
+    <string name="sm_seg_runtime">Execución de l\'aplicación</string>
 </resources>

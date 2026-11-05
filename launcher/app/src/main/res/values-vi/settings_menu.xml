@@ -150,10 +150,13 @@
     <string name="update_progress">Đang tải xuống… %1$d%%</string>
     <string name="update_opening">Đang mở trình cài đặt Android…</string>
     <string name="sm_seg_launcher">Trình chạy</string>
-    <string name="sm_seg_wallpapers">Hình nền</string>
-    <string name="sm_seg_themes">Chủ đề</string>
-    <string name="sm_seg_previews">Bản xem trước</string>
-    <string name="sm_seg_thumbnails">Hình thu nhỏ</string>
-    <string name="sm_seg_other">Khác</string>
+    <string name="sm_seg_wallpapers">Hình nền đang dùng</string>
+    <string name="sm_seg_themes">Chủ đề đã tải xuống</string>
+    <string name="sm_seg_previews">Bản xem trước chủ đề</string>
+    <string name="sm_seg_thumbnails">Hình thu nhỏ Xem tiếp</string>
     <string name="sm_android_storage">Cài đặt bộ nhớ Android</string>
+    <string name="sm_seg_settings">Cài đặt và thời tiết</string>
+    <string name="sm_seg_update">Bản cập nhật đã tải</string>
+    <string name="sm_seg_temp">Tệp tạm thời</string>
+    <string name="sm_seg_runtime">Dữ liệu chạy ứng dụng</string>
 </resources>

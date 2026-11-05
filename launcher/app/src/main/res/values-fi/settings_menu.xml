@@ -150,10 +150,13 @@
     <string name="update_progress">Ladataan… %1$d %%</string>
     <string name="update_opening">Avataan Androidin asennusohjelmaa…</string>
     <string name="sm_seg_launcher">Käynnistin</string>
-    <string name="sm_seg_wallpapers">Taustakuvat</string>
-    <string name="sm_seg_themes">Teemat</string>
-    <string name="sm_seg_previews">Esikatselut</string>
-    <string name="sm_seg_thumbnails">Pikkukuvat</string>
-    <string name="sm_seg_other">Muut</string>
+    <string name="sm_seg_wallpapers">Käytössä olevat taustakuvat</string>
+    <string name="sm_seg_themes">Ladatut teemat</string>
+    <string name="sm_seg_previews">Teemojen esikatselut</string>
+    <string name="sm_seg_thumbnails">Jatka katselua -pikkukuvat</string>
     <string name="sm_android_storage">Androidin tallennustila-asetukset</string>
+    <string name="sm_seg_settings">Asetukset ja sää</string>
+    <string name="sm_seg_update">Päivityksen lataus</string>
+    <string name="sm_seg_temp">Väliaikaiset tiedostot</string>
+    <string name="sm_seg_runtime">Sovelluksen ajonaikaiset tiedot</string>
 </resources>

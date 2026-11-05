@@ -150,10 +150,13 @@
     <string name="update_progress">Downloader… %1$d %%</string>
     <string name="update_opening">Åbner Androids installationsprogram…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_wallpapers">Baggrunde</string>
-    <string name="sm_seg_themes">Temaer</string>
-    <string name="sm_seg_previews">Forhåndsvisninger</string>
-    <string name="sm_seg_thumbnails">Miniaturer</string>
-    <string name="sm_seg_other">Andet</string>
+    <string name="sm_seg_wallpapers">Baggrunde i brug</string>
+    <string name="sm_seg_themes">Downloadede temaer</string>
+    <string name="sm_seg_previews">Forhåndsvisninger af temaer</string>
+    <string name="sm_seg_thumbnails">Miniaturer til Fortsæt med at se</string>
     <string name="sm_android_storage">Android-lagerindstillinger</string>
+    <string name="sm_seg_settings">Indstillinger og vejr</string>
+    <string name="sm_seg_update">Opdateringsdownload</string>
+    <string name="sm_seg_temp">Midlertidige filer</string>
+    <string name="sm_seg_runtime">Appens kørselsdata</string>
 </resources>

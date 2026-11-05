@@ -150,10 +150,13 @@
     <string name="update_progress">Stahování… %1$d %%</string>
     <string name="update_opening">Otevírá se instalátor Androidu…</string>
     <string name="sm_seg_launcher">Spouštěč</string>
-    <string name="sm_seg_wallpapers">Tapety</string>
-    <string name="sm_seg_themes">Motivy</string>
-    <string name="sm_seg_previews">Náhledy</string>
-    <string name="sm_seg_thumbnails">Miniatury</string>
-    <string name="sm_seg_other">Ostatní</string>
+    <string name="sm_seg_wallpapers">Používané tapety</string>
+    <string name="sm_seg_themes">Stažené motivy</string>
+    <string name="sm_seg_previews">Náhledy motivů</string>
+    <string name="sm_seg_thumbnails">Miniatury Pokračovat ve sledování</string>
     <string name="sm_android_storage">Nastavení úložiště Android</string>
+    <string name="sm_seg_settings">Nastavení a počasí</string>
+    <string name="sm_seg_update">Stažená aktualizace</string>
+    <string name="sm_seg_temp">Dočasné soubory</string>
+    <string name="sm_seg_runtime">Běh aplikace</string>
 </resources>

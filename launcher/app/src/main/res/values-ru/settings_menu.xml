@@ -150,10 +150,13 @@
     <string name="update_progress">Загрузка… %1$d %%</string>
     <string name="update_opening">Открывается установщик Android…</string>
     <string name="sm_seg_launcher">Лаунчер</string>
-    <string name="sm_seg_wallpapers">Обои</string>
-    <string name="sm_seg_themes">Темы</string>
-    <string name="sm_seg_previews">Превью</string>
-    <string name="sm_seg_thumbnails">Миниатюры</string>
-    <string name="sm_seg_other">Другое</string>
+    <string name="sm_seg_wallpapers">Используемые обои</string>
+    <string name="sm_seg_themes">Скачанные темы</string>
+    <string name="sm_seg_previews">Превью тем</string>
+    <string name="sm_seg_thumbnails">Миниатюры «Продолжить просмотр»</string>
     <string name="sm_android_storage">Настройки хранилища Android</string>
+    <string name="sm_seg_settings">Настройки и погода</string>
+    <string name="sm_seg_update">Скачанное обновление</string>
+    <string name="sm_seg_temp">Временные файлы</string>
+    <string name="sm_seg_runtime">Данные работы приложения</string>
 </resources>

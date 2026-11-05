@@ -150,10 +150,13 @@
     <string name="update_progress">Baixando… %1$d%%</string>
     <string name="update_opening">Abrindo o instalador do Android…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_wallpapers">Planos de fundo</string>
-    <string name="sm_seg_themes">Temas</string>
-    <string name="sm_seg_previews">Prévias</string>
-    <string name="sm_seg_thumbnails">Miniaturas</string>
-    <string name="sm_seg_other">Outros</string>
+    <string name="sm_seg_wallpapers">Planos de fundo em uso</string>
+    <string name="sm_seg_themes">Temas baixados</string>
+    <string name="sm_seg_previews">Prévias de temas</string>
+    <string name="sm_seg_thumbnails">Miniaturas de Continuar assistindo</string>
     <string name="sm_android_storage">Configurações de armazenamento do Android</string>
+    <string name="sm_seg_settings">Configurações e clima</string>
+    <string name="sm_seg_update">Download da atualização</string>
+    <string name="sm_seg_temp">Arquivos temporários</string>
+    <string name="sm_seg_runtime">Execução do app</string>
 </resources>

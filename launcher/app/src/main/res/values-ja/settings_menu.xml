@@ -150,10 +150,13 @@
     <string name="update_progress">ダウンロード中… %1$d%%</string>
     <string name="update_opening">Android のインストーラを開いています…</string>
     <string name="sm_seg_launcher">ランチャー</string>
-    <string name="sm_seg_wallpapers">壁紙</string>
-    <string name="sm_seg_themes">テーマ</string>
-    <string name="sm_seg_previews">プレビュー</string>
-    <string name="sm_seg_thumbnails">サムネイル</string>
-    <string name="sm_seg_other">その他</string>
+    <string name="sm_seg_wallpapers">使用中の壁紙</string>
+    <string name="sm_seg_themes">ダウンロードしたテーマ</string>
+    <string name="sm_seg_previews">テーマのプレビュー</string>
+    <string name="sm_seg_thumbnails">続きを見るのサムネイル</string>
     <string name="sm_android_storage">Android のストレージ設定</string>
+    <string name="sm_seg_settings">設定と天気</string>
+    <string name="sm_seg_update">アップデートのダウンロード</string>
+    <string name="sm_seg_temp">一時ファイル</string>
+    <string name="sm_seg_runtime">アプリの実行データ</string>
 </resources>

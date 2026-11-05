@@ -150,10 +150,13 @@
     <string name="update_progress">正在下载… %1$d%%</string>
     <string name="update_opening">正在打开 Android 安装程序…</string>
     <string name="sm_seg_launcher">启动器</string>
-    <string name="sm_seg_wallpapers">壁纸</string>
-    <string name="sm_seg_themes">主题</string>
-    <string name="sm_seg_previews">预览</string>
-    <string name="sm_seg_thumbnails">缩略图</string>
-    <string name="sm_seg_other">其他</string>
+    <string name="sm_seg_wallpapers">正在使用的壁纸</string>
+    <string name="sm_seg_themes">已下载的主题</string>
+    <string name="sm_seg_previews">主题预览</string>
+    <string name="sm_seg_thumbnails">继续观看缩略图</string>
     <string name="sm_android_storage">Android 存储设置</string>
+    <string name="sm_seg_settings">设置和天气</string>
+    <string name="sm_seg_update">更新下载</string>
+    <string name="sm_seg_temp">临时文件</string>
+    <string name="sm_seg_runtime">应用运行数据</string>
 </resources>

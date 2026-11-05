@@ -150,10 +150,13 @@
     <string name="update_progress">מוריד… %1$d%%</string>
     <string name="update_opening">פותח את מתקין Android…</string>
     <string name="sm_seg_launcher">משגר</string>
-    <string name="sm_seg_wallpapers">טפטים</string>
-    <string name="sm_seg_themes">ערכות נושא</string>
-    <string name="sm_seg_previews">תצוגות מקדימות</string>
-    <string name="sm_seg_thumbnails">תמונות ממוזערות</string>
-    <string name="sm_seg_other">אחר</string>
+    <string name="sm_seg_wallpapers">טפטים בשימוש</string>
+    <string name="sm_seg_themes">ערכות נושא שהורדו</string>
+    <string name="sm_seg_previews">תצוגות מקדימות של ערכות נושא</string>
+    <string name="sm_seg_thumbnails">תמונות ממוזערות של המשך צפייה</string>
     <string name="sm_android_storage">הגדרות האחסון של Android</string>
+    <string name="sm_seg_settings">הגדרות ומזג אוויר</string>
+    <string name="sm_seg_update">הורדת עדכון</string>
+    <string name="sm_seg_temp">קבצים זמניים</string>
+    <string name="sm_seg_runtime">נתוני הפעלה של האפליקציה</string>
 </resources>

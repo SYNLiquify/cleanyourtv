@@ -150,10 +150,13 @@
     <string name="update_progress">กำลังดาวน์โหลด… %1$d%%</string>
     <string name="update_opening">กำลังเปิดตัวติดตั้งของ Android…</string>
     <string name="sm_seg_launcher">ตัวเรียกใช้</string>
-    <string name="sm_seg_wallpapers">วอลเปเปอร์</string>
-    <string name="sm_seg_themes">ธีม</string>
-    <string name="sm_seg_previews">ตัวอย่าง</string>
-    <string name="sm_seg_thumbnails">ภาพขนาดย่อ</string>
-    <string name="sm_seg_other">อื่นๆ</string>
+    <string name="sm_seg_wallpapers">วอลเปเปอร์ที่ใช้อยู่</string>
+    <string name="sm_seg_themes">ธีมที่ดาวน์โหลด</string>
+    <string name="sm_seg_previews">ตัวอย่างธีม</string>
+    <string name="sm_seg_thumbnails">ภาพขนาดย่อของดูต่อ</string>
     <string name="sm_android_storage">การตั้งค่าพื้นที่เก็บข้อมูลของ Android</string>
+    <string name="sm_seg_settings">การตั้งค่าและสภาพอากาศ</string>
+    <string name="sm_seg_update">ไฟล์อัปเดตที่ดาวน์โหลด</string>
+    <string name="sm_seg_temp">ไฟล์ชั่วคราว</string>
+    <string name="sm_seg_runtime">ข้อมูลการทำงานของแอป</string>
 </resources>

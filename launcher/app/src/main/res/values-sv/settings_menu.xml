@@ -150,10 +150,13 @@
     <string name="update_progress">Laddar ned… %1$d %%</string>
     <string name="update_opening">Öppnar Androids installationsprogram…</string>
     <string name="sm_seg_launcher">Startprogram</string>
-    <string name="sm_seg_wallpapers">Bakgrunder</string>
-    <string name="sm_seg_themes">Teman</string>
-    <string name="sm_seg_previews">Förhandsvisningar</string>
-    <string name="sm_seg_thumbnails">Miniatyrer</string>
-    <string name="sm_seg_other">Övrigt</string>
+    <string name="sm_seg_wallpapers">Bakgrunder som används</string>
+    <string name="sm_seg_themes">Nedladdade teman</string>
+    <string name="sm_seg_previews">Förhandsvisningar av teman</string>
+    <string name="sm_seg_thumbnails">Miniatyrer för Fortsätt titta</string>
     <string name="sm_android_storage">Lagringsinställningar för Android</string>
+    <string name="sm_seg_settings">Inställningar och väder</string>
+    <string name="sm_seg_update">Nedladdad uppdatering</string>
+    <string name="sm_seg_temp">Tillfälliga filer</string>
+    <string name="sm_seg_runtime">Appens körtidsdata</string>
 </resources>

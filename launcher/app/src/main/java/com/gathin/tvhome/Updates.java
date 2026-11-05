@@ -427,6 +427,8 @@ public final class Updates extends BroadcastReceiver {
                 // back, in the launcher's language; Home confirms it with a card next time it opens.
                 String version = installedName(ctx);
                 prefs(ctx).edit().putString(JUST_UPDATED, version).apply();
+                // The downloaded APK is installed now: drop it, or it sits in the cache (Storage's Update download).
+                if (new File(ctx.getCacheDir(), "update.apk").delete()) Log.i(TAG, "removed the installed update's APK");
                 Context words = LauncherLocale.wrap(ctx);
                 android.widget.Toast.makeText(words, words.getString(R.string.update_done_hint, version),
                         android.widget.Toast.LENGTH_LONG).show();

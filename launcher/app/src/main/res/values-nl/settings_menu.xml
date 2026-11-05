@@ -150,10 +150,13 @@
     <string name="update_progress">Downloaden… %1$d%%</string>
     <string name="update_opening">Android-installatieprogramma wordt geopend…</string>
     <string name="sm_seg_launcher">Launcher</string>
-    <string name="sm_seg_wallpapers">Achtergronden</string>
-    <string name="sm_seg_themes">Thema\'s</string>
-    <string name="sm_seg_previews">Voorbeelden</string>
-    <string name="sm_seg_thumbnails">Miniaturen</string>
-    <string name="sm_seg_other">Overig</string>
+    <string name="sm_seg_wallpapers">Gebruikte achtergronden</string>
+    <string name="sm_seg_themes">Gedownloade thema\'s</string>
+    <string name="sm_seg_previews">Themavoorbeelden</string>
+    <string name="sm_seg_thumbnails">Miniaturen voor Verder kijken</string>
     <string name="sm_android_storage">Opslaginstellingen van Android</string>
+    <string name="sm_seg_settings">Instellingen en weer</string>
+    <string name="sm_seg_update">Gedownloade update</string>
+    <string name="sm_seg_temp">Tijdelijke bestanden</string>
+    <string name="sm_seg_runtime">App-runtime</string>
 </resources>

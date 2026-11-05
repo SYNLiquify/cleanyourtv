@@ -150,10 +150,13 @@
     <string name="update_progress">جارٍ التنزيل… %1$d%%</string>
     <string name="update_opening">جارٍ فتح أداة التثبيت في Android…</string>
     <string name="sm_seg_launcher">المشغّل</string>
-    <string name="sm_seg_wallpapers">الخلفيات</string>
-    <string name="sm_seg_themes">السمات</string>
-    <string name="sm_seg_previews">المعاينات</string>
-    <string name="sm_seg_thumbnails">الصور المصغّرة</string>
-    <string name="sm_seg_other">أخرى</string>
+    <string name="sm_seg_wallpapers">الخلفيات المستخدمة</string>
+    <string name="sm_seg_themes">السمات التي تم تنزيلها</string>
+    <string name="sm_seg_previews">معاينات السمات</string>
+    <string name="sm_seg_thumbnails">صور متابعة المشاهدة المصغّرة</string>
     <string name="sm_android_storage">إعدادات التخزين في Android</string>
+    <string name="sm_seg_settings">الإعدادات والطقس</string>
+    <string name="sm_seg_update">تنزيل التحديث</string>
+    <string name="sm_seg_temp">الملفات المؤقتة</string>
+    <string name="sm_seg_runtime">بيانات تشغيل التطبيق</string>
 </resources>

@@ -150,10 +150,13 @@
     <string name="update_progress">Preuzimanje… %1$d%%</string>
     <string name="update_opening">Otvara se Android instaler…</string>
     <string name="sm_seg_launcher">Pokretač</string>
-    <string name="sm_seg_wallpapers">Pozadine</string>
-    <string name="sm_seg_themes">Teme</string>
-    <string name="sm_seg_previews">Pregledi</string>
-    <string name="sm_seg_thumbnails">Sličice</string>
-    <string name="sm_seg_other">Ostalo</string>
+    <string name="sm_seg_wallpapers">Pozadine u upotrebi</string>
+    <string name="sm_seg_themes">Preuzete teme</string>
+    <string name="sm_seg_previews">Pregledi tema</string>
+    <string name="sm_seg_thumbnails">Sličice za Nastavi gledanje</string>
     <string name="sm_android_storage">Android podešavanja memorije</string>
+    <string name="sm_seg_settings">Podešavanja i vreme</string>
+    <string name="sm_seg_update">Preuzeto ažuriranje</string>
+    <string name="sm_seg_temp">Privremene datoteke</string>
+    <string name="sm_seg_runtime">Izvršavanje aplikacije</string>
 </resources>

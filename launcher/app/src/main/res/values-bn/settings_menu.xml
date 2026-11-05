@@ -150,10 +150,13 @@
     <string name="update_progress">ডাউনলোড হচ্ছে… %1$d%%</string>
     <string name="update_opening">Android ইনস্টলার খুলছে…</string>
     <string name="sm_seg_launcher">লঞ্চার</string>
-    <string name="sm_seg_wallpapers">ওয়ালপেপার</string>
-    <string name="sm_seg_themes">থিম</string>
-    <string name="sm_seg_previews">প্রিভিউ</string>
-    <string name="sm_seg_thumbnails">থাম্বনেইল</string>
-    <string name="sm_seg_other">অন্যান্য</string>
+    <string name="sm_seg_wallpapers">ব্যবহৃত ওয়ালপেপার</string>
+    <string name="sm_seg_themes">ডাউনলোড করা থিম</string>
+    <string name="sm_seg_previews">থিম প্রিভিউ</string>
+    <string name="sm_seg_thumbnails">দেখা চালিয়ে যান থাম্বনেইল</string>
     <string name="sm_android_storage">Android স্টোরেজ সেটিংস</string>
+    <string name="sm_seg_settings">সেটিংস ও আবহাওয়া</string>
+    <string name="sm_seg_update">আপডেট ডাউনলোড</string>
+    <string name="sm_seg_temp">অস্থায়ী ফাইল</string>
+    <string name="sm_seg_runtime">অ্যাপ রানটাইম</string>
 </resources>
