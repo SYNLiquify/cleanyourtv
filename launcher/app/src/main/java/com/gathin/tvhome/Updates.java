@@ -195,6 +195,46 @@ public final class Updates extends BroadcastReceiver {
         prefs(ctx).edit().remove(JUST_UPDATED).apply();
     }
 
+    /** PackageInfo.lastUpdateTime of the update already announced (noticeIfUpdated). */
+    private static final String NOTICED_UPDATE = "noticed_update";
+    /** An update older than this when the launcher first starts after it is not announced any more. */
+    private static final long NOTICE_WINDOW_MS = 10 * 60 * 1000L;
+
+    /**
+     * Whether Android installed a new launcher since the last start, announced once: Home's card (justUpdated), and
+     * with toast, "Launcher updated to 0.6.0. Press Home to go back." over whatever app the installer left in front.
+     * Called from every way the launcher starts after an update (the installer's answer, a key helper bound again,
+     * Home), since MY_PACKAGE_REPLACED alone never comes on some firmware (a Hisense on Android 11).
+     */
+    static synchronized void noticeIfUpdated(Context context, boolean toast) {
+        Context ctx = context.getApplicationContext();
+        PackageInfo info;
+        try {
+            info = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return;
+        }
+        SharedPreferences p = prefs(ctx);
+        long updated = info.lastUpdateTime;
+        if (p.getLong(NOTICED_UPDATE, 0) == updated) return;
+        // Not on a first install, and not for an update long ago (the first start of a launcher that checks this
+        // after an older one was updated in the past). The first update into this version counts.
+        boolean fresh = updated > info.firstInstallTime && System.currentTimeMillis() - updated < NOTICE_WINDOW_MS;
+        p.edit().putLong(NOTICED_UPDATE, updated).apply();
+        if (!fresh) return;
+        String version = installedName(ctx);
+        p.edit().putString(JUST_UPDATED, version).apply();
+        // The downloaded APK is installed now: drop it, or it sits in the cache (Storage's Update download).
+        if (new File(ctx.getCacheDir(), "update.apk").delete()) Log.i(TAG, "removed the installed update's APK");
+        Log.i(TAG, "updated to " + version);
+        if (!toast) return;
+        Context words = LauncherLocale.wrap(ctx);
+        String text = words.getString(R.string.update_done_hint, version);
+        // Twice in a row, about 7 seconds in all: one long toast (3.5 s) is easy to miss in the middle of a video.
+        MAIN.post(() -> android.widget.Toast.makeText(words, text, android.widget.Toast.LENGTH_LONG).show());
+        MAIN.postDelayed(() -> android.widget.Toast.makeText(words, text, android.widget.Toast.LENGTH_LONG).show(), 3600);
+    }
+
     // ---- checking -------------------------------------------------------------------------------------------
 
     /** Sets (or with checks off, cancels) the repeating alarm that checks in the background. */
@@ -473,20 +513,12 @@ public final class Updates extends BroadcastReceiver {
     public void onReceive(Context ctx, Intent intent) {
         String action = intent.getAction();
         Log.i(TAG, "received " + action + " status=" + intent.getIntExtra(PackageInstaller.EXTRA_STATUS, -99));
+        // Any of these may be the first thing to run after an update (the installer's answer, boot, the replace).
+        noticeIfUpdated(ctx, true);
         if (Intent.ACTION_BOOT_COMPLETED.equals(action) || Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
             // The TV started (or this launcher was just updated): set the alarm again and check now.
             schedule(ctx);
-            if (Intent.ACTION_MY_PACKAGE_REPLACED.equals(action)) {
-                // The installer may leave another app in front: say over it that the update is in and Home is
-                // back, in the launcher's language; Home confirms it with a card next time it opens.
-                String version = installedName(ctx);
-                prefs(ctx).edit().putString(JUST_UPDATED, version).apply();
-                // The downloaded APK is installed now: drop it, or it sits in the cache (Storage's Update download).
-                if (new File(ctx.getCacheDir(), "update.apk").delete()) Log.i(TAG, "removed the installed update's APK");
-                Context words = LauncherLocale.wrap(ctx);
-                android.widget.Toast.makeText(words, words.getString(R.string.update_done_hint, version),
-                        android.widget.Toast.LENGTH_LONG).show();
-            }
+            // MY_PACKAGE_REPLACED: the notice above has said the update is in and Home is back.
             if (intervalHours(ctx) > 0 && Intent.ACTION_BOOT_COMPLETED.equals(action)) {
                 // Kept pending if the network isn't up yet; Home checks again once it is.
                 PendingResult pending = goAsync();

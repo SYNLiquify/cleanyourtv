@@ -35,6 +35,7 @@ public class InputKeyService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
+        Updates.noticeIfUpdated(this, true);   // bound again right after an update, like HomeKeyService
         // From config.xml or a theme's config.json; theme.sh rebinds this service after a push.
         Config config = Config.load(this);
         // restore_key_services: note that this helper runs, so Home can put it back after a force stop.

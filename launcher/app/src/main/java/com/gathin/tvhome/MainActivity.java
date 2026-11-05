@@ -498,6 +498,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         chosenLocale = LauncherLocale.effective(this);
         LanguagePacks.refreshIfUpdated(this);
         Updates.removeLeftoverDownload(this);
+        // Home itself shows the update with its card (showUpdatedCard), so no toast here.
+        Updates.noticeIfUpdated(this, false);
         LauncherLocale.applyDefault(chosenLocale);
         homeAppKeys = RemoteKeys.parseAppKeys(cfg.appKeys);
         clockFormat = cfg.clockFormat;
