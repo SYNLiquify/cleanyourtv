@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">অ্যাপ</string>
     <string name="sm_screensaver">স্ক্রিনসেভার</string>
     <string name="sm_default_home">ডিফল্ট হোম অ্যাপ</string>
-    <string name="sm_about">লঞ্চার %1$s · এই ফর্ক</string>
+    <string name="sm_about">লঞ্চার %1$s · Liquify-এর ফর্ক %2$s</string>
     <string name="sm_highlight">হাইলাইট রং</string>
     <string name="sm_highlight_note">ফোকাস করা টাইল, পিল, মেনুর সারি বা কার্ড যে রং হয়, আর পিলের আউটলাইন। হুইল, অ্যাডাপ্টিভ, প্রতিটি অ্যাপের নিজের রং নেয়, হোমের পেছনের আভার মতো।</string>
     <string name="sm_custom_color">কাস্টম রং</string>

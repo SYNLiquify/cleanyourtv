@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Ilovalar</string>
     <string name="sm_screensaver">Ekran saqlovchi</string>
     <string name="sm_default_home">Asosiy bosh ekran ilovasi</string>
-    <string name="sm_about">Launcher %1$s · shu fork</string>
+    <string name="sm_about">Launcher %1$s · Liquify fork %2$s</string>
     <string name="sm_highlight">Ajratish rangi</string>
     <string name="sm_highlight_note">Tanlangan plitka, tugma, menyu qatori yoki karta oladigan rang va tugmalar chegarasi. Gʻildirak, yaʼni Moslashuvchan, Bosh ekran ortidagi yorugʻlik kabi har bir ilovaning oʻz rangini oladi.</string>
     <string name="sm_custom_color">Maxsus rang</string>

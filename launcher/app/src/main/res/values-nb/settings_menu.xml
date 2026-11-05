@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Apper</string>
     <string name="sm_screensaver">Skjermsparer</string>
     <string name="sm_default_home">Standard startskjerm</string>
-    <string name="sm_about">Startskjerm %1$s · denne forken</string>
+    <string name="sm_about">Startskjerm %1$s · Liquifys fork %2$s</string>
     <string name="sm_highlight">Uthevingsfarge</string>
     <string name="sm_highlight_note">Fargen en valgt flis, knapp, menyrad eller et valgt kort får, og omrisset på knappene. Hjulet, Adaptiv, bruker hver apps egen farge, som gløden bak Hjem.</string>
     <string name="sm_custom_color">Egendefinert farge</string>

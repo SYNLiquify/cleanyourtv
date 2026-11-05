@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplicaciones</string>
     <string name="sm_screensaver">Salvapantallas</string>
     <string name="sm_default_home">App de inicio predeterminada</string>
-    <string name="sm_about">Launcher %1$s · este fork</string>
+    <string name="sm_about">Launcher %1$s · fork de Liquify %2$s</string>
     <string name="sm_highlight">Color de resaltado</string>
     <string name="sm_highlight_note">El color que toma la tarjeta, botón o fila con el foco, y el borde de los botones. La rueda, Adaptativo, usa el color de cada app, como el brillo detrás de Inicio.</string>
     <string name="sm_custom_color">Color personalizado</string>

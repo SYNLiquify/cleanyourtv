@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Appar</string>
     <string name="sm_screensaver">Skärmsläckare</string>
     <string name="sm_default_home">Standardapp för startskärmen</string>
-    <string name="sm_about">Startskärm %1$s · denna fork</string>
+    <string name="sm_about">Startskärm %1$s · Liquifys fork %2$s</string>
     <string name="sm_highlight">Markeringsfärg</string>
     <string name="sm_highlight_note">Färgen som en markerad bricka, knapp, menyrad eller ett markerat kort får, och knapparnas kontur. Hjulet, Adaptiv, tar varje apps egen färg, som skenet bakom Hem.</string>
     <string name="sm_custom_color">Anpassad färg</string>

@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Приложения</string>
     <string name="sm_screensaver">Заставка</string>
     <string name="sm_default_home">Главный экран по умолчанию</string>
-    <string name="sm_about">Лаунчер %1$s · этот форк</string>
+    <string name="sm_about">Лаунчер %1$s · форк от Liquify %2$s</string>
     <string name="sm_highlight">Цвет выделения</string>
     <string name="sm_highlight_note">Цвет плитки, кнопки, строки меню или карточки в фокусе, а также контура кнопок. Круг «Адаптивный» берёт собственный цвет каждого приложения, как свечение за главным экраном.</string>
     <string name="sm_custom_color">Свой цвет</string>

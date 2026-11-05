@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Apps</string>
     <string name="sm_screensaver">Pauseskærm</string>
     <string name="sm_default_home">Standardapp til startskærm</string>
-    <string name="sm_about">Launcher %1$s · denne fork</string>
+    <string name="sm_about">Launcher %1$s · Liquifys fork %2$s</string>
     <string name="sm_highlight">Fremhævningsfarve</string>
     <string name="sm_highlight_note">Den farve, et fokuseret felt, en knap, en menulinje eller et kort får, og knappernes kant. Hjulet, Adaptiv, bruger hver apps egen farve, ligesom skæret bag Hjem.</string>
     <string name="sm_custom_color">Tilpasset farve</string>

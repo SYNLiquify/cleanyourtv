@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplikace</string>
     <string name="sm_screensaver">Spořič obrazovky</string>
     <string name="sm_default_home">Výchozí domovská aplikace</string>
-    <string name="sm_about">Launcher %1$s · tento fork</string>
+    <string name="sm_about">Launcher %1$s · fork od Liquify %2$s</string>
     <string name="sm_highlight">Barva zvýraznění</string>
     <string name="sm_highlight_note">Barva, kterou dostane dlaždice, tlačítko, řádek nabídky nebo karta ve fokusu, a obrys tlačítek. Kolečko Adaptivní použije vlastní barvu každé aplikace, jako záře za obrazovkou Domů.</string>
     <string name="sm_custom_color">Vlastní barva</string>

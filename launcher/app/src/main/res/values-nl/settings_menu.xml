@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Apps</string>
     <string name="sm_screensaver">Screensaver</string>
     <string name="sm_default_home">Standaard startscherm</string>
-    <string name="sm_about">Launcher %1$s · deze fork</string>
+    <string name="sm_about">Launcher %1$s · fork van Liquify %2$s</string>
     <string name="sm_highlight">Accentkleur</string>
     <string name="sm_highlight_note">De kleur van een geselecteerde tegel, knop, menuregel of kaart, en van de rand van de knoppen. Het wiel, Adaptief, neemt de eigen kleur van elke app, zoals de gloed achter Home.</string>
     <string name="sm_custom_color">Aangepaste kleur</string>

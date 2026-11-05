@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Applications</string>
     <string name="sm_screensaver">Économiseur d\'écran</string>
     <string name="sm_default_home">Appli d\'accueil par défaut</string>
-    <string name="sm_about">Launcher %1$s · ce fork</string>
+    <string name="sm_about">Launcher %1$s · fork de Liquify %2$s</string>
     <string name="sm_highlight">Couleur de surbrillance</string>
     <string name="sm_highlight_note">La couleur que prend la tuile, le bouton, la ligne de menu ou la carte sélectionnée, et le contour des boutons. La roue, Adaptative, reprend la couleur propre à chaque appli, comme le halo derrière l\'accueil.</string>
     <string name="sm_custom_color">Couleur personnalisée</string>

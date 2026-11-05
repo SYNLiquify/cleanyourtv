@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Uygulamalar</string>
     <string name="sm_screensaver">Ekran koruyucu</string>
     <string name="sm_default_home">Varsayılan ana ekran uygulaması</string>
-    <string name="sm_about">Başlatıcı %1$s · bu fork</string>
+    <string name="sm_about">Başlatıcı %1$s · Liquify\'ın fork\'u %2$s</string>
     <string name="sm_highlight">Vurgu rengi</string>
     <string name="sm_highlight_note">Odaklanan kutucuk, düğme, menü satırı veya kartın aldığı renk ve düğmelerin kenarlığı. Çark, yani Uyarlanabilir, Ana Ekran\'ın arkasındaki ışıltı gibi her uygulamanın kendi rengini alır.</string>
     <string name="sm_custom_color">Özel renk</string>

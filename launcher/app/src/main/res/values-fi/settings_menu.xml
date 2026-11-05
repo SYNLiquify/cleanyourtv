@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Sovellukset</string>
     <string name="sm_screensaver">Näytönsäästäjä</string>
     <string name="sm_default_home">Oletuskotisovellus</string>
-    <string name="sm_about">Käynnistin %1$s · tämä fork</string>
+    <string name="sm_about">Käynnistin %1$s · Liquifyn fork %2$s</string>
     <string name="sm_highlight">Korostusväri</string>
     <string name="sm_highlight_note">Väri, jonka valittu ruutu, painike, valikon rivi tai kortti saa, sekä painikkeiden reunus. Väripyörä, Mukautuva, käyttää kunkin sovelluksen omaa väriä, kuten hehku kotinäkymän takana.</string>
     <string name="sm_custom_color">Oma väri</string>

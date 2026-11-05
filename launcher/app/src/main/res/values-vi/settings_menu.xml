@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Ứng dụng</string>
     <string name="sm_screensaver">Trình bảo vệ màn hình</string>
     <string name="sm_default_home">Ứng dụng màn hình chính mặc định</string>
-    <string name="sm_about">Launcher %1$s · bản fork này</string>
+    <string name="sm_about">Launcher %1$s · bản fork của Liquify %2$s</string>
     <string name="sm_highlight">Màu đánh dấu</string>
     <string name="sm_highlight_note">Màu của ô, nút, dòng menu hoặc thẻ khi được chọn, và viền của các nút. Vòng màu Thích ứng lấy màu riêng của từng ứng dụng, giống quầng sáng phía sau Màn hình chính.</string>
     <string name="sm_custom_color">Màu tùy chỉnh</string>

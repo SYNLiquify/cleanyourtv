@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplikasi</string>
     <string name="sm_screensaver">Screensaver</string>
     <string name="sm_default_home">Aplikasi beranda default</string>
-    <string name="sm_about">Launcher %1$s · fork ini</string>
+    <string name="sm_about">Launcher %1$s · fork Liquify %2$s</string>
     <string name="sm_highlight">Warna sorotan</string>
     <string name="sm_highlight_note">Warna tile, tombol, baris menu, atau kartu yang sedang difokus, serta garis tepi tombol. Roda, Adaptif, mengambil warna masing-masing app, seperti cahaya di belakang Beranda.</string>
     <string name="sm_custom_color">Warna kustom</string>

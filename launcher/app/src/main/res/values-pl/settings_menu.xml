@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplikacje</string>
     <string name="sm_screensaver">Wygaszacz ekranu</string>
     <string name="sm_default_home">Domyślny ekran główny</string>
-    <string name="sm_about">Launcher %1$s · ten fork</string>
+    <string name="sm_about">Launcher %1$s · fork od Liquify %2$s</string>
     <string name="sm_highlight">Kolor wyróżnienia</string>
     <string name="sm_highlight_note">Kolor zaznaczonego kafelka, przycisku, wiersza menu lub karty oraz obrysu przycisków. Koło, Adaptacyjny, przyjmuje własny kolor każdej aplikacji, jak poświata za ekranem głównym.</string>
     <string name="sm_custom_color">Własny kolor</string>

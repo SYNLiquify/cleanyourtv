@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">แอป</string>
     <string name="sm_screensaver">โปรแกรมรักษาหน้าจอ</string>
     <string name="sm_default_home">แอปหน้าหลักเริ่มต้น</string>
-    <string name="sm_about">ลอนเชอร์ %1$s · fork นี้</string>
+    <string name="sm_about">ลอนเชอร์ %1$s · fork ของ Liquify %2$s</string>
     <string name="sm_highlight">สีไฮไลต์</string>
     <string name="sm_highlight_note">สีของไทล์ ปุ่ม แถวเมนู หรือการ์ดที่ถูกเลือก และสีขอบของปุ่ม วงล้อ (ปรับตามแอป) จะใช้สีของแต่ละแอป เหมือนแสงเรืองด้านหลังหน้าหลัก</string>
     <string name="sm_custom_color">สีที่กำหนดเอง</string>

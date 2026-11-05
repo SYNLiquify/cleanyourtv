@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">アプリ</string>
     <string name="sm_screensaver">スクリーンセーバー</string>
     <string name="sm_default_home">デフォルトのホームアプリ</string>
-    <string name="sm_about">ランチャー %1$s · このフォーク</string>
+    <string name="sm_about">ランチャー %1$s · Liquify のフォーク %2$s</string>
     <string name="sm_highlight">ハイライトの色</string>
     <string name="sm_highlight_note">フォーカスしたタイル・ボタン・メニュー行・カードの色と、ボタンの枠の色です。ホイール(アダプティブ)は、ホームの背景の光のように各アプリの色を使います。</string>
     <string name="sm_custom_color">カスタムの色</string>

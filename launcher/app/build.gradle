@@ -34,6 +34,9 @@ android {
         // in version.txt, which the publish script bumps for each release.
         versionCode forkVersionCode()
         versionName file('version.txt').text.trim()
+        // Upstream's launcher version this fork is built on (Settings > System shows "Launcher 3.4 · Liquify's fork 0.5.8").
+        // Set it to upstream's versionName when merging a new upstream release.
+        resValue "string", "upstream_version", "3.4"
         // This fork: English only in the APK. The other languages stay here as sources and download when picked
         // (LanguagePacks), which keeps about 400 KB of string tables out of every install.
         resourceConfigurations += ["en"]

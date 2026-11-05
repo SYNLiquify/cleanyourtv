@@ -93,7 +93,7 @@
     <string name="sm_apps_settings">Apps</string>
     <string name="sm_screensaver">Screensaver</string>
     <string name="sm_default_home">Default home app</string>
-    <string name="sm_about">Launcher %1$s · this fork</string>
+    <string name="sm_about">Launcher %1$s · Liquify\'s fork %2$s</string>
     <string name="sm_highlight">Highlight color</string>
     <string name="sm_highlight_note">What a focused tile, pill, menu row or card turns, and the pills\' outline. The wheel, Adaptive, takes each app\'s own color, like the glow behind Home.</string>
     <string name="sm_custom_color">Custom color</string>

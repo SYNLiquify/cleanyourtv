@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">앱</string>
     <string name="sm_screensaver">화면 보호기</string>
     <string name="sm_default_home">기본 홈 앱</string>
-    <string name="sm_about">런처 %1$s · 이 포크</string>
+    <string name="sm_about">런처 %1$s · Liquify의 포크 %2$s</string>
     <string name="sm_highlight">강조 색상</string>
     <string name="sm_highlight_note">포커스된 타일, 버튼, 메뉴 줄, 카드의 색상이자 버튼 테두리 색상입니다. 색상환의 적응형은 홈 뒤의 빛처럼 각 앱 고유의 색상을 사용합니다.</string>
     <string name="sm_custom_color">사용자 지정 색상</string>

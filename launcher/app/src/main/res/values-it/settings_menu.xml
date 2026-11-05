@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">App</string>
     <string name="sm_screensaver">Salvaschermo</string>
     <string name="sm_default_home">App Home predefinita</string>
-    <string name="sm_about">Launcher %1$s · questo fork</string>
+    <string name="sm_about">Launcher %1$s · fork di Liquify %2$s</string>
     <string name="sm_highlight">Colore di evidenziazione</string>
     <string name="sm_highlight_note">Il colore che assumono il riquadro, il pulsante, la riga di menu o la scheda selezionati, e il bordo dei pulsanti. La ruota, Adattivo, usa il colore di ogni app, come il bagliore dietro la Home.</string>
     <string name="sm_custom_color">Colore personalizzato</string>

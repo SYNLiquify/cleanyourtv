@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplikacije</string>
     <string name="sm_screensaver">Čuvar ekrana</string>
     <string name="sm_default_home">Podrazumevani početni ekran</string>
-    <string name="sm_about">Pokretač %1$s · ovaj fork</string>
+    <string name="sm_about">Pokretač %1$s · Liquify fork %2$s</string>
     <string name="sm_highlight">Boja isticanja</string>
     <string name="sm_highlight_note">Boja koju dobija pločica, dugme, red menija ili kartica u fokusu, kao i ivica dugmadi. Točak, Prilagodljiva, uzima boju svake aplikacije, kao sjaj iza početnog ekrana.</string>
     <string name="sm_custom_color">Prilagođena boja</string>

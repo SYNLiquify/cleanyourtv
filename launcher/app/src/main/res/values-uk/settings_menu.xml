@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Застосунки</string>
     <string name="sm_screensaver">Заставка</string>
     <string name="sm_default_home">Головний екран за замовчуванням</string>
-    <string name="sm_about">Лаунчер %1$s · цей форк</string>
+    <string name="sm_about">Лаунчер %1$s · форк від Liquify %2$s</string>
     <string name="sm_highlight">Колір виділення</string>
     <string name="sm_highlight_note">Колір плитки, кнопки, рядка меню чи картки у фокусі, а також контур кнопок. Коло «Адаптивний» бере власний колір кожного застосунку, як сяйво за головним екраном.</string>
     <string name="sm_custom_color">Власний колір</string>

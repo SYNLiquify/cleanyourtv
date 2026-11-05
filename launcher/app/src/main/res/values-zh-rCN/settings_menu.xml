@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">应用</string>
     <string name="sm_screensaver">屏幕保护程序</string>
     <string name="sm_default_home">默认桌面应用</string>
-    <string name="sm_about">桌面 %1$s · 此分支版本</string>
+    <string name="sm_about">桌面 %1$s · Liquify 的分支版本 %2$s</string>
     <string name="sm_highlight">高亮颜色</string>
     <string name="sm_highlight_note">获得焦点的图块、按钮、菜单行或卡片所显示的颜色，以及按钮的描边。色轮（自适应）会使用每个应用自己的颜色，就像主屏幕背后的光晕。</string>
     <string name="sm_custom_color">自定义颜色</string>

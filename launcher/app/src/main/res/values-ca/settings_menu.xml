@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplicacions</string>
     <string name="sm_screensaver">Estalvi de pantalla</string>
     <string name="sm_default_home">Aplicació d\'inici predeterminada</string>
-    <string name="sm_about">Llançador %1$s · aquest fork</string>
+    <string name="sm_about">Llançador %1$s · fork de Liquify %2$s</string>
     <string name="sm_highlight">Color de ressaltat</string>
     <string name="sm_highlight_note">El color que pren la targeta, el botó o la fila de menú amb el focus, i la vora dels botons. La roda, Adaptatiu, fa servir el color de cada aplicació, com la resplendor darrere d\'Inici.</string>
     <string name="sm_custom_color">Color personalitzat</string>

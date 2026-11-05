@@ -1136,7 +1136,8 @@ public final class SettingsActivity extends Activity {
             version = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
         }
-        note(getString(R.string.sm_about, version));
+        // Upstream's launcher version, then this fork's own: "Launcher 3.4 · Liquify's fork 0.5.8".
+        note(getString(R.string.sm_about, getString(R.string.upstream_version), version));
     }
 
     /**

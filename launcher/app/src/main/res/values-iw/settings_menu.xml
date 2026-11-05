@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">אפליקציות</string>
     <string name="sm_screensaver">שומר מסך</string>
     <string name="sm_default_home">אפליקציית מסך הבית כברירת מחדל</string>
-    <string name="sm_about">מסך הבית %1$s · הפורק הזה</string>
+    <string name="sm_about">מסך הבית %1$s · הפורק של Liquify %2$s</string>
     <string name="sm_highlight">צבע הדגשה</string>
     <string name="sm_highlight_note">הצבע שמקבלים אריח, כפתור, שורת תפריט או כרטיס כשהם מסומנים, וגם מסגרת הכפתורים. הגלגל, מסתגל, לוקח את הצבע של כל אפליקציה, כמו הזוהר שמאחורי מסך הבית.</string>
     <string name="sm_custom_color">צבע מותאם אישית</string>

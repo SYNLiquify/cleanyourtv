@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">التطبيقات</string>
     <string name="sm_screensaver">شاشة التوقف</string>
     <string name="sm_default_home">تطبيق الشاشة الرئيسية الافتراضي</string>
-    <string name="sm_about">المشغّل %1$s · هذه النسخة المشتقة</string>
+    <string name="sm_about">المشغّل %1$s · النسخة المشتقة من Liquify %2$s</string>
     <string name="sm_highlight">لون التمييز</string>
     <string name="sm_highlight_note">اللون الذي يأخذه المربّع أو الزر أو صف القائمة أو البطاقة عند التركيز، وحدود الأزرار. العجلة، «متكيّف»، تأخذ لون كل تطبيق، مثل التوهّج خلف الرئيسية.</string>
     <string name="sm_custom_color">لون مخصّص</string>

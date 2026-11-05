@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplicaciones</string>
     <string name="sm_screensaver">Curiapantalles</string>
     <string name="sm_default_home">Aplicación d\'aniciu predeterminada</string>
-    <string name="sm_about">Llanzador %1$s · esti fork</string>
+    <string name="sm_about">Llanzador %1$s · fork de Liquify %2$s</string>
     <string name="sm_highlight">Color de resaltáu</string>
     <string name="sm_highlight_note">El color que toma la tarxeta, el botón o la filera col focu, y el berbesu de los botones. La rueda, Adautativu, usa\'l color de cada aplicación, como\'l brillu detrás d\'Aniciu.</string>
     <string name="sm_custom_color">Color personalizáu</string>

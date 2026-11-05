@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Aplicativos</string>
     <string name="sm_screensaver">Protetor de tela</string>
     <string name="sm_default_home">App de tela inicial padrão</string>
-    <string name="sm_about">Launcher %1$s · este fork</string>
+    <string name="sm_about">Launcher %1$s · fork do Liquify %2$s</string>
     <string name="sm_highlight">Cor de destaque</string>
     <string name="sm_highlight_note">A cor que o bloco, botão, linha de menu ou cartão em foco recebe, e o contorno dos botões. A roda, Adaptativa, usa a cor de cada app, como o brilho atrás do Início.</string>
     <string name="sm_custom_color">Cor personalizada</string>

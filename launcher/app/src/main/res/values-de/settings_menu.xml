@@ -88,7 +88,7 @@
     <string name="sm_apps_settings">Apps</string>
     <string name="sm_screensaver">Bildschirmschoner</string>
     <string name="sm_default_home">Standard-Startbildschirm</string>
-    <string name="sm_about">Launcher %1$s · dieser Fork</string>
+    <string name="sm_about">Launcher %1$s · Liquifys Fork %2$s</string>
     <string name="sm_highlight">Hervorhebungsfarbe</string>
     <string name="sm_highlight_note">Die Farbe einer fokussierten Kachel, Schaltfläche, Menüzeile oder Karte und der Rand der Schaltflächen. Das Farbrad, Adaptiv, übernimmt die Farbe jeder App, wie das Leuchten hinter dem Startbildschirm.</string>
     <string name="sm_custom_color">Eigene Farbe</string>
