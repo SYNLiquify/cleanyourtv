@@ -186,6 +186,16 @@ public final class Updates extends BroadcastReceiver {
         check(ctx, done);
     }
 
+    /**
+     * Removes an update download left in the cache: older versions kept it after installing, and a download
+     * interrupted mid-way leaves one too. Home calls it as it starts; no install is running in a fresh process.
+     */
+    static void removeLeftoverDownload(Context ctx) {
+        if (downloading) return;   // Home restarted while an install in this process is still writing it
+        File apk = new File(ctx.getCacheDir(), "update.apk");
+        if (apk.exists() && apk.delete()) Log.i(TAG, "removed a leftover update download");
+    }
+
     /** A Home press (this fork): checks unless checks are Off or the last one was under a minute ago. */
     static void checkOnHomePress(Context ctx, Consumer<Offer> done) {
         if (intervalHours(ctx) <= 0) return;
@@ -286,6 +296,7 @@ public final class Updates extends BroadcastReceiver {
         Context ctx = context.getApplicationContext();
         WORKER.execute(() -> {
             File apk = new File(ctx.getCacheDir(), "update.apk");
+            downloading = true;
             try {
                 download(o, apk, p -> MAIN.post(() -> progress.update(p, null)));
                 if (o.size > 0 && apk.length() != o.size) throw new IOException("download incomplete");
@@ -303,6 +314,9 @@ public final class Updates extends BroadcastReceiver {
                         for (int n; (n = in.read(buf)) > 0; ) out.write(buf, 0, n);
                         session.fsync(out);
                     }
+                    // Android has its own copy in the session now, so ours is not needed: drop it straight away
+                    // rather than wait for MY_PACKAGE_REPLACED, which the Hisense never delivers to the launcher.
+                    if (apk.delete()) Log.i(TAG, "handed the APK to Android and removed the download");
                     Intent status = new Intent(ctx, Updates.class).setAction(ACTION_INSTALLED);
                     int flags = PendingIntent.FLAG_UPDATE_CURRENT
                             | (Build.VERSION.SDK_INT >= 31 ? PendingIntent.FLAG_MUTABLE : 0);
@@ -321,9 +335,14 @@ public final class Updates extends BroadcastReceiver {
                 apk.delete();
                 String why = ex.getMessage() == null ? ex.toString() : ex.getMessage();
                 MAIN.post(() -> progress.update(0, why));
+            } finally {
+                downloading = false;
             }
         });
     }
+
+    /** An install is downloading or handing over update.apk (removeLeftoverDownload leaves it alone meanwhile). */
+    private static volatile boolean downloading;
 
     /** Long enough for Android to check the APK it was handed; the screen closes itself if opened earlier. */
     private static final long CONFIRM_FALLBACK_MS = 1000;

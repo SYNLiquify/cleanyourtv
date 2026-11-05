@@ -497,6 +497,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         Config cfg = Config.load(this);
         chosenLocale = LauncherLocale.effective(this);
         LanguagePacks.refreshIfUpdated(this);
+        Updates.removeLeftoverDownload(this);
         LauncherLocale.applyDefault(chosenLocale);
         homeAppKeys = RemoteKeys.parseAppKeys(cfg.appKeys);
         clockFormat = cfg.clockFormat;
