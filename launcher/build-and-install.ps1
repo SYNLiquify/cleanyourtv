@@ -7,13 +7,15 @@
 #        [-InputKeyService]   remote's Input button opens the input switcher (Google TV), plus config.xml
 #                             input_key_keycodes and app_keys; re-pass on every install
 #        [-HomeKeyService]    remotes whose Home button sends KEYCODE_ALL_APPS (Xiaomi sticks)
+#        [-DeviceJson <file>] this TV's remote-button settings, copied to the launcher as device.json (FORK.md)
 #        [-RestoreKeyServices] grants WRITE_SECURE_SETTINGS for restore_key_services (helpers back after a force stop); revoked without it
 param(
     [string]$TvHost = $env:TV_HOST,
     [string]$StockLauncher = '',
     [switch]$InputKeyService,
     [switch]$HomeKeyService,
-    [switch]$RestoreKeyServices
+    [switch]$RestoreKeyServices,
+    [string]$DeviceJson = $env:DEVICE_JSON
 )
 $ErrorActionPreference = 'Stop'
 # Pipe plain UTF-8 to native commands; the default here prepends a BOM that corrupts the first command.
@@ -160,6 +162,19 @@ function Enable-Service([string]$Name) {
     ('cmd appops set com.gathin.tvhome AUTO_START allow 2>/dev/null; cmd appops set com.gathin.tvhome APP_AUTO_START allow 2>/dev/null; appops write-settings 2>/dev/null; s=$(settings get secure enabled_accessibility_services); case "$s" in *' + $Name + '*) settings put secure enabled_accessibility_services ""; settings put secure accessibility_enabled 0; sleep 1; settings put secure enabled_accessibility_services "$s" ;; null|"") settings put secure enabled_accessibility_services ' + $svc + ' ;; *) settings put secure enabled_accessibility_services "$s:' + $svc + '" ;; esac; settings put secure accessibility_enabled 1; echo ' + $Name + ' enabled') |
         & $py -I ..\tools\tv.py --batch
     if ($LASTEXITCODE -ne 0) { throw "could not enable $Name (tv.py exit code $LASTEXITCODE); Home is already the new launcher" }
+}
+# This TV's remote-button settings (device.json), before the helpers, which read it when they start.
+if ($DeviceJson) {
+    try {
+        Get-Content -Raw -LiteralPath $DeviceJson -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop | Out-Null
+    } catch {
+        throw "-DeviceJson $DeviceJson is not a readable JSON file ($($_.Exception.Message)); Home is already the new launcher"
+    }
+    $files = '/sdcard/Android/data/com.gathin.tvhome/files'
+    & $py -I ..\tools\tv.py "mkdir -p $files" | Out-Null
+    & $py -I ..\tools\tv.py --push $DeviceJson "$files/device.json"
+    if ($LASTEXITCODE -ne 0) { throw "could not copy $DeviceJson to the TV (tv.py exit code $LASTEXITCODE)" }
+    Write-Host "device.json copied from $DeviceJson"
 }
 if ($InputKeyService) { Enable-Service 'InputKeyService' }
 if ($HomeKeyService) { Enable-Service 'HomeKeyService' }

@@ -1143,7 +1143,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private boolean openLauncherSettingsIfAsked(Intent intent) {
         if (intent == null || !ACTION_LAUNCHER_SETTINGS.equals(intent.getAction())) return false;
         setIntent(new Intent(Intent.ACTION_MAIN));
-        startActivityForResult(new Intent(this, LauncherSettingsActivity.class), LAUNCHER_SETTINGS_REQUEST);
+        // This fork: the Settings menu, as the top bar's Settings button opens it (the remote's Settings panel too).
+        startActivityForResult(new Intent(this, SettingsActivity.class), LAUNCHER_SETTINGS_REQUEST);
         return true;
     }
 

@@ -74,6 +74,9 @@ in the Continue watching shots the titles, episode names and thumbnails are blur
   filter, and its gear button (keycode 83, for the disabled Google TV home) comes through the broadcast:
   `{"settings_key_keycodes": [83], "settings_key_panel": true, "key_filter": false,
   "settings_key_broadcast": "com.hisense.INTERCEPT_BUTTON_OPERATING"}`, with HomeKeyService enabled.
+- Install it with `HOME_KEY_SERVICE=1 DEVICE_JSON=<file> launcher/build-and-install.sh` (Windows:
+  `-HomeKeyService -DeviceJson <file>`). PROMPT.md walks through finding the values, with a real press of each button.
+- The panel's Launcher settings row goes back to Home and opens this fork's Settings menu.
 
 ## Network use
 

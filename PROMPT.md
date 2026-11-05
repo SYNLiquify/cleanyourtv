@@ -180,6 +180,24 @@ Launcher
   A button the TV logs as `KEY_UNKNOWN` or `KEY_PROGRAM` cannot be matched by keycode, since every
   unmapped button shares it: read the scancode with `getevent -lt` and use `settings_key_scancodes`,
   which only `config.xml` carries (a theme can set keycodes, not scancodes).
+- Walk me through the remote's Settings button and the volume keys as their own step, after the stock launcher is
+  disabled, and settle both before moving on. The aim: Settings opens the launcher's small Settings panel
+  (`settings_key_panel`) and a held volume key keeps ramping.
+  1. Ask me to hold Volume Up for three seconds and say whether it ramps. Then ask me to press Settings while
+     you record (`getevent -lt` and `logcat -v time` on the TV) and find its keycode in the `interceptKeyTq` or
+     `KeyEvent` lines (Google TV remotes send 83, `KEYCODE_NOTIFICATION`).
+  2. Put the TV's remote settings in a `device.json` in my notes folder (`work/`), not in the theme:
+     `{"settings_key_keycodes": [83], "settings_key_panel": true}`. Install with HOME_KEY_SERVICE=1 and
+     DEVICE_JSON=<that file> (`-HomeKeyService -DeviceJson <file>` on Windows). FORK.md, "Remote buttons for
+     one TV", lists its keys; a theme switch leaves it alone.
+  3. Ask me to press the real Settings button (an injected key never reaches the helper) and to hold Volume Up
+     again. If Settings opens the panel and volume still ramps, this step is done.
+  4. If volume now moves one step per press, the key filter is costing the repeats. Look for a firmware broadcast
+     that reports each key: `dumpsys activity broadcasts history | grep -B2 -A3 keycode=` right after I press a
+     button (Hisense sends `com.hisense.INTERCEPT_BUTTON_OPERATING` with `keycode=<n>`, no permission). If one
+     carries the Settings keycode, add `"key_filter": false, "settings_key_broadcast": "<that action>"` to
+     `device.json`, install again, and repeat check 3. With no such broadcast, tell me the trade: the Settings
+     button or ramping volume, and let me choose.
 - After the first reboot with the new Home, check what the TV opens at power-on
   (`logcat -b events -d | grep wm_set_resumed_activity`). If the firmware puts the Live TV app on screen by
   itself, ask me which I want to land on, Home or Live TV: Home is `power_on_home` with HOME_KEY_SERVICE=1,

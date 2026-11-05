@@ -220,6 +220,8 @@ esac
 #                         It also handles input_key_keycodes and app_keys (config.xml or a theme; a YouTube button)
 #   HOME_KEY_SERVICE=1    remotes whose Home button sends KEYCODE_ALL_APPS instead of HOME, e.g. Xiaomi
 #                         sticks: the key is routed to the launcher (HomeKeyService)
+#   DEVICE_JSON=<file>    this TV's remote-button settings, copied to the launcher as device.json (FORK.md, "Remote
+#                         buttons for one TV"); a theme switch leaves it alone. Pair it with HOME_KEY_SERVICE=1.
 #   RESTORE_KEY_SERVICES=1  grants WRITE_SECURE_SETTINGS (a run without it revokes it), so that with restore_key_services (config.xml or a
 #                         theme) Home puts these helpers back after a force stop of the launcher
 # TCL firmware (TclAppBoot) refuses to bind an app's accessibility service while the app is not running unless it
@@ -233,6 +235,17 @@ enable_service() {   # appends to enabled_accessibility_services without droppin
   svc=com.gathin.tvhome/.$1
   "$PY" -I ../tools/tv.py "cmd appops set com.gathin.tvhome AUTO_START allow 2>/dev/null; cmd appops set com.gathin.tvhome APP_AUTO_START allow 2>/dev/null; appops write-settings 2>/dev/null; s=\$(settings get secure enabled_accessibility_services); case \"\$s\" in *$1*) settings put secure enabled_accessibility_services ''; settings put secure accessibility_enabled 0; sleep 1; settings put secure enabled_accessibility_services \"\$s\" ;; null|'') settings put secure enabled_accessibility_services $svc ;; *) settings put secure enabled_accessibility_services \"\$s:$svc\" ;; esac; settings put secure accessibility_enabled 1; echo $1 enabled"
 }
+# Before the helpers, which read it when they start.
+if [ -n "${DEVICE_JSON:-}" ]; then
+  if ! "$PY" -I -c 'import json, sys; json.load(open(sys.argv[1], encoding="utf-8-sig"))' "$DEVICE_JSON"; then
+    echo "ERROR: DEVICE_JSON=$DEVICE_JSON is not a readable JSON file; Home is already the new launcher." >&2
+    exit 1
+  fi
+  files=/sdcard/Android/data/com.gathin.tvhome/files
+  "$PY" -I ../tools/tv.py "mkdir -p $files" >/dev/null
+  "$PY" -I ../tools/tv.py --push "$DEVICE_JSON" "$files/device.json"
+  echo "device.json copied from $DEVICE_JSON"
+fi
 if [ "${INPUT_KEY_SERVICE:-0}" = 1 ]; then enable_service InputKeyService; fi
 if [ "${HOME_KEY_SERVICE:-0}" = 1 ]; then enable_service HomeKeyService; fi
 # The grant follows the switch on every install: pm install -r keeps a grant, so a run without the switch takes it
