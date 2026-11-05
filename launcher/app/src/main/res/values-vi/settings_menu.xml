@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Tự động kiểm tra</string>
     <string name="sm_update_every">Kiểm tra mỗi</string>
     <string name="sm_update_auto_note">Cũng kiểm tra mỗi lần bạn nhấn Màn hình chính (tối đa một lần mỗi phút), và khi TV khởi động hoặc thức dậy từ chế độ chờ, ngay khi có mạng. Tắt chỉ kiểm tra khi bạn nhấn Kiểm tra bản cập nhật.</string>
+    <string name="sm_update_channel">Kênh cập nhật</string>
+    <string name="sm_channel_online">Trực tuyến</string>
+    <string name="sm_channel_offline">Ngoại tuyến</string>
+    <string name="sm_update_channel_note">Bản ngoại tuyến chỉ kết nối mạng để kiểm tra và tải bản cập nhật: không có thời tiết, không tải chủ đề hay ngôn ngữ, không có ảnh trong Tiếp tục xem. Chuyển kênh sẽ đề xuất bản dựng còn lại của phiên bản mới nhất.</string>
+    <string name="sm_themes_on_tv">Trên TV này</string>
+    <string name="sm_themes_added_note">Để thêm chủ đề, hãy sao chép thư mục của nó (config.json, screenshot.jpg, hình nền) vào Android/data/com.gathin.tvhome/files/themes/ trên TV.</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>

@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatisch controleren</string>
     <string name="sm_update_every">Controleren elke</string>
     <string name="sm_update_auto_note">Ook elke keer dat je op Home drukt (hooguit eens per minuut), en wanneer de tv start of uit stand-by komt, zodra hij online is. Uit controleert alleen als je op Zoeken naar updates drukt.</string>
+    <string name="sm_update_channel">Updatekanaal</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline gaat alleen online om updates te zoeken en te downloaden: geen weer, geen downloads van thema’s of talen, geen afbeeldingen bij Verder kijken. Wisselen biedt de andere uitvoering van de nieuwste versie aan.</string>
+    <string name="sm_themes_on_tv">Op deze tv</string>
+    <string name="sm_themes_added_note">Kopieer de map van een thema (config.json, screenshot.jpg, achtergronden) naar Android/data/com.gathin.tvhome/files/themes/ op de tv om het toe te voegen.</string>
     <string name="sm_atv_settings">ATV-instellingen</string>
     <string name="sm_hours">%1$d u</string>
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>

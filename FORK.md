@@ -95,6 +95,15 @@ Unlike the upstream launcher, this fork has the `INTERNET` permission. It is use
 
 No accounts, keys or analytics. Apart from the update check (an alarm at the chosen interval), nothing is fetched while Home is not on screen.
 
+**Offline build** (`-PlauncherNetwork=offline`, `BuildConfig.OFFLINE`): goes online only for the update check and
+download. No weather (the line, the Settings page and city search are left out), no Continue watching images (the
+cards keep the app's banner), no theme list from GitHub (Themes lists Default, themes kept on the TV, and theme
+folders copied to `Android/data/com.gathin.tvhome/files/themes/<name>/` in the repo's `themes/` layout), and every
+language built into the APK instead of downloaded (about 0.5 MB more). Settings > System shows "· Offline" after the
+version. Each release carries both builds, `cleanyourtv-launcher.apk` and `cleanyourtv-launcher-offline.apk`, with
+`sha256:` and `sha256-offline:` lines; **Update channel** under Settings > System > Updates picks which one updates
+install, and switching offers the other build of the latest version at once.
+
 ## Build and install
 
 As upstream: `launcher/build-and-install.sh` (or `.ps1` on Windows), then grant the Continue watching permission

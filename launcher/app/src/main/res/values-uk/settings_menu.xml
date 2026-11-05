@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Автоматична перевірка</string>
     <string name="sm_update_every">Перевіряти кожні</string>
     <string name="sm_update_auto_note">Також щоразу, коли ви натискаєте «Додому» (не частіше разу на хвилину), і коли телевізор вмикається або виходить із режиму очікування, щойно він в мережі. «Вимк.» перевіряє лише після натискання «Перевірити оновлення».</string>
+    <string name="sm_update_channel">Канал оновлень</string>
+    <string name="sm_channel_online">Онлайн</string>
+    <string name="sm_channel_offline">Офлайн</string>
+    <string name="sm_update_channel_note">Офлайн-версія виходить у мережу лише для перевірки й завантаження оновлень: без погоди, без завантаження тем і мов, без зображень у «Продовжити перегляд». Перемикання пропонує іншу збірку останньої версії.</string>
+    <string name="sm_themes_on_tv">На цьому телевізорі</string>
+    <string name="sm_themes_added_note">Щоб додати тему, скопіюйте її теку (config.json, screenshot.jpg, шпалери) до Android/data/com.gathin.tvhome/files/themes/ на телевізорі.</string>
     <string name="sm_atv_settings">Налаштування ATV</string>
     <string name="sm_hours">%1$d год</string>
     <string name="update_done">Лаунчер оновлено до %1$s</string>

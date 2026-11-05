@@ -152,6 +152,8 @@ public final class SettingsActivity extends Activity {
             lp.bottomMargin = dp(10);
             left.addView(b, lp);
             categoryButtons.add(b);
+            // The offline build has no weather; the button stays in the list, hidden, so the pages keep their numbers.
+            if (BuildConfig.OFFLINE && names[i] == R.string.sm_weather) b.setVisibility(View.GONE);
         }
 
         LinearLayout right = new LinearLayout(this);
@@ -373,6 +375,10 @@ public final class SettingsActivity extends Activity {
     private boolean applyingTheme;
 
     private void buildThemes() {
+        if (BuildConfig.OFFLINE) {
+            buildThemesOffline();
+            return;
+        }
         paneTitle.setText(R.string.sm_themes);
         // At the top: where the list stands with GitHub, in bold, and Refresh to check now.
         LinearLayout statusRow = new LinearLayout(this);
@@ -411,6 +417,22 @@ public final class SettingsActivity extends Activity {
         themeGrid(shown, false, current);
     }
 
+    /** The offline build: no list from GitHub, only the themes on this TV (kept, or copied there by the owner). */
+    private void buildThemesOffline() {
+        paneTitle.setText(R.string.sm_themes);
+        cardThemes.clear();
+        cardImages.clear();
+        themeHolders.clear();
+        themeProgress.clear();
+        String current = ThemeLibrary.current(this);
+        List<ThemeLibrary.Theme> onTv = new ArrayList<>();
+        if (!prefs.getBoolean(DEFAULT_HIDDEN_KEY, false)) onTv.add(defaultTheme(ThemeLibrary.list(this)));
+        for (ThemeLibrary.Theme t : ThemeLibrary.downloaded(this)) if (!isDefault(t)) onTv.add(t);
+        section(R.string.sm_themes_on_tv);
+        note(getString(R.string.sm_themes_added_note));
+        themeGrid(onTv, true, current);
+    }
+
     /** Theme cards three to a row; downloaded: the cards of the Downloaded section. */
     private void themeGrid(List<ThemeLibrary.Theme> themes, boolean downloaded, String current) {
         int perRow = 3;
@@ -441,6 +463,7 @@ public final class SettingsActivity extends Activity {
      * previews GitHub has a newer version of are fetched and swapped in.
      */
     private void onThemesEntered() {
+        if (BuildConfig.OFFLINE) return;   // nothing to check with GitHub
         if (!themesChecked) checkThemes(false);
     }
 
@@ -912,7 +935,8 @@ public final class SettingsActivity extends Activity {
                 getString(R.string.sm_st_languages_value, 1 + installedLanguages().size()), this::showInstalledLanguages);
         // The row keeps its own height (actionRow's layout params); only the gap above the cards changes.
         ((LinearLayout.LayoutParams) languages.getLayoutParams()).topMargin = dp(18);
-        pane.addView(languages);
+        // The offline build has every language built in: nothing downloaded to list or delete.
+        if (!BuildConfig.OFFLINE) pane.addView(languages);
         // The TV's own storage page, for everything that is not the launcher.
         pane.addView(actionRow(getString(R.string.sm_android_storage), "", () ->
                 open(SystemSettings.intent(this, Settings.ACTION_INTERNAL_STORAGE_SETTINGS))));
@@ -930,7 +954,7 @@ public final class SettingsActivity extends Activity {
             rebuild(4);
             focusPane();
         }));
-        pane.addView(actionRow(getString(R.string.sm_delete_other_languages), "", () -> {
+        if (!BuildConfig.OFFLINE) pane.addView(actionRow(getString(R.string.sm_delete_other_languages), "", () -> {
             String inUse = languageInUse();
             for (String tag : installedLanguages()) if (!tag.equals(inUse)) LanguagePacks.delete(this, tag);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
@@ -1137,6 +1161,8 @@ public final class SettingsActivity extends Activity {
         } catch (android.content.pm.PackageManager.NameNotFoundException ignored) {
         }
         // Upstream's launcher version, then this fork's own: "Launcher 3.4 · Liquify's fork 0.5.8".
+        // The offline build says so: "Launcher 3.4 · Liquify's fork 0.5.9 · Offline".
+        if (BuildConfig.OFFLINE) version += " · " + getString(R.string.sm_channel_offline);
         note(getString(R.string.sm_about, getString(R.string.upstream_version), version));
     }
 
@@ -1215,7 +1241,7 @@ public final class SettingsActivity extends Activity {
         clearPane();
         paneTitle.setText(R.string.sm_language);
         back = () -> rebuild(5);
-        note(getString(R.string.sm_language_note));
+        if (!BuildConfig.OFFLINE) note(getString(R.string.sm_language_note));   // offline: nothing downloads
         String current = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
         java.util.Set<String> have = LanguagePacks.installedTags(this);
         View focus = null;
@@ -1224,6 +1250,7 @@ public final class SettingsActivity extends Activity {
         pane.addView(tv);
         for (int pass = 0; pass < 2; pass++) {
             boolean installedPass = pass == 0;
+            if (BuildConfig.OFFLINE && !installedPass) continue;   // all built in
             section(installedPass ? R.string.sm_lang_installed : R.string.sm_lang_not_installed);
             for (String[] l : LANGUAGES) {
                 String tag = l[0];
@@ -1344,7 +1371,22 @@ public final class SettingsActivity extends Activity {
             if (value instanceof TextView) progressView[0] = (TextView) value;
             pane.addView(download);
         }
-        pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this), null));
+        pane.addView(actionRow(getString(R.string.sm_version), Updates.installedName(this) + " · "
+                + getString(Updates.OFFLINE.equals(Updates.build()) ? R.string.sm_channel_offline : R.string.sm_channel_online), null));
+
+        // This fork: which build updates install. Picking the other one offers this version of it at once.
+        section(R.string.sm_update_channel);
+        String[] channels = {getString(R.string.sm_channel_online), getString(R.string.sm_channel_offline)};
+        pane.addView(choiceRow(getString(R.string.sm_update_channel), channels,
+                Updates.OFFLINE.equals(Updates.channel(this)) ? 1 : 0, i -> {
+                    String picked = i == 1 ? Updates.OFFLINE : Updates.ONLINE;
+                    if (picked.equals(Updates.channel(this))) return;
+                    Updates.setChannel(this, picked);
+                    Updates.check(this, found -> {
+                        if (category == 5 && updatesOpen) showUpdates();
+                    });
+                }));
+        note(getString(R.string.sm_update_channel_note));
 
         section(R.string.sm_update_auto);
         String[] labels = new String[Updates.INTERVALS.length];

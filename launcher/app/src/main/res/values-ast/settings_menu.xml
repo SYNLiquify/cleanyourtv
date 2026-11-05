@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Comprobaciones automátiques</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">Tamién cada vegada que primes Aniciu (como muncho una vegada per minutu) y cuando la tele s\'anicia o espierta del mou d\'espera, en cuantes que tenga conexón. Desactivao namás comprueba cuando primes Buscar anovamientos.</string>
+    <string name="sm_update_channel">Canal d\'anovamientos</string>
+    <string name="sm_channel_online">En llinia</string>
+    <string name="sm_channel_offline">Ensin conexón</string>
+    <string name="sm_update_channel_note">Ensin conexón namás se conecta pa buscar y descargar anovamientos: ensin tiempu, ensin descargues de temes nin llingües, ensin imáxenes en Siguir viendo. Al camudar ofrezse la otra versión del caberu anovamientu.</string>
+    <string name="sm_themes_on_tv">Nesta tele</string>
+    <string name="sm_themes_added_note">P\'amestar un tema, copia la so carpeta (config.json, screenshot.jpg, fondos) a Android/data/com.gathin.tvhome/files/themes/ na tele.</string>
     <string name="sm_atv_settings">Axustes d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llanzador anováu a %1$s</string>

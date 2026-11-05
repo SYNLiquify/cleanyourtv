@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatyczne sprawdzanie</string>
     <string name="sm_update_every">Sprawdzaj co</string>
     <string name="sm_update_auto_note">Także przy każdym naciśnięciu przycisku Ekran główny (najwyżej raz na minutę) oraz gdy telewizor się włącza lub wybudza z czuwania, gdy tylko będzie online. Wyłączone sprawdza tylko po naciśnięciu Sprawdź aktualizacje.</string>
+    <string name="sm_update_channel">Kanał aktualizacji</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Wersja offline łączy się tylko, by sprawdzić i pobrać aktualizacje: bez pogody, bez pobierania motywów i języków, bez obrazów w Oglądaj dalej. Przełączenie zaproponuje drugą wersję najnowszego wydania.</string>
+    <string name="sm_themes_on_tv">Na tym telewizorze</string>
+    <string name="sm_themes_added_note">Aby dodać motyw, skopiuj jego folder (config.json, screenshot.jpg, tapety) do Android/data/com.gathin.tvhome/files/themes/ na telewizorze.</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

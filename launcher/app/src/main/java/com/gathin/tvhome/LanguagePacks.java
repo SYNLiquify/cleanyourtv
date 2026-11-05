@@ -95,6 +95,8 @@ final class LanguagePacks {
     }
 
     static boolean builtIn(String tag) {
+        // The offline build carries every language in the APK (build.gradle) and downloads none.
+        if (BuildConfig.OFFLINE) return true;
         return tag == null || tag.isEmpty() || tag.equalsIgnoreCase("en");
     }
 
@@ -251,6 +253,10 @@ final class LanguagePacks {
 
     /** Downloads tag's pack from GitHub and saves it; done(true) on the main thread once it is ready. */
     static void install(Context context, String tag, Consumer<Boolean> done) {
+        if (BuildConfig.OFFLINE) {
+            done.accept(false);
+            return;
+        }
         Context ctx = context.getApplicationContext();
         WORKER.execute(() -> {
             boolean ok = false;
@@ -290,6 +296,7 @@ final class LanguagePacks {
      * tried once per process start until it is in.
      */
     static void refreshIfUpdated(android.app.Activity home) {
+        if (BuildConfig.OFFLINE) return;
         Context ctx = home.getApplicationContext();
         android.content.SharedPreferences prefs = ctx.getSharedPreferences("languages", Context.MODE_PRIVATE);
         int code = Updates.installedCode(ctx);

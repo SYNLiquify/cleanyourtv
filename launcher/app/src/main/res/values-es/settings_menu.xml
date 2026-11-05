@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Comprobaciones automáticas</string>
     <string name="sm_update_every">Comprobar cada</string>
     <string name="sm_update_auto_note">También cada vez que pulsas Inicio (como mucho una vez por minuto) y cuando el televisor se enciende o sale del modo de espera, en cuanto tiene conexión. Desactivado solo comprueba cuando pulsas Buscar actualizaciones.</string>
+    <string name="sm_update_channel">Canal de actualizaciones</string>
+    <string name="sm_channel_online">En línea</string>
+    <string name="sm_channel_offline">Sin conexión</string>
+    <string name="sm_update_channel_note">Sin conexión solo se conecta para buscar y descargar actualizaciones: sin tiempo, sin descargas de temas ni idiomas, sin imágenes en Seguir viendo. Al cambiar, se ofrece la otra versión de la última actualización.</string>
+    <string name="sm_themes_on_tv">En este televisor</string>
+    <string name="sm_themes_added_note">Para añadir un tema, copia su carpeta (config.json, screenshot.jpg, fondos) a Android/data/com.gathin.tvhome/files/themes/ en el televisor.</string>
     <string name="sm_atv_settings">Ajustes de ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher actualizado a %1$s</string>

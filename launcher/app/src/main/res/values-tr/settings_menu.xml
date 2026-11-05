@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Otomatik denetim</string>
     <string name="sm_update_every">Denetim sıklığı</string>
     <string name="sm_update_auto_note">Ayrıca Ana ekran tuşuna her bastığınızda (dakikada en fazla bir kez) ve TV açıldığında ya da bekleme modundan uyandığında, çevrimiçi olur olmaz. Kapalı yalnızca Güncellemeleri denetle\'ye bastığınızda denetler.</string>
+    <string name="sm_update_channel">Güncelleme kanalı</string>
+    <string name="sm_channel_online">Çevrimiçi</string>
+    <string name="sm_channel_offline">Çevrimdışı</string>
+    <string name="sm_update_channel_note">Çevrimdışı sürüm yalnızca güncellemeleri denetlemek ve indirmek için internete bağlanır: hava durumu yok, tema veya dil indirme yok, İzlemeye devam et görselleri yok. Geçiş, en son sürümün diğer derlemesini sunar.</string>
+    <string name="sm_themes_on_tv">Bu TV’de</string>
+    <string name="sm_themes_added_note">Tema eklemek için klasörünü (config.json, screenshot.jpg, duvar kâğıtları) TV’de Android/data/com.gathin.tvhome/files/themes/ konumuna kopyalayın.</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>

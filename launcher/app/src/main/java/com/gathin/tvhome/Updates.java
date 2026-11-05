@@ -56,8 +56,16 @@ public final class Updates extends BroadcastReceiver {
     static final String REPO = "SYNLiquify/cleanyourtv";
     private static final String LATEST = "https://api.github.com/repos/" + REPO + "/releases/latest";
     private static final String ASSET = "cleanyourtv-launcher.apk";
+    /** The offline build's APK in the same release, with its own checksum line ("sha256-offline: <hex>"). */
+    private static final String OFFLINE_ASSET = "cleanyourtv-launcher-offline.apk";
     private static final Pattern TAG_CODE = Pattern.compile("launcher-(\\d+)");
     private static final Pattern SHA = Pattern.compile("sha256:\\s*([0-9a-fA-F]{64})");
+    private static final Pattern SHA_OFFLINE = Pattern.compile("sha256-offline:\\s*([0-9a-fA-F]{64})");
+    /** Settings > System > Updates > Channel, in Config.SETTINGS_NAME: which build updates install. */
+    static final String CHANNEL_KEY = "update_channel";
+    static final String ONLINE = "online", OFFLINE = "offline";
+    /** The channel the stored offer was found for. */
+    private static final String OFFER_CHANNEL = "offer_channel";
     private static final int TIMEOUT_MS = 15000;
     private static final long MAX_APK = 32L * 1024 * 1024;
 
@@ -110,6 +118,29 @@ public final class Updates extends BroadcastReceiver {
         return ctx.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
     }
 
+    /** This build: "offline" leaves out the features that reach anything but GitHub (weather). */
+    static String build() {
+        return BuildConfig.OFFLINE ? OFFLINE : ONLINE;
+    }
+
+    /** The build updates install; this one until the owner picks the other in Settings. */
+    static String channel(Context ctx) {
+        String c = ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE).getString(CHANNEL_KEY, build());
+        return OFFLINE.equals(c) ? OFFLINE : ONLINE;
+    }
+
+    /** A new channel forgets the offer found for the old one; the caller checks again. */
+    static void setChannel(Context ctx, String channel) {
+        ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE).edit().putString(CHANNEL_KEY, channel).apply();
+        prefs(ctx).edit().remove(CODE).remove(OFFER_CHANNEL).remove(DISMISSED).apply();
+    }
+
+    /** Whether release code on channel is worth installing: newer, or this version as the other build. */
+    private static boolean wanted(Context ctx, int code, String channel) {
+        int installed = installedCode(ctx);
+        return code > installed || (!channel.equals(build()) && code >= installed);
+    }
+
     static int installedCode(Context ctx) {
         try {
             PackageInfo p = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
@@ -131,7 +162,8 @@ public final class Updates extends BroadcastReceiver {
     static Offer offer(Context ctx) {
         SharedPreferences p = prefs(ctx);
         int code = p.getInt(CODE, 0);
-        if (code <= installedCode(ctx)) return null;
+        String channel = channel(ctx);
+        if (!channel.equals(p.getString(OFFER_CHANNEL, ONLINE)) || !wanted(ctx, code, channel)) return null;
         return new Offer(code, p.getString(NAME, ""), p.getString(URL_KEY, ""), p.getLong(SIZE, 0), p.getString(SHA_KEY, ""),
                 p.getString(NOTES, ""));
     }
@@ -252,23 +284,26 @@ public final class Updates extends BroadcastReceiver {
                 Matcher m = TAG_CODE.matcher(r.optString("tag_name"));
                 if (!m.matches()) throw new IOException("no launcher release");
                 int code = Integer.parseInt(m.group(1));
+                String channel = channel(ctx);
+                boolean offline = OFFLINE.equals(channel);
+                String asset = offline ? OFFLINE_ASSET : ASSET;
                 String url = null;
                 long size = 0;
                 JSONArray assets = r.optJSONArray("assets");
                 for (int i = 0; assets != null && i < assets.length(); i++) {
                     JSONObject a = assets.getJSONObject(i);
-                    if (ASSET.equals(a.optString("name"))) {
+                    if (asset.equals(a.optString("name"))) {
                         url = a.optString("browser_download_url");
                         size = a.optLong("size");
                     }
                 }
-                Matcher s = SHA.matcher(r.optString("body"));
+                Matcher s = (offline ? SHA_OFFLINE : SHA).matcher(r.optString("body"));
                 if (url == null || !url.startsWith("https://") || !s.find()) throw new IOException("release has no APK or checksum");
                 String notes = TextUtils.join("\n", ReleaseNotes.parse(r.optString("body")));
                 e.putInt(CODE, code).putString(NOTES, notes).putString(NAME, r.optString("name", "")).putString(URL_KEY, url).putLong(SIZE, size)
-                        .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR).remove(START_PENDING);
-                Log.i(TAG, "check done: latest " + code + ", installed " + installedCode(ctx));
-                if (code > installedCode(ctx)) {
+                        .putString(SHA_KEY, s.group(1).toLowerCase(Locale.US)).remove(ERROR).remove(START_PENDING).putString(OFFER_CHANNEL, channel);
+                Log.i(TAG, "check done: latest " + code + " (" + channel + "), installed " + installedCode(ctx) + " (" + build() + ")");
+                if (wanted(ctx, code, channel)) {
                     found = new Offer(code, r.optString("name", ""), url, size, s.group(1).toLowerCase(Locale.US), notes);
                 }
             } catch (Exception ex) {

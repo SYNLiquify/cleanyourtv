@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatske provere</string>
     <string name="sm_update_every">Proveravaj na svakih</string>
     <string name="sm_update_auto_note">Takođe svaki put kad pritisnete Početni ekran (najviše jednom u minutu) i kad se TV uključi ili probudi iz stanja pripravnosti, čim bude na mreži. Isključeno proverava samo kad pritisnete Proveri ažuriranja.</string>
+    <string name="sm_update_channel">Kanal ažuriranja</string>
+    <string name="sm_channel_online">Onlajn</string>
+    <string name="sm_channel_offline">Oflajn</string>
+    <string name="sm_update_channel_note">Oflajn verzija se povezuje samo radi provere i preuzimanja ažuriranja: bez vremenske prognoze, bez preuzimanja tema i jezika, bez slika u Nastavi gledanje. Promena nudi drugu verziju najnovijeg izdanja.</string>
+    <string name="sm_themes_on_tv">Na ovom TV-u</string>
+    <string name="sm_themes_added_note">Da biste dodali temu, kopirajte njenu fasciklu (config.json, screenshot.jpg, pozadine) u Android/data/com.gathin.tvhome/files/themes/ na TV-u.</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

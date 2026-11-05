@@ -40,7 +40,8 @@ final class LauncherLocale {
     static Locale effective(Context base) {
         Locale locale = wanted(base);
         if (locale == null) return Locale.ENGLISH;
-        if ("en".equals(locale.getLanguage()) || LanguagePacks.installedTagFor(base, locale) != null) return locale;
+        if (BuildConfig.OFFLINE || "en".equals(locale.getLanguage())
+                || LanguagePacks.installedTagFor(base, locale) != null) return locale;
         return new Locale("en", locale.getCountry());
     }
 

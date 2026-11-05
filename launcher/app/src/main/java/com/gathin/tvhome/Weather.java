@@ -70,6 +70,8 @@ final class Weather {
     }
 
     static boolean enabled(Context ctx) {
+        // The offline build has no weather: it reaches nothing but GitHub (themes, languages, updates).
+        if (BuildConfig.OFFLINE) return false;
         return ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE)
                 .getBoolean(SHOW_KEY, ctx.getResources().getBoolean(R.bool.weather));
     }
@@ -191,6 +193,7 @@ final class Weather {
      * results whose state or country it names first (US state abbreviations included). Blocking; off the main thread.
      */
     static java.util.List<Place> search(String query) throws IOException, org.json.JSONException {
+        if (BuildConfig.OFFLINE) throw new IOException("no weather in the offline build");
         String[] parts = query.split(",", 2);
         String city = parts[0].trim();
         String within = parts.length > 1 ? parts[1].trim().toLowerCase(Locale.US) : "";

@@ -123,6 +123,12 @@
     <string name="sm_update_auto">التحقق التلقائي</string>
     <string name="sm_update_every">التحقق كل</string>
     <string name="sm_update_auto_note">وأيضًا في كل مرة تضغط فيها على الشاشة الرئيسية (مرة واحدة في الدقيقة على الأكثر)، وعند تشغيل التلفزيون أو استيقاظه من وضع الاستعداد فور اتصاله بالإنترنت. عند الإيقاف يتم التحقق فقط عند الضغط على البحث عن تحديثات.</string>
+    <string name="sm_update_channel">قناة التحديثات</string>
+    <string name="sm_channel_online">متصل</string>
+    <string name="sm_channel_offline">دون اتصال</string>
+    <string name="sm_update_channel_note">نسخة دون اتصال لا تتصل بالإنترنت إلا للبحث عن التحديثات وتنزيلها: لا طقس، ولا تنزيل للسمات أو اللغات، ولا صور في متابعة المشاهدة. التبديل يعرض النسخة الأخرى من أحدث إصدار.</string>
+    <string name="sm_themes_on_tv">على هذا التلفاز</string>
+    <string name="sm_themes_added_note">لإضافة سمة، انسخ مجلدها (config.json وscreenshot.jpg والخلفيات) إلى Android/data/com.gathin.tvhome/files/themes/ على التلفاز.</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>

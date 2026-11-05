@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatische Suche</string>
     <string name="sm_update_every">Suchen alle</string>
     <string name="sm_update_auto_note">Auch bei jedem Druck auf Home (höchstens einmal pro Minute) und wenn der Fernseher startet oder aus dem Standby aufwacht, sobald er online ist. Aus prüft nur, wenn du auf Nach Updates suchen drückst.</string>
+    <string name="sm_update_channel">Update-Kanal</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline geht nur online, um nach Updates zu suchen und sie zu laden: kein Wetter, keine Downloads von Designs oder Sprachen, keine Bilder bei Weiterschauen. Ein Wechsel bietet die andere Ausgabe der neuesten Version an.</string>
+    <string name="sm_themes_on_tv">Auf diesem Fernseher</string>
+    <string name="sm_themes_added_note">Um ein Design hinzuzufügen, kopiere seinen Ordner (config.json, screenshot.jpg, Hintergründe) nach Android/data/com.gathin.tvhome/files/themes/ auf dem Fernseher.</string>
     <string name="sm_atv_settings">ATV-Einstellungen</string>
     <string name="sm_hours">%1$d Std.</string>
     <string name="update_done">Launcher auf %1$s aktualisiert</string>

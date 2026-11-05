@@ -123,6 +123,12 @@
     <string name="sm_update_auto">অটোমেটিক চেক</string>
     <string name="sm_update_every">চেকের ব্যবধান</string>
     <string name="sm_update_auto_note">এছাড়া প্রতিবার হোম চাপলে (মিনিটে সর্বোচ্চ একবার), আর টিভি চালু হলে বা স্ট্যান্ডবাই থেকে জাগলে, অনলাইন হওয়ামাত্র। বন্ধ থাকলে কেবল আপডেট দেখুন চাপলে দেখা হয়।</string>
+    <string name="sm_update_channel">আপডেট চ্যানেল</string>
+    <string name="sm_channel_online">অনলাইন</string>
+    <string name="sm_channel_offline">অফলাইন</string>
+    <string name="sm_update_channel_note">অফলাইন সংস্করণ শুধু আপডেট খোঁজা ও ডাউনলোডের জন্য অনলাইনে যায়: আবহাওয়া নেই, থিম বা ভাষা ডাউনলোড নেই, দেখা চালিয়ে যান-এ ছবি নেই। বদলালে সর্বশেষ সংস্করণের অন্য বিল্ডটি দেওয়া হয়।</string>
+    <string name="sm_themes_on_tv">এই টিভিতে</string>
+    <string name="sm_themes_added_note">থিম যোগ করতে, তার ফোল্ডার (config.json, screenshot.jpg, ওয়ালপেপার) টিভির Android/data/com.gathin.tvhome/files/themes/-এ কপি করুন।</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>

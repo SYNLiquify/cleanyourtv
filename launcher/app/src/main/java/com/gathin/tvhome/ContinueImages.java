@@ -119,7 +119,8 @@ final class ContinueImages {
                 }
                 return bytes == null ? null : decode(bytes);
             }
-            if (!"https".equals(scheme)) return null;
+            // The offline build downloads nothing: the card keeps the app's banner.
+            if (BuildConfig.OFFLINE || !"https".equals(scheme)) return null;
             File file = new File(dir, key(url));
             if (!file.isFile()) download(url, file);
             else file.setLastModified(System.currentTimeMillis());   // recently shown: last to be trimmed

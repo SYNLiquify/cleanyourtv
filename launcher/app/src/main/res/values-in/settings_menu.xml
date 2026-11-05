@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Pemeriksaan otomatis</string>
     <string name="sm_update_every">Periksa setiap</string>
     <string name="sm_update_auto_note">Juga setiap kali Anda menekan Beranda (paling sering sekali per menit), dan saat TV menyala atau bangun dari standby, segera setelah online. Nonaktif hanya memeriksa saat Anda menekan Periksa pembaruan.</string>
+    <string name="sm_update_channel">Saluran pembaruan</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Versi offline hanya online untuk memeriksa dan mengunduh pembaruan: tanpa cuaca, tanpa unduhan tema atau bahasa, tanpa gambar di Lanjutkan menonton. Beralih menawarkan build lain dari versi terbaru.</string>
+    <string name="sm_themes_on_tv">Di TV ini</string>
+    <string name="sm_themes_added_note">Untuk menambahkan tema, salin foldernya (config.json, screenshot.jpg, wallpaper) ke Android/data/com.gathin.tvhome/files/themes/ di TV.</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

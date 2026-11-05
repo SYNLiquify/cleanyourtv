@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatisk sökning</string>
     <string name="sm_update_every">Sök var</string>
     <string name="sm_update_auto_note">Även varje gång du trycker på Hem (högst en gång i minuten), och när tv:n startar eller vaknar ur viloläge, så snart den är online. Av söker bara när du trycker på Sök efter uppdateringar.</string>
+    <string name="sm_update_channel">Uppdateringskanal</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline går bara ut på nätet för att söka efter och ladda ned uppdateringar: inget väder, inga nedladdningar av teman eller språk, inga bilder i Fortsätt titta. Byte erbjuder den andra utgåvan av senaste versionen.</string>
+    <string name="sm_themes_on_tv">På den här tv:n</string>
+    <string name="sm_themes_added_note">Lägg till ett tema genom att kopiera dess mapp (config.json, screenshot.jpg, bakgrunder) till Android/data/com.gathin.tvhome/files/themes/ på tv:n.</string>
     <string name="sm_atv_settings">ATV-inställningar</string>
     <string name="sm_hours">%1$d tim</string>
     <string name="update_done">Startskärmen uppdaterad till %1$s</string>

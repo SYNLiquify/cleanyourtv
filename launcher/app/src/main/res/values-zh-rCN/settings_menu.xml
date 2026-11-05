@@ -123,6 +123,12 @@
     <string name="sm_update_auto">自动检查</string>
     <string name="sm_update_every">检查间隔</string>
     <string name="sm_update_auto_note">每次按主屏幕键时（每分钟最多一次），以及电视开机或从待机唤醒并联网后，也会检查。关闭时仅在按“检查更新”时检查。</string>
+    <string name="sm_update_channel">更新渠道</string>
+    <string name="sm_channel_online">在线</string>
+    <string name="sm_channel_offline">离线</string>
+    <string name="sm_update_channel_note">离线版只在检查和下载更新时联网：没有天气，不下载主题或语言，“继续观看”不显示图片。切换后会提供最新版本的另一版构建。</string>
+    <string name="sm_themes_on_tv">此电视上</string>
+    <string name="sm_themes_added_note">要添加主题，请将其文件夹（config.json、screenshot.jpg、壁纸）复制到电视上的 Android/data/com.gathin.tvhome/files/themes/。</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
     <string name="update_done">启动器已更新到 %1$s</string>

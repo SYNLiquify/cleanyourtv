@@ -37,9 +37,15 @@ android {
         // Upstream's launcher version this fork is built on (Settings > System shows "Launcher 3.4 · Liquify's fork 0.5.8").
         // Set it to upstream's versionName when merging a new upstream release.
         resValue "string", "upstream_version", "3.4"
+        // This fork: -PlauncherNetwork=offline builds the offline launcher, without the features that reach anything
+        // but GitHub (weather). Themes, language downloads and updates stay; its update channel can switch builds.
+        def network = providers.gradleProperty('launcherNetwork').getOrElse('online')
+        if (!(network in ['online', 'offline'])) throw new GradleException("launcherNetwork must be online or offline, not $network")
+        buildConfigField "boolean", "OFFLINE", (network == 'offline').toString()
         // This fork: English only in the APK. The other languages stay here as sources and download when picked
-        // (LanguagePacks), which keeps about 400 KB of string tables out of every install.
-        resourceConfigurations += ["en"]
+        // (LanguagePacks), which keeps about 400 KB of string tables out of every install. The offline build
+        // downloads nothing, so it carries them all.
+        if (network == 'online') resourceConfigurations += ["en"]
     }
 
     buildTypes {
@@ -59,6 +65,10 @@ android {
             // leaving it out saves about 14 KB of every install.
             excludes += ['kotlin/**', 'META-INF/*.version', 'META-INF/*.kotlin_module', 'DebugProbesKt.bin']
         }
+    }
+
+    buildFeatures {
+        buildConfig true   // BuildConfig.OFFLINE (launcherNetwork above)
     }
 
     compileOptions {

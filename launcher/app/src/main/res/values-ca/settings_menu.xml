@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Comprovacions automàtiques</string>
     <string name="sm_update_every">Comprova cada</string>
     <string name="sm_update_auto_note">També cada cop que prems Inici (com a màxim un cop per minut) i quan el televisor s\'engega o surt del repòs, tan bon punt té connexió. Desactivat només comprova quan prems Cerca actualitzacions.</string>
+    <string name="sm_update_channel">Canal d\'actualitzacions</string>
+    <string name="sm_channel_online">En línia</string>
+    <string name="sm_channel_offline">Sense connexió</string>
+    <string name="sm_update_channel_note">Sense connexió només es connecta per cercar i baixar actualitzacions: sense temps, sense baixades de temes ni idiomes, sense imatges a Continua mirant. En canviar, s\'ofereix l\'altra versió de la darrera actualització.</string>
+    <string name="sm_themes_on_tv">En aquest televisor</string>
+    <string name="sm_themes_added_note">Per afegir un tema, copia\'n la carpeta (config.json, screenshot.jpg, fons) a Android/data/com.gathin.tvhome/files/themes/ al televisor.</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

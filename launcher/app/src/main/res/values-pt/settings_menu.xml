@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Verificação automática</string>
     <string name="sm_update_every">Verificar a cada</string>
     <string name="sm_update_auto_note">Também sempre que você pressiona Início (no máximo uma vez por minuto) e quando a TV liga ou sai do modo de espera, assim que estiver on-line. Desativado só verifica quando você pressiona Verificar atualizações.</string>
+    <string name="sm_update_channel">Canal de atualização</string>
+    <string name="sm_channel_online">On-line</string>
+    <string name="sm_channel_offline">Off-line</string>
+    <string name="sm_update_channel_note">A versão off-line só se conecta para procurar e baixar atualizações: sem clima, sem download de temas ou idiomas, sem imagens em Continuar assistindo. Trocar oferece a outra versão da atualização mais recente.</string>
+    <string name="sm_themes_on_tv">Nesta TV</string>
+    <string name="sm_themes_added_note">Para adicionar um tema, copie a pasta dele (config.json, screenshot.jpg, papéis de parede) para Android/data/com.gathin.tvhome/files/themes/ na TV.</string>
     <string name="sm_atv_settings">Configurações do ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher atualizado para %1$s</string>

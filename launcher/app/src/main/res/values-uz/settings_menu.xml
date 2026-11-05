@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Avtomatik tekshirish</string>
     <string name="sm_update_every">Tekshirish oraligʻi</string>
     <string name="sm_update_auto_note">Shuningdek, har safar Bosh ekran tugmasini bosganingizda (daqiqada koʻpi bilan bir marta) hamda televizor yonganda yoki kutish rejimidan uygʻonganda, internetga ulanishi bilanoq. Oʻchiq holatda faqat Yangilanishlarni tekshirish bosilganda tekshiriladi.</string>
+    <string name="sm_update_channel">Yangilanish kanali</string>
+    <string name="sm_channel_online">Onlayn</string>
+    <string name="sm_channel_offline">Oflayn</string>
+    <string name="sm_update_channel_note">Oflayn versiya faqat yangilanishlarni tekshirish va yuklab olish uchun internetga ulanadi: ob-havo yo‘q, mavzu yoki til yuklanmaydi, Tomosha qilishda davom etish rasmlari yo‘q. Almashtirish eng so‘nggi versiyaning boshqa yig‘masini taklif qiladi.</string>
+    <string name="sm_themes_on_tv">Ushbu televizorda</string>
+    <string name="sm_themes_added_note">Mavzu qo‘shish uchun uning jildini (config.json, screenshot.jpg, fon rasmlari) televizordagi Android/data/com.gathin.tvhome/files/themes/ ga nusxalang.</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatisk sjekk</string>
     <string name="sm_update_every">Sjekk hver</string>
     <string name="sm_update_auto_note">Også hver gang du trykker på Hjem (høyst én gang i minuttet), og når TV-en starter eller våkner fra hvilemodus, så snart den er på nett. Av sjekker bare når du trykker på Se etter oppdateringer.</string>
+    <string name="sm_update_channel">Oppdateringskanal</string>
+    <string name="sm_channel_online">Tilkoblet</string>
+    <string name="sm_channel_offline">Frakoblet</string>
+    <string name="sm_update_channel_note">Frakoblet går bare på nett for å se etter og laste ned oppdateringer: ikke vær, ikke nedlasting av temaer eller språk, ikke bilder i Fortsett å se. Bytte tilbyr den andre utgaven av nyeste versjon.</string>
+    <string name="sm_themes_on_tv">På denne TV-en</string>
+    <string name="sm_themes_added_note">For å legge til et tema, kopier mappen (config.json, screenshot.jpg, bakgrunner) til Android/data/com.gathin.tvhome/files/themes/ på TV-en.</string>
     <string name="sm_atv_settings">ATV-innstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskjermen er oppdatert til %1$s</string>

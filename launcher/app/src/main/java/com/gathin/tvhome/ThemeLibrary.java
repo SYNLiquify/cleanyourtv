@@ -268,6 +268,12 @@ final class ThemeLibrary {
             Bitmap b = decode(() -> new java.io.FileInputStream(shot), width);
             if (b != null) return b;
         }
+        File own = added(ctx, theme.name);
+        File ownShot = own == null ? null : new File(own, "screenshot.jpg");
+        if (ownShot != null && ownShot.isFile()) {
+            Bitmap b = decode(() -> new java.io.FileInputStream(ownShot), width);
+            if (b != null) return b;
+        }
         return decode(() -> ctx.getAssets().open("themes/" + theme.name + "/screenshot.jpg"), width);
     }
 
@@ -361,7 +367,18 @@ final class ThemeLibrary {
 
     /** Where a theme applied once is kept (its config.json and wallpapers), to switch back to without a download. */
     private static File saved(Context ctx, String name) {
-        return new File(new File(store(ctx), name), "saved");
+        File copy = new File(new File(store(ctx), name), "saved");
+        File own = added(ctx, name);
+        return !new File(copy, Config.FILE_NAME).isFile() && own != null && new File(own, Config.FILE_NAME).isFile() ? own : copy;
+    }
+
+    /**
+     * A theme the owner copied to the TV (the offline build's way to add one): Android/data/com.gathin.tvhome/files/
+     * themes/<name>/, laid out as the repo's themes/<name>/ (config.json, screenshot.jpg, wallpaper.jpg or wallpapers/).
+     */
+    private static File added(Context ctx, String name) {
+        File dir = Config.dir(ctx);
+        return dir == null ? null : new File(new File(dir, "themes"), name);
     }
 
     /** Keeps a copy of a theme just downloaded (and its preview, for the Downloaded section). A failure only means no copy. */
@@ -385,11 +402,15 @@ final class ThemeLibrary {
     /** The themes kept on this TV, by name. */
     static List<Theme> downloaded(Context ctx) {
         List<Theme> out = new ArrayList<>();
-        File[] dirs = store(ctx).listFiles();
-        if (dirs == null) return out;
-        java.util.Arrays.sort(dirs);
-        for (File d : dirs) {
-            File copy = new File(d, "saved");
+        java.util.Set<String> names = new java.util.TreeSet<>();
+        File[] kept = store(ctx).listFiles();
+        if (kept != null) for (File d : kept) names.add(d.getName());
+        File own = Config.dir(ctx) == null ? null : new File(Config.dir(ctx), "themes");
+        File[] copied = own == null ? null : own.listFiles();
+        if (copied != null) for (File d : copied) if (d.isDirectory()) names.add(d.getName());
+        for (String name : names) {
+            File d = new File(store(ctx), name);
+            File copy = saved(ctx, name);
             if (!NAME.matcher(d.getName()).matches() || !new File(copy, Config.FILE_NAME).isFile()) continue;
             List<String> files = new ArrayList<>();
             if (new File(copy, Config.WALLPAPER_NAME).isFile()) files.add(Config.WALLPAPER_NAME);
@@ -413,6 +434,7 @@ final class ThemeLibrary {
             String json = readText(config);
             if (json == null) throw new IOException("no config kept for " + theme.name);
             config.delete();
+            new File(staging, "screenshot.jpg").delete();   // a copied theme's preview is not part of the look
             install(ctx, dir, staging, json, theme.name);
         } finally {
             deleteTree(staging);

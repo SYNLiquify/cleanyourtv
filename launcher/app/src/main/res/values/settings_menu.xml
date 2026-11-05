@@ -128,6 +128,12 @@
     <string name="sm_update_auto">Automatic checks</string>
     <string name="sm_update_every">Check every</string>
     <string name="sm_update_auto_note">Also each time you press Home (at most once a minute), and when the TV starts or wakes from standby, as soon as it is online. Off checks only when you press Check for updates.</string>
+    <string name="sm_update_channel">Update channel</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline goes online only to check for and download updates: no weather, no theme or language downloads, no Continue watching images. Switching offers the other build of the latest version.</string>
+    <string name="sm_themes_on_tv">On this TV</string>
+    <string name="sm_themes_added_note">To add a theme, copy its folder (config.json, screenshot.jpg, wallpapers) to Android/data/com.gathin.tvhome/files/themes/ on the TV.</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatická kontrola</string>
     <string name="sm_update_every">Interval kontroly</string>
     <string name="sm_update_auto_note">Také při každém stisku Domů (nejvýš jednou za minutu) a když se televizor zapne nebo probudí z pohotovostního režimu, jakmile je online. Vypnuto kontroluje jen po stisku Zkontrolovat aktualizace.</string>
+    <string name="sm_update_channel">Kanál aktualizací</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline verze se připojuje jen kvůli kontrole a stažení aktualizací: bez počasí, bez stahování motivů a jazyků, bez obrázků v Pokračovat ve sledování. Přepnutí nabídne druhou verzi nejnovějšího vydání.</string>
+    <string name="sm_themes_on_tv">V této televizi</string>
+    <string name="sm_themes_added_note">Motiv přidáte zkopírováním jeho složky (config.json, screenshot.jpg, tapety) do Android/data/com.gathin.tvhome/files/themes/ v televizi.</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

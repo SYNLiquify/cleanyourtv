@@ -123,6 +123,12 @@
     <string name="sm_update_auto">בדיקות אוטומטיות</string>
     <string name="sm_update_every">בדיקה כל</string>
     <string name="sm_update_auto_note">וגם בכל לחיצה על בית (לכל היותר פעם בדקה), וכשהטלוויזיה נדלקת או מתעוררת ממצב המתנה, ברגע שהיא מחוברת. כבוי בודק רק כשלוחצים על בדיקת עדכונים.</string>
+    <string name="sm_update_channel">ערוץ עדכונים</string>
+    <string name="sm_channel_online">מקוון</string>
+    <string name="sm_channel_offline">לא מקוון</string>
+    <string name="sm_update_channel_note">הגרסה הלא מקוונת מתחברת רק כדי לבדוק ולהוריד עדכונים: בלי מזג אוויר, בלי הורדת ערכות נושא או שפות, בלי תמונות בהמשך צפייה. מעבר מציע את הגרסה האחרת של העדכון האחרון.</string>
+    <string name="sm_themes_on_tv">בטלוויזיה הזו</string>
+    <string name="sm_themes_added_note">כדי להוסיף ערכת נושא, העתיקו את התיקייה שלה (config.json, screenshot.jpg, טפטים) אל Android/data/com.gathin.tvhome/files/themes/ בטלוויזיה.</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Vérifications automatiques</string>
     <string name="sm_update_every">Fréquence de vérification</string>
     <string name="sm_update_auto_note">Aussi à chaque appui sur Accueil (au plus une fois par minute), et quand le téléviseur démarre ou sort de veille, dès qu\'il est en ligne. Désactivé ne vérifie que lorsque vous appuyez sur Rechercher des mises à jour.</string>
+    <string name="sm_update_channel">Canal de mise à jour</string>
+    <string name="sm_channel_online">En ligne</string>
+    <string name="sm_channel_offline">Hors ligne</string>
+    <string name="sm_update_channel_note">Hors ligne ne se connecte que pour chercher et télécharger les mises à jour : pas de météo, pas de téléchargement de thèmes ni de langues, pas d’images dans Reprendre. Changer propose l’autre version de la dernière mise à jour.</string>
+    <string name="sm_themes_on_tv">Sur ce téléviseur</string>
+    <string name="sm_themes_added_note">Pour ajouter un thème, copiez son dossier (config.json, screenshot.jpg, fonds d’écran) dans Android/data/com.gathin.tvhome/files/themes/ sur le téléviseur.</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Lanceur mis à jour vers %1$s</string>

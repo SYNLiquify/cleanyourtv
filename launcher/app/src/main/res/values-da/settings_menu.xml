@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automatisk tjek</string>
     <string name="sm_update_every">Tjek hver</string>
     <string name="sm_update_auto_note">Også hver gang du trykker på Hjem (højst én gang i minuttet), og når tv\'et starter eller vågner fra standby, så snart det er online. Fra tjekker kun, når du trykker på Søg efter opdateringer.</string>
+    <string name="sm_update_channel">Opdateringskanal</string>
+    <string name="sm_channel_online">Online</string>
+    <string name="sm_channel_offline">Offline</string>
+    <string name="sm_update_channel_note">Offline går kun online for at søge efter og hente opdateringer: intet vejr, ingen download af temaer eller sprog, ingen billeder i Fortsæt med at se. Skift tilbyder den anden udgave af den nyeste version.</string>
+    <string name="sm_themes_on_tv">På dette tv</string>
+    <string name="sm_themes_added_note">Kopiér et temas mappe (config.json, screenshot.jpg, baggrunde) til Android/data/com.gathin.tvhome/files/themes/ på tv\'et for at tilføje det.</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskærm opdateret til %1$s</string>

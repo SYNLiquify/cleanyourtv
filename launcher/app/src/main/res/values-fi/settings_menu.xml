@@ -123,6 +123,12 @@
     <string name="sm_update_auto">Automaattiset tarkistukset</string>
     <string name="sm_update_every">Tarkistusväli</string>
     <string name="sm_update_auto_note">Myös aina kun painat Koti-painiketta (enintään kerran minuutissa) sekä kun televisio käynnistyy tai herää valmiustilasta, heti kun se on verkossa. Pois tarkistaa vain, kun painat Tarkista päivitykset.</string>
+    <string name="sm_update_channel">Päivityskanava</string>
+    <string name="sm_channel_online">Verkossa</string>
+    <string name="sm_channel_offline">Ilman verkkoa</string>
+    <string name="sm_update_channel_note">Ilman verkkoa -versio käyttää verkkoa vain päivitysten tarkistukseen ja lataukseen: ei säätä, ei teemojen tai kielten latauksia, ei kuvia Jatka katsomista -rivillä. Vaihto tarjoaa uusimman version toisen koontiversion.</string>
+    <string name="sm_themes_on_tv">Tässä televisiossa</string>
+    <string name="sm_themes_added_note">Lisää teema kopioimalla sen kansio (config.json, screenshot.jpg, taustakuvat) televisioon kohteeseen Android/data/com.gathin.tvhome/files/themes/.</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>
