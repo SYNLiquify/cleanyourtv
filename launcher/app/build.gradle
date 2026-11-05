@@ -11,9 +11,9 @@ def forkVersionCode() {
             commandLine 'git', 'rev-list', '--count', 'HEAD'
             ignoreExitValue = true
         }.standardOutput.asText.get().trim()
-        return out.isInteger() ? Math.max(12, out.toInteger()) : 12
+        return out.isInteger() ? Math.max(13, out.toInteger()) : 13
     } catch (Exception ignored) {
-        return 12
+        return 13
     }
 }
 
@@ -29,9 +29,10 @@ android {
         minSdk 26
         targetSdk 34
         // This fork: the version is the branch's commit count, so every build published as an update (Updates,
-        // work\publish-update.ps1) is newer than the last; -PlauncherVersionCode overrides it. 12 without git.
+        // work\publish-update.ps1) is newer than the last; -PlauncherVersionCode overrides it. Upstream's 3.4
+        // (versionCode 13) is the base: 13 without git.
         versionCode forkVersionCode()
-        versionName "3.3-fork.${forkVersionCode()}"
+        versionName "3.4-fork.${forkVersionCode()}"
         // This fork: English only in the APK. The other languages stay here as sources and download when picked
         // (LanguagePacks), which keeps about 400 KB of string tables out of every install.
         resourceConfigurations += ["en"]
