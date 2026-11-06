@@ -2360,8 +2360,10 @@ public final class SettingsActivity extends Activity {
 
     private void scrollIntoView(View v) {
         scroll.post(() -> {
+            // Gone from the page by now (a Quick settings tile redrawn as it moves, a page left): nothing to show.
+            if (!v.isAttachedToWindow() || !isInside(v, pane)) return;
             // The page's first row: show the page from its top, so a note above that row is not cut in half.
-            if (isInside(v, pane) && isFirstFocusable(v)) {
+            if (isFirstFocusable(v)) {
                 scroll.smoothScrollTo(0, 0);
                 return;
             }
