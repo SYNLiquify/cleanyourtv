@@ -163,6 +163,9 @@ function Enable-Service([string]$Name) {
         & $py -I ..\tools\tv.py --batch
     if ($LASTEXITCODE -ne 0) { throw "could not enable $Name (tv.py exit code $LASTEXITCODE); Home is already the new launcher" }
 }
+# This fork: Settings > Clock > Screensaver > Start after changes Android's screensaver timer, a "modify system
+# settings" permission that TVs have no page for. Granted here; ignored by firmware that does not know the op.
+& $py -I ..\tools\tv.py 'appops set com.gathin.tvhome WRITE_SETTINGS allow' | Out-Null
 # This TV's remote-button settings (device.json), before the helpers, which read it when they start.
 if ($DeviceJson) {
     try {

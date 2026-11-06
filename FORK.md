@@ -55,6 +55,12 @@ in the Continue watching shots the titles, episode names and thumbnails are blur
   Downloaded (Default first) and can be deleted, except the one in use. A bold status line with a Refresh button.
 - Weather: on/off, °F/°C, conditions and high/low on/off, location by city search, refresh.
 - Clock: 12/24-hour, greeting by time of day, custom greetings that rotate (each visit, or every 5–60 minutes), or off.
+  **Screensaver** (ScreensaverStyle, ClockScene): a live preview of the clock screensaver above its options; when it
+  starts (Android's own timer, 5 minutes to 2 hours: needs `appops set com.gathin.tvhome WRITE_SETTINGS allow`,
+  which build-and-install grants); the clock moving around (as before) or fixed on one of nine spots; the date and
+  the weather with the clock, on a spot of their own, or off; a size for each (S, M, L, XL); the glow behind them
+  changing colours (as before), one custom colour, or off, from one to four points of light; and the real
+  screensaver full screen.
 - Storage: the TV's free space and what the launcher uses, by part, with clean-up buttons.
 - System: three rows, each opening its own page. ATV settings: Android TV settings, network, apps, screensaver, default home app. Language: the TV's, or any of 32 (English, Spanish, Japanese and every language upstream's launcher has), covering this fork's pages too. The APK carries English only (resourceConfigurations); the others download on demand from this branch's res/values-*/ files (LanguagePacks), split into Installed and Not installed (a download lands in Installed; picking it again switches), and Storage > Languages removes them. Updates: Check for updates, Install update and the installed version at the top; how often to check this fork for a new launcher (off, 1, 3, 6, 12 or 24 hours; 1 by default) below.
 

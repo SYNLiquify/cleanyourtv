@@ -191,6 +191,7 @@ public final class SettingsActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        hideScreensaverPreview();
         super.onDestroy();
         background.shutdownNow();
     }
@@ -306,6 +307,7 @@ public final class SettingsActivity extends Activity {
      */
     private void clearPane() {
         if (pane.hasFocus() && category >= 0) categoryButtons.get(category).requestFocus();
+        hideScreensaverPreview();
         pane.removeAllViews();
     }
 
@@ -350,7 +352,12 @@ public final class SettingsActivity extends Activity {
         boolean preset = false;
         for (int c : Accent.PRESETS) preset |= c == accent;
         preset |= adaptive;
-        pane.addView(actionRow(getString(R.string.sm_custom_color), preset ? "" : Accent.hex(accent), this::showColorPicker));
+        pane.addView(actionRow(getString(R.string.sm_custom_color), preset ? "" : Accent.hex(accent), () ->
+                showColorPicker(R.string.sm_custom_color, accent == 0 ? 0xFF0A84FF : accent, this::applyAccent, () -> {
+                    back = null;
+                    rebuild(0);
+                    focusPane();
+                })));
         section(R.string.sm_apps);
         pane.addView(actionRow(getString(R.string.sm_reorder), "", () -> {
             setResult(RESULT_OK, new Intent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true));
@@ -832,6 +839,8 @@ public final class SettingsActivity extends Activity {
             prefs.edit().putString(Config.CLOCK_FORMAT_KEY, formats[i]).apply();
             changed();
         }));
+        // This fork: where the screensaver puts the clock, the date and the weather, their sizes, the glow, when it starts.
+        pane.addView(actionRow(getString(R.string.sm_screensaver), "", this::showScreensaver));
         String[] modes = {GREETING_TIME, GREETING_CUSTOM, GREETING_OFF};
         int modeIndex = Math.max(0, java.util.Arrays.asList(modes).indexOf(prefs.getString(GREETING_MODE_KEY, GREETING_TIME)));
         pane.addView(choiceRow(getString(R.string.sm_greeting), new String[]{getString(R.string.sm_greeting_time),
@@ -1574,12 +1583,16 @@ public final class SettingsActivity extends Activity {
      * The custom colour, for the remote: hue, saturation and brightness sliders (Left and Right; hold to go faster),
      * a preview of a focused pill in the colour, Use this color, and a hex code for an exact one.
      */
-    private void showColorPicker() {
+    /** Hue, saturation and brightness sliders and a hex code; chosen gets the colour, then leave runs (also on Cancel). */
+    private void showColorPicker(int title, int start, IntConsumer chosen, Runnable leave) {
         clearPane();
-        paneTitle.setText(R.string.sm_custom_color);
-        back = () -> rebuild(0);
+        paneTitle.setText(title);
+        back = () -> {
+            back = null;
+            leave.run();
+        };
         float[] hsv = new float[3];
-        android.graphics.Color.colorToHSV(accent == 0 ? 0xFF0A84FF : accent, hsv);
+        android.graphics.Color.colorToHSV(start, hsv);
 
         LinearLayout previewRow = new LinearLayout(this);
         previewRow.setOrientation(LinearLayout.HORIZONTAL);
@@ -1660,18 +1673,22 @@ public final class SettingsActivity extends Activity {
         pane.addView(buttons, buttonsLp);
         TextView use = pill(getString(R.string.sm_use_color));
         use.setOnClickListener(v -> {
-            applyAccent(android.graphics.Color.HSVToColor(hsv));
+            chosen.accept(android.graphics.Color.HSVToColor(hsv));
             back = null;
-            rebuild(0);
-            focusPane();
+            leave.run();
         });
         buttons.addView(use, new LinearLayout.LayoutParams(-2, dp(46)));
         TextView hex = pill(getString(R.string.sm_hex));
         hex.setOnClickListener(v -> editText(getString(R.string.sm_hex), getString(R.string.sm_hex_hint),
                 Accent.hex(android.graphics.Color.HSVToColor(hsv)), false, typed -> {
                     int c = Accent.parse(typed);
-                    if (c == -1) Toast.makeText(this, R.string.sm_hex_bad, Toast.LENGTH_LONG).show();
-                    else applyAccent(c);
+                    if (c == -1) {
+                        Toast.makeText(this, R.string.sm_hex_bad, Toast.LENGTH_LONG).show();
+                    } else {
+                        chosen.accept(c);
+                        back = null;
+                        leave.run();
+                    }
                 }));
         LinearLayout.LayoutParams hexButtonLp = new LinearLayout.LayoutParams(-2, dp(46));
         hexButtonLp.setMarginStart(dp(12));
@@ -1679,13 +1696,206 @@ public final class SettingsActivity extends Activity {
         TextView cancel = pill(getString(R.string.sm_cancel));
         cancel.setOnClickListener(v -> {
             back = null;
-            rebuild(0);
-            focusPane();
+            leave.run();
         });
         LinearLayout.LayoutParams cancelLp = new LinearLayout.LayoutParams(-2, dp(46));
         cancelLp.setMarginStart(dp(12));
         buttons.addView(cancel, cancelLp);
         hue.requestFocus();
+    }
+
+    // ---- the screensaver ---------------------------------------------------------------------------------
+
+    /** The screensaver drawn small above the page's rows (it stays put while they scroll), and its scene. */
+    private FrameLayout screensaverPreview;
+    private ClockScene previewScene;
+    private static final int[] SCREENSAVER_MINUTES = {5, 10, 15, 30, 60, 120};
+
+    /**
+     * Settings > Clock > Screensaver: when it starts, where the clock, the date and the weather go and how big, and
+     * the glow behind them; the preview above redraws with each change (ScreensaverStyle, ClockScene).
+     */
+    private void showScreensaver() {
+        showScreensaver(null);
+    }
+
+    /** focusLabel: the row to come back to (after the glow colour), by its label; null for the first. */
+    private void showScreensaver(String focusLabel) {
+        clearPane();
+        paneTitle.setText(R.string.sm_screensaver);
+        back = () -> rebuild(3);
+        showScreensaverPreview();
+        ScreensaverStyle st = ScreensaverStyle.load(this);
+
+        // When it starts: Android's own timer (screen_off_timeout), which needs "modify system settings".
+        int now = Settings.System.getInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, 10 * 60_000) / 60_000;
+        String[] after = new String[SCREENSAVER_MINUTES.length];
+        int afterIndex = 0;
+        for (int i = 0; i < after.length; i++) {
+            int m = SCREENSAVER_MINUTES[i];
+            after[i] = m < 60 ? getString(R.string.sm_minutes, m) : getString(R.string.sm_hours, m / 60);
+            if (Math.abs(m - now) < Math.abs(SCREENSAVER_MINUTES[afterIndex] - now)) afterIndex = i;
+        }
+        pane.addView(choiceRow(getString(R.string.sm_ss_start), after, afterIndex, i -> {
+            if (Settings.System.canWrite(this)) {
+                Settings.System.putInt(getContentResolver(), Settings.System.SCREEN_OFF_TIMEOUT, SCREENSAVER_MINUTES[i] * 60_000);
+                return;
+            }
+            Toast.makeText(this, R.string.sm_ss_start_denied, Toast.LENGTH_LONG).show();
+            Intent allow = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, android.net.Uri.parse("package:" + getPackageName()));
+            open(allow.resolveActivity(getPackageManager()) != null ? allow : new Intent(Settings.ACTION_DREAM_SETTINGS));
+        }));
+        if (!Settings.System.canWrite(this)) note(getString(R.string.sm_ss_start_note));
+
+        section(R.string.sm_clock);
+        View clockMode = choiceRow(getString(R.string.sm_ss_position),
+                new String[]{getString(R.string.sm_ss_moves), getString(R.string.sm_ss_fixed)},
+                ScreensaverStyle.FIXED.equals(st.clockMode) ? 1 : 0, i -> saveScreensaver(ScreensaverStyle.CLOCK_MODE,
+                        i == 1 ? ScreensaverStyle.FIXED : ScreensaverStyle.MOVE));
+        pane.addView(clockMode);
+        spotRows(ScreensaverStyle.CLOCK_SPOT, st.clockSpot, () -> {
+            saveScreensaver(ScreensaverStyle.CLOCK_MODE, ScreensaverStyle.FIXED);
+            choose(clockMode, 1);
+        });
+        sizeRow(ScreensaverStyle.CLOCK_SIZE, st.clockSize);
+
+        partRows(R.string.sm_ss_date, ScreensaverStyle.DATE_MODE, st.dateMode, ScreensaverStyle.DATE_SPOT, st.dateSpot,
+                ScreensaverStyle.DATE_SIZE, st.dateSize);
+        partRows(R.string.sm_weather, ScreensaverStyle.WEATHER_MODE, st.weatherMode, ScreensaverStyle.WEATHER_SPOT,
+                st.weatherSpot, ScreensaverStyle.WEATHER_SIZE, st.weatherSize);
+
+        section(R.string.sm_ss_glow);
+        String[] glowModes = {ScreensaverStyle.GLOW_CYCLE, ScreensaverStyle.GLOW_CUSTOM, ScreensaverStyle.GLOW_OFF};
+        View glowMode = choiceRow(getString(R.string.sm_ss_glow),
+                new String[]{getString(R.string.sm_ss_glow_cycle), getString(R.string.sm_custom_color), getString(R.string.sm_off)},
+                java.util.Arrays.asList(glowModes).indexOf(st.glow), i -> saveScreensaver(ScreensaverStyle.GLOW, glowModes[i]));
+        pane.addView(glowMode);
+        String colorLabel = getString(R.string.sm_ss_glow_color);
+        pane.addView(actionRow(colorLabel, Accent.hex(st.glowColor), () ->
+                showColorPicker(R.string.sm_ss_glow_color, st.glowColor, c -> prefs.edit()
+                        .putInt(ScreensaverStyle.GLOW_COLOR, c).putString(ScreensaverStyle.GLOW, ScreensaverStyle.GLOW_CUSTOM)
+                        .apply(), () -> showScreensaver(colorLabel))));
+        pane.addView(choiceRow(getString(R.string.sm_ss_glow_points), numbers(1, ScreensaverStyle.MAX_POINTS),
+                st.glowPoints - 1, i -> saveScreensaver(ScreensaverStyle.GLOW_POINTS, i + 1)));
+
+        View full = actionRow(getString(R.string.sm_ss_full), "", () -> open(new Intent(this, ClockActivity.class)));
+        ((LinearLayout.LayoutParams) full.getLayoutParams()).topMargin = dp(18);
+        pane.addView(full);
+        note(getString(R.string.sm_ss_note));
+
+        View focus = null;
+        if (focusLabel != null) {
+            for (int i = 0; i < pane.getChildCount() && focus == null; i++) {
+                View row = pane.getChildAt(i);
+                if (row instanceof LinearLayout && ((LinearLayout) row).getChildCount() > 0
+                        && ((LinearLayout) row).getChildAt(0) instanceof TextView
+                        && focusLabel.contentEquals(((TextView) ((LinearLayout) row).getChildAt(0)).getText())) focus = row;
+            }
+        }
+        View target = focus;
+        if (target != null) pane.post(target::requestFocus);
+        else focusPane();
+    }
+
+    /** The date or the weather: with the clock, on a spot of its own, or off; the spot; the size. */
+    private void partRows(int title, String modeKey, String mode, String spotKey, String spot, String sizeKey, int size) {
+        section(title);
+        String[] modes = {ScreensaverStyle.WITH_CLOCK, ScreensaverStyle.OWN, ScreensaverStyle.OFF};
+        View modeRow = choiceRow(getString(R.string.sm_ss_position),
+                new String[]{getString(R.string.sm_ss_with_clock), getString(R.string.sm_ss_own_spot), getString(R.string.sm_off)},
+                java.util.Arrays.asList(modes).indexOf(mode), i -> saveScreensaver(modeKey, modes[i]));
+        pane.addView(modeRow);
+        spotRows(spotKey, spot, () -> {
+            saveScreensaver(modeKey, ScreensaverStyle.OWN);
+            choose(modeRow, 1);
+        });
+        sizeRow(sizeKey, size);
+    }
+
+    /** Across (left, centre, right) and up and down (top, middle, bottom); picking either also turns the spot on. */
+    private void spotRows(String key, String spot, Runnable useSpot) {
+        String[] spotNow = {spot};
+        pane.addView(choiceRow(getString(R.string.sm_ss_across), new String[]{getString(R.string.sm_ss_left),
+                getString(R.string.sm_ss_center), getString(R.string.sm_ss_right)}, "lcr".indexOf(spot.charAt(0)), i -> {
+            spotNow[0] = "lcr".charAt(i) + spotNow[0].substring(1);
+            prefs.edit().putString(key, spotNow[0]).apply();
+            useSpot.run();
+        }));
+        pane.addView(choiceRow(getString(R.string.sm_ss_updown), new String[]{getString(R.string.sm_ss_top),
+                getString(R.string.sm_ss_middle), getString(R.string.sm_ss_bottom)}, "tmb".indexOf(spot.charAt(1)), i -> {
+            spotNow[0] = spotNow[0].charAt(0) + String.valueOf("tmb".charAt(i));
+            prefs.edit().putString(key, spotNow[0]).apply();
+            useSpot.run();
+        }));
+    }
+
+    private void sizeRow(String key, int size) {
+        pane.addView(choiceRow(getString(R.string.sm_ss_size), ScreensaverStyle.SIZE_NAMES, size,
+                i -> saveScreensaver(key, i)));
+    }
+
+    private void saveScreensaver(String key, String value) {
+        prefs.edit().putString(key, value).apply();
+        refreshScreensaverPreview();
+    }
+
+    private void saveScreensaver(String key, int value) {
+        prefs.edit().putInt(key, value).apply();
+        refreshScreensaverPreview();
+    }
+
+    /** Marks pill index of a choiceRow as chosen, for a choice made by another row. */
+    private static void choose(View choiceRow, int index) {
+        ViewGroup row = (ViewGroup) choiceRow;
+        for (int i = 1; i < row.getChildCount(); i++) row.getChildAt(i).setSelected(i - 1 == index);
+    }
+
+    /** Above the rows, under the page title: the screensaver at 16:9, drawn at screen size and scaled down. */
+    private void showScreensaverPreview() {
+        hideScreensaverPreview();
+        ViewGroup column = (ViewGroup) scroll.getParent();
+        FrameLayout frame = new FrameLayout(this);
+        GradientDrawable bg = new GradientDrawable();
+        bg.setColor(0xFF000000);
+        bg.setCornerRadius(dp(14));
+        bg.setStroke(Math.max(1, dp(1)), 0x38FFFFFF);
+        frame.setBackground(bg);
+        frame.setClipToOutline(true);
+        int h = dp(200);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(h * 16 / 9, h);
+        lp.setMarginStart(dp(16));
+        lp.bottomMargin = dp(6);
+        column.addView(frame, column.indexOfChild(scroll), lp);
+        screensaverPreview = frame;
+        refreshScreensaverPreview();
+    }
+
+    private void refreshScreensaverPreview() {
+        FrameLayout frame = screensaverPreview;
+        if (frame == null) return;
+        if (previewScene != null) previewScene.stop();
+        frame.removeAllViews();
+        android.util.DisplayMetrics dm = getResources().getDisplayMetrics();
+        View screen = getLayoutInflater().inflate(R.layout.dream_clock, frame, false);
+        frame.addView(screen, new FrameLayout.LayoutParams(dm.widthPixels, dm.heightPixels));
+        float scale = (float) frame.getLayoutParams().width / dm.widthPixels;
+        screen.setPivotX(0);
+        screen.setPivotY(0);
+        screen.setScaleX(scale);
+        screen.setScaleY(scale);
+        ClockFormat.apply(screen, prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat));
+        previewScene = new ClockScene(screen);
+        previewScene.useHomeWallpaper(this);
+        previewScene.start();
+    }
+
+    private void hideScreensaverPreview() {
+        if (previewScene != null) previewScene.stop();
+        previewScene = null;
+        if (screensaverPreview != null && screensaverPreview.getParent() != null) {
+            ((ViewGroup) screensaverPreview.getParent()).removeView(screensaverPreview);
+        }
+        screensaverPreview = null;
     }
 
     // ---- rows ------------------------------------------------------------------------------------------

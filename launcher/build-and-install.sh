@@ -235,6 +235,9 @@ enable_service() {   # appends to enabled_accessibility_services without droppin
   svc=com.gathin.tvhome/.$1
   "$PY" -I ../tools/tv.py "cmd appops set com.gathin.tvhome AUTO_START allow 2>/dev/null; cmd appops set com.gathin.tvhome APP_AUTO_START allow 2>/dev/null; appops write-settings 2>/dev/null; s=\$(settings get secure enabled_accessibility_services); case \"\$s\" in *$1*) settings put secure enabled_accessibility_services ''; settings put secure accessibility_enabled 0; sleep 1; settings put secure enabled_accessibility_services \"\$s\" ;; null|'') settings put secure enabled_accessibility_services $svc ;; *) settings put secure enabled_accessibility_services \"\$s:$svc\" ;; esac; settings put secure accessibility_enabled 1; echo $1 enabled"
 }
+# This fork: Settings > Clock > Screensaver > Start after changes Android's screensaver timer, a "modify system
+# settings" permission that TVs have no page for. Granted here; ignored by firmware that does not know the op.
+"$PY" -I ../tools/tv.py "appops set com.gathin.tvhome WRITE_SETTINGS allow" >/dev/null || true
 # Before the helpers, which read it when they start.
 if [ -n "${DEVICE_JSON:-}" ]; then
   if ! "$PY" -I -c 'import json, sys; json.load(open(sys.argv[1], encoding="utf-8-sig"))' "$DEVICE_JSON"; then
