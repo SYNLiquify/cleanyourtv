@@ -82,7 +82,7 @@ public final class QuickSettingsActivity extends Activity {
 
     /** A tile in the grid, two to a row; returns it. */
     private View addTile(LinearLayout tiles, int icon, int title, Intent target) {
-        int gap = Math.round(10 * getResources().getDisplayMetrics().density);
+        int gap = Math.round(8 * getResources().getDisplayMetrics().density);
         LinearLayout row = tiles.getChildCount() == 0 ? null : (LinearLayout) tiles.getChildAt(tiles.getChildCount() - 1);
         if (row == null || row.getChildCount() == 2) {
             row = new LinearLayout(this);

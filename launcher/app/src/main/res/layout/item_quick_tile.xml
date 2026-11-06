@@ -2,20 +2,20 @@
 <!-- One tile of the Settings panel: icon and name, side by side. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="0dp"
-    android:layout_height="72dp"
+    android:layout_height="46dp"
     android:layout_weight="1"
     android:orientation="horizontal"
     android:gravity="center_vertical"
-    android:paddingStart="16dp"
-    android:paddingEnd="12dp"
+    android:paddingStart="12dp"
+    android:paddingEnd="8dp"
     android:background="@drawable/quick_tile_bg"
     android:focusable="true"
     android:clickable="true">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
         android:tint="@drawable/pill_text"
         android:duplicateParentState="true"
         android:contentDescription="@null" />
@@ -25,10 +25,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="8dp"
         android:textColor="@drawable/pill_text"
         android:duplicateParentState="true"
-        android:textSize="15sp"
+        android:textSize="12sp"
         android:fontFamily="@string/font_medium"
         android:maxLines="2"
         android:ellipsize="end" />
