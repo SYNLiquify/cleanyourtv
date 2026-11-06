@@ -7,20 +7,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <!-- The drop shadow, drawn here (quick_shadow): the system's elevation shadow does not show in this see-through
+         window on some TVs (a Hisense on Android 11). Its padding is the shadow's reach, deeper below the panel. -->
+    <FrameLayout
         android:id="@+id/panel"
-        android:layout_width="270dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="56dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="36dp"
+        android:background="@drawable/quick_shadow"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="32dp">
+
+    <LinearLayout
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/glass_panel"
         android:paddingStart="14dp"
         android:paddingEnd="14dp"
         android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:elevation="12dp">
+        android:paddingBottom="14dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -99,4 +109,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
     </LinearLayout>
+    </FrameLayout>
 </FrameLayout>
