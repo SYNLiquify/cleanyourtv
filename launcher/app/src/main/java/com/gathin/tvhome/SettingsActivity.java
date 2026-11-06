@@ -147,7 +147,8 @@ public final class SettingsActivity extends Activity {
             b.setPadding(dp(22), 0, dp(22), 0);
             b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
             b.setOnFocusChangeListener((v, focused) -> {
-                if (focused) showCategory(index);
+                // keepPage: a page redrawing itself (Quick settings) let focus land here for a moment.
+                if (focused && !keepPage) showCategory(index);
             });
             b.setOnClickListener(v -> focusPane());
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(48));
@@ -1985,6 +1986,10 @@ public final class SettingsActivity extends Activity {
 
     /** The tile being moved on the Quick settings page, or null; its order while it moves. */
     private String qsMoving;
+    /** True while a page swaps the view that has focus: Android hands focus to the category list meanwhile. */
+    private boolean keepPage;
+    /** The Quick settings page's own Back (to System), restored after the tile actions. */
+    private Runnable qsPageBack;
     private List<String> qsOrder;
     private LinearLayout qsTiles, qsActions;
 
@@ -1994,10 +1999,12 @@ public final class SettingsActivity extends Activity {
      * focusId: the tile to come back to.
      */
     private void showQuickSettings(String focusId) {
-        clearPane();
+        back = null;
         qsMoving = null;
+        stayOnPage(this::clearPane);
         paneTitle.setText(R.string.sm_qs_title);
         back = () -> rebuild(5);
+        qsPageBack = back;
         note(getString(R.string.sm_qs_note));
 
         View card = getLayoutInflater().inflate(R.layout.quick_panel, pane, false);
@@ -2033,6 +2040,16 @@ public final class SettingsActivity extends Activity {
         if (focus != null) pane.post(focus::requestFocus);
     }
 
+    /** Runs r, which replaces the focused view, without the category list switching the page meanwhile. */
+    private void stayOnPage(Runnable r) {
+        keepPage = true;
+        try {
+            r.run();
+        } finally {
+            keepPage = false;
+        }
+    }
+
     /** The preview's tiles, all of them (off ones dimmed); returns the view of focusId. */
     private View drawQuickTiles(String focusId) {
         java.util.Set<String> off = QuickTiles.off(this);
@@ -2060,10 +2077,13 @@ public final class SettingsActivity extends Activity {
         List<TextView> pills = new ArrayList<>();
         pills.add(pill(getString(R.string.sm_qs_move)));
         pills.get(0).setOnClickListener(v -> {
-            qsActions.removeAllViews();
-            qsMoving = id;
-            View moving = drawQuickTiles(id);
-            if (moving != null) moving.requestFocus();
+            back = qsPageBack;
+            stayOnPage(() -> {
+                qsActions.removeAllViews();
+                qsMoving = id;
+                View moving = drawQuickTiles(id);
+                if (moving != null) moving.requestFocus();
+            });
             Toast.makeText(this, R.string.sm_qs_moving, Toast.LENGTH_SHORT).show();
         });
         TextView toggle = pill(getString(on ? R.string.sm_qs_turn_off : R.string.sm_qs_turn_on));
@@ -2087,11 +2107,12 @@ public final class SettingsActivity extends Activity {
             qsActions.addView(pills.get(i), lp);
         }
         pills.get(0).requestFocus();
-        Runnable leave = back;
         back = () -> {
-            qsActions.removeAllViews();
-            tile.requestFocus();
-            back = leave;
+            back = qsPageBack;
+            stayOnPage(() -> {
+                qsActions.removeAllViews();
+                tile.requestFocus();
+            });
         };
     }
 
@@ -2111,14 +2132,18 @@ public final class SettingsActivity extends Activity {
                 if (!drop) return false;
                 qsMoving = null;
                 QuickTiles.saveOrder(this, qsOrder);
-                View placed = drawQuickTiles(id);
-                if (placed != null) placed.requestFocus();
+                stayOnPage(() -> {
+                    View placed = drawQuickTiles(id);
+                    if (placed != null) placed.requestFocus();
+                });
                 return true;
         }
         if (to >= 0) {
             Collections.swap(qsOrder, at, to);
-            View moved = drawQuickTiles(id);
-            if (moved != null) moved.requestFocus();
+            stayOnPage(() -> {
+                View moved = drawQuickTiles(id);
+                if (moved != null) moved.requestFocus();
+            });
         }
         return true;
     }
@@ -2130,8 +2155,9 @@ public final class SettingsActivity extends Activity {
 
     /** The apps that can be opened from the TV, by name; picking one puts it on the app button and turns it on. */
     private void showAppChooser(String id) {
-        clearPane();
+        back = null;
         qsMoving = null;
+        stayOnPage(this::clearPane);
         paneTitle.setText(R.string.sm_qs_choose_app);
         back = () -> showQuickSettings(id);
         android.content.pm.PackageManager pm = getPackageManager();
