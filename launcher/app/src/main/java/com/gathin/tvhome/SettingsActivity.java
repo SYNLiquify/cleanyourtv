@@ -1759,7 +1759,8 @@ public final class SettingsActivity extends Activity {
         sizeRow(ScreensaverStyle.CLOCK_SIZE, st.clockSize);
         partRows(R.string.sm_ss_date, ScreensaverStyle.DATE_MODE, st.dateMode, ScreensaverStyle.DATE_SPOT, st.dateSpot,
                 ScreensaverStyle.DATE_SIZE, st.dateSize);
-        partRows(R.string.sm_weather, ScreensaverStyle.WEATHER_MODE, st.weatherMode, ScreensaverStyle.WEATHER_SPOT,
+        // The offline build has no weather to place.
+        if (!BuildConfig.OFFLINE) partRows(R.string.sm_weather, ScreensaverStyle.WEATHER_MODE, st.weatherMode, ScreensaverStyle.WEATHER_SPOT,
                 st.weatherSpot, ScreensaverStyle.WEATHER_SIZE, st.weatherSize);
 
         section(R.string.sm_ss_glow);
