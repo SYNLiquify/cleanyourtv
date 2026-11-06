@@ -1747,18 +1747,16 @@ public final class SettingsActivity extends Activity {
         }));
         if (!Settings.System.canWrite(this)) note(getString(R.string.sm_ss_start_note));
 
+        // Each part in two rows: where it goes (a few choices and a 3x3 grid of spots) and how big.
         section(R.string.sm_clock);
-        View clockMode = choiceRow(getString(R.string.sm_ss_position),
-                new String[]{getString(R.string.sm_ss_moves), getString(R.string.sm_ss_fixed)},
-                ScreensaverStyle.FIXED.equals(st.clockMode) ? 1 : 0, i -> saveScreensaver(ScreensaverStyle.CLOCK_MODE,
-                        i == 1 ? ScreensaverStyle.FIXED : ScreensaverStyle.MOVE));
-        pane.addView(clockMode);
-        spotRows(ScreensaverStyle.CLOCK_SPOT, st.clockSpot, () -> {
-            saveScreensaver(ScreensaverStyle.CLOCK_MODE, ScreensaverStyle.FIXED);
-            choose(clockMode, 1);
-        });
+        placeRow(new String[]{getString(R.string.sm_ss_moves)},
+                ScreensaverStyle.FIXED.equals(st.clockMode) ? -1 : 0, st.clockSpot,
+                i -> saveScreensaver(ScreensaverStyle.CLOCK_MODE, ScreensaverStyle.MOVE),
+                spot -> {
+                    prefs.edit().putString(ScreensaverStyle.CLOCK_SPOT, spot).apply();
+                    saveScreensaver(ScreensaverStyle.CLOCK_MODE, ScreensaverStyle.FIXED);
+                });
         sizeRow(ScreensaverStyle.CLOCK_SIZE, st.clockSize);
-
         partRows(R.string.sm_ss_date, ScreensaverStyle.DATE_MODE, st.dateMode, ScreensaverStyle.DATE_SPOT, st.dateSpot,
                 ScreensaverStyle.DATE_SIZE, st.dateSize);
         partRows(R.string.sm_weather, ScreensaverStyle.WEATHER_MODE, st.weatherMode, ScreensaverStyle.WEATHER_SPOT,
@@ -1766,22 +1764,34 @@ public final class SettingsActivity extends Activity {
 
         section(R.string.sm_ss_glow);
         String[] glowModes = {ScreensaverStyle.GLOW_CYCLE, ScreensaverStyle.GLOW_CUSTOM, ScreensaverStyle.GLOW_OFF};
-        View glowMode = choiceRow(getString(R.string.sm_ss_glow),
-                new String[]{getString(R.string.sm_ss_glow_cycle), getString(R.string.sm_custom_color), getString(R.string.sm_off)},
-                java.util.Arrays.asList(glowModes).indexOf(st.glow), i -> saveScreensaver(ScreensaverStyle.GLOW, glowModes[i]));
-        pane.addView(glowMode);
         String colorLabel = getString(R.string.sm_ss_glow_color);
-        pane.addView(actionRow(colorLabel, Accent.hex(st.glowColor), () ->
-                showColorPicker(R.string.sm_ss_glow_color, st.glowColor, c -> prefs.edit()
-                        .putInt(ScreensaverStyle.GLOW_COLOR, c).putString(ScreensaverStyle.GLOW, ScreensaverStyle.GLOW_CUSTOM)
-                        .apply(), () -> showScreensaver(colorLabel))));
+        View glowRow = choiceRow(colorLabel,
+                new String[]{getString(R.string.sm_ss_glow_cycle), getString(R.string.sm_custom_color), getString(R.string.sm_off)},
+                java.util.Arrays.asList(glowModes).indexOf(st.glow), i -> {
+                    // Custom color opens the picker; the glow turns custom once a colour is chosen there.
+                    if (i == 1) {
+                        showColorPicker(R.string.sm_ss_glow_color, st.glowColor, c -> prefs.edit()
+                                .putInt(ScreensaverStyle.GLOW_COLOR, c).putString(ScreensaverStyle.GLOW, ScreensaverStyle.GLOW_CUSTOM)
+                                .apply(), () -> showScreensaver(colorLabel));
+                    } else {
+                        saveScreensaver(ScreensaverStyle.GLOW, glowModes[i]);
+                    }
+                });
+        // The custom colour as a dot on its pill.
+        TextView customPill = (TextView) ((ViewGroup) glowRow).getChildAt(2);
+        GradientDrawable dot = new GradientDrawable();
+        dot.setShape(GradientDrawable.OVAL);
+        dot.setColor(st.glowColor);
+        dot.setSize(dp(12), dp(12));
+        customPill.setCompoundDrawablesRelativeWithIntrinsicBounds(dot, null, null, null);
+        customPill.setCompoundDrawablePadding(dp(8));
+        pane.addView(glowRow);
         pane.addView(choiceRow(getString(R.string.sm_ss_glow_points), numbers(1, ScreensaverStyle.MAX_POINTS),
                 st.glowPoints - 1, i -> saveScreensaver(ScreensaverStyle.GLOW_POINTS, i + 1)));
 
         View full = actionRow(getString(R.string.sm_ss_full), "", () -> open(new Intent(this, ClockActivity.class)));
         ((LinearLayout.LayoutParams) full.getLayoutParams()).topMargin = dp(18);
         pane.addView(full);
-        note(getString(R.string.sm_ss_note));
 
         View focus = null;
         if (focusLabel != null) {
@@ -1797,36 +1807,108 @@ public final class SettingsActivity extends Activity {
         else focusPane();
     }
 
-    /** The date or the weather: with the clock, on a spot of its own, or off; the spot; the size. */
+    /** The date or the weather: with the clock, off, or on a spot of its own (the grid); then its size. */
     private void partRows(int title, String modeKey, String mode, String spotKey, String spot, String sizeKey, int size) {
         section(title);
-        String[] modes = {ScreensaverStyle.WITH_CLOCK, ScreensaverStyle.OWN, ScreensaverStyle.OFF};
-        View modeRow = choiceRow(getString(R.string.sm_ss_position),
-                new String[]{getString(R.string.sm_ss_with_clock), getString(R.string.sm_ss_own_spot), getString(R.string.sm_off)},
-                java.util.Arrays.asList(modes).indexOf(mode), i -> saveScreensaver(modeKey, modes[i]));
-        pane.addView(modeRow);
-        spotRows(spotKey, spot, () -> {
-            saveScreensaver(modeKey, ScreensaverStyle.OWN);
-            choose(modeRow, 1);
-        });
+        String[] modes = {ScreensaverStyle.WITH_CLOCK, ScreensaverStyle.OFF};
+        placeRow(new String[]{getString(R.string.sm_ss_with_clock), getString(R.string.sm_off)},
+                ScreensaverStyle.OWN.equals(mode) ? -1 : java.util.Arrays.asList(modes).indexOf(mode), spot,
+                i -> saveScreensaver(modeKey, modes[i]),
+                picked -> {
+                    prefs.edit().putString(spotKey, picked).apply();
+                    saveScreensaver(modeKey, ScreensaverStyle.OWN);
+                });
         sizeRow(sizeKey, size);
     }
 
-    /** Across (left, centre, right) and up and down (top, middle, bottom); picking either also turns the spot on. */
-    private void spotRows(String key, String spot, Runnable useSpot) {
-        String[] spotNow = {spot};
-        pane.addView(choiceRow(getString(R.string.sm_ss_across), new String[]{getString(R.string.sm_ss_left),
-                getString(R.string.sm_ss_center), getString(R.string.sm_ss_right)}, "lcr".indexOf(spot.charAt(0)), i -> {
-            spotNow[0] = "lcr".charAt(i) + spotNow[0].substring(1);
-            prefs.edit().putString(key, spotNow[0]).apply();
-            useSpot.run();
-        }));
-        pane.addView(choiceRow(getString(R.string.sm_ss_updown), new String[]{getString(R.string.sm_ss_top),
-                getString(R.string.sm_ss_middle), getString(R.string.sm_ss_bottom)}, "tmb".indexOf(spot.charAt(1)), i -> {
-            spotNow[0] = spotNow[0].charAt(0) + String.valueOf("tmb".charAt(i));
-            prefs.edit().putString(key, spotNow[0]).apply();
-            useSpot.run();
-        }));
+    /**
+     * Position: a few pills, then a 3x3 grid of spots (the screen in small); one of them is chosen. selected is the
+     * chosen pill, or -1 for the grid's spot.
+     */
+    private void placeRow(String[] options, int selected, String spot, IntConsumer pickOption,
+                          java.util.function.Consumer<String> pickSpot) {
+        LinearLayout row = new LinearLayout(this);
+        row.setOrientation(LinearLayout.HORIZONTAL);
+        row.setGravity(Gravity.CENTER_VERTICAL);
+        row.setMinimumHeight(dp(72));
+        TextView name = text(18, R.string.font_regular, INK);
+        name.setText(R.string.sm_ss_position);
+        name.setSingleLine(true);
+        row.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
+        List<View> choices = new ArrayList<>();
+        for (int i = 0; i < options.length; i++) {
+            final int index = i;
+            TextView pill = pill(options[i]);
+            pill.setMinWidth(dp(58));
+            pill.setSelected(i == selected);
+            pill.setOnClickListener(v -> {
+                for (View other : choices) other.setSelected(other == v);
+                pickOption.accept(index);
+            });
+            pill.setOnFocusChangeListener((v, focused) -> {
+                if (focused) scrollIntoView(row);
+            });
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            lp.setMarginStart(dp(10));
+            row.addView(pill, lp);
+            choices.add(pill);
+        }
+        // The grid: three rows of three small screens, the chosen spot outlined, the focused one white.
+        LinearLayout grid = new LinearLayout(this);
+        grid.setOrientation(LinearLayout.VERTICAL);
+        for (int r = 0; r < 3; r++) {
+            LinearLayout line = new LinearLayout(this);
+            line.setOrientation(LinearLayout.HORIZONTAL);
+            for (int c = 0; c < 3; c++) {
+                String here = String.valueOf("lcr".charAt(c)) + "tmb".charAt(r);
+                View cell = new View(this);
+                cell.setFocusable(true);
+                cell.setClickable(true);
+                cell.setBackground(spotCell());
+                cell.setSelected(selected < 0 && here.equals(spot));
+                cell.setContentDescription(here);
+                cell.setOnClickListener(v -> {
+                    for (View other : choices) other.setSelected(other == v);
+                    pickSpot.accept(here);
+                });
+                cell.setOnFocusChangeListener((v, focused) -> {
+                    if (focused) scrollIntoView(row);
+                });
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(dp(30), dp(17));
+                if (c > 0) lp.setMarginStart(dp(4));
+                if (r > 0) lp.topMargin = dp(4);
+                line.addView(cell, lp);
+                choices.add(cell);
+            }
+            grid.addView(line);
+        }
+        LinearLayout.LayoutParams gridLp = new LinearLayout.LayoutParams(-2, -2);
+        gridLp.setMarginStart(dp(18));
+        row.addView(grid, gridLp);
+        LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
+        rowLp.topMargin = dp(6);
+        pane.addView(row, rowLp);
+    }
+
+    /** A spot in the grid: glass, outlined when chosen, white when focused (like the pills). */
+    private android.graphics.drawable.Drawable spotCell() {
+        float radius = dp(4);
+        GradientDrawable rest = new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM, new int[]{0x2EFFFFFF, 0x14FFFFFF});
+        rest.setCornerRadius(radius);
+        rest.setStroke(Math.max(1, dp(1)), 0x38FFFFFF);
+        GradientDrawable chosen = new GradientDrawable();
+        chosen.setColor(accent == 0 ? 0x99FFFFFF : (Accent.ring(accent) & 0x00FFFFFF) | 0xB3000000);
+        chosen.setCornerRadius(radius);
+        chosen.setStroke(Math.max(1, Math.round(1.5f * getResources().getDisplayMetrics().density)),
+                accent == 0 ? 0xFFFFFFFF : Accent.ring(accent));
+        GradientDrawable focused = new GradientDrawable();
+        focused.setColor(0xFFFFFFFF);
+        focused.setCornerRadius(radius);
+        StateListDrawable states = new StateListDrawable();
+        states.addState(new int[]{android.R.attr.state_focused}, focused);
+        states.addState(new int[]{android.R.attr.state_selected}, chosen);
+        states.addState(new int[]{}, rest);
+        return states;
     }
 
     private void sizeRow(String key, int size) {
@@ -1842,12 +1924,6 @@ public final class SettingsActivity extends Activity {
     private void saveScreensaver(String key, int value) {
         prefs.edit().putInt(key, value).apply();
         refreshScreensaverPreview();
-    }
-
-    /** Marks pill index of a choiceRow as chosen, for a choice made by another row. */
-    private static void choose(View choiceRow, int index) {
-        ViewGroup row = (ViewGroup) choiceRow;
-        for (int i = 1; i < row.getChildCount(); i++) row.getChildAt(i).setSelected(i - 1 == index);
     }
 
     /** Above the rows, under the page title: the screensaver at 16:9, drawn at screen size and scaled down. */
