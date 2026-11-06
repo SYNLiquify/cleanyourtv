@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Tria una app</string>
     <string name="sm_qs_reset">Restableix la disposició</string>
     <string name="sm_qs_moving">Mou-lo amb les fletxes i prem OK.</string>
+    <string name="sm_qs_rename">Canvia el nom</string>
+    <string name="sm_qs_rename_hint">Deixa-ho buit per al nom original</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

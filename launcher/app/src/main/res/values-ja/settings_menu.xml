@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">アプリを選ぶ</string>
     <string name="sm_qs_reset">配置をリセット</string>
     <string name="sm_qs_moving">矢印キーで動かし、OK を押してください。</string>
+    <string name="sm_qs_rename">名前を変更</string>
+    <string name="sm_qs_rename_hint">空のままにすると元の名前に戻ります</string>
     <string name="sm_atv_settings">ATV の設定</string>
     <string name="sm_hours">%1$d時間</string>
     <string name="update_done">ランチャーを %1$s に更新しました</string>

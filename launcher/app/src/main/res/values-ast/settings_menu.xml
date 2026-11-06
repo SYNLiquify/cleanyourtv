@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Escoyer aplicación</string>
     <string name="sm_qs_reset">Reaniciar diseñu</string>
     <string name="sm_qs_moving">Muévelu coles fleches y primi OK.</string>
+    <string name="sm_qs_rename">Renomar</string>
+    <string name="sm_qs_rename_hint">Déxalu baleru pal nome orixinal</string>
     <string name="sm_atv_settings">Axustes d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llanzador anováu a %1$s</string>

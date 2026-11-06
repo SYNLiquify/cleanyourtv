@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Pilih aplikasi</string>
     <string name="sm_qs_reset">Setel ulang tata letak</string>
     <string name="sm_qs_moving">Pindahkan dengan tombol panah, lalu tekan OK.</string>
+    <string name="sm_qs_rename">Ganti nama</string>
+    <string name="sm_qs_rename_hint">Biarkan kosong untuk nama aslinya</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

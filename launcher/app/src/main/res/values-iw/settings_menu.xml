@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">בחירת אפליקציה</string>
     <string name="sm_qs_reset">איפוס הסידור</string>
     <string name="sm_qs_moving">הזיזו בעזרת החצים ולחצו OK.</string>
+    <string name="sm_qs_rename">שינוי שם</string>
+    <string name="sm_qs_rename_hint">השאירו ריק לשם המקורי</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

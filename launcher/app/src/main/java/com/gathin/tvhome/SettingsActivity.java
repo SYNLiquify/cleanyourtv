@@ -1432,9 +1432,22 @@ public final class SettingsActivity extends Activity {
     /** A page with one text field: Save keeps what was typed (empty clears, where clearing is allowed). */
     private void editText(String title, String hint, String value, boolean clearable, java.util.function.Consumer<String> save) {
         int returnTo = category;
+        editText(title, hint, value, clearable, save, () -> {
+            rebuild(returnTo);
+            focusPane();
+        });
+    }
+
+    /** The same, coming back with after (a sub-page such as Quick settings) instead of the category's page. */
+    private void editText(String title, String hint, String value, boolean clearable, java.util.function.Consumer<String> save,
+                          Runnable after) {
+        back = null;
         clearPane();
         paneTitle.setText(title);
-        back = () -> rebuild(returnTo);
+        back = () -> {
+            back = null;
+            after.run();
+        };
         EditText field = field(hint, value);
         pane.addView(field, new LinearLayout.LayoutParams(-1, dp(52)));
         LinearLayout buttons = new LinearLayout(this);
@@ -1446,8 +1459,7 @@ public final class SettingsActivity extends Activity {
             hideKeyboard(field);
             save.accept(field.getText().toString().trim());
             back = null;
-            rebuild(returnTo);
-            focusPane();
+            after.run();
         };
         TextView saveButton = pill(getString(R.string.sm_save));
         saveButton.setOnClickListener(v -> done.run());
@@ -2029,8 +2041,7 @@ public final class SettingsActivity extends Activity {
         pane.addView(qsActions, actionsLp);
 
         View reset = actionRow(getString(R.string.sm_qs_reset), "", () -> {
-            prefs.edit().remove(QuickTiles.ORDER_KEY).remove(QuickTiles.OFF_KEY)
-                    .remove(QuickTiles.APP_KEY + QuickTiles.APP1).remove(QuickTiles.APP_KEY + QuickTiles.APP2).apply();
+            QuickTiles.reset(this);
             showQuickSettings(null);
         });
         pane.addView(reset);
@@ -2101,6 +2112,17 @@ public final class SettingsActivity extends Activity {
             choose.setOnClickListener(v -> showAppChooser(id));
             pills.add(choose);
         }
+        // Its own text; empty brings back the tile's own name.
+        TextView rename = pill(getString(R.string.sm_qs_rename));
+        rename.setOnClickListener(v -> {
+            String own = QuickTiles.label(this, id);
+            String shown = own.isEmpty() ? QuickTiles.defaultLabel(this, id).toString() : own;
+            editText(getString(R.string.sm_qs_rename), getString(R.string.sm_qs_rename_hint), shown, true, value -> {
+                boolean original = value.isEmpty() || value.contentEquals(QuickTiles.defaultLabel(this, id));
+                QuickTiles.setLabel(this, id, original ? "" : value);
+            }, () -> showQuickSettings(id));
+        });
+        pills.add(rename);
         for (int i = 0; i < pills.size(); i++) {
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
             if (i > 0) lp.setMarginStart(dp(10));
@@ -2132,6 +2154,7 @@ public final class SettingsActivity extends Activity {
                 if (!drop) return false;
                 qsMoving = null;
                 QuickTiles.saveOrder(this, qsOrder);
+                qsOrder = QuickTiles.order(this);   // a tile that is on stays above the ones that are off
                 stayOnPage(() -> {
                     View placed = drawQuickTiles(id);
                     if (placed != null) placed.requestFocus();

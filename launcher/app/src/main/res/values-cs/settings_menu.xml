@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Vybrat aplikaci</string>
     <string name="sm_qs_reset">Obnovit rozložení</string>
     <string name="sm_qs_moving">Přesuňte ho šipkami a stiskněte OK.</string>
+    <string name="sm_qs_rename">Přejmenovat</string>
+    <string name="sm_qs_rename_hint">Ponechte prázdné pro původní název</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

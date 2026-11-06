@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Выбрать приложение</string>
     <string name="sm_qs_reset">Сбросить расположение</string>
     <string name="sm_qs_moving">Перемещайте стрелками, затем нажмите OK.</string>
+    <string name="sm_qs_rename">Переименовать</string>
+    <string name="sm_qs_rename_hint">Оставьте пустым для исходного названия</string>
     <string name="sm_atv_settings">Настройки ATV</string>
     <string name="sm_hours">%1$d ч</string>
     <string name="update_done">Лаунчер обновлён до %1$s</string>

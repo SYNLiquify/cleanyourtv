@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">اختيار تطبيق</string>
     <string name="sm_qs_reset">إعادة ضبط الترتيب</string>
     <string name="sm_qs_moving">حرّكه بالأسهم ثم اضغط OK.</string>
+    <string name="sm_qs_rename">إعادة التسمية</string>
+    <string name="sm_qs_rename_hint">اتركه فارغًا للاسم الأصلي</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>

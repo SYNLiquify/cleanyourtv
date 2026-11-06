@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Izaberi aplikaciju</string>
     <string name="sm_qs_reset">Vrati raspored</string>
     <string name="sm_qs_moving">Pomerite ga strelicama, pa pritisnite OK.</string>
+    <string name="sm_qs_rename">Preimenuj</string>
+    <string name="sm_qs_rename_hint">Ostavite prazno za originalni naziv</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

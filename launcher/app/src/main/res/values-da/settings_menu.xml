@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Vælg app</string>
     <string name="sm_qs_reset">Nulstil layout</string>
     <string name="sm_qs_moving">Flyt den med pilene, og tryk på OK.</string>
+    <string name="sm_qs_rename">Omdøb</string>
+    <string name="sm_qs_rename_hint">Lad feltet være tomt for det oprindelige navn</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskærm opdateret til %1$s</string>

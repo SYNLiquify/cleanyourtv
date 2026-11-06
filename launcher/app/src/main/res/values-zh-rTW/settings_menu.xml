@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">選擇應用程式</string>
     <string name="sm_qs_reset">重設版面配置</string>
     <string name="sm_qs_moving">用方向鍵移動，然後按 OK。</string>
+    <string name="sm_qs_rename">重新命名</string>
+    <string name="sm_qs_rename_hint">留空則恢復原名</string>
     <string name="sm_atv_settings">ATV 設定</string>
     <string name="sm_hours">%1$d 小時</string>
     <string name="update_done">啟動器已更新至 %1$s</string>

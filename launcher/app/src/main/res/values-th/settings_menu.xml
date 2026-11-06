@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">เลือกแอป</string>
     <string name="sm_qs_reset">รีเซ็ตการจัดวาง</string>
     <string name="sm_qs_moving">ย้ายด้วยปุ่มลูกศร แล้วกด OK</string>
+    <string name="sm_qs_rename">เปลี่ยนชื่อ</string>
+    <string name="sm_qs_rename_hint">เว้นว่างไว้เพื่อใช้ชื่อเดิม</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>

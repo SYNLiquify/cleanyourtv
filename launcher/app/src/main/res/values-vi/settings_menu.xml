@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Chọn ứng dụng</string>
     <string name="sm_qs_reset">Đặt lại bố cục</string>
     <string name="sm_qs_moving">Di chuyển bằng phím mũi tên rồi nhấn OK.</string>
+    <string name="sm_qs_rename">Đổi tên</string>
+    <string name="sm_qs_rename_hint">Để trống để dùng tên gốc</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>

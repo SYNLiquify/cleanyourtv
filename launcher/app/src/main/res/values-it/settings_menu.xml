@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">Scegli app</string>
     <string name="sm_qs_reset">Ripristina disposizione</string>
     <string name="sm_qs_moving">Spostalo con le frecce, poi premi OK.</string>
+    <string name="sm_qs_rename">Rinomina</string>
+    <string name="sm_qs_rename_hint">Lascia vuoto per il nome originale</string>
     <string name="sm_atv_settings">Impostazioni ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher aggiornato a %1$s</string>

@@ -25,7 +25,7 @@ import java.util.Set;
  */
 final class QuickTiles {
 
-    static final String ORDER_KEY = "qs_order", OFF_KEY = "qs_off", APP_KEY = "qs_app_";
+    static final String ORDER_KEY = "qs_order", OFF_KEY = "qs_off", APP_KEY = "qs_app_", LABEL_KEY = "qs_label_";
     static final String DISPLAY = "display", NETWORK = "network", APPS = "apps", LAUNCHER = "launcher",
             APP1 = "app1", APP2 = "app2";
     static final List<String> ALL = Collections.unmodifiableList(Arrays.asList(DISPLAY, NETWORK, APPS, LAUNCHER, APP1, APP2));
@@ -37,13 +37,20 @@ final class QuickTiles {
         return ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE);
     }
 
-    /** Every tile, in the chosen order (a tile the saved order lacks goes at the end). */
+    /**
+     * Every tile, in the chosen order (a tile the saved order lacks goes at the end), with the tiles that are off
+     * after the ones that are on.
+     */
     static List<String> order(Context ctx) {
-        List<String> out = new ArrayList<>();
+        List<String> saved = new ArrayList<>();
         for (String id : prefs(ctx).getString(ORDER_KEY, "").split(",")) {
-            if (ALL.contains(id) && !out.contains(id)) out.add(id);
+            if (ALL.contains(id) && !saved.contains(id)) saved.add(id);
         }
-        for (String id : ALL) if (!out.contains(id)) out.add(id);
+        for (String id : ALL) if (!saved.contains(id)) saved.add(id);
+        Set<String> off = off(ctx);
+        List<String> out = new ArrayList<>();
+        for (String id : saved) if (!off.contains(id)) out.add(id);
+        for (String id : saved) if (off.contains(id)) out.add(id);
         return out;
     }
 
@@ -64,11 +71,55 @@ final class QuickTiles {
         return out;
     }
 
+    /** Turns a tile on or off; off goes to the bottom of the grid, on comes back after the last tile that is on. */
     static void setOn(Context ctx, String id, boolean on) {
         Set<String> off = off(ctx);
         if (on) off.remove(id);
         else off.add(id);
-        prefs(ctx).edit().putString(OFF_KEY, android.text.TextUtils.join(",", off)).apply();
+        List<String> order = order(ctx);
+        order.remove(id);
+        if (on) {
+            int at = 0;
+            for (int i = 0; i < order.size(); i++) if (!off.contains(order.get(i))) at = i + 1;
+            order.add(at, id);
+        } else {
+            order.add(id);
+        }
+        prefs(ctx).edit().putString(OFF_KEY, android.text.TextUtils.join(",", off))
+                .putString(ORDER_KEY, android.text.TextUtils.join(",", order)).apply();
+    }
+
+    /** The name the owner gave a tile, or "" for its own. */
+    static String label(Context ctx, String id) {
+        return prefs(ctx).getString(LABEL_KEY + id, "");
+    }
+
+    static void setLabel(Context ctx, String id, String label) {
+        prefs(ctx).edit().putString(LABEL_KEY + id, label == null ? "" : label.trim()).apply();
+    }
+
+    /** Back to the first layout: order, on and off, apps and names. */
+    static void reset(Context ctx) {
+        SharedPreferences.Editor e = prefs(ctx).edit().remove(ORDER_KEY).remove(OFF_KEY);
+        for (String id : ALL) e.remove(APP_KEY + id).remove(LABEL_KEY + id);
+        e.apply();
+    }
+
+    /** The tile's own name: the setting's, or for an app button its app's (or "App button 1"). */
+    static CharSequence defaultLabel(Context ctx, String id) {
+        switch (id) {
+            case DISPLAY: return ctx.getString(R.string.quick_picture);
+            case NETWORK: return ctx.getString(R.string.quick_network);
+            case APPS: return ctx.getString(R.string.quick_apps);
+            case LAUNCHER: return ctx.getString(R.string.launcher_settings);
+            default:
+                try {
+                    PackageManager pm = ctx.getPackageManager();
+                    return pm.getApplicationLabel(pm.getApplicationInfo(app(ctx, id), 0));
+                } catch (PackageManager.NameNotFoundException | IllegalArgumentException e) {
+                    return ctx.getString(R.string.sm_qs_app_button, APP1.equals(id) ? 1 : 2);
+                }
+        }
     }
 
     static boolean isApp(String id) {
@@ -142,6 +193,8 @@ final class QuickTiles {
                     title.setText(ctx.getString(R.string.sm_qs_app_button, APP1.equals(id) ? 1 : 2));
                 }
         }
+        String own = label(ctx, id);
+        if (!own.isEmpty()) title.setText(own);   // renamed on Settings > System > Quick settings
         return tile;
     }
 

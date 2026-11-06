@@ -151,6 +151,8 @@
     <string name="sm_qs_choose_app">অ্যাপ বাছুন</string>
     <string name="sm_qs_reset">বিন্যাস রিসেট</string>
     <string name="sm_qs_moving">তীর দিয়ে সরান, তারপর OK চাপুন।</string>
+    <string name="sm_qs_rename">নাম বদলান</string>
+    <string name="sm_qs_rename_hint">আসল নামের জন্য ফাঁকা রাখুন</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>
