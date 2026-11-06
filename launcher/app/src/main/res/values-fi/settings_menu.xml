@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Hehkun väri</string>
     <string name="sm_ss_glow_points">Hehkupisteet</string>
     <string name="sm_ss_full">Esikatsele koko näytöllä</string>
+    <string name="sm_qs_title">Pika-asetukset</string>
+    <string name="sm_qs_note">Paneeli, jonka kaukosäätimen Asetukset-painike avaa. Valitse painike siirtääksesi sen, poistaaksesi sen käytöstä tai valitaksesi sovelluspainikkeen sovelluksen.</string>
+    <string name="sm_qs_app_button">Sovelluspainike %1$d</string>
+    <string name="sm_qs_move">Siirrä</string>
+    <string name="sm_qs_turn_off">Poista käytöstä</string>
+    <string name="sm_qs_turn_on">Ota käyttöön</string>
+    <string name="sm_qs_choose_app">Valitse sovellus</string>
+    <string name="sm_qs_reset">Palauta asettelu</string>
+    <string name="sm_qs_moving">Siirrä nuolilla ja paina OK.</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>

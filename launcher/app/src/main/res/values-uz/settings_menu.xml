@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Nur rangi</string>
     <string name="sm_ss_glow_points">Nur nuqtalari</string>
     <string name="sm_ss_full">To‘liq ekranda ko‘rish</string>
+    <string name="sm_qs_title">Tezkor sozlamalar</string>
+    <string name="sm_qs_note">Pultdagi Sozlamalar tugmasi ochadigan panel. Tugmani ko‘chirish, o‘chirish yoki ilova tugmasi uchun ilova tanlash uchun uni tanlang.</string>
+    <string name="sm_qs_app_button">Ilova tugmasi %1$d</string>
+    <string name="sm_qs_move">Ko‘chirish</string>
+    <string name="sm_qs_turn_off">O‘chirish</string>
+    <string name="sm_qs_turn_on">Yoqish</string>
+    <string name="sm_qs_choose_app">Ilova tanlash</string>
+    <string name="sm_qs_reset">Joylashuvni tiklash</string>
+    <string name="sm_qs_moving">Uni strelkalar bilan siljiting, so‘ng OK bosing.</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

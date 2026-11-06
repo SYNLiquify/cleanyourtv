@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">צבע הזוהר</string>
     <string name="sm_ss_glow_points">נקודות זוהר</string>
     <string name="sm_ss_full">תצוגה מקדימה במסך מלא</string>
+    <string name="sm_qs_title">הגדרות מהירות</string>
+    <string name="sm_qs_note">הלוח שכפתור ההגדרות בשלט פותח. בחרו כפתור כדי להזיז אותו, לכבות אותו או לבחור אפליקציה לכפתור אפליקציה.</string>
+    <string name="sm_qs_app_button">כפתור אפליקציה %1$d</string>
+    <string name="sm_qs_move">הזזה</string>
+    <string name="sm_qs_turn_off">כיבוי</string>
+    <string name="sm_qs_turn_on">הפעלה</string>
+    <string name="sm_qs_choose_app">בחירת אפליקציה</string>
+    <string name="sm_qs_reset">איפוס הסידור</string>
+    <string name="sm_qs_moving">הזיזו בעזרת החצים ולחצו OK.</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

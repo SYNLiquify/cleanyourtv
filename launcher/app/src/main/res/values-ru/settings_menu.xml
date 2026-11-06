@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Цвет свечения</string>
     <string name="sm_ss_glow_points">Точки свечения</string>
     <string name="sm_ss_full">Предпросмотр на весь экран</string>
+    <string name="sm_qs_title">Быстрые настройки</string>
+    <string name="sm_qs_note">Панель, которую открывает кнопка «Настройки» на пульте. Выберите кнопку, чтобы переместить её, выключить или выбрать приложение для кнопки приложения.</string>
+    <string name="sm_qs_app_button">Кнопка приложения %1$d</string>
+    <string name="sm_qs_move">Переместить</string>
+    <string name="sm_qs_turn_off">Выключить</string>
+    <string name="sm_qs_turn_on">Включить</string>
+    <string name="sm_qs_choose_app">Выбрать приложение</string>
+    <string name="sm_qs_reset">Сбросить расположение</string>
+    <string name="sm_qs_moving">Перемещайте стрелками, затем нажмите OK.</string>
     <string name="sm_atv_settings">Настройки ATV</string>
     <string name="sm_hours">%1$d ч</string>
     <string name="update_done">Лаунчер обновлён до %1$s</string>

@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Color del brillo</string>
     <string name="sm_ss_glow_points">Puntos de brillo</string>
     <string name="sm_ss_full">Vista previa a pantalla completa</string>
+    <string name="sm_qs_title">Ajustes rápidos</string>
+    <string name="sm_qs_note">El panel que abre el botón Ajustes del mando. Selecciona un botón para moverlo, desactivarlo o elegir la app de un botón de app.</string>
+    <string name="sm_qs_app_button">Botón de app %1$d</string>
+    <string name="sm_qs_move">Mover</string>
+    <string name="sm_qs_turn_off">Desactivar</string>
+    <string name="sm_qs_turn_on">Activar</string>
+    <string name="sm_qs_choose_app">Elegir app</string>
+    <string name="sm_qs_reset">Restablecer diseño</string>
+    <string name="sm_qs_moving">Muévelo con las flechas y pulsa OK.</string>
     <string name="sm_atv_settings">Ajustes de ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher actualizado a %1$s</string>

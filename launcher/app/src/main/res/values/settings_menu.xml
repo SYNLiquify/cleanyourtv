@@ -147,6 +147,15 @@
     <string name="sm_ss_glow_color">Glow color</string>
     <string name="sm_ss_glow_points">Glow points</string>
     <string name="sm_ss_full">Preview full screen</string>
+    <string name="sm_qs_title">Quick settings</string>
+    <string name="sm_qs_note">The panel the remote\'s Settings button opens. Select a button to move it, turn it off, or choose an app for an app button.</string>
+    <string name="sm_qs_app_button">App button %1$d</string>
+    <string name="sm_qs_move">Move</string>
+    <string name="sm_qs_turn_off">Turn off</string>
+    <string name="sm_qs_turn_on">Turn on</string>
+    <string name="sm_qs_choose_app">Choose app</string>
+    <string name="sm_qs_reset">Reset layout</string>
+    <string name="sm_qs_moving">Move it with the arrows, then press OK.</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

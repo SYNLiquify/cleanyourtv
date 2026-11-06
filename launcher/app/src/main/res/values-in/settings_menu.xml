@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Warna cahaya</string>
     <string name="sm_ss_glow_points">Titik cahaya</string>
     <string name="sm_ss_full">Pratinjau layar penuh</string>
+    <string name="sm_qs_title">Setelan cepat</string>
+    <string name="sm_qs_note">Panel yang dibuka tombol Setelan di remote. Pilih tombol untuk memindahkannya, menonaktifkannya, atau memilih aplikasi untuk tombol aplikasi.</string>
+    <string name="sm_qs_app_button">Tombol aplikasi %1$d</string>
+    <string name="sm_qs_move">Pindahkan</string>
+    <string name="sm_qs_turn_off">Nonaktifkan</string>
+    <string name="sm_qs_turn_on">Aktifkan</string>
+    <string name="sm_qs_choose_app">Pilih aplikasi</string>
+    <string name="sm_qs_reset">Setel ulang tata letak</string>
+    <string name="sm_qs_moving">Pindahkan dengan tombol panah, lalu tekan OK.</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">光晕颜色</string>
     <string name="sm_ss_glow_points">光晕数量</string>
     <string name="sm_ss_full">全屏预览</string>
+    <string name="sm_qs_title">快捷设置</string>
+    <string name="sm_qs_note">遥控器设置按钮打开的面板。选择一个按钮可移动它、关闭它，或为应用按钮选择应用。</string>
+    <string name="sm_qs_app_button">应用按钮 %1$d</string>
+    <string name="sm_qs_move">移动</string>
+    <string name="sm_qs_turn_off">关闭</string>
+    <string name="sm_qs_turn_on">开启</string>
+    <string name="sm_qs_choose_app">选择应用</string>
+    <string name="sm_qs_reset">重置布局</string>
+    <string name="sm_qs_moving">用方向键移动，然后按 OK。</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
     <string name="update_done">启动器已更新到 %1$s</string>

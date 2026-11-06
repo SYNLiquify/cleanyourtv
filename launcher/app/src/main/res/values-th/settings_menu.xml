@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">สีของแสง</string>
     <string name="sm_ss_glow_points">จุดแสง</string>
     <string name="sm_ss_full">ดูตัวอย่างเต็มจอ</string>
+    <string name="sm_qs_title">การตั้งค่าด่วน</string>
+    <string name="sm_qs_note">แผงที่ปุ่มการตั้งค่าบนรีโมตเปิดขึ้นมา เลือกปุ่มเพื่อย้าย ปิด หรือเลือกแอปให้ปุ่มแอป</string>
+    <string name="sm_qs_app_button">ปุ่มแอป %1$d</string>
+    <string name="sm_qs_move">ย้าย</string>
+    <string name="sm_qs_turn_off">ปิด</string>
+    <string name="sm_qs_turn_on">เปิด</string>
+    <string name="sm_qs_choose_app">เลือกแอป</string>
+    <string name="sm_qs_reset">รีเซ็ตการจัดวาง</string>
+    <string name="sm_qs_moving">ย้ายด้วยปุ่มลูกศร แล้วกด OK</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>

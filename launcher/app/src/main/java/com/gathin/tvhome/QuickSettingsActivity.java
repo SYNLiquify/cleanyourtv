@@ -7,12 +7,11 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -44,6 +43,10 @@ public final class QuickSettingsActivity extends Activity {
             panel.setLayoutParams(position);
         }
         findViewById(R.id.scrim).setOnClickListener(v -> finish());
+        float density = getResources().getDisplayMetrics().density;
+        // A soft blurred shadow under the card (the frame's padding is room for the blur to fade out).
+        SoftShadow.apply(findViewById(R.id.panel), new SoftShadow(Math.round(36 * density), Math.round(24 * density),
+                Math.round(36 * density), Math.round(52 * density), 20 * density, 14 * density, 8 * density, 0xB0));
 
         // The date ("Fri, Nov 6", in the launcher's language) and the time, 12- or 24-hour as Home's clock.
         TextClock date = findViewById(R.id.quickDate);
@@ -53,15 +56,14 @@ public final class QuickSettingsActivity extends Activity {
         ClockFormat.apply(findViewById(R.id.quickTime), Config.load(this).clockFormat);
 
         findViewById(R.id.quickAll).setOnClickListener(v -> open(SystemSettings.intent(this, Settings.ACTION_SETTINGS)));
+        // The tiles as arranged on Settings > System > Quick settings (QuickTiles): order, off, app buttons.
         LinearLayout tiles = findViewById(R.id.tiles);
-        View first = addTile(tiles, R.drawable.ic_picture, R.string.quick_picture, SystemSettings.displayIntent(this));
-        addTile(tiles, R.drawable.ic_wifi, R.string.quick_network, SystemSettings.intent(this, Settings.ACTION_WIFI_SETTINGS));
-        addTile(tiles, R.drawable.ic_apps, R.string.quick_apps,
-                SystemSettings.intent(this, Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
-        // Through Home, so it rebuilds with the new choices when Launcher settings closes.
-        addTile(tiles, R.drawable.ic_home_settings, R.string.launcher_settings,
-                new Intent(this, MainActivity.class).setAction(MainActivity.ACTION_LAUNCHER_SETTINGS));
-        first.requestFocus();
+        List<View> shown = QuickTiles.fill(this, tiles, QuickTiles.shown(this), (id, tile) -> {
+            Intent target = QuickTiles.intent(this, id);
+            tile.setOnClickListener(v -> open(target));
+        });
+        tiles.setVisibility(shown.isEmpty() ? View.GONE : View.VISIBLE);
+        (shown.isEmpty() ? findViewById(R.id.quickAll) : shown.get(0)).requestFocus();
     }
 
     /** Settings pressed again while the panel is up. */
@@ -80,27 +82,8 @@ public final class QuickSettingsActivity extends Activity {
         overridePendingTransition(0, 0);
     }
 
-    /** A tile in the grid, two to a row; returns it. */
-    private View addTile(LinearLayout tiles, int icon, int title, Intent target) {
-        int gap = Math.round(8 * getResources().getDisplayMetrics().density);
-        LinearLayout row = tiles.getChildCount() == 0 ? null : (LinearLayout) tiles.getChildAt(tiles.getChildCount() - 1);
-        if (row == null || row.getChildCount() == 2) {
-            row = new LinearLayout(this);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
-            if (tiles.getChildCount() > 0) lp.topMargin = gap;
-            tiles.addView(row, lp);
-        }
-        View tile = getLayoutInflater().inflate(R.layout.item_quick_tile, row, false);
-        ((ImageView) tile.findViewById(R.id.icon)).setImageResource(icon);
-        ((TextView) tile.findViewById(R.id.title)).setText(title);
-        if (row.getChildCount() == 1) ((LinearLayout.LayoutParams) tile.getLayoutParams()).setMarginStart(gap);
-        tile.setOnClickListener(v -> open(target));
-        row.addView(tile);
-        return tile;
-    }
-
     private void open(Intent target) {
+        if (target == null) return;
         try {
             startActivity(target.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         } catch (ActivityNotFoundException | SecurityException e) {

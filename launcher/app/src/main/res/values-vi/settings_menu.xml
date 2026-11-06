@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Màu ánh sáng</string>
     <string name="sm_ss_glow_points">Điểm sáng</string>
     <string name="sm_ss_full">Xem trước toàn màn hình</string>
+    <string name="sm_qs_title">Cài đặt nhanh</string>
+    <string name="sm_qs_note">Bảng mà nút Cài đặt trên điều khiển mở ra. Chọn một nút để di chuyển, tắt hoặc chọn ứng dụng cho nút ứng dụng.</string>
+    <string name="sm_qs_app_button">Nút ứng dụng %1$d</string>
+    <string name="sm_qs_move">Di chuyển</string>
+    <string name="sm_qs_turn_off">Tắt</string>
+    <string name="sm_qs_turn_on">Bật</string>
+    <string name="sm_qs_choose_app">Chọn ứng dụng</string>
+    <string name="sm_qs_reset">Đặt lại bố cục</string>
+    <string name="sm_qs_moving">Di chuyển bằng phím mũi tên rồi nhấn OK.</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>

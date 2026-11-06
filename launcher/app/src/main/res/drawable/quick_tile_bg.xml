@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A Settings panel tile: the pills' glass with rounder corners, white when focused. -->
+<!-- A Settings panel tile: the pills' glass with rounder corners, white when focused. Activated: picked up to move on
+     Settings > System > Quick settings, white with a blue ring. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true">
+        <shape android:shape="rectangle">
+            <solid android:color="#F5FFFFFF" />
+            <stroke android:width="3dp" android:color="#FF0A84FF" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <solid android:color="#F5FFFFFF" />

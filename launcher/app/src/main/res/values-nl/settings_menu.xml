@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Kleur van de gloed</string>
     <string name="sm_ss_glow_points">Gloedpunten</string>
     <string name="sm_ss_full">Voorbeeld op volledig scherm</string>
+    <string name="sm_qs_title">Snelle instellingen</string>
+    <string name="sm_qs_note">Het paneel dat de knop Instellingen op de afstandsbediening opent. Kies een knop om hem te verplaatsen, uit te zetten of een app te kiezen voor een app-knop.</string>
+    <string name="sm_qs_app_button">App-knop %1$d</string>
+    <string name="sm_qs_move">Verplaatsen</string>
+    <string name="sm_qs_turn_off">Uitzetten</string>
+    <string name="sm_qs_turn_on">Aanzetten</string>
+    <string name="sm_qs_choose_app">App kiezen</string>
+    <string name="sm_qs_reset">Indeling herstellen</string>
+    <string name="sm_qs_moving">Verplaats hem met de pijlen en druk op OK.</string>
     <string name="sm_atv_settings">ATV-instellingen</string>
     <string name="sm_hours">%1$d u</string>
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>

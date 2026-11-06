@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Couleur de la lueur</string>
     <string name="sm_ss_glow_points">Points de lueur</string>
     <string name="sm_ss_full">Aperçu en plein écran</string>
+    <string name="sm_qs_title">Réglages rapides</string>
+    <string name="sm_qs_note">Le panneau qu’ouvre le bouton Paramètres de la télécommande. Sélectionnez un bouton pour le déplacer, le désactiver ou choisir l’appli d’un bouton d’appli.</string>
+    <string name="sm_qs_app_button">Bouton d’appli %1$d</string>
+    <string name="sm_qs_move">Déplacer</string>
+    <string name="sm_qs_turn_off">Désactiver</string>
+    <string name="sm_qs_turn_on">Activer</string>
+    <string name="sm_qs_choose_app">Choisir une appli</string>
+    <string name="sm_qs_reset">Réinitialiser la disposition</string>
+    <string name="sm_qs_moving">Déplacez-le avec les flèches, puis appuyez sur OK.</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Lanceur mis à jour vers %1$s</string>

@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Color de la resplendor</string>
     <string name="sm_ss_glow_points">Punts de resplendor</string>
     <string name="sm_ss_full">Previsualització a pantalla completa</string>
+    <string name="sm_qs_title">Configuració ràpida</string>
+    <string name="sm_qs_note">El tauler que obre el botó Configuració del comandament. Tria un botó per moure\'l, desactivar-lo o triar l\'app d\'un botó d\'app.</string>
+    <string name="sm_qs_app_button">Botó d\'app %1$d</string>
+    <string name="sm_qs_move">Mou</string>
+    <string name="sm_qs_turn_off">Desactiva</string>
+    <string name="sm_qs_turn_on">Activa</string>
+    <string name="sm_qs_choose_app">Tria una app</string>
+    <string name="sm_qs_reset">Restableix la disposició</string>
+    <string name="sm_qs_moving">Mou-lo amb les fletxes i prem OK.</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Barva záře</string>
     <string name="sm_ss_glow_points">Body záře</string>
     <string name="sm_ss_full">Náhled na celou obrazovku</string>
+    <string name="sm_qs_title">Rychlé nastavení</string>
+    <string name="sm_qs_note">Panel, který otevírá tlačítko Nastavení na ovladači. Vyberte tlačítko a přesuňte ho, vypněte ho nebo zvolte aplikaci pro tlačítko aplikace.</string>
+    <string name="sm_qs_app_button">Tlačítko aplikace %1$d</string>
+    <string name="sm_qs_move">Přesunout</string>
+    <string name="sm_qs_turn_off">Vypnout</string>
+    <string name="sm_qs_turn_on">Zapnout</string>
+    <string name="sm_qs_choose_app">Vybrat aplikaci</string>
+    <string name="sm_qs_reset">Obnovit rozložení</string>
+    <string name="sm_qs_moving">Přesuňte ho šipkami a stiskněte OK.</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

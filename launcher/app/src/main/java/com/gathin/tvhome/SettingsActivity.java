@@ -31,10 +31,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextClock;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
@@ -213,6 +215,8 @@ public final class SettingsActivity extends Activity {
      */
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        // A Quick settings tile being moved takes every arrow itself (showQuickSettings).
+        if (qsMoving != null) return super.dispatchKeyEvent(event);
         View focus = getCurrentFocus();
         if (event.getAction() == KeyEvent.ACTION_DOWN && focus != null) {
             int key = event.getKeyCode();
@@ -1162,6 +1166,8 @@ public final class SettingsActivity extends Activity {
         pane.addView(actionRow(getString(R.string.sm_language), languageName(prefs.getString(Config.LOCALE_KEY, config.locale)),
                 this::showLanguages));
         Updates.Offer offer = Updates.offer(this);
+        // This fork: the panel the remote's Settings button opens, arranged with its own preview.
+        pane.addView(actionRow(getString(R.string.sm_qs_title), "", () -> showQuickSettings(null)));
         pane.addView(actionRow(getString(R.string.sm_updates),
                 offer != null ? updateStatus(offer) : Updates.installedName(this), this::showUpdates));
         String version = "";
@@ -1973,6 +1979,186 @@ public final class SettingsActivity extends Activity {
             ((ViewGroup) screensaverPreview.getParent()).removeView(screensaverPreview);
         }
         screensaverPreview = null;
+    }
+
+    // ---- quick settings ----------------------------------------------------------------------------------
+
+    /** The tile being moved on the Quick settings page, or null; its order while it moves. */
+    private String qsMoving;
+    private List<String> qsOrder;
+    private LinearLayout qsTiles, qsActions;
+
+    /**
+     * Settings > System > Quick settings: the remote's Settings panel itself, as the preview. Selecting a tile offers
+     * Move (then the arrows carry it and OK puts it down), Turn off or on, and for the two app buttons, Choose app.
+     * focusId: the tile to come back to.
+     */
+    private void showQuickSettings(String focusId) {
+        clearPane();
+        qsMoving = null;
+        paneTitle.setText(R.string.sm_qs_title);
+        back = () -> rebuild(5);
+        note(getString(R.string.sm_qs_note));
+
+        View card = getLayoutInflater().inflate(R.layout.quick_panel, pane, false);
+        TextClock date = card.findViewById(R.id.quickDate);
+        String datePattern = android.text.format.DateFormat.getBestDateTimePattern(Locale.getDefault(), "EEEMMMd");
+        date.setFormat12Hour(datePattern);
+        date.setFormat24Hour(datePattern);
+        ClockFormat.apply(card.findViewById(R.id.quickTime), prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat));
+        card.findViewById(R.id.quickAll).setFocusable(false);   // the preview's own buttons are the tiles
+        LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-2, -2);
+        cardLp.topMargin = dp(8);
+        pane.addView(card, cardLp);
+        qsTiles = card.findViewById(R.id.tiles);
+
+        // What can be done with the selected tile, under the preview.
+        qsActions = new LinearLayout(this);
+        qsActions.setOrientation(LinearLayout.HORIZONTAL);
+        qsActions.setMinimumHeight(dp(58));
+        qsActions.setGravity(Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2);
+        actionsLp.topMargin = dp(10);
+        pane.addView(qsActions, actionsLp);
+
+        View reset = actionRow(getString(R.string.sm_qs_reset), "", () -> {
+            prefs.edit().remove(QuickTiles.ORDER_KEY).remove(QuickTiles.OFF_KEY)
+                    .remove(QuickTiles.APP_KEY + QuickTiles.APP1).remove(QuickTiles.APP_KEY + QuickTiles.APP2).apply();
+            showQuickSettings(null);
+        });
+        pane.addView(reset);
+
+        qsOrder = QuickTiles.order(this);
+        View focus = drawQuickTiles(focusId != null ? focusId : qsOrder.get(0));
+        if (focus != null) pane.post(focus::requestFocus);
+    }
+
+    /** The preview's tiles, all of them (off ones dimmed); returns the view of focusId. */
+    private View drawQuickTiles(String focusId) {
+        java.util.Set<String> off = QuickTiles.off(this);
+        View[] focus = {null};
+        QuickTiles.fill(this, qsTiles, qsOrder, (id, tile) -> {
+            boolean on = !off.contains(id) && !(QuickTiles.isApp(id) && QuickTiles.intent(this, id) == null);
+            tile.setAlpha(on || id.equals(qsMoving) ? 1f : 0.38f);
+            tile.setActivated(id.equals(qsMoving));
+            tile.setOnClickListener(v -> {
+                if (qsMoving == null) showQuickActions(id, tile);
+            });
+            tile.setOnFocusChangeListener((v, focused) -> {
+                if (focused) scrollIntoView(tile);
+            });
+            tile.setOnKeyListener((v, keyCode, event) -> moveQuickTile(id, keyCode, event));
+            if (id.equals(focusId)) focus[0] = tile;
+        });
+        return focus[0];
+    }
+
+    /** Move, Turn off or on, Choose app: pills under the preview for the selected tile. */
+    private void showQuickActions(String id, View tile) {
+        qsActions.removeAllViews();
+        boolean on = !QuickTiles.off(this).contains(id);
+        List<TextView> pills = new ArrayList<>();
+        pills.add(pill(getString(R.string.sm_qs_move)));
+        pills.get(0).setOnClickListener(v -> {
+            qsActions.removeAllViews();
+            qsMoving = id;
+            View moving = drawQuickTiles(id);
+            if (moving != null) moving.requestFocus();
+            Toast.makeText(this, R.string.sm_qs_moving, Toast.LENGTH_SHORT).show();
+        });
+        TextView toggle = pill(getString(on ? R.string.sm_qs_turn_off : R.string.sm_qs_turn_on));
+        toggle.setOnClickListener(v -> {
+            if (!on && QuickTiles.isApp(id) && QuickTiles.app(this, id).isEmpty()) {
+                showAppChooser(id);   // an app button needs its app first
+                return;
+            }
+            QuickTiles.setOn(this, id, !on);
+            showQuickSettings(id);
+        });
+        pills.add(toggle);
+        if (QuickTiles.isApp(id)) {
+            TextView choose = pill(getString(R.string.sm_qs_choose_app));
+            choose.setOnClickListener(v -> showAppChooser(id));
+            pills.add(choose);
+        }
+        for (int i = 0; i < pills.size(); i++) {
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            if (i > 0) lp.setMarginStart(dp(10));
+            qsActions.addView(pills.get(i), lp);
+        }
+        pills.get(0).requestFocus();
+        Runnable leave = back;
+        back = () -> {
+            qsActions.removeAllViews();
+            tile.requestFocus();
+            back = leave;
+        };
+    }
+
+    /** While a tile moves: the arrows swap it with its neighbour in the grid, OK or Back puts it down. */
+    private boolean moveQuickTile(String id, int keyCode, KeyEvent event) {
+        if (!id.equals(qsMoving)) return false;
+        boolean drop = keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER
+                || keyCode == KeyEvent.KEYCODE_BACK;
+        if (event.getAction() != KeyEvent.ACTION_DOWN) return drop || isArrow(keyCode);
+        int at = qsOrder.indexOf(id), to = -1;
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_DPAD_LEFT: if (at % 2 == 1) to = at - 1; break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT: if (at % 2 == 0 && at + 1 < qsOrder.size()) to = at + 1; break;
+            case KeyEvent.KEYCODE_DPAD_UP: if (at >= 2) to = at - 2; break;
+            case KeyEvent.KEYCODE_DPAD_DOWN: if (at + 2 < qsOrder.size()) to = at + 2; break;
+            default:
+                if (!drop) return false;
+                qsMoving = null;
+                QuickTiles.saveOrder(this, qsOrder);
+                View placed = drawQuickTiles(id);
+                if (placed != null) placed.requestFocus();
+                return true;
+        }
+        if (to >= 0) {
+            Collections.swap(qsOrder, at, to);
+            View moved = drawQuickTiles(id);
+            if (moved != null) moved.requestFocus();
+        }
+        return true;
+    }
+
+    private static boolean isArrow(int keyCode) {
+        return keyCode == KeyEvent.KEYCODE_DPAD_LEFT || keyCode == KeyEvent.KEYCODE_DPAD_RIGHT
+                || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN;
+    }
+
+    /** The apps that can be opened from the TV, by name; picking one puts it on the app button and turns it on. */
+    private void showAppChooser(String id) {
+        clearPane();
+        qsMoving = null;
+        paneTitle.setText(R.string.sm_qs_choose_app);
+        back = () -> showQuickSettings(id);
+        android.content.pm.PackageManager pm = getPackageManager();
+        java.util.Map<String, CharSequence> apps = new java.util.TreeMap<>();
+        for (String category : new String[]{Intent.CATEGORY_LEANBACK_LAUNCHER, Intent.CATEGORY_LAUNCHER}) {
+            Intent query = new Intent(Intent.ACTION_MAIN).addCategory(category);
+            for (android.content.pm.ResolveInfo ri : pm.queryIntentActivities(query, 0)) {
+                String pkg = ri.activityInfo.packageName;
+                if (!pkg.equals(getPackageName())) apps.put(pkg, ri.loadLabel(pm));
+            }
+        }
+        List<java.util.Map.Entry<String, CharSequence>> sorted = new ArrayList<>(apps.entrySet());
+        sorted.sort((a, b) -> a.getValue().toString().compareToIgnoreCase(b.getValue().toString()));
+        String current = QuickTiles.app(this, id);
+        View focus = null;
+        for (java.util.Map.Entry<String, CharSequence> app : sorted) {
+            View row = actionRow(app.getValue().toString(), app.getKey().equals(current) ? "✓" : "", () -> {
+                QuickTiles.setApp(this, id, app.getKey());
+                QuickTiles.setOn(this, id, true);
+                showQuickSettings(id);
+            });
+            if (app.getKey().equals(current)) focus = row;
+            pane.addView(row);
+        }
+        View target = focus;
+        if (target != null) pane.post(target::requestFocus);
+        else focusPane();
     }
 
     // ---- rows ------------------------------------------------------------------------------------------

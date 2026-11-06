@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">Boja sjaja</string>
     <string name="sm_ss_glow_points">Tačke sjaja</string>
     <string name="sm_ss_full">Pregled preko celog ekrana</string>
+    <string name="sm_qs_title">Brza podešavanja</string>
+    <string name="sm_qs_note">Panel koji otvara dugme Podešavanja na daljinskom. Izaberite dugme da ga pomerite, isključite ili izaberete aplikaciju za dugme aplikacije.</string>
+    <string name="sm_qs_app_button">Dugme aplikacije %1$d</string>
+    <string name="sm_qs_move">Pomeri</string>
+    <string name="sm_qs_turn_off">Isključi</string>
+    <string name="sm_qs_turn_on">Uključi</string>
+    <string name="sm_qs_choose_app">Izaberi aplikaciju</string>
+    <string name="sm_qs_reset">Vrati raspored</string>
+    <string name="sm_qs_moving">Pomerite ga strelicama, pa pritisnite OK.</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

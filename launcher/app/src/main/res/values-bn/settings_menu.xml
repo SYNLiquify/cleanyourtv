@@ -142,6 +142,15 @@
     <string name="sm_ss_glow_color">আভার রং</string>
     <string name="sm_ss_glow_points">আভার বিন্দু</string>
     <string name="sm_ss_full">পূর্ণ স্ক্রিনে প্রিভিউ</string>
+    <string name="sm_qs_title">দ্রুত সেটিংস</string>
+    <string name="sm_qs_note">রিমোটের সেটিংস বোতাম যে প্যানেল খোলে। কোনো বোতাম বাছুন সরাতে, বন্ধ করতে, বা অ্যাপ বোতামের জন্য অ্যাপ বাছতে।</string>
+    <string name="sm_qs_app_button">অ্যাপ বোতাম %1$d</string>
+    <string name="sm_qs_move">সরান</string>
+    <string name="sm_qs_turn_off">বন্ধ করুন</string>
+    <string name="sm_qs_turn_on">চালু করুন</string>
+    <string name="sm_qs_choose_app">অ্যাপ বাছুন</string>
+    <string name="sm_qs_reset">বিন্যাস রিসেট</string>
+    <string name="sm_qs_moving">তীর দিয়ে সরান, তারপর OK চাপুন।</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>
