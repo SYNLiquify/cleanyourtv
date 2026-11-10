@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">نقاط التوهج</string>
     <string name="sm_ss_full">معاينة بملء الشاشة</string>
     <string name="sm_qs_title">الإعدادات السريعة</string>
-    <string name="sm_qs_note">اللوحة التي يفتحها زر الإعدادات في جهاز التحكم. اختر زرًا لنقله أو إيقافه أو اختيار تطبيق لزر التطبيق.</string>
+    <string name="sm_qs_note">اللوحة التي يفتحها زر الإعدادات في جهاز التحكم. اختر مربعًا لنقله أو إيقافه أو إعادة تسميته؛ يضيف «إضافة مربع تطبيق» أي تطبيق إلى اللوحة.</string>
     <string name="sm_qs_app_button">زر التطبيق %1$d</string>
     <string name="sm_qs_move">نقل</string>
     <string name="sm_qs_turn_off">إيقاف</string>
     <string name="sm_qs_turn_on">تشغيل</string>
     <string name="sm_qs_choose_app">اختيار تطبيق</string>
     <string name="sm_qs_reset">إعادة ضبط الترتيب</string>
+    <string name="sm_qs_add_app">إضافة مربع تطبيق</string>
     <string name="sm_qs_dim">تعتيم الشاشة</string>
     <string name="sm_qs_dim_unavailable">يتطلب مساعد جهاز التحكم</string>
     <string name="sm_qs_moving">حرّكه بالأسهم ثم اضغط OK.</string>

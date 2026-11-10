@@ -2211,7 +2211,7 @@ public final class SettingsActivity extends Activity {
                 {R.string.sm_change_every, PAGE_CLOCK},
                 {R.string.sm_ss_start, PAGE_SCREENSAVER}, {R.string.sm_ss_glow_color, PAGE_SCREENSAVER},
                 {R.string.sm_ss_glow_points, PAGE_SCREENSAVER}, {R.string.sm_ss_full, PAGE_SCREENSAVER},
-                {R.string.sm_qs_reset, PAGE_QUICK},
+                {R.string.sm_qs_add_app, PAGE_QUICK}, {R.string.sm_qs_reset, PAGE_QUICK},
                 {R.string.sm_atv_settings, PAGE_SYSTEM}, {R.string.sm_storage, PAGE_SYSTEM},
                 {R.string.sm_language, PAGE_SYSTEM}, {R.string.sm_updates, PAGE_SYSTEM},
         };
@@ -2331,8 +2331,8 @@ public final class SettingsActivity extends Activity {
 
     /**
      * Settings > System > Quick settings: the remote's Settings panel itself, as the preview. Selecting a tile offers
-     * Move (then the arrows carry it and OK puts it down), Turn off or on, and for the two app buttons, Choose app.
-     * focusId: the tile to come back to.
+     * Move (then the arrows carry it and OK puts it down), Turn off or on, Rename, and for an app tile, Choose app and
+     * Remove. Add app tile, under the preview, puts any app on the panel. focusId: the tile to come back to.
      */
     private void showQuickSettings(String focusId) {
         back = null;
@@ -2363,6 +2363,9 @@ public final class SettingsActivity extends Activity {
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2);
         actionsLp.topMargin = dp(10);
         pane.addView(qsActions, actionsLp);
+        if (QuickTiles.appTiles(this).size() < QuickTiles.MAX_APP_TILES) {
+            pane.addView(actionRow(getString(R.string.sm_qs_add_app), "", () -> showAppChooser(null)));
+        }
         pane.addView(actionRow(getString(R.string.sm_qs_reset), "", () -> {
             QuickTiles.reset(this);
             showQuickSettings(null);
@@ -2436,6 +2439,14 @@ public final class SettingsActivity extends Activity {
             choose.setOnClickListener(v -> showAppChooser(id));
             pills.add(choose);
         }
+        if (QuickTiles.isApp(id)) {
+            TextView remove = pill(getString(R.string.sm_remove));
+            remove.setOnClickListener(v -> {
+                QuickTiles.removeApp(this, id);
+                showQuickSettings(null);
+            });
+            pills.add(remove);
+        }
         // Its own text; empty brings back the tile's own name.
         TextView rename = pill(getString(R.string.sm_qs_rename));
         rename.setOnClickListener(v -> {
@@ -2502,12 +2513,15 @@ public final class SettingsActivity extends Activity {
                 || keyCode == KeyEvent.KEYCODE_DPAD_UP || keyCode == KeyEvent.KEYCODE_DPAD_DOWN;
     }
 
-    /** The apps that can be opened from the TV, by name; picking one puts it on the app button and turns it on. */
+    /**
+     * The apps that can be opened from the TV, by name. Picking one puts it on the app tile id (and turns it on), or
+     * with id null, on a new app tile (Add app tile).
+     */
     private void showAppChooser(String id) {
         back = null;
         qsMoving = null;
         stayOnPage(this::clearPane);
-        paneTitle.setText(R.string.sm_qs_choose_app);
+        paneTitle.setText(id == null ? R.string.sm_qs_add_app : R.string.sm_qs_choose_app);
         back = () -> showQuickSettings(id);
         android.content.pm.PackageManager pm = getPackageManager();
         java.util.Map<String, CharSequence> apps = new java.util.TreeMap<>();
@@ -2520,11 +2534,15 @@ public final class SettingsActivity extends Activity {
         }
         List<java.util.Map.Entry<String, CharSequence>> sorted = new ArrayList<>(apps.entrySet());
         sorted.sort((a, b) -> a.getValue().toString().compareToIgnoreCase(b.getValue().toString()));
-        String current = QuickTiles.app(this, id);
+        String current = id == null ? "" : QuickTiles.app(this, id);
         View focus = null;
         for (java.util.Map.Entry<String, CharSequence> app : sorted) {
             View row = actionRow(app.getValue().toString(), app.getKey().equals(current) ? "✓" : "", () -> {
-                QuickTiles.setApp(this, id, app.getKey());
+                if (id == null) {
+                    showQuickSettings(QuickTiles.addApp(this, app.getKey()));
+                    return;
+                }
+                QuickTiles.setApp(this, id, app.getKey());   // the new app's own name, not one given for the old
                 QuickTiles.setOn(this, id, true);
                 showQuickSettings(id);
             });

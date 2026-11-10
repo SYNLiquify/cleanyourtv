@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Leuchtpunkte</string>
     <string name="sm_ss_full">Vorschau im Vollbild</string>
     <string name="sm_qs_title">Schnelleinstellungen</string>
-    <string name="sm_qs_note">Das Feld, das die Einstellungen-Taste der Fernbedienung öffnet. Wähle eine Schaltfläche, um sie zu verschieben, auszuschalten oder einer App-Schaltfläche eine App zu geben.</string>
+    <string name="sm_qs_note">Das Feld, das die Einstellungen-Taste der Fernbedienung öffnet. Wähle eine Kachel, um sie zu verschieben, auszuschalten oder umzubenennen; App-Kachel hinzufügen legt eine beliebige App aufs Feld.</string>
     <string name="sm_qs_app_button">App-Schaltfläche %1$d</string>
     <string name="sm_qs_move">Verschieben</string>
     <string name="sm_qs_turn_off">Ausschalten</string>
     <string name="sm_qs_turn_on">Einschalten</string>
     <string name="sm_qs_choose_app">App wählen</string>
     <string name="sm_qs_reset">Anordnung zurücksetzen</string>
+    <string name="sm_qs_add_app">App-Kachel hinzufügen</string>
     <string name="sm_qs_dim">Bildschirm abdunkeln</string>
     <string name="sm_qs_dim_unavailable">Benötigt den Fernbedienungshelfer</string>
     <string name="sm_qs_moving">Mit den Pfeiltasten verschieben, dann OK drücken.</string>

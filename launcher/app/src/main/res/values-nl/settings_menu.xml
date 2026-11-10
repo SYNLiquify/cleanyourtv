@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Gloedpunten</string>
     <string name="sm_ss_full">Voorbeeld op volledig scherm</string>
     <string name="sm_qs_title">Snelle instellingen</string>
-    <string name="sm_qs_note">Het paneel dat de knop Instellingen op de afstandsbediening opent. Kies een knop om hem te verplaatsen, uit te zetten of een app te kiezen voor een app-knop.</string>
+    <string name="sm_qs_note">Het paneel dat de Instellingen-knop van de afstandsbediening opent. Kies een tegel om hem te verplaatsen, uit te zetten of te hernoemen; App-tegel toevoegen zet elke app op het paneel.</string>
     <string name="sm_qs_app_button">App-knop %1$d</string>
     <string name="sm_qs_move">Verplaatsen</string>
     <string name="sm_qs_turn_off">Uitzetten</string>
     <string name="sm_qs_turn_on">Aanzetten</string>
     <string name="sm_qs_choose_app">App kiezen</string>
     <string name="sm_qs_reset">Indeling herstellen</string>
+    <string name="sm_qs_add_app">App-tegel toevoegen</string>
     <string name="sm_qs_dim">Scherm dimmen</string>
     <string name="sm_qs_dim_unavailable">Vereist de afstandsbedieningshulp</string>
     <string name="sm_qs_moving">Verplaats hem met de pijlen en druk op OK.</string>

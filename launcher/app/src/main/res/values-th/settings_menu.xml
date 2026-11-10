@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">จุดแสง</string>
     <string name="sm_ss_full">ดูตัวอย่างเต็มจอ</string>
     <string name="sm_qs_title">การตั้งค่าด่วน</string>
-    <string name="sm_qs_note">แผงที่ปุ่มการตั้งค่าบนรีโมตเปิดขึ้นมา เลือกปุ่มเพื่อย้าย ปิด หรือเลือกแอปให้ปุ่มแอป</string>
+    <string name="sm_qs_note">แผงที่ปุ่มการตั้งค่าบนรีโมตเปิดขึ้น เลือกไทล์เพื่อย้าย ปิด หรือเปลี่ยนชื่อ และใช้เพิ่มไทล์แอปเพื่อวางแอปใดก็ได้บนแผง</string>
     <string name="sm_qs_app_button">ปุ่มแอป %1$d</string>
     <string name="sm_qs_move">ย้าย</string>
     <string name="sm_qs_turn_off">ปิด</string>
     <string name="sm_qs_turn_on">เปิด</string>
     <string name="sm_qs_choose_app">เลือกแอป</string>
     <string name="sm_qs_reset">รีเซ็ตการจัดวาง</string>
+    <string name="sm_qs_add_app">เพิ่มไทล์แอป</string>
     <string name="sm_qs_dim">หรี่หน้าจอ</string>
     <string name="sm_qs_dim_unavailable">ต้องใช้ตัวช่วยรีโมต</string>
     <string name="sm_qs_moving">ย้ายด้วยปุ่มลูกศร แล้วกด OK</string>

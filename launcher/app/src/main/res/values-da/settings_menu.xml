@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Glødpunkter</string>
     <string name="sm_ss_full">Forhåndsvisning på hele skærmen</string>
     <string name="sm_qs_title">Hurtige indstillinger</string>
-    <string name="sm_qs_note">Panelet, som fjernbetjeningens Indstillinger-knap åbner. Vælg en knap for at flytte den, slå den fra eller vælge en app til en appknap.</string>
+    <string name="sm_qs_note">Panelet, som fjernbetjeningens Indstillinger-knap åbner. Vælg et felt for at flytte det, slå det fra eller omdøbe det; Tilføj appfelt sætter en hvilken som helst app på panelet.</string>
     <string name="sm_qs_app_button">Appknap %1$d</string>
     <string name="sm_qs_move">Flyt</string>
     <string name="sm_qs_turn_off">Slå fra</string>
     <string name="sm_qs_turn_on">Slå til</string>
     <string name="sm_qs_choose_app">Vælg app</string>
     <string name="sm_qs_reset">Nulstil layout</string>
+    <string name="sm_qs_add_app">Tilføj appfelt</string>
     <string name="sm_qs_dim">Dæmp skærmen</string>
     <string name="sm_qs_dim_unavailable">Kræver fjernbetjeningshjælperen</string>
     <string name="sm_qs_moving">Flyt den med pilene, og tryk på OK.</string>

@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Glödpunkter</string>
     <string name="sm_ss_full">Förhandsgranska i helskärm</string>
     <string name="sm_qs_title">Snabbinställningar</string>
-    <string name="sm_qs_note">Panelen som fjärrkontrollens Inställningar-knapp öppnar. Välj en knapp för att flytta den, stänga av den eller välja en app för en appknapp.</string>
+    <string name="sm_qs_note">Panelen som fjärrkontrollens Inställningar-knapp öppnar. Välj en ruta för att flytta, stänga av eller byta namn på den; Lägg till appruta sätter valfri app på panelen.</string>
     <string name="sm_qs_app_button">Appknapp %1$d</string>
     <string name="sm_qs_move">Flytta</string>
     <string name="sm_qs_turn_off">Stäng av</string>
     <string name="sm_qs_turn_on">Slå på</string>
     <string name="sm_qs_choose_app">Välj app</string>
     <string name="sm_qs_reset">Återställ layout</string>
+    <string name="sm_qs_add_app">Lägg till appruta</string>
     <string name="sm_qs_dim">Dämpa skärmen</string>
     <string name="sm_qs_dim_unavailable">Kräver fjärrkontrollshjälpen</string>
     <string name="sm_qs_moving">Flytta den med pilarna och tryck på OK.</string>

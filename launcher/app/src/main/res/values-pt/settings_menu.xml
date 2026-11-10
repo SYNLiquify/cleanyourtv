@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Pontos de brilho</string>
     <string name="sm_ss_full">Prévia em tela cheia</string>
     <string name="sm_qs_title">Configurações rápidas</string>
-    <string name="sm_qs_note">O painel que o botão Configurações do controle abre. Selecione um botão para movê-lo, desativá-lo ou escolher o app de um botão de app.</string>
+    <string name="sm_qs_note">O painel que o botão Configurações do controle abre. Selecione um bloco para movê-lo, desativá-lo ou renomeá-lo; Adicionar bloco de app coloca qualquer app no painel.</string>
     <string name="sm_qs_app_button">Botão de app %1$d</string>
     <string name="sm_qs_move">Mover</string>
     <string name="sm_qs_turn_off">Desativar</string>
     <string name="sm_qs_turn_on">Ativar</string>
     <string name="sm_qs_choose_app">Escolher app</string>
     <string name="sm_qs_reset">Redefinir layout</string>
+    <string name="sm_qs_add_app">Adicionar bloco de app</string>
     <string name="sm_qs_dim">Escurecer tela</string>
     <string name="sm_qs_dim_unavailable">Requer o assistente do controle</string>
     <string name="sm_qs_moving">Mova com as setas e pressione OK.</string>

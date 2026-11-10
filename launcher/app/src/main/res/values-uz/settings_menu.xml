@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Nur nuqtalari</string>
     <string name="sm_ss_full">To‘liq ekranda ko‘rish</string>
     <string name="sm_qs_title">Tezkor sozlamalar</string>
-    <string name="sm_qs_note">Pultdagi Sozlamalar tugmasi ochadigan panel. Tugmani ko‘chirish, o‘chirish yoki ilova tugmasi uchun ilova tanlash uchun uni tanlang.</string>
+    <string name="sm_qs_note">Pultdagi Sozlamalar tugmasi ochadigan panel. Plitkani ko\'chirish, o\'chirish yoki nomini o\'zgartirish uchun tanlang; Ilova plitkasini qo\'shish istalgan ilovani panelga qo\'yadi.</string>
     <string name="sm_qs_app_button">Ilova tugmasi %1$d</string>
     <string name="sm_qs_move">Ko‘chirish</string>
     <string name="sm_qs_turn_off">O‘chirish</string>
     <string name="sm_qs_turn_on">Yoqish</string>
     <string name="sm_qs_choose_app">Ilova tanlash</string>
     <string name="sm_qs_reset">Joylashuvni tiklash</string>
+    <string name="sm_qs_add_app">Ilova plitkasini qo\'shish</string>
     <string name="sm_qs_dim">Ekranni xiralashtirish</string>
     <string name="sm_qs_dim_unavailable">Pult yordamchisi kerak</string>
     <string name="sm_qs_moving">Uni strelkalar bilan siljiting, so‘ng OK bosing.</string>

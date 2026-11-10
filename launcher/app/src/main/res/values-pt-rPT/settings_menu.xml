@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Pontos de brilho</string>
     <string name="sm_ss_full">Pré-visualizar em ecrã inteiro</string>
     <string name="sm_qs_title">Definições rápidas</string>
-    <string name="sm_qs_note">O painel que o botão Definições do comando abre. Selecione um botão para o mover, desativar ou escolher a app de um botão de app.</string>
+    <string name="sm_qs_note">O painel que o botão Definições do comando abre. Selecione um mosaico para o mover, desativar ou mudar de nome; Adicionar mosaico de app põe qualquer app no painel.</string>
     <string name="sm_qs_app_button">Botão de app %1$d</string>
     <string name="sm_qs_move">Mover</string>
     <string name="sm_qs_turn_off">Desativar</string>
     <string name="sm_qs_turn_on">Ativar</string>
     <string name="sm_qs_choose_app">Escolher app</string>
     <string name="sm_qs_reset">Repor esquema</string>
+    <string name="sm_qs_add_app">Adicionar mosaico de app</string>
     <string name="sm_qs_dim">Escurecer ecrã</string>
     <string name="sm_qs_dim_unavailable">Requer o assistente do comando</string>
     <string name="sm_qs_moving">Mova-o com as setas e prima OK.</string>

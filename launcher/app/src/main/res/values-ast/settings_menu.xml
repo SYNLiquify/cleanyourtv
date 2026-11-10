@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Puntos de rellumu</string>
     <string name="sm_ss_full">Vista previa a pantalla completa</string>
     <string name="sm_qs_title">Axustes rápidos</string>
-    <string name="sm_qs_note">El panel qu\'abre\'l botón Axustes del mandu. Escueyi un botón pa movelu, desactivalu o escoyer l\'aplicación d\'un botón d\'aplicación.</string>
+    <string name="sm_qs_note">El panel que s\'abre col botón Axustes del mandu. Esbilla un mosaicu pa movelu, apagalu o renomalu; «Amestar mosaicu d\'aplicación» pon cualquier aplicación nel panel.</string>
     <string name="sm_qs_app_button">Botón d\'aplicación %1$d</string>
     <string name="sm_qs_move">Mover</string>
     <string name="sm_qs_turn_off">Desactivar</string>
     <string name="sm_qs_turn_on">Activar</string>
     <string name="sm_qs_choose_app">Escoyer aplicación</string>
     <string name="sm_qs_reset">Reaniciar diseñu</string>
+    <string name="sm_qs_add_app">Amestar mosaicu d\'aplicación</string>
     <string name="sm_qs_dim">Atenuar la pantalla</string>
     <string name="sm_qs_dim_unavailable">Necesita l\'ayudante del mandu</string>
     <string name="sm_qs_moving">Muévelu coles fleches y primi OK.</string>

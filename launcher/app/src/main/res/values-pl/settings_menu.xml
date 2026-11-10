@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Punkty poświaty</string>
     <string name="sm_ss_full">Podgląd na pełnym ekranie</string>
     <string name="sm_qs_title">Szybkie ustawienia</string>
-    <string name="sm_qs_note">Panel otwierany przyciskiem Ustawienia na pilocie. Wybierz przycisk, aby go przenieść, wyłączyć lub wybrać aplikację dla przycisku aplikacji.</string>
+    <string name="sm_qs_note">Panel otwierany przyciskiem Ustawienia na pilocie. Wybierz kafelek, aby go przenieść, wyłączyć lub zmienić jego nazwę; Dodaj kafelek aplikacji umieszcza dowolną aplikację na panelu.</string>
     <string name="sm_qs_app_button">Przycisk aplikacji %1$d</string>
     <string name="sm_qs_move">Przenieś</string>
     <string name="sm_qs_turn_off">Wyłącz</string>
     <string name="sm_qs_turn_on">Włącz</string>
     <string name="sm_qs_choose_app">Wybierz aplikację</string>
     <string name="sm_qs_reset">Przywróć układ</string>
+    <string name="sm_qs_add_app">Dodaj kafelek aplikacji</string>
     <string name="sm_qs_dim">Przyciemnij ekran</string>
     <string name="sm_qs_dim_unavailable">Wymaga pomocnika pilota</string>
     <string name="sm_qs_moving">Przenieś go strzałkami i naciśnij OK.</string>

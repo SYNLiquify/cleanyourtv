@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">빛 개수</string>
     <string name="sm_ss_full">전체 화면 미리보기</string>
     <string name="sm_qs_title">빠른 설정</string>
-    <string name="sm_qs_note">리모컨의 설정 버튼으로 여는 패널입니다. 버튼을 선택해 옮기거나 끄거나 앱 버튼의 앱을 고르세요.</string>
+    <string name="sm_qs_note">리모컨의 설정 버튼으로 여는 패널입니다. 타일을 선택해 옮기거나 끄거나 이름을 바꾸세요. 앱 타일 추가로 원하는 앱을 패널에 넣을 수 있습니다.</string>
     <string name="sm_qs_app_button">앱 버튼 %1$d</string>
     <string name="sm_qs_move">옮기기</string>
     <string name="sm_qs_turn_off">끄기</string>
     <string name="sm_qs_turn_on">켜기</string>
     <string name="sm_qs_choose_app">앱 선택</string>
     <string name="sm_qs_reset">배치 초기화</string>
+    <string name="sm_qs_add_app">앱 타일 추가</string>
     <string name="sm_qs_dim">화면 어둡게</string>
     <string name="sm_qs_dim_unavailable">리모컨 도우미가 필요합니다</string>
     <string name="sm_qs_moving">화살표로 옮긴 뒤 OK를 누르세요.</string>

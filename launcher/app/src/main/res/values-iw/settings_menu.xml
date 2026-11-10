@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">נקודות זוהר</string>
     <string name="sm_ss_full">תצוגה מקדימה במסך מלא</string>
     <string name="sm_qs_title">הגדרות מהירות</string>
-    <string name="sm_qs_note">הלוח שכפתור ההגדרות בשלט פותח. בחרו כפתור כדי להזיז אותו, לכבות אותו או לבחור אפליקציה לכפתור אפליקציה.</string>
+    <string name="sm_qs_note">הלוח שכפתור ההגדרות בשלט פותח. בחרו אריח כדי להזיז, לכבות או לשנות את שמו; הוספת אריח אפליקציה מציבה כל אפליקציה בלוח.</string>
     <string name="sm_qs_app_button">כפתור אפליקציה %1$d</string>
     <string name="sm_qs_move">הזזה</string>
     <string name="sm_qs_turn_off">כיבוי</string>
     <string name="sm_qs_turn_on">הפעלה</string>
     <string name="sm_qs_choose_app">בחירת אפליקציה</string>
     <string name="sm_qs_reset">איפוס הסידור</string>
+    <string name="sm_qs_add_app">הוספת אריח אפליקציה</string>
     <string name="sm_qs_dim">עמעום המסך</string>
     <string name="sm_qs_dim_unavailable">נדרש מסייע השלט</string>
     <string name="sm_qs_moving">הזיזו בעזרת החצים ולחצו OK.</string>

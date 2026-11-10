@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Işıltı noktaları</string>
     <string name="sm_ss_full">Tam ekran önizle</string>
     <string name="sm_qs_title">Hızlı ayarlar</string>
-    <string name="sm_qs_note">Kumandanın Ayarlar düğmesinin açtığı panel. Bir düğmeyi taşımak, kapatmak ya da uygulama düğmesine uygulama seçmek için seçin.</string>
+    <string name="sm_qs_note">Kumandanın Ayarlar düğmesinin açtığı panel. Bir kutucuğu taşımak, kapatmak veya yeniden adlandırmak için seçin; Uygulama kutucuğu ekle herhangi bir uygulamayı panele koyar.</string>
     <string name="sm_qs_app_button">Uygulama düğmesi %1$d</string>
     <string name="sm_qs_move">Taşı</string>
     <string name="sm_qs_turn_off">Kapat</string>
     <string name="sm_qs_turn_on">Aç</string>
     <string name="sm_qs_choose_app">Uygulama seç</string>
     <string name="sm_qs_reset">Düzeni sıfırla</string>
+    <string name="sm_qs_add_app">Uygulama kutucuğu ekle</string>
     <string name="sm_qs_dim">Ekranı karart</string>
     <string name="sm_qs_dim_unavailable">Kumanda yardımcısı gerekir</string>
     <string name="sm_qs_moving">Oklarla taşıyın, sonra OK’e basın.</string>

@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Punti di bagliore</string>
     <string name="sm_ss_full">Anteprima a schermo intero</string>
     <string name="sm_qs_title">Impostazioni rapide</string>
-    <string name="sm_qs_note">Il pannello che apre il tasto Impostazioni del telecomando. Seleziona un pulsante per spostarlo, disattivarlo o scegliere l’app di un pulsante app.</string>
+    <string name="sm_qs_note">Il pannello che apre il tasto Impostazioni del telecomando. Seleziona un riquadro per spostarlo, disattivarlo o rinominarlo; Aggiungi riquadro app mette qualsiasi app nel pannello.</string>
     <string name="sm_qs_app_button">Pulsante app %1$d</string>
     <string name="sm_qs_move">Sposta</string>
     <string name="sm_qs_turn_off">Disattiva</string>
     <string name="sm_qs_turn_on">Attiva</string>
     <string name="sm_qs_choose_app">Scegli app</string>
     <string name="sm_qs_reset">Ripristina disposizione</string>
+    <string name="sm_qs_add_app">Aggiungi riquadro app</string>
     <string name="sm_qs_dim">Attenua schermo</string>
     <string name="sm_qs_dim_unavailable">Richiede l\'assistente del telecomando</string>
     <string name="sm_qs_moving">Spostalo con le frecce, poi premi OK.</string>

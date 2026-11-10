@@ -143,13 +143,14 @@
     <string name="sm_ss_glow_points">Glødpunkter</string>
     <string name="sm_ss_full">Forhåndsvis i fullskjerm</string>
     <string name="sm_qs_title">Hurtiginnstillinger</string>
-    <string name="sm_qs_note">Panelet som Innstillinger-knappen på fjernkontrollen åpner. Velg en knapp for å flytte den, slå den av eller velge en app for en appknapp.</string>
+    <string name="sm_qs_note">Panelet som fjernkontrollens Innstillinger-knapp åpner. Velg en flis for å flytte, slå av eller gi den nytt navn; Legg til app-flis setter en hvilken som helst app på panelet.</string>
     <string name="sm_qs_app_button">Appknapp %1$d</string>
     <string name="sm_qs_move">Flytt</string>
     <string name="sm_qs_turn_off">Slå av</string>
     <string name="sm_qs_turn_on">Slå på</string>
     <string name="sm_qs_choose_app">Velg app</string>
     <string name="sm_qs_reset">Tilbakestill oppsett</string>
+    <string name="sm_qs_add_app">Legg til app-flis</string>
     <string name="sm_qs_dim">Demp skjermen</string>
     <string name="sm_qs_dim_unavailable">Krever fjernkontrollhjelperen</string>
     <string name="sm_qs_moving">Flytt den med pilene, og trykk OK.</string>
