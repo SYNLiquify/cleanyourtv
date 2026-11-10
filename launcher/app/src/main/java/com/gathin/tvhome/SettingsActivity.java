@@ -131,15 +131,30 @@ public final class SettingsActivity extends Activity {
         LinearLayout left = new LinearLayout(this);
         left.setOrientation(LinearLayout.VERTICAL);
         columns.addView(left, new LinearLayout.LayoutParams(dp(250), -1));
-        TextView kicker = text(13, R.string.font_regular, 0x99FFFFFF);
-        kicker.setText(getString(R.string.sm_kicker).toUpperCase(Locale.getDefault()));
-        kicker.setLetterSpacing(0.2f);
-        left.addView(kicker);
         TextView title = text(44, R.string.font_light, INK);
         title.setText(R.string.sm_title);
         LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(-2, -2);
-        titleLp.bottomMargin = dp(26);
+        titleLp.bottomMargin = dp(20);
         left.addView(title, titleLp);
+        // This fork: Search, above the categories (Up from the first one): every setting by name, with suggestions.
+        searchButton = pill(getString(R.string.sm_search));
+        searchButton.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+        searchButton.setPadding(dp(22), 0, dp(22), 0);
+        searchButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+        Drawable magnifier = getDrawable(R.drawable.ic_search_small);
+        if (magnifier != null) {
+            magnifier.setBounds(0, 0, dp(20), dp(20));
+            searchButton.setCompoundDrawablesRelative(magnifier, null, null, null);
+            searchButton.setCompoundDrawablePadding(dp(12));
+            searchButton.setCompoundDrawableTintList(ink(INK));
+        }
+        searchButton.setOnFocusChangeListener((v, focused) -> {
+            if (focused && !keepPage && category != PAGE_SEARCH) showSearch();
+        });
+        searchButton.setOnClickListener(v -> focusSearchField());
+        LinearLayout.LayoutParams searchLp = new LinearLayout.LayoutParams(-1, dp(48));
+        searchLp.bottomMargin = dp(18);
+        left.addView(searchButton, searchLp);
         int[] names = {R.string.sm_home, R.string.sm_look, R.string.sm_clock_weather, R.string.sm_screensaver,
                 R.string.sm_qs_title, R.string.sm_system};
         for (int i = 0; i < names.length; i++) {
@@ -182,15 +197,11 @@ public final class SettingsActivity extends Activity {
         pane.setClipToPadding(false);
         scroll.addView(pane, new FrameLayout.LayoutParams(-1, -2));
         right.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
-        // This fork: the notes of the focused row, in one line under the page instead of paragraphs between rows.
-        hint = text(14, R.string.font_regular, 0x99FFFFFF);
-        hint.setLineSpacing(dp(2), 1f);
-        hint.setMaxLines(3);
-        hint.setEllipsize(TextUtils.TruncateAt.END);
-        hint.setMinLines(2);
-        hint.setPadding(dp(16), dp(8), dp(16), dp(18));
-        hint.setVisibility(View.INVISIBLE);
-        right.addView(hint, new LinearLayout.LayoutParams(-1, -2));
+        // This fork: the focused row's notes, right under it, instead of paragraphs between all the rows.
+        hint = text(15, R.string.font_regular, 0x99FFFFFF);
+        hint.setLineSpacing(dp(3), 1f);
+        hint.setPadding(dp(22), dp(8), dp(22), dp(2));
+        hint.setTag(HINT_TAG);
         pane.getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> showHint(newFocus));
 
         setContentView(root);
@@ -235,6 +246,7 @@ public final class SettingsActivity extends Activity {
                     && !(focus instanceof ColorSlider)
                     && FocusFinder.getInstance().findNextFocus(pane, focus, View.FOCUS_LEFT) == null) {
                 if (category >= 0) categoryButtons.get(category).requestFocus();
+                else if (category == PAGE_SEARCH) searchButton.requestFocus();
                 return true;
             }
             // Down past a page's last row (Up past its first) stays on the page instead of landing on a category in
@@ -247,9 +259,19 @@ public final class SettingsActivity extends Activity {
                 focus.requestFocus();
                 return true;
             }
+            if (focus == searchButton) {
+                if (key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_LEFT) return true;
+                if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
+                    focusSearchField();
+                    return true;
+                }
+            }
             if (categoryButtons.contains(focus)) {
                 int i = categoryButtons.indexOf(focus);
-                if (key == KeyEvent.KEYCODE_DPAD_UP && i == 0) return true;
+                if (key == KeyEvent.KEYCODE_DPAD_UP && i == 0) {
+                    searchButton.requestFocus();
+                    return true;
+                }
                 if (key == KeyEvent.KEYCODE_DPAD_DOWN && i == categoryButtons.size() - 1) return true;
                 if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
                     focusPane();
@@ -2072,6 +2094,181 @@ public final class SettingsActivity extends Activity {
         screensaverPreview = null;
     }
 
+    // ---- search ------------------------------------------------------------------------------------------
+
+    /** The search page's "category" (not one of the list's). */
+    private static final int PAGE_SEARCH = -2;
+    private TextView searchButton;
+    private EditText searchField;
+    private LinearLayout searchResults;
+
+    /** A setting search can find: its name, where it is, how to get there and which row to focus. */
+    private static final class Found {
+        final String label, where, focus;
+        final int page;
+        final Runnable open;
+        final boolean suggested;
+
+        Found(String label, String where, int page, Runnable open, String focus, boolean suggested) {
+            this.label = label;
+            this.where = where;
+            this.page = page;
+            this.open = open;
+            this.focus = focus;
+            this.suggested = suggested;
+        }
+    }
+
+    /** Every setting by name, with its category (and page) and the row it opens on. */
+    private List<Found> searchIndex() {
+        List<Found> out = new ArrayList<>();
+        String[] pages = {getString(R.string.sm_home), getString(R.string.sm_look), getString(R.string.sm_clock_weather),
+                getString(R.string.sm_screensaver), getString(R.string.sm_qs_title), getString(R.string.sm_system)};
+        // The categories themselves.
+        for (int i = 0; i < pages.length; i++) {
+            out.add(new Found(pages[i], "", i, null, null,
+                    i == PAGE_SCREENSAVER || i == PAGE_QUICK));
+        }
+        int[][] rows = {
+                {R.string.sm_dock_apps, PAGE_HOME}, {R.string.sm_grid_apps, PAGE_HOME},
+                {R.string.sm_continue_watching, PAGE_HOME}, {R.string.sm_reorder, PAGE_HOME},
+                {R.string.sm_more_options, PAGE_HOME},
+                {R.string.sm_compact_top, PAGE_LOOK}, {R.string.sm_app_name, PAGE_LOOK}, {R.string.sm_dock_band, PAGE_LOOK},
+                {R.string.sm_animations, PAGE_LOOK}, {R.string.sm_custom_color, PAGE_LOOK},
+                {R.string.sm_time_format, PAGE_CLOCK}, {R.string.sm_greeting, PAGE_CLOCK}, {R.string.sm_name, PAGE_CLOCK},
+                {R.string.sm_change_every, PAGE_CLOCK},
+                {R.string.sm_ss_start, PAGE_SCREENSAVER}, {R.string.sm_ss_glow_color, PAGE_SCREENSAVER},
+                {R.string.sm_ss_glow_points, PAGE_SCREENSAVER}, {R.string.sm_ss_full, PAGE_SCREENSAVER},
+                {R.string.sm_qs_reset, PAGE_QUICK},
+                {R.string.sm_atv_settings, PAGE_SYSTEM}, {R.string.sm_storage, PAGE_SYSTEM},
+                {R.string.sm_language, PAGE_SYSTEM}, {R.string.sm_updates, PAGE_SYSTEM},
+        };
+        for (int[] r : rows) {
+            String label = getString(r[0]);
+            boolean suggested = r[0] == R.string.sm_language || r[0] == R.string.sm_compact_top;
+            out.add(new Found(label, pages[r[1]], r[1], null, label, suggested));
+        }
+        String look = pages[PAGE_LOOK], system = pages[PAGE_SYSTEM], clock = pages[PAGE_CLOCK];
+        out.add(new Found(getString(R.string.sm_themes), look, PAGE_LOOK, null, getString(R.string.sm_themes), true));
+        out.add(new Found(getString(R.string.sm_highlight), look, PAGE_LOOK, null, getString(R.string.sm_custom_color), false));
+        if (!BuildConfig.OFFLINE) {
+            out.add(new Found(getString(R.string.sm_nuvio_suggestions), pages[PAGE_HOME], PAGE_HOME, null,
+                    getString(R.string.sm_nuvio_suggestions), false));
+            for (int w : new int[]{R.string.sm_show_weather, R.string.sm_units, R.string.sm_conditions, R.string.sm_hilo,
+                    R.string.sm_location}) {
+                out.add(new Found(getString(w), clock, PAGE_CLOCK, null, getString(w), w == R.string.sm_location));
+            }
+        }
+        // Rows of System's own pages.
+        String updates = system + "  \u203a  " + getString(R.string.sm_updates);
+        for (int u : new int[]{R.string.sm_update_check, R.string.sm_update_channel, R.string.sm_update_every}) {
+            out.add(new Found(getString(u), updates, PAGE_SYSTEM, this::showUpdates, getString(u), u == R.string.sm_update_check));
+        }
+        String storage = system + "  \u203a  " + getString(R.string.sm_storage);
+        for (int c : new int[]{R.string.sm_clear_thumbnails, R.string.sm_delete_other_languages, R.string.sm_android_storage}) {
+            out.add(new Found(getString(c), storage, PAGE_SYSTEM, this::showStorage, getString(c), false));
+        }
+        String atv = system + "  \u203a  " + getString(R.string.sm_atv_settings);
+        for (int a : new int[]{R.string.sm_tv_settings, R.string.sm_network, R.string.sm_default_home}) {
+            out.add(new Found(getString(a), atv, PAGE_SYSTEM, this::showAtvSettings, getString(a), false));
+        }
+        return out;
+    }
+
+    /** The search page: the field, and under it the settings that match what is typed (or suggestions). */
+    private void showSearch() {
+        back = null;
+        stayOnPage(this::clearPane);
+        category = PAGE_SEARCH;
+        for (TextView b : categoryButtons) b.setSelected(false);
+        paneTitle.setText(R.string.sm_search);
+        searchField = field(getString(R.string.sm_search_hint), "");
+        searchField.setInputType(InputType.TYPE_CLASS_TEXT);
+        searchField.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence t, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence t, int a, int b, int c) {}
+            @Override public void afterTextChanged(android.text.Editable t) { showResults(t.toString()); }
+        });
+        searchField.setOnEditorActionListener((v, action, event) -> {
+            hideKeyboard(searchField);
+            View first = firstFocusable(searchResults);
+            if (first != null) first.requestFocus();
+            return true;
+        });
+        pane.addView(searchField, new LinearLayout.LayoutParams(-1, dp(52)));
+        searchResults = new LinearLayout(this);
+        searchResults.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
+        lp.topMargin = dp(8);
+        pane.addView(searchResults, lp);
+        showResults("");
+        back = () -> searchButton.requestFocus();   // Back goes to Search first; the next Back leaves Settings
+    }
+
+    private void focusSearchField() {
+        if (category != PAGE_SEARCH) showSearch();
+        if (searchField != null) searchField.requestFocus();
+    }
+
+    /** Suggestions while the field is empty; then the settings whose name has what is typed, best first. */
+    private void showResults(String typed) {
+        if (searchResults == null) return;
+        searchResults.removeAllViews();
+        String q = typed.trim().toLowerCase(Locale.getDefault());
+        List<Found> starts = new ArrayList<>(), contains = new ArrayList<>();
+        for (Found f : searchIndex()) {
+            if (q.isEmpty()) {
+                if (f.suggested) starts.add(f);
+                continue;
+            }
+            String name = f.label.toLowerCase(Locale.getDefault());
+            if (name.startsWith(q) || name.contains(" " + q)) starts.add(f);
+            else if (name.contains(q) || f.where.toLowerCase(Locale.getDefault()).contains(q)) contains.add(f);
+        }
+        starts.addAll(contains);
+        TextView heading = text(13, R.string.font_medium, 0x80FFFFFF);
+        heading.setLetterSpacing(0.16f);
+        heading.setText(getString(q.isEmpty() ? R.string.sm_search_suggested : R.string.sm_search).toUpperCase(Locale.getDefault()));
+        LinearLayout.LayoutParams headingLp = new LinearLayout.LayoutParams(-2, -2);
+        headingLp.topMargin = dp(10);
+        searchResults.addView(heading, headingLp);
+        if (starts.isEmpty()) {
+            TextView none = text(16, R.string.font_regular, 0x99FFFFFF);
+            none.setText(R.string.sm_search_none);
+            LinearLayout.LayoutParams noneLp = new LinearLayout.LayoutParams(-2, -2);
+            noneLp.topMargin = dp(12);
+            searchResults.addView(none, noneLp);
+            return;
+        }
+        for (int i = 0; i < starts.size() && i < 12; i++) {
+            Found f = starts.get(i);
+            searchResults.addView(actionRow(f.label, f.where, () -> goTo(f)));
+        }
+    }
+
+    /** Opens a setting found by search: its category, its page, and focus on its row. */
+    private void goTo(Found f) {
+        if (searchField != null) hideKeyboard(searchField);
+        showCategory(f.page, true);
+        if (f.open != null) f.open.run();
+        pane.post(() -> {
+            View row = f.focus == null ? null : rowLabelled(f.focus);
+            if (row != null) row.requestFocus();
+            else focusPane();
+        });
+    }
+
+    /** The pane's row whose label is label: its focusable part. */
+    private View rowLabelled(String label) {
+        for (int i = 0; i < pane.getChildCount(); i++) {
+            View c = pane.getChildAt(i);
+            if (!(c instanceof ViewGroup) || ((ViewGroup) c).getChildCount() == 0) continue;
+            View first = ((ViewGroup) c).getChildAt(0);
+            if (first instanceof TextView && label.contentEquals(((TextView) first).getText())) return firstFocusable(c);
+        }
+        return null;
+    }
+
     // ---- quick settings ----------------------------------------------------------------------------------
 
     /** The tile being moved on the Quick settings page, or null; its order while it moves. */
@@ -2104,8 +2301,13 @@ public final class SettingsActivity extends Activity {
         date.setFormat24Hour(datePattern);
         ClockFormat.apply(card.findViewById(R.id.quickTime), prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat));
         card.findViewById(R.id.quickAll).setFocusable(false);   // the preview's own buttons are the tiles
+        // Reset first, above the panel, where it is seen.
+        pane.addView(actionRow(getString(R.string.sm_qs_reset), "", () -> {
+            QuickTiles.reset(this);
+            showQuickSettings(null);
+        }));
         LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-2, -2);
-        cardLp.topMargin = dp(8);
+        cardLp.topMargin = dp(14);
         pane.addView(card, cardLp);
         qsTiles = card.findViewById(R.id.tiles);
 
@@ -2118,11 +2320,6 @@ public final class SettingsActivity extends Activity {
         actionsLp.topMargin = dp(10);
         pane.addView(qsActions, actionsLp);
 
-        View reset = actionRow(getString(R.string.sm_qs_reset), "", () -> {
-            QuickTiles.reset(this);
-            showQuickSettings(null);
-        });
-        pane.addView(reset);
 
         qsOrder = QuickTiles.order(this);
         View focus = drawQuickTiles(focusId != null ? focusId : qsOrder.get(0));
@@ -2386,8 +2583,8 @@ public final class SettingsActivity extends Activity {
     }
 
     /** Tags of the pane's section titles and notes (showHint tells them from the rows). */
-    private static final Object SECTION_TAG = new Object(), NOTE_TAG = new Object();
-    /** The focused row's notes, under the page (showHint). */
+    private static final Object SECTION_TAG = new Object(), NOTE_TAG = new Object(), HINT_TAG = new Object();
+    /** The focused row's notes, shown right under it (showHint). */
     private TextView hint;
 
     private void section(int title) {
@@ -2429,6 +2626,7 @@ public final class SettingsActivity extends Activity {
             boolean seen = false;
             for (int i = 0; i < pane.getChildCount(); i++) {
                 View c = pane.getChildAt(i);
+                if (c.getTag() == HINT_TAG) continue;
                 if (c.getTag() == SECTION_TAG) {
                     if (seen) break;   // the focused row's section has ended
                     sectionNotes = new ArrayList<>();
@@ -2448,8 +2646,18 @@ public final class SettingsActivity extends Activity {
                 text.append(n);
             }
         }
+        // Right under the focused row; nowhere for a row without notes.
+        ViewGroup parent = (ViewGroup) hint.getParent();
+        if (row == null || text.length() == 0) {
+            if (parent != null) parent.removeView(hint);
+            return;
+        }
         hint.setText(text);
-        hint.setVisibility(text.length() > 0 ? View.VISIBLE : View.INVISIBLE);
+        int at = pane.indexOfChild(row) + 1;
+        if (parent != pane || pane.indexOfChild(hint) != at) {
+            if (parent != null) parent.removeView(hint);
+            pane.addView(hint, Math.min(pane.indexOfChild(row) + 1, pane.getChildCount()), new LinearLayout.LayoutParams(-1, -2));
+        }
     }
 
     // ---- views -------------------------------------------------------------------------------------------

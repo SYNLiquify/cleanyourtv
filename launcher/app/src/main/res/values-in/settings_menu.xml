@@ -159,6 +159,9 @@
     <string name="sm_app_name">Nama aplikasi di atas dock</string>
     <string name="sm_compact_top">Bilah atas ringkas</string>
     <string name="sm_clock_weather">Jam &amp; Cuaca</string>
+    <string name="sm_search_hint">Cari setelan</string>
+    <string name="sm_search_suggested">Disarankan</string>
+    <string name="sm_search_none">Tidak ada setelan yang cocok</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

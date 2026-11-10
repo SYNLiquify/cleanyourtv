@@ -159,6 +159,9 @@
     <string name="sm_app_name">Назва застосунку над панеллю</string>
     <string name="sm_compact_top">Компактна верхня панель</string>
     <string name="sm_clock_weather">Годинник і погода</string>
+    <string name="sm_search_hint">Пошук у налаштуваннях</string>
+    <string name="sm_search_suggested">Пропозиції</string>
+    <string name="sm_search_none">Немає відповідних налаштувань</string>
     <string name="sm_atv_settings">Налаштування ATV</string>
     <string name="sm_hours">%1$d год</string>
     <string name="update_done">Лаунчер оновлено до %1$s</string>

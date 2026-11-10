@@ -159,6 +159,9 @@
     <string name="sm_app_name">اسم التطبيق فوق الشريط</string>
     <string name="sm_compact_top">شريط علوي مضغوط</string>
     <string name="sm_clock_weather">الساعة والطقس</string>
+    <string name="sm_search_hint">البحث في الإعدادات</string>
+    <string name="sm_search_suggested">مقترحة</string>
+    <string name="sm_search_none">لا توجد إعدادات مطابقة</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>

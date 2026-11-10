@@ -159,6 +159,9 @@
     <string name="sm_app_name">Appnavn over dokken</string>
     <string name="sm_compact_top">Kompakt topplinje</string>
     <string name="sm_clock_weather">Klokke og vær</string>
+    <string name="sm_search_hint">Søk i innstillinger</string>
+    <string name="sm_search_suggested">Forslag</string>
+    <string name="sm_search_none">Ingen innstillinger passer</string>
     <string name="sm_atv_settings">ATV-innstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskjermen er oppdatert til %1$s</string>

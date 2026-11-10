@@ -159,6 +159,9 @@
     <string name="sm_app_name">Nom de l\'app sobre el dock</string>
     <string name="sm_compact_top">Barra superior compacta</string>
     <string name="sm_clock_weather">Rellotge i temps</string>
+    <string name="sm_search_hint">Cerca a la configuració</string>
+    <string name="sm_search_suggested">Suggeriments</string>
+    <string name="sm_search_none">Cap opció coincideix</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

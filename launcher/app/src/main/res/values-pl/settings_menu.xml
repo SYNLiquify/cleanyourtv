@@ -159,6 +159,9 @@
     <string name="sm_app_name">Nazwa aplikacji nad dokiem</string>
     <string name="sm_compact_top">Kompaktowy górny pasek</string>
     <string name="sm_clock_weather">Zegar i pogoda</string>
+    <string name="sm_search_hint">Szukaj w ustawieniach</string>
+    <string name="sm_search_suggested">Sugerowane</string>
+    <string name="sm_search_none">Brak pasujących ustawień</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

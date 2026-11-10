@@ -159,6 +159,9 @@
     <string name="sm_app_name">底栏上方的应用名称</string>
     <string name="sm_compact_top">紧凑顶栏</string>
     <string name="sm_clock_weather">时钟和天气</string>
+    <string name="sm_search_hint">搜索设置</string>
+    <string name="sm_search_suggested">推荐</string>
+    <string name="sm_search_none">没有匹配的设置</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
     <string name="update_done">启动器已更新到 %1$s</string>

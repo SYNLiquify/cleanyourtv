@@ -159,6 +159,9 @@
     <string name="sm_app_name">שם האפליקציה מעל המעגן</string>
     <string name="sm_compact_top">סרגל עליון קומפקטי</string>
     <string name="sm_clock_weather">שעון ומזג אוויר</string>
+    <string name="sm_search_hint">חיפוש בהגדרות</string>
+    <string name="sm_search_suggested">מוצעים</string>
+    <string name="sm_search_none">אין הגדרות תואמות</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

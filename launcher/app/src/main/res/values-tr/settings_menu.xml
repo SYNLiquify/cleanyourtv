@@ -159,6 +159,9 @@
     <string name="sm_app_name">Dock’un üstünde uygulama adı</string>
     <string name="sm_compact_top">Kompakt üst çubuk</string>
     <string name="sm_clock_weather">Saat ve hava durumu</string>
+    <string name="sm_search_hint">Ayarlarda ara</string>
+    <string name="sm_search_suggested">Önerilen</string>
+    <string name="sm_search_none">Eşleşen ayar yok</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>

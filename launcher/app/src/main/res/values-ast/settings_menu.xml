@@ -159,6 +159,9 @@
     <string name="sm_app_name">Nome de l\'aplicación sobre\'l dock</string>
     <string name="sm_compact_top">Barra cimera compacta</string>
     <string name="sm_clock_weather">Reló y tiempu</string>
+    <string name="sm_search_hint">Buscar axustes</string>
+    <string name="sm_search_suggested">Suxerencies</string>
+    <string name="sm_search_none">Nengún axuste coincide</string>
     <string name="sm_atv_settings">Axustes d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llanzador anováu a %1$s</string>

@@ -159,6 +159,9 @@
     <string name="sm_app_name">Tên ứng dụng phía trên dock</string>
     <string name="sm_compact_top">Thanh trên cùng gọn</string>
     <string name="sm_clock_weather">Đồng hồ &amp; thời tiết</string>
+    <string name="sm_search_hint">Tìm cài đặt</string>
+    <string name="sm_search_suggested">Gợi ý</string>
+    <string name="sm_search_none">Không có cài đặt phù hợp</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>
