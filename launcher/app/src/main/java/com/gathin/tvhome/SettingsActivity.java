@@ -53,6 +53,8 @@ public final class SettingsActivity extends Activity {
 
     /** The category to open on (the language picker reopens the menu on System). */
     static final String EXTRA_CATEGORY = "category";
+    /** This fork: the categories, in the order of the list on the left. */
+    static final int PAGE_HOME = 0, PAGE_LOOK = 1, PAGE_CLOCK = 2, PAGE_SCREENSAVER = 3, PAGE_QUICK = 4, PAGE_SYSTEM = 5;
     static final String GRID_COLUMNS_KEY = "grid_columns";
     static final String CONTINUE_WATCHING_KEY = "continue_watching";
     static final String GREETING_MODE_KEY = "greeting_mode";
@@ -138,8 +140,8 @@ public final class SettingsActivity extends Activity {
         LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(-2, -2);
         titleLp.bottomMargin = dp(26);
         left.addView(title, titleLp);
-        int[] names = {R.string.sm_home, R.string.sm_themes, R.string.sm_weather, R.string.sm_clock, R.string.sm_storage,
-                R.string.sm_system};
+        int[] names = {R.string.sm_home, R.string.sm_look, R.string.sm_clock_weather, R.string.sm_screensaver,
+                R.string.sm_qs_title, R.string.sm_system};
         for (int i = 0; i < names.length; i++) {
             final int index = i;
             TextView b = pill(getString(names[i]));
@@ -155,8 +157,6 @@ public final class SettingsActivity extends Activity {
             lp.bottomMargin = dp(10);
             left.addView(b, lp);
             categoryButtons.add(b);
-            // The offline build has no weather; the button stays in the list, hidden, so the pages keep their numbers.
-            if (BuildConfig.OFFLINE && names[i] == R.string.sm_weather) b.setVisibility(View.GONE);
         }
 
         LinearLayout right = new LinearLayout(this);
@@ -196,7 +196,7 @@ public final class SettingsActivity extends Activity {
         setContentView(root);
         // The Themes page checks GitHub only once focus is in it, not when the category is merely passed over.
         root.getViewTreeObserver().addOnGlobalFocusChangeListener((was, now) -> {
-            if (category == 1 && back == null && now != null && isInside(now, pane)) onThemesEntered();
+            if (themesOpen && now != null && isInside(now, pane)) onThemesEntered();
         });
         int start = Math.max(0, Math.min(categoryButtons.size() - 1, getIntent().getIntExtra(EXTRA_CATEGORY, 0)));
         categoryButtons.get(start).requestFocus();
@@ -299,17 +299,28 @@ public final class SettingsActivity extends Activity {
         for (int i = 0; i < categoryButtons.size(); i++) categoryButtons.get(i).setSelected(i == index);
         clearPane();
         scroll.scrollTo(0, 0);
-        switch (index) {
-            case 0: buildHome(); break;
-            case 1: buildThemes(); break;
-            case 2: buildWeather(); break;
-            case 3: buildClock(); break;
-            case 4: buildStorage(); break;
-            default: buildSystem(); break;
+        // Passing over a category only shows its page; focus stays in the list until Right or OK.
+        browsing = true;
+        try {
+            switch (index) {
+                case PAGE_HOME: buildHome(); break;
+                case PAGE_LOOK: buildLook(); break;
+                case PAGE_CLOCK: buildClockWeather(); break;
+                case PAGE_SCREENSAVER: showScreensaver(); break;
+                case PAGE_QUICK: showQuickSettings(null); break;
+                default: buildSystem(); break;
+            }
+        } finally {
+            browsing = false;
         }
     }
 
     /** Builds the category again in place, at the same scroll position. */
+    /** True while a category's page is built because focus passed over it: such a page takes no focus. */
+    private boolean browsing;
+    /** The Themes page (a page of Look) is open: it checks GitHub once focus goes into it. */
+    private boolean themesOpen;
+
     private void rebuild(int index) {
         int scrollY = scroll.getScrollY();
         showCategory(index, true);
@@ -323,6 +334,7 @@ public final class SettingsActivity extends Activity {
     private void clearPane() {
         if (pane.hasFocus() && category >= 0) categoryButtons.get(category).requestFocus();
         hideScreensaverPreview();
+        themesOpen = false;
         pane.removeAllViews();
     }
 
@@ -352,7 +364,20 @@ public final class SettingsActivity extends Activity {
             }));
             note(getString(R.string.sm_nuvio_suggestions_note));
         }
-        section(R.string.sm_look);
+        section(R.string.sm_apps);
+        pane.addView(actionRow(getString(R.string.sm_reorder), "", () -> {
+            setResult(RESULT_OK, new Intent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true));
+            finish();
+        }));
+        pane.addView(actionRow(getString(R.string.sm_more_options), "", () ->
+                open(new Intent(this, LauncherSettingsActivity.class))));
+    }
+
+    /** This fork: Look - the themes, the highlight colour, and how Home's top, dock and motion look. */
+    private void buildLook() {
+        paneTitle.setText(R.string.sm_look);
+        pane.addView(actionRow(getString(R.string.sm_themes), "", () -> showThemes(true)));
+        section(R.string.sm_home);
         // This fork: a smaller clock, the date and the weather on one line, round icon pills.
         pane.addView(toggleRow(getString(R.string.sm_compact_top), config.compactTop, on -> {
             prefs.edit().putBoolean(Config.COMPACT_TOP_KEY, on).apply();
@@ -388,16 +413,25 @@ public final class SettingsActivity extends Activity {
         pane.addView(actionRow(getString(R.string.sm_custom_color), preset ? "" : Accent.hex(accent), () ->
                 showColorPicker(R.string.sm_custom_color, accent == 0 ? 0xFF0A84FF : accent, this::applyAccent, () -> {
                     back = null;
-                    rebuild(0);
+                    rebuild(PAGE_LOOK);
                     focusPane();
                 })));
-        section(R.string.sm_apps);
-        pane.addView(actionRow(getString(R.string.sm_reorder), "", () -> {
-            setResult(RESULT_OK, new Intent().putExtra(LauncherSettingsActivity.EXTRA_REORDER, true));
-            finish();
-        }));
-        pane.addView(actionRow(getString(R.string.sm_more_options), "", () ->
-                open(new Intent(this, LauncherSettingsActivity.class))));
+    }
+
+    /** The theme grid, a page of Look. */
+    private void showThemes(boolean focus) {
+        clearPane();
+        buildThemes();
+        themesOpen = true;
+        back = () -> rebuild(PAGE_LOOK);
+        if (focus) focusPane();   // into the page, which also starts its check with GitHub (onThemesEntered)
+    }
+
+    /** The Themes page again, where it was scrolled to (after a check or a change). */
+    private void reopenThemes() {
+        int y = scroll.getScrollY();
+        showThemes(false);
+        scroll.post(() -> scroll.scrollTo(0, y));
     }
 
     /** Whether this visit to Settings has checked the theme list against GitHub yet (once, on entering the page). */
@@ -527,10 +561,10 @@ public final class SettingsActivity extends Activity {
                 themesChecking = false;
                 if (isFinishing()) return;
                 themesStatus = getString(result != null ? R.string.sm_themes_current : R.string.sm_themes_offline);
-                if (category != 1 || back != null) return;
+                if (!themesOpen) return;
                 if (result != null && !signature(result).equals(before)) {
                     boolean inPane = pane.hasFocus();
-                    rebuild(1);
+                    reopenThemes();
                     if (inPane) focusPane();
                     return;
                 }
@@ -646,7 +680,7 @@ public final class SettingsActivity extends Activity {
                 if (isDefault(theme)) prefs.edit().putBoolean(DEFAULT_HIDDEN_KEY, true).apply();
                 else ThemeLibrary.removeDownloaded(this, theme.name);
                 Toast.makeText(this, getString(R.string.sm_downloaded_removed, theme.title()), Toast.LENGTH_SHORT).show();
-                rebuild(1);
+                reopenThemes();
                 focusPane();
             };
             holder.setOnLongClickListener(v -> {
@@ -746,9 +780,9 @@ public final class SettingsActivity extends Activity {
                 if (failure == null) Toast.makeText(this, getString(R.string.sm_theme_applied, title), Toast.LENGTH_SHORT).show();
                 else Toast.makeText(this, failure, Toast.LENGTH_LONG).show();
                 // Left the page meanwhile: the new Current badge shows the next time it is opened.
-                if (category != 1 || back != null) return;
+                if (!themesOpen) return;
                 boolean inPane = pane.hasFocus();
-                rebuild(1);
+                reopenThemes();
                 if (!inPane) return;
                 View again = themeHolders.get(key);
                 if (again == null) again = themeHolders.get(cardKey(theme.name, false));
@@ -758,8 +792,16 @@ public final class SettingsActivity extends Activity {
         });
     }
 
+    /** This fork: Clock & Weather - the time, the greeting and the weather of Home's top bar on one page. */
+    private void buildClockWeather() {
+        buildClock();
+        paneTitle.setText(R.string.sm_clock_weather);
+        if (BuildConfig.OFFLINE) return;   // the offline build has no weather
+        section(R.string.sm_weather);
+        buildWeather();
+    }
+
     private void buildWeather() {
-        paneTitle.setText(R.string.sm_weather);
         pane.addView(toggleRow(getString(R.string.sm_show_weather), Weather.enabled(this), on -> {
             prefs.edit().putBoolean(Weather.SHOW_KEY, on).apply();
             changed();
@@ -791,7 +833,7 @@ public final class SettingsActivity extends Activity {
     private void showCitySearch() {
         clearPane();
         paneTitle.setText(R.string.sm_find_city);
-        back = () -> rebuild(2);
+        back = () -> rebuild(PAGE_CLOCK);
         LinearLayout bar = new LinearLayout(this);
         bar.setOrientation(LinearLayout.HORIZONTAL);
         bar.setGravity(Gravity.CENTER_VERTICAL);
@@ -814,7 +856,7 @@ public final class SettingsActivity extends Activity {
             Weather.invalidate(this);
             changed();
             back = null;
-            rebuild(2);
+            rebuild(PAGE_CLOCK);
             focusPane();
         }));
         Runnable run = () -> {
@@ -845,7 +887,7 @@ public final class SettingsActivity extends Activity {
                             Weather.invalidate(this);
                             changed();
                             back = null;
-                            rebuild(2);
+                            rebuild(PAGE_CLOCK);
                             focusPane();
                         }));
                     }
@@ -863,7 +905,7 @@ public final class SettingsActivity extends Activity {
     }
 
     private void buildClock() {
-        paneTitle.setText(R.string.sm_clock);
+        paneTitle.setText(R.string.sm_clock_weather);
         String[] formats = {"system", "12", "24"};
         String format = prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat);
         int formatIndex = Math.max(0, java.util.Arrays.asList(formats).indexOf(format));
@@ -872,8 +914,6 @@ public final class SettingsActivity extends Activity {
             prefs.edit().putString(Config.CLOCK_FORMAT_KEY, formats[i]).apply();
             changed();
         }));
-        // This fork: where the screensaver puts the clock, the date and the weather, their sizes, the glow, when it starts.
-        pane.addView(actionRow(getString(R.string.sm_screensaver), "", this::showScreensaver));
         String[] modes = {GREETING_TIME, GREETING_CUSTOM, GREETING_OFF};
         int modeIndex = Math.max(0, java.util.Arrays.asList(modes).indexOf(prefs.getString(GREETING_MODE_KEY, GREETING_TIME)));
         pane.addView(choiceRow(getString(R.string.sm_greeting), new String[]{getString(R.string.sm_greeting_time),
@@ -897,7 +937,7 @@ public final class SettingsActivity extends Activity {
                 if (index < now.size()) now.remove(index);
                 prefs.edit().putString(GREETINGS_KEY, TextUtils.join("\n", now)).apply();
                 changed();
-                rebuild(3);
+                rebuild(PAGE_CLOCK);
                 focusPane();
             }));
         }
@@ -962,6 +1002,21 @@ public final class SettingsActivity extends Activity {
      * so nothing is lumped together; empty parts stay hidden until they hold something. The sizes are read off the main thread; the card fills in
      * when they are.
      */
+    /** Storage, a page of System. */
+    private void showStorage() {
+        clearPane();
+        buildStorage();
+        back = () -> rebuild(PAGE_SYSTEM);
+        focusPane();
+    }
+
+    /** The Storage page again, where it was scrolled to (after a clean-up). */
+    private void reopenStorage() {
+        int y = scroll.getScrollY();
+        showStorage();
+        scroll.post(() -> scroll.scrollTo(0, y));
+    }
+
     private void buildStorage() {
         paneTitle.setText(R.string.sm_storage);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
@@ -987,21 +1042,18 @@ public final class SettingsActivity extends Activity {
         pane.addView(actionRow(getString(R.string.sm_clear_thumbnails), "", () -> {
             delete(thumbnails);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
-            rebuild(4);
-            focusPane();
+            reopenStorage();
         }));
         pane.addView(actionRow(getString(R.string.sm_delete_downloaded), "", () -> {
             for (ThemeLibrary.Theme t : ThemeLibrary.downloaded(this)) ThemeLibrary.removeDownloaded(this, t.name);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
-            rebuild(4);
-            focusPane();
+            reopenStorage();
         }));
         if (!BuildConfig.OFFLINE) pane.addView(actionRow(getString(R.string.sm_delete_other_languages), "", () -> {
             String inUse = languageInUse();
             for (String tag : installedLanguages()) if (!tag.equals(inUse)) LanguagePacks.delete(this, tag);
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
-            rebuild(4);
-            focusPane();
+            reopenStorage();
         }));
         pane.addView(actionRow(getString(R.string.sm_clear_previews), "", () -> {
             // Previews and the saved theme list; the downloaded copies stay. Both come back from GitHub when needed.
@@ -1015,8 +1067,7 @@ public final class SettingsActivity extends Activity {
                 }
             }
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
-            rebuild(4);
-            focusPane();
+            reopenStorage();
         }));
 
         List<String> packs = installedLanguages();
@@ -1051,7 +1102,7 @@ public final class SettingsActivity extends Activity {
             long launcher = app + data;
             long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, settings, update, temp, runtime};
             main.post(() -> {
-                if (isFinishing() || category != 4) return;
+                if (isFinishing() || !launcherBar.isAttachedToWindow()) return;   // Storage left meanwhile
                 launcherTotal[0].setText(bytes(launcher));
                 launcherBar.set(launcher, parts, STORAGE_COLORS);
                 legend(launcherLegend, STORAGE_LABELS, parts, STORAGE_COLORS);
@@ -1192,11 +1243,10 @@ public final class SettingsActivity extends Activity {
     private void buildSystem() {
         paneTitle.setText(R.string.sm_system);
         pane.addView(actionRow(getString(R.string.sm_atv_settings), "", this::showAtvSettings));
+        pane.addView(actionRow(getString(R.string.sm_storage), "", this::showStorage));
         pane.addView(actionRow(getString(R.string.sm_language), languageName(prefs.getString(Config.LOCALE_KEY, config.locale)),
                 this::showLanguages));
         Updates.Offer offer = Updates.offer(this);
-        // This fork: the panel the remote's Settings button opens, arranged with its own preview.
-        pane.addView(actionRow(getString(R.string.sm_qs_title), "", () -> showQuickSettings(null)));
         pane.addView(actionRow(getString(R.string.sm_updates),
                 offer != null ? updateStatus(offer) : Updates.installedName(this), this::showUpdates));
         String version = "";
@@ -1251,7 +1301,7 @@ public final class SettingsActivity extends Activity {
     private void showInstalledLanguages() {
         clearPane();
         paneTitle.setText(R.string.sm_st_languages);
-        back = () -> rebuild(4);
+        back = this::showStorage;
         note(getString(R.string.sm_st_languages_note));
         String inUse = languageInUse();
         pane.addView(actionRow("English", getString(inUse == null ? R.string.sm_in_use : R.string.sm_built_in), null));
@@ -1284,7 +1334,7 @@ public final class SettingsActivity extends Activity {
     private void showLanguages(String focusTag) {
         clearPane();
         paneTitle.setText(R.string.sm_language);
-        back = () -> rebuild(5);
+        back = () -> rebuild(PAGE_SYSTEM);
         if (!BuildConfig.OFFLINE) note(getString(R.string.sm_language_note));   // offline: nothing downloads
         String current = prefs.getString(Config.LOCALE_KEY, config.locale).trim();
         java.util.Set<String> have = LanguagePacks.installedTags(this);
@@ -1328,7 +1378,7 @@ public final class SettingsActivity extends Activity {
                 if (ok) {
                     Toast.makeText(this, getString(R.string.sm_lang_ready, name), Toast.LENGTH_LONG).show();
                     // Still on this list (not another page): show the language under Installed, focused.
-                    if (category == 5 && getString(R.string.sm_language).contentEquals(paneTitle.getText())) showLanguages(tag);
+                    if (category == PAGE_SYSTEM && getString(R.string.sm_language).contentEquals(paneTitle.getText())) showLanguages(tag);
                 } else {
                     value[0].setText(R.string.sm_lang_failed_short);
                     Toast.makeText(this, R.string.sm_lang_failed, Toast.LENGTH_LONG).show();
@@ -1343,7 +1393,7 @@ public final class SettingsActivity extends Activity {
         prefs.edit().putString(Config.LOCALE_KEY, tag).apply();
         changed();
         // The menu itself takes the language when it is built again (attachBaseContext); it opens on System.
-        getIntent().putExtra(EXTRA_CATEGORY, 5);
+        getIntent().putExtra(EXTRA_CATEGORY, PAGE_SYSTEM);
         recreate();
     }
 
@@ -1351,7 +1401,7 @@ public final class SettingsActivity extends Activity {
     private void showAtvSettings() {
         clearPane();
         paneTitle.setText(R.string.sm_atv_settings);
-        back = () -> rebuild(5);
+        back = () -> rebuild(PAGE_SYSTEM);
         pane.addView(actionRow(getString(R.string.sm_tv_settings), "", () ->
                 open(SystemSettings.intent(this, Settings.ACTION_SETTINGS))));
         pane.addView(actionRow(getString(R.string.sm_network), "", () ->
@@ -1376,7 +1426,7 @@ public final class SettingsActivity extends Activity {
         updatesOpen = true;
         back = () -> {
             updatesOpen = false;
-            rebuild(5);
+            rebuild(PAGE_SYSTEM);
         };
         note(getString(R.string.sm_update_note));
         Updates.Offer offer = Updates.offer(this);
@@ -1385,7 +1435,7 @@ public final class SettingsActivity extends Activity {
         View check = actionRow(getString(R.string.sm_update_check), now.isEmpty() ? " " : now, () -> {
             setRowValue(status, getString(R.string.sm_checking));
             Updates.check(this, found -> {
-                if (category == 5 && updatesOpen) showUpdates();
+                if (category == PAGE_SYSTEM && updatesOpen) showUpdates();
             });
         });
         // actionRow's value view is the second child; keep it to show "Checking…".
@@ -1427,7 +1477,7 @@ public final class SettingsActivity extends Activity {
                     if (picked.equals(Updates.channel(this))) return;
                     Updates.setChannel(this, picked);
                     Updates.check(this, found -> {
-                        if (category == 5 && updatesOpen) showUpdates();
+                        if (category == PAGE_SYSTEM && updatesOpen) showUpdates();
                     });
                 }));
         note(getString(R.string.sm_update_channel_note));
@@ -1523,7 +1573,7 @@ public final class SettingsActivity extends Activity {
             adaptive = true;
             Accent.setAdaptive(this);
             restyle(0);
-            rebuild(0);
+            rebuild(PAGE_LOOK);
             focusSwatch(getString(R.string.sm_adaptive));
         }), swatchLp(size));
         for (int c : Accent.PRESETS) {
@@ -1533,7 +1583,7 @@ public final class SettingsActivity extends Activity {
             String name = c == 0 ? getString(R.string.sm_white_default) : Accent.hex(c);
             row.addView(swatch(name, fill, !adaptive && c == accent, v -> {
                 applyAccent(c);
-                rebuild(0);
+                rebuild(PAGE_LOOK);
                 focusSwatch(name);
             }), swatchLp(size));
         }
@@ -1770,7 +1820,6 @@ public final class SettingsActivity extends Activity {
     private void showScreensaver(String focusLabel) {
         clearPane();
         paneTitle.setText(R.string.sm_screensaver);
-        back = () -> rebuild(3);
         showScreensaverPreview();
         ScreensaverStyle st = ScreensaverStyle.load(this);
 
@@ -1851,6 +1900,7 @@ public final class SettingsActivity extends Activity {
             }
         }
         View target = focus;
+        if (browsing) return;
         if (target != null) pane.post(target::requestFocus);
         else focusPane();
     }
@@ -2043,8 +2093,8 @@ public final class SettingsActivity extends Activity {
         qsMoving = null;
         stayOnPage(this::clearPane);
         paneTitle.setText(R.string.sm_qs_title);
-        back = () -> rebuild(5);
-        qsPageBack = back;
+        back = null;
+        qsPageBack = null;
         note(getString(R.string.sm_qs_note));
 
         View card = getLayoutInflater().inflate(R.layout.quick_panel, pane, false);
@@ -2076,7 +2126,7 @@ public final class SettingsActivity extends Activity {
 
         qsOrder = QuickTiles.order(this);
         View focus = drawQuickTiles(focusId != null ? focusId : qsOrder.get(0));
-        if (focus != null) pane.post(focus::requestFocus);
+        if (focus != null && !browsing) pane.post(focus::requestFocus);
     }
 
     /** Runs r, which replaces the focused view, without the category list switching the page meanwhile. */

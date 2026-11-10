@@ -163,6 +163,7 @@
     <string name="suggestion_open">Open in Nuvio</string>
     <string name="sm_app_name">App name above the dock</string>
     <string name="sm_compact_top">Compact top bar</string>
+    <string name="sm_clock_weather">Clock &amp; Weather</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

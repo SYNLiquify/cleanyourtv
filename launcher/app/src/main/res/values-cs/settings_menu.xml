@@ -158,6 +158,7 @@
     <string name="suggestion_open">Otevřít v Nuviu</string>
     <string name="sm_app_name">Název aplikace nad dokem</string>
     <string name="sm_compact_top">Kompaktní horní lišta</string>
+    <string name="sm_clock_weather">Hodiny a počasí</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

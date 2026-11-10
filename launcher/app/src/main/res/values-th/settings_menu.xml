@@ -158,6 +158,7 @@
     <string name="suggestion_open">เปิดใน Nuvio</string>
     <string name="sm_app_name">ชื่อแอปเหนือแถบแอป</string>
     <string name="sm_compact_top">แถบด้านบนแบบกะทัดรัด</string>
+    <string name="sm_clock_weather">นาฬิกาและสภาพอากาศ</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>

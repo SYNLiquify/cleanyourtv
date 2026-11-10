@@ -158,6 +158,7 @@
     <string name="suggestion_open">Åbn i Nuvio</string>
     <string name="sm_app_name">Appnavn over docken</string>
     <string name="sm_compact_top">Kompakt topbjælke</string>
+    <string name="sm_clock_weather">Ur og vejr</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskærm opdateret til %1$s</string>

@@ -158,6 +158,7 @@
     <string name="suggestion_open">Otwórz w Nuvio</string>
     <string name="sm_app_name">Nazwa aplikacji nad dokiem</string>
     <string name="sm_compact_top">Kompaktowy górny pasek</string>
+    <string name="sm_clock_weather">Zegar i pogoda</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

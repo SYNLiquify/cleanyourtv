@@ -158,6 +158,7 @@
     <string name="suggestion_open">Buka di Nuvio</string>
     <string name="sm_app_name">Nama aplikasi di atas dock</string>
     <string name="sm_compact_top">Bilah atas ringkas</string>
+    <string name="sm_clock_weather">Jam &amp; Cuaca</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

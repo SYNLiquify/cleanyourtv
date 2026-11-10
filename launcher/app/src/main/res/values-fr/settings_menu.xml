@@ -158,6 +158,7 @@
     <string name="suggestion_open">Ouvrir dans Nuvio</string>
     <string name="sm_app_name">Nom de l’appli au-dessus du dock</string>
     <string name="sm_compact_top">Barre supérieure compacte</string>
+    <string name="sm_clock_weather">Horloge et météo</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Lanceur mis à jour vers %1$s</string>

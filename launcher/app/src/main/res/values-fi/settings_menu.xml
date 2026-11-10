@@ -158,6 +158,7 @@
     <string name="suggestion_open">Avaa Nuviossa</string>
     <string name="sm_app_name">Sovelluksen nimi telakan yllä</string>
     <string name="sm_compact_top">Tiivis yläpalkki</string>
+    <string name="sm_clock_weather">Kello ja sää</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>

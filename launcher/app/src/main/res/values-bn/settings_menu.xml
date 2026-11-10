@@ -158,6 +158,7 @@
     <string name="suggestion_open">Nuvio-তে খুলুন</string>
     <string name="sm_app_name">ডকের উপরে অ্যাপের নাম</string>
     <string name="sm_compact_top">ছোট উপরের বার</string>
+    <string name="sm_clock_weather">ঘড়ি ও আবহাওয়া</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>
