@@ -68,7 +68,7 @@ public final class QuickSettingsActivity extends Activity {
     }
 
     /**
-     * This fork: the Dim screen row (ScreenDim). Left/Right move it a step (Right dims more, mirrored in a right-to-left
+     * This fork: the Dim screen row (ScreenDim). Left/Right move it 1% (held, it sweeps; Right dims more, mirrored in a right-to-left
      * language), OK turns it off or back on; the bar shows the level out of ScreenDim.MAX.
      */
     private void bindDim() {

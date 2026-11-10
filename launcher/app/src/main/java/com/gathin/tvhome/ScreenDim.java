@@ -22,7 +22,7 @@ final class ScreenDim {
     /** Percent of black over the screen, 0 (off) to MAX, in STEP steps. */
     static final String KEY = "screen_dim";
     static final int MAX = 80;
-    static final int STEP = 10;
+    static final int STEP = 1;   // every percent: a held Left/Right sweeps through them
 
     private static View overlay;
     private static AccessibilityService owner;
