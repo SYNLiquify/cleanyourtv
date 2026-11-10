@@ -33,6 +33,8 @@ final class Weather {
     private static final long PLACE_MAX_AGE_MS = 24 * 60 * 60 * 1000L;
     private static final long WEATHER_MAX_AGE_MS = 30 * 60 * 1000L;
     private static final long RETRY_MS = 5 * 60 * 1000L;
+    /** refreshNow: the shortest time between two fetches it starts. */
+    private static final long REFRESH_GAP_MS = 60 * 1000L;
     /** A reading older than this is not shown at all: an old temperature reads as a wrong one. */
     private static final long SHOW_MAX_AGE_MS = 6 * 60 * 60 * 1000L;
     private static final int TIMEOUT_MS = 10_000;
@@ -89,6 +91,23 @@ final class Weather {
         long now = System.currentTimeMillis();
         boolean due = now - prefs.getLong("time", 0) > WEATHER_MAX_AGE_MS;
         if (!due || fetching || now - lastAttempt < RETRY_MS) return;
+        start(now);
+    }
+
+    /**
+     * This fork: fetches now, whatever the age of the reading, for the Home button and for the network coming back
+     * after the TV wakes; a failed fetch (the TV still offline, a weather service briefly down) is then retried on
+     * the next press instead of 5 minutes later. At most once a minute, so pressing Home again and again asks nothing.
+     */
+    void refreshNow() {
+        show();
+        if (!enabled(context)) return;
+        long now = System.currentTimeMillis();
+        if (fetching || now - lastAttempt < REFRESH_GAP_MS) return;
+        start(now);
+    }
+
+    private void start(long now) {
         lastAttempt = now;
         fetching = true;
         new Thread(() -> {

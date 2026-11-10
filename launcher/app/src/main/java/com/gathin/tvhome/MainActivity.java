@@ -414,7 +414,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             // open_on_start_network_wait: the boot's app opens on the first validated network.
             if (validated && startPending != null) handler.post(openWhenOnline);
             // This fork: a launcher update check from the TV starting or waking that failed offline runs now.
-            if (validated) handler.post(() -> Updates.checkIfStartPending(MainActivity.this, MainActivity.this::offerUpdate));
+            if (validated) handler.post(() -> {
+                Updates.checkIfStartPending(MainActivity.this, MainActivity.this::offerUpdate);
+                // Back online (the TV woke, Wi-Fi returned): fetch the weather now rather than wait for the retry.
+                if (weather != null) weather.refreshNow();
+            });
             if (validated == lastValidated) return;
             lastValidated = validated;
             if (wifiNoInternetTint != null) handler.post(MainActivity.this::updateWifiLabel);
@@ -1164,6 +1168,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (intent == null || !intent.hasCategory(Intent.CATEGORY_HOME)) return;
         // This fork: every Home press checks for a launcher update (at most once a minute; not with checks Off).
         Updates.checkOnHomePress(this, this::offerUpdate);
+        if (weather != null) weather.refreshNow();   // this fork: fresh weather each time Home is pressed
         if (gameDay != null && !stopped) gameDay.read();
         grid.scrollToPosition(0);
         lastFocused = 0;
