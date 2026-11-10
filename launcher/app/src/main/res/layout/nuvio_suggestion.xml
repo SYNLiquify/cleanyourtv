@@ -23,10 +23,12 @@
         android:scaleType="centerCrop"
         android:alpha="0" />
 
+    <!-- The scrim: suggestion_scrim baked into a small picture stretched over the screen (NuvioSuggestions), one
+         fill a frame instead of the drawable's three full-screen layers. -->
     <View
+        android:id="@+id/suggestionScrim"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/suggestion_scrim" />
+        android:layout_height="match_parent" />
 
     <LinearLayout
         android:id="@+id/suggestionInfo"

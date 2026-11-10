@@ -357,6 +357,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     private boolean stopped;
     /** Between onStart and onStop: Home is (at least partly) on screen. */
     private boolean started;
+    /** This fork: the sky hidden under a Nuvio suggestion (NuvioSuggestions.setCovering). */
+    private boolean skyCovered;
     /**
      * Between onResume and onPause: Home is in front. The idle clock only runs then; a key's ACTION_UP can still
      * reach Home after onPause, when that key opened another app, and must not start the clock over the app.
@@ -577,6 +579,18 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glassAccent = festive ? 0 : accent;
         ambient = findViewById(R.id.ambient);
         suggestions = new NuvioSuggestions(this, findViewById(R.id.suggestion));
+        // While a suggestion covers the screen, the wallpaper and the sky under it need not draw on every frame.
+        suggestions.setCovering(covered -> {
+            wallpaperPlayer.setCovered(covered);
+            if (covered && sky.getVisibility() == View.VISIBLE) {
+                sky.setVisibility(View.INVISIBLE);
+                skyCovered = true;
+            } else if (!covered && skyCovered) {
+                skyCovered = false;
+                sky.setVisibility(View.VISIBLE);
+                sky.update();
+            }
+        });
         suggestions.setBackToDock(() -> focusTile(lastFocused));
         // Only while the dock has focus: anywhere else (the top bar, the rows, Continue watching) fades them out.
         findViewById(R.id.root).getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {

@@ -85,7 +85,7 @@ final class WallpaperPlayer {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         width = metrics.widthPixels;
         height = metrics.heightPixels;
-        image = new ImageView(context);
+        image = new ImageView(context);   // never hidden elsewhere, so setCovered can
         image.setScaleType(ImageView.ScaleType.CENTER_CROP);
         image.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
         names = config.wallpaperCaptions && config.wallpaperEnabled && !files.isEmpty()
@@ -300,5 +300,10 @@ final class WallpaperPlayer {
         } catch (Exception | OutOfMemoryError failure) {
             return null;
         }
+    }
+
+    /** This fork: a Nuvio suggestion covers the screen; the wallpaper under it is not drawn meanwhile. */
+    void setCovered(boolean covered) {
+        image.setVisibility(covered ? View.INVISIBLE : View.VISIBLE);
     }
 }

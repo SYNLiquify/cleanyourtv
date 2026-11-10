@@ -84,6 +84,20 @@ final class NuvioSuggestions {
     /** Home paused but still on screen (the translucent quick panel over it): hold the picture, don't rotate. */
     private boolean paused;
 
+    /** Told true once the suggestion covers the screen (what is behind it need not draw), false as it goes. */
+    private java.util.function.Consumer<Boolean> covering = c -> { };
+    private boolean covers;
+
+    void setCovering(java.util.function.Consumer<Boolean> covering) {
+        this.covering = covering;
+    }
+
+    private void cover(boolean on) {
+        if (covers == on) return;
+        covers = on;
+        covering.accept(on);
+    }
+
     private final Runnable rotate = () -> {
         if (!paused) step();
     };
@@ -113,6 +127,18 @@ final class NuvioSuggestions {
             return keyCode == android.view.KeyEvent.KEYCODE_DPAD_LEFT || keyCode == android.view.KeyEvent.KEYCODE_DPAD_RIGHT;
         });
         dir = new File(ctx.getCacheDir(), "suggestions");
+        // The scrim's three gradients, drawn once into 192x108 and stretched (filtered, so it stays smooth): a frame
+        // then fills the screen once for it instead of three times while Home animates over the suggestion.
+        Bitmap scrim = Bitmap.createBitmap(192, 108, Bitmap.Config.ARGB_8888);
+        android.graphics.drawable.Drawable gradients = layer.getContext().getDrawable(R.drawable.suggestion_scrim);
+        if (gradients != null) {
+            gradients.setBounds(0, 0, 192, 108);
+            gradients.draw(new android.graphics.Canvas(scrim));
+        }
+        android.graphics.drawable.BitmapDrawable baked =
+                new android.graphics.drawable.BitmapDrawable(layer.getResources(), scrim);
+        baked.setFilterBitmap(true);
+        layer.findViewById(R.id.suggestionScrim).setBackground(baked);
     }
 
     /** Whether a Nuvio app is installed, worked out once; packagesChanged() asks again. Main thread only. */
@@ -222,8 +248,10 @@ final class NuvioSuggestions {
         if (!shown) return;
         shown = false;
         current = null;
+        cover(false);
         layer.animate().cancel();
-        layer.animate().alpha(0f).setDuration(400).withEndAction(() -> {
+        // withLayer: the fade draws the suggestion into a texture once, not into an offscreen buffer every frame.
+        layer.animate().alpha(0f).setDuration(400).withLayer().withEndAction(() -> {
             if (!shown) {
                 layer.setVisibility(View.GONE);
                 release();
@@ -249,6 +277,7 @@ final class NuvioSuggestions {
         paused = false;
         wanted = false;
         hide();
+        cover(false);
         layer.animate().cancel();
         layer.setAlpha(0f);
         layer.setVisibility(View.GONE);
@@ -309,16 +338,23 @@ final class NuvioSuggestions {
             shown = true;
             in.setAlpha(1f);
             out.setAlpha(0f);
+            // A under B: with B on show, A is hidden and not drawn under it.
+            backA.setVisibility(in == backB ? View.INVISIBLE : View.VISIBLE);
             layer.setVisibility(View.VISIBLE);
             layer.animate().cancel();
-            layer.animate().alpha(1f).setDuration(FADE_MS).start();
+            layer.animate().alpha(1f).setDuration(FADE_MS).withLayer().withEndAction(() -> {
+                if (shown) cover(true);
+            }).start();
             return;
         }
         // B lies over A, both under the scrim and the text: B fades in over A, or out to show the new A under it.
         backB.animate().cancel();
+        backA.setVisibility(View.VISIBLE);
         if (in == backB) {
             backB.setAlpha(0f);
-            backB.animate().alpha(1f).setDuration(FADE_MS).withLayer().start();
+            backB.animate().alpha(1f).setDuration(FADE_MS).withLayer().withEndAction(() -> {
+                if (backB.getAlpha() >= 1f) backA.setVisibility(View.INVISIBLE);   // covered: not drawn
+            }).start();
         } else {
             backA.setAlpha(1f);
             backB.animate().alpha(0f).setDuration(FADE_MS).withLayer().start();
