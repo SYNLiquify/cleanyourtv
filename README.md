@@ -1,9 +1,44 @@
-# This fork: an Apple TV-style home with Continue watching, weather, a Settings menu and highlight colors
+# The CleanYourTV launcher, supercharged: packed with features, up to date with mainline
 
 A fork of CleanYourTV's launcher, listed in the main repo's [SHOWCASE](https://github.com/Gathin23/cleanyourtv/blob/main/SHOWCASE.md).
 It runs on an **onn. 4K Streaming Box (2023), Google TV 14** and a **Hisense SmartTV 4K (songshan), Android 11**.
-The debloat tools, TV lists and docs are the same as upstream; only the launcher changes.
+The debloat tools, TV lists and docs are the same as upstream, and every mainline commit is merged in; only the launcher changes.
+Each release comes in two builds: **online** and **offline** (goes online only for updates).
 [FORK.md](FORK.md) has the details: every setting, and every network request and when it runs.
+
+## Changelog
+
+The full notes for each version are on the [releases page](https://github.com/SYNLiquify/cleanyourtv/releases).
+
+### 0.6.2 (November 10, 2026)
+- **Nuvio suggestions on Home.** Popular movies and series fill the background while the dock has focus, with **Open in Nuvio** one press up, and a toggle in Settings (online build only).
+- **Customize the Quick settings panel.** Move, rename or turn off tiles, plus two app buttons.
+- **A compact top bar.** And a smaller app name above the dock, each with a toggle in Settings.
+- **A tidier Settings.** New groups, search, notes under each row, and Back returns to the row you came from.
+- **Storage labels updated.** Storage was rescanned and its labels updated for the new features.
+- **Weather fix.** The weather no longer disappears after the TV wakes up or after a while of inactivity.
+- **Mainline.** The latest launcher fixes from the main CleanYourTV repo, listed in the [release notes](https://github.com/SYNLiquify/cleanyourtv/releases/tag/launcher-5927).
+
+### 0.6.1 (November 6, 2026)
+- **Quick settings panel, redesigned in the Google TV style.** The remote's Settings button opens a slim glass panel with the date and time, a round button for the TV's settings, and Display, Network, Apps and Launcher settings as tiles on a soft drop shadow.
+- **Screensaver settings with a live preview.** When it starts, the clock moving around or fixed on one of nine spots, the date and weather placed with it or on their own, a size for each, and a custom glow with one to four points (offline: no weather).
+
+### 0.6.0 (November 5, 2026)
+- **An offline build.** It goes online only for updates: no weather, no downloaded thumbnails, themes from the TV, and every language built in. **Update channel** under Settings > System > Updates switches between the two builds.
+- **The remote's Settings button and held volume.** `device.json` holds one TV's remote-key settings so they survive theme changes, and the installer now walks through setting up the Settings button. On Hisense TVs held volume keeps ramping.
+- **Launcher settings from the Settings panel** opens this launcher's own Settings menu.
+- **"Press Home to go back" after an update** shows again on TVs that never told the launcher it was updated.
+
+### 0.5.9 (November 5, 2026)
+- **Both versions under Settings > System.** It reads "Launcher 3.4 · Liquify's fork 0.5.9": the upstream launcher this fork is built on, then the fork's own version.
+
+### 0.5.8 (November 5, 2026)
+- **Plain version numbers.** TVs, Settings and release titles show 0.5.8, 0.5.9 and so on.
+
+### Earlier builds
+The first builds (3.3-fork and 3.4-fork pre-releases) added the Apple TV-style home, the highlight colors, Continue watching, the weather, the Settings menu, 32 languages and updates from this fork's releases.
+
+## Screenshots
 
 <p align="center">
   <img src="docs/screenshots/apple-tv-home/home-adaptive-youtube.jpg" alt="Home with the dock focused on YouTube: the focus glow, the glow behind Home and the pill outlines are YouTube red" width="900">
@@ -63,16 +98,21 @@ color, sampled from its banner like the glow behind Home.
 | ![Home in Japanese: the date, the weather and the pills translated](docs/screenshots/apple-tv-home/japanese-home.jpg) | ![Home in Spanish: the long date and weather shrink to one line](docs/screenshots/apple-tv-home/spanish-home.jpg) |
 | **Home in Japanese** | **Home in Spanish**: long words shrink to fit one line |
 
-### What's new
+## Features
 
 **Home**
-- The focused dock rests at the screen's bottom edge, about 8% larger. The clock and the focused app's big name line up with the dock's left edge.
+- The focused dock rests at the screen's bottom edge, about 8% larger. The clock and the focused app's name line up with the dock's left edge; the name sits just above the dock and can be turned off.
 - Down glides the dock up under the clock in about 0.4 s while it shrinks back and the rows below grow; Up reverses it.
 - The app grid spans exactly the dock's width, 4 across by default (`grid_columns`).
 - Up and Down land on the nearest tile on screen, since the dock and the grid can have different column counts.
+- **Compact top bar** (on by default): a smaller clock with the date and the weather on one line beside it, and the Inputs, Wi-Fi and Settings pills as round icons.
 - While apps are being reordered, a pill under the top bar reads "Reordering apps, press Back to cancel".
 
-**Highlight color** (Settings > Home)
+**Nuvio suggestions** (online build)
+- While the dock has focus, popular movies and series from Nuvio's default catalog fill Home's background: the backdrop, the title's logo, its rating and year, fading to the next title every few seconds.
+- Up from the dock reaches **Open in Nuvio**, which opens that title in the Nuvio app. They stay under the Quick settings panel and fade away when focus leaves the dock.
+
+**Highlight color** (Settings > Look)
 - What a focused tile's glass, pill, menu row and Continue watching card turn, plus the pills' outline.
 - **Adaptive**: each focused app's own color, sampled from its banner like the glow behind Home.
 - White (the original look) and eight presets: blue, sky, green, yellow, orange, red, pink and purple.
@@ -82,43 +122,58 @@ color, sampled from its banner like the glow behind Home.
 **Continue watching**
 - A sideways row of up to 20 thumbnail cards under the dock, read from an app's preview channel. Each card shows the show or film name, season and episode with the episode title, a time-left pill ("Up next" when not started) and a progress line. OK opens the title in the app.
 - The row is cut off at the dock's right edge and lines up with the grid's first column.
-- Thumbnails are cached on the TV and deleted once a title leaves the list.
+- Thumbnails are cached on the TV and deleted once a title leaves the list (the offline build keeps the app's banner instead).
 - **Only Nuvio for now**. Other apps that publish a continue-watching preview channel, such as Stremio, can be added in `continue_watching_apps`; they are untested so far.
 
-**Weather**
+**Weather** (online build)
 - A line under the date on Home and on the clock screensaver: temperature, conditions, and today's high and low.
-- Location from the public IP, or a city picked in Settings. Cached for a day; the weather itself for 30 minutes.
+- Location from the public IP, or a city picked in Settings. Cached for a day; the weather itself for 30 minutes, and refreshed on every Home press and when the network comes back.
+
+**Quick settings panel** (the remote's Settings button)
+- A slim Google TV-style glass panel with the date and time, a round button for the TV's settings, and tiles for Display, Network, Apps and Launcher settings, on a soft drop shadow.
+- Settings > Quick settings shows the panel itself: select a tile to move it, rename it or turn it off (off tiles go to the bottom), and pick the apps for two extra app buttons. **Reset layout** puts it back.
+
+**Screensaver** (Settings > Screensaver)
+- A live preview above the options, and the real screensaver full screen.
+- When it starts (5 minutes to 2 hours), the clock moving around or fixed on one of nine spots, aligned to the side it's on.
+- The date and the weather with the clock, on a spot of their own, or off, with a size for each (S, M, L, XL).
+- The glow behind them changing colours, one custom colour, or off, from one to four points of light.
 
 **Settings menu** (the top bar's Settings button; Android's own settings stay under System)
-- **Home:** dock apps (1–6), apps per row (2–6), Continue watching on/off, dock background opacity, animations, highlight color, reorder apps.
-- **Themes:** a preview of every theme in this repo, applied in place.
-  - Applied themes are kept on the TV under **Downloaded**, with Default first. Each can be deleted, except the one in use.
-  - A bold "Up to date with GitHub" status with a **Refresh** button.
-  - Checks stay within GitHub's rate limit: only when the page is opened, at most every 10 minutes, the raw README first, and the API only when it changed.
-- **Weather:** on/off, °F or °C, conditions and high/low on/off, city search (or automatic), refresh now.
-- **Clock:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none.
-- **Storage:** the TV's free space, what the launcher uses split by part, the installed languages (a page listing them with their size; choose one to remove it), and clean-up buttons for thumbnails, downloaded themes, previews and the languages not in use.
-- **System:** three rows, each opening its own page: **ATV settings** (Android TV settings, network and Wi-Fi, apps, screensaver, default home app), **Language** and **Updates**.
+- **Search** in the box under the title: matching settings appear on the right as you type, each opening its page with the row focused. Each row's note shows right under it, and Back returns to the row you came from.
+- **Home:** dock apps (1–6), apps per row (2–6), Continue watching, Nuvio suggestions, reorder apps.
+- **Look:** themes, highlight color, compact top bar, the app name above the dock, dock background, animations.
+  - **Themes:** a preview of every theme in this repo, applied in place, kept on the TV under **Downloaded** (Default first) and deletable except the one in use, with a bold "Up to date with GitHub" status and a **Refresh** button. Checks stay within GitHub's rate limit: only when the page is opened, at most every 10 minutes. The offline build lists the themes on the TV and theme folders copied onto it.
+- **Clock & Weather:** 12/24-hour or system; a greeting by time of day (with an optional name), custom greetings that rotate each visit or every 5–60 minutes, or none; weather on/off, °F or °C, conditions and high/low, city search (or automatic), refresh now.
+- **Screensaver** and **Quick settings:** as above.
+- **System:** **ATV settings** (Android TV settings, network and Wi-Fi, apps, screensaver, default home app), **Language**, **Updates** and **Storage**: the TV's free space, what the launcher uses by part (Nuvio suggestions, thumbnails, themes, languages and more), and clean-up buttons for each.
 
 **Language** (Settings > System > Language)
 - The TV's language, or any of 32: English, Español, 日本語 and every language upstream's launcher is translated into (Deutsch, Français, Português, 한국어, 简体中文, Tiếng Việt, Türkçe, Українська and more). It switches at once, Home included.
-- The launcher ships with English only, about 450 KB smaller. The list is split into **Installed** and **Not installed**; picking one that isn't installed downloads it from this fork's GitHub and moves it to Installed, where you pick it again to switch. The language in use is fetched by itself after an update, and installed ones refresh with each new version.
+- The online build ships with English only, about 450 KB smaller. The list is split into **Installed** and **Not installed**; picking one that isn't installed downloads it from this fork's GitHub and moves it to Installed, where you pick it again to switch. The language in use is fetched by itself after an update, and installed ones refresh with each new version. The offline build has every language built in.
 - The date and weather next to the clock stay on one line in every language, shrinking a little when a language's words are long.
-- Every one of them covers the whole launcher: the Settings menu, weather, Continue watching, the update card and the reordering pill included. Japanese and this fork's own text in the other languages are new translations; corrections are welcome.
+- Every one of them covers the whole launcher. Japanese and this fork's own text in the other languages are new translations; corrections are welcome.
 
 **Updates from this fork**
-- The launcher checks this fork's GitHub releases when the TV starts or wakes, and every hour by default. Settings > System > Updates has **Check for updates** at the top and the interval (off, 1, 3, 6, 12 or 24 hours) below.
+- The launcher checks this fork's GitHub releases when the TV starts or wakes, and every hour by default. Settings > System > Updates has **Check for updates** at the top, the interval (off, 1, 3, 6, 12 or 24 hours), and the **Update channel**: online or offline.
 - When an update has installed, a notice says so over whatever app Android left on screen (press Home to go back), and Home confirms the new version once.
-- A newer version is offered on Home (**Install update** or **Later**) and under Settings > System > Updates. The APK is downloaded, checked against the SHA-256 in the release notes, and handed to Android's installer, which asks for one press of **Install**: a sideloaded app can't update itself silently.
+- A newer version is offered on Home (**Install update** or **Later**) and under Settings > System > Updates, with its release notes first. The APK is downloaded, checked against the SHA-256 in the release notes, and handed to Android's installer, which asks for one press of **Install**: a sideloaded app can't update itself silently.
 - What each TV has stays as it is: the Inputs pill still appears only on a TV with HDMI or a tuner, and every Settings choice, dock order and theme is kept on the TV across updates.
 
-**Network use.** Unlike upstream, this fork has the `INTERNET` permission. It connects only for:
+**Remote buttons for one TV** (`device.json`)
+- Remote-key settings that belong to one TV, not a theme, kept across theme changes. On a Hisense TV the Settings button opens the Quick settings panel through the firmware's key broadcast, so held volume keeps ramping. The installer walks through setting it up.
+
+## Network use
+
+Unlike upstream, the online build has the `INTERNET` permission. It connects only for:
 - the weather: ipwho.is and Open-Meteo;
-- theme files from this repo on GitHub;
+- Nuvio suggestions: Nuvio's default catalog (v3-cinemeta.strem.io) and its pictures (images.metahub.space);
+- theme files and language packs from this repo on GitHub;
 - the Continue watching app's own thumbnail URLs;
 - update checks: this fork's latest release on api.github.com, and the APK from github.com when you install one.
 
-Apart from the update check (at power-on and on its interval, unless turned off), all of it runs only while Home, the screensaver or the Settings menu is on screen.
+Apart from the update check (at power-on and on its interval, unless turned off), all of it runs only while Home, the
+screensaver or the Settings menu is on screen. The **offline build** connects only for the update check and download.
 
 **Build and install** as upstream (`launcher/build-and-install.sh`, or `.ps1` on Windows). For Continue watching, also run:
 
