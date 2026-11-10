@@ -216,6 +216,9 @@ public final class SettingsActivity extends Activity {
         pane.setClipChildren(false);
         pane.setClipToPadding(false);
         scroll.addView(pane, new FrameLayout.LayoutParams(-1, -2));
+        focusParking = new View(this);
+        focusParking.setFocusable(false);
+        right.addView(focusParking, new LinearLayout.LayoutParams(1, 1));
         right.addView(scroll, new LinearLayout.LayoutParams(-1, 0, 1f));
         // This fork: the focused row's notes, right under it, instead of paragraphs between all the rows.
         hint = text(15, R.string.font_regular, 0x99FFFFFF);
@@ -245,21 +248,33 @@ public final class SettingsActivity extends Activity {
         if (back != null) {
             Runnable r = back;
             back = null;
-            r.run();
-            // This fork: back on a category's page, focus goes to the row that opened the page just left (Look's
-            // Themes, System's Updates...), not to the category in the list.
+            // This fork: back on a category's page, focus goes straight to the row that opened the page just left
+            // (Look's Themes, System's Updates...). While the page is rebuilt it waits on an invisible spot in it
+            // (focusParking) instead of on the category in the list, so the list does not flash.
+            returning = true;
+            try {
+                r.run();
+            } finally {
+                returning = false;
+            }
             if (back == null && category >= 0) {
                 String label = openedFrom.get(category);
-                pane.post(() -> {
-                    View row = label == null ? null : rowLabelled(label);
-                    if (row != null) row.requestFocus();
-                    else if (!pane.hasFocus()) focusPane();
-                });
+                View row = label == null ? null : rowLabelled(label);
+                if (row != null) row.requestFocus();
+                else if (!pane.hasFocus()) focusPane();
             }
+            // Never leave focus on the invisible spot: it would go to Search when it stops taking focus.
+            if (focusParking.hasFocus()) focusPane();
+            focusParking.setFocusable(false);
             return;
         }
         super.onBackPressed();
     }
+
+    /** True while Back rebuilds a category's page (clearPane parks focus on focusParking then). */
+    private boolean returning;
+    /** An invisible spot beside the rows that holds focus for a moment while Back rebuilds a page. */
+    private View focusParking;
 
     /** The row on each category's page that last opened a page of its own (Back returns focus to it). */
     private final java.util.Map<Integer, String> openedFrom = new java.util.HashMap<>();
@@ -389,7 +404,14 @@ public final class SettingsActivity extends Activity {
      * Home page): park it on this category's button first, which shows nothing new while back is null.
      */
     private void clearPane() {
-        if (pane.hasFocus() && category >= 0) categoryButtons.get(category).requestFocus();
+        if (pane.hasFocus() && category >= 0) {
+            if (returning) {
+                focusParking.setFocusable(true);
+                focusParking.requestFocus();
+            } else {
+                categoryButtons.get(category).requestFocus();
+            }
+        }
         hideScreensaverPreview();
         themesOpen = false;
         pane.removeAllViews();
