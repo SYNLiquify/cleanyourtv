@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">켜기</string>
     <string name="sm_qs_choose_app">앱 선택</string>
     <string name="sm_qs_reset">배치 초기화</string>
+    <string name="sm_qs_dim">화면 어둡게</string>
+    <string name="sm_qs_dim_unavailable">리모컨 도우미가 필요합니다</string>
     <string name="sm_qs_moving">화살표로 옮긴 뒤 OK를 누르세요.</string>
     <string name="sm_qs_rename">이름 바꾸기</string>
     <string name="sm_qs_rename_hint">비워 두면 원래 이름으로 돌아갑니다</string>

@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Uključi</string>
     <string name="sm_qs_choose_app">Izaberi aplikaciju</string>
     <string name="sm_qs_reset">Vrati raspored</string>
+    <string name="sm_qs_dim">Zatamni ekran</string>
+    <string name="sm_qs_dim_unavailable">Potreban je pomoćnik daljinskog</string>
     <string name="sm_qs_moving">Pomerite ga strelicama, pa pritisnite OK.</string>
     <string name="sm_qs_rename">Preimenuj</string>
     <string name="sm_qs_rename_hint">Ostavite prazno za originalni naziv</string>

@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">開啟</string>
     <string name="sm_qs_choose_app">選擇應用程式</string>
     <string name="sm_qs_reset">重設版面配置</string>
+    <string name="sm_qs_dim">調暗螢幕</string>
+    <string name="sm_qs_dim_unavailable">需要遙控器助手</string>
     <string name="sm_qs_moving">用方向鍵移動，然後按 OK。</string>
     <string name="sm_qs_rename">重新命名</string>
     <string name="sm_qs_rename_hint">留空則恢復原名</string>

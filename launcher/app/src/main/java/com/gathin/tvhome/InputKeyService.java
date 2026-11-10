@@ -41,6 +41,7 @@ public class InputKeyService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         running = this;
+        ScreenDim.apply(this);   // this fork: the Dim screen layer, when HomeKeyService is not running
         Updates.noticeIfUpdated(this, true);   // bound again right after an update, like HomeKeyService
         // From config.xml or a theme's config.json; theme.sh rebinds this service after a push.
         Config config = Config.load(this);
@@ -100,6 +101,7 @@ public class InputKeyService extends AccessibilityService {
     @Override
     public void onDestroy() {
         if (running == this) running = null;
+        ScreenDim.detach(this, getApplicationContext());
         RemoteKeys.release(this);
         if (gamepads != null) gamepads.stop();
         if (consumeVolumeKeys) VolumeKeys.stop();

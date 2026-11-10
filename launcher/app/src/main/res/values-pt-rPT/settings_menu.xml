@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Ativar</string>
     <string name="sm_qs_choose_app">Escolher app</string>
     <string name="sm_qs_reset">Repor esquema</string>
+    <string name="sm_qs_dim">Escurecer ecrã</string>
+    <string name="sm_qs_dim_unavailable">Requer o assistente do comando</string>
     <string name="sm_qs_moving">Mova-o com as setas e prima OK.</string>
     <string name="sm_qs_rename">Mudar o nome</string>
     <string name="sm_qs_rename_hint">Deixe vazio para o nome original</string>

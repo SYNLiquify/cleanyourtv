@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Aanzetten</string>
     <string name="sm_qs_choose_app">App kiezen</string>
     <string name="sm_qs_reset">Indeling herstellen</string>
+    <string name="sm_qs_dim">Scherm dimmen</string>
+    <string name="sm_qs_dim_unavailable">Vereist de afstandsbedieningshulp</string>
     <string name="sm_qs_moving">Verplaats hem met de pijlen en druk op OK.</string>
     <string name="sm_qs_rename">Naam wijzigen</string>
     <string name="sm_qs_rename_hint">Laat leeg voor de oorspronkelijke naam</string>

@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Aç</string>
     <string name="sm_qs_choose_app">Uygulama seç</string>
     <string name="sm_qs_reset">Düzeni sıfırla</string>
+    <string name="sm_qs_dim">Ekranı karart</string>
+    <string name="sm_qs_dim_unavailable">Kumanda yardımcısı gerekir</string>
     <string name="sm_qs_moving">Oklarla taşıyın, sonra OK’e basın.</string>
     <string name="sm_qs_rename">Yeniden adlandır</string>
     <string name="sm_qs_rename_hint">Orijinal ad için boş bırakın</string>

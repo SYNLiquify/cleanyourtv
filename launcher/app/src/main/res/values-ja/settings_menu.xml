@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">オンにする</string>
     <string name="sm_qs_choose_app">アプリを選ぶ</string>
     <string name="sm_qs_reset">配置をリセット</string>
+    <string name="sm_qs_dim">画面を暗くする</string>
+    <string name="sm_qs_dim_unavailable">リモコン補助が必要です</string>
     <string name="sm_qs_moving">矢印キーで動かし、OK を押してください。</string>
     <string name="sm_qs_rename">名前を変更</string>
     <string name="sm_qs_rename_hint">空のままにすると元の名前に戻ります</string>

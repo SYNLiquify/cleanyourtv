@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Ota käyttöön</string>
     <string name="sm_qs_choose_app">Valitse sovellus</string>
     <string name="sm_qs_reset">Palauta asettelu</string>
+    <string name="sm_qs_dim">Himmennä näyttö</string>
+    <string name="sm_qs_dim_unavailable">Vaatii kaukosäätimen apurin</string>
     <string name="sm_qs_moving">Siirrä nuolilla ja paina OK.</string>
     <string name="sm_qs_rename">Nimeä uudelleen</string>
     <string name="sm_qs_rename_hint">Jätä tyhjäksi, niin alkuperäinen nimi palaa</string>

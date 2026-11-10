@@ -155,6 +155,8 @@
     <string name="sm_qs_turn_on">Turn on</string>
     <string name="sm_qs_choose_app">Choose app</string>
     <string name="sm_qs_reset">Reset layout</string>
+    <string name="sm_qs_dim">Dim screen</string>
+    <string name="sm_qs_dim_unavailable">Needs the remote helper</string>
     <string name="sm_qs_moving">Move it with the arrows, then press OK.</string>
     <string name="sm_qs_rename">Rename</string>
     <string name="sm_qs_rename_hint">Leave it empty for the original name</string>

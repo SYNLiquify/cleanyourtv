@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">تشغيل</string>
     <string name="sm_qs_choose_app">اختيار تطبيق</string>
     <string name="sm_qs_reset">إعادة ضبط الترتيب</string>
+    <string name="sm_qs_dim">تعتيم الشاشة</string>
+    <string name="sm_qs_dim_unavailable">يتطلب مساعد جهاز التحكم</string>
     <string name="sm_qs_moving">حرّكه بالأسهم ثم اضغط OK.</string>
     <string name="sm_qs_rename">إعادة التسمية</string>
     <string name="sm_qs_rename_hint">اتركه فارغًا للاسم الأصلي</string>

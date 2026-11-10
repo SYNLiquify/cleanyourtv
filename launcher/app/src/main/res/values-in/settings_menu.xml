@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Aktifkan</string>
     <string name="sm_qs_choose_app">Pilih aplikasi</string>
     <string name="sm_qs_reset">Setel ulang tata letak</string>
+    <string name="sm_qs_dim">Redupkan layar</string>
+    <string name="sm_qs_dim_unavailable">Memerlukan pembantu remote</string>
     <string name="sm_qs_moving">Pindahkan dengan tombol panah, lalu tekan OK.</string>
     <string name="sm_qs_rename">Ganti nama</string>
     <string name="sm_qs_rename_hint">Biarkan kosong untuk nama aslinya</string>

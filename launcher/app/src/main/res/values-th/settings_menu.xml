@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">เปิด</string>
     <string name="sm_qs_choose_app">เลือกแอป</string>
     <string name="sm_qs_reset">รีเซ็ตการจัดวาง</string>
+    <string name="sm_qs_dim">หรี่หน้าจอ</string>
+    <string name="sm_qs_dim_unavailable">ต้องใช้ตัวช่วยรีโมต</string>
     <string name="sm_qs_moving">ย้ายด้วยปุ่มลูกศร แล้วกด OK</string>
     <string name="sm_qs_rename">เปลี่ยนชื่อ</string>
     <string name="sm_qs_rename_hint">เว้นว่างไว้เพื่อใช้ชื่อเดิม</string>

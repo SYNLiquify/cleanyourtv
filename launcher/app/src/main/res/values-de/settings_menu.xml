@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Einschalten</string>
     <string name="sm_qs_choose_app">App wählen</string>
     <string name="sm_qs_reset">Anordnung zurücksetzen</string>
+    <string name="sm_qs_dim">Bildschirm abdunkeln</string>
+    <string name="sm_qs_dim_unavailable">Benötigt den Fernbedienungshelfer</string>
     <string name="sm_qs_moving">Mit den Pfeiltasten verschieben, dann OK drücken.</string>
     <string name="sm_qs_rename">Umbenennen</string>
     <string name="sm_qs_rename_hint">Leer lassen für den ursprünglichen Namen</string>

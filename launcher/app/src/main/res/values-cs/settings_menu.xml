@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Zapnout</string>
     <string name="sm_qs_choose_app">Vybrat aplikaci</string>
     <string name="sm_qs_reset">Obnovit rozložení</string>
+    <string name="sm_qs_dim">Ztlumit obrazovku</string>
+    <string name="sm_qs_dim_unavailable">Vyžaduje pomocníka ovladače</string>
     <string name="sm_qs_moving">Přesuňte ho šipkami a stiskněte OK.</string>
     <string name="sm_qs_rename">Přejmenovat</string>
     <string name="sm_qs_rename_hint">Ponechte prázdné pro původní název</string>

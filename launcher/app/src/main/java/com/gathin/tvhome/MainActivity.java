@@ -1242,6 +1242,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         restartIdleClock();
         promptsPaused = false;
         if (suggestions != null) suggestions.resume();
+        ScreenDim.apply(this);   // after the first unlock at boot, when a helper could not read the level yet
         // Launcher updates from the fork (Updates): offer one already found, and check when the interval has passed,
         // which also covers the TV waking from standby.
         handler.postDelayed(() -> {

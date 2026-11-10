@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">开启</string>
     <string name="sm_qs_choose_app">选择应用</string>
     <string name="sm_qs_reset">重置布局</string>
+    <string name="sm_qs_dim">调暗屏幕</string>
+    <string name="sm_qs_dim_unavailable">需要遥控器助手</string>
     <string name="sm_qs_moving">用方向键移动，然后按 OK。</string>
     <string name="sm_qs_rename">重命名</string>
     <string name="sm_qs_rename_hint">留空则恢复原名</string>

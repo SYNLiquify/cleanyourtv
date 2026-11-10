@@ -97,6 +97,7 @@ public class HomeKeyService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         running = this;
+        ScreenDim.apply(this);   // this fork: the Dim screen layer comes back with the helper
         // Android binds this helper again right after an update, often before anything else of the launcher runs.
         Updates.noticeIfUpdated(this, true);
         settingsScancodes = getResources().getIntArray(R.array.settings_key_scancodes);
@@ -188,6 +189,7 @@ public class HomeKeyService extends AccessibilityService {
     @Override
     public void onDestroy() {
         if (running == this) running = null;
+        ScreenDim.detach(this, getApplicationContext());
         RemoteKeys.frontPackage = "";
         RemoteKeys.release(this);
         stopWaitingForUnlock();

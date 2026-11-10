@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Activer</string>
     <string name="sm_qs_choose_app">Choisir une appli</string>
     <string name="sm_qs_reset">Réinitialiser la disposition</string>
+    <string name="sm_qs_dim">Assombrir l\'écran</string>
+    <string name="sm_qs_dim_unavailable">Nécessite l\'assistant de la télécommande</string>
     <string name="sm_qs_moving">Déplacez-le avec les flèches, puis appuyez sur OK.</string>
     <string name="sm_qs_rename">Renommer</string>
     <string name="sm_qs_rename_hint">Laissez vide pour le nom d’origine</string>

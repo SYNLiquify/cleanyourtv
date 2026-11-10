@@ -63,7 +63,52 @@ public final class QuickSettingsActivity extends Activity {
             tile.setOnClickListener(v -> open(target));
         });
         tiles.setVisibility(shown.isEmpty() ? View.GONE : View.VISIBLE);
+        bindDim();
         (shown.isEmpty() ? findViewById(R.id.quickAll) : shown.get(0)).requestFocus();
+    }
+
+    /**
+     * This fork: the Dim screen row (ScreenDim). Left/Right move it a step (Right dims more, mirrored in a right-to-left
+     * language), OK turns it off or back on; the bar shows the level out of ScreenDim.MAX.
+     */
+    private void bindDim() {
+        View dim = findViewById(R.id.quickDim);
+        android.widget.TextView value = findViewById(R.id.quickDimValue);
+        View track = findViewById(R.id.quickDimTrack);
+        View fill = findViewById(R.id.quickDimFill);
+        dim.setVisibility(View.VISIBLE);
+        Runnable show = () -> {
+            int level = ScreenDim.level(this);
+            if (!ScreenDim.available()) value.setText(R.string.sm_qs_dim_unavailable);
+            else if (level == 0) value.setText(R.string.sm_off);
+            else value.setText(java.text.NumberFormat.getPercentInstance().format(level / 100.0));
+            int width = Math.round(track.getWidth() * level / (float) ScreenDim.MAX);
+            if (fill.getLayoutParams().width != width) {
+                fill.getLayoutParams().width = width;
+                fill.requestLayout();
+            }
+        };
+        track.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            if (r - l != or - ol) v.post(show);
+        });
+        show.run();
+        dim.setOnKeyListener((v, code, event) -> {
+            if (code != android.view.KeyEvent.KEYCODE_DPAD_LEFT && code != android.view.KeyEvent.KEYCODE_DPAD_RIGHT) {
+                return false;
+            }
+            if (event.getAction() == android.view.KeyEvent.ACTION_DOWN && ScreenDim.available()) {
+                int direction = code == android.view.KeyEvent.KEYCODE_DPAD_RIGHT ? 1 : -1;
+                if (v.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) direction = -direction;
+                ScreenDim.set(this, ScreenDim.level(this) + direction * ScreenDim.STEP);
+                show.run();
+            }
+            return true;
+        });
+        dim.setOnClickListener(v -> {
+            if (!ScreenDim.available()) return;
+            ScreenDim.toggle(this);
+            show.run();
+        });
     }
 
     /** Settings pressed again while the panel is up. */

@@ -150,6 +150,8 @@
     <string name="sm_qs_turn_on">Включить</string>
     <string name="sm_qs_choose_app">Выбрать приложение</string>
     <string name="sm_qs_reset">Сбросить расположение</string>
+    <string name="sm_qs_dim">Затемнить экран</string>
+    <string name="sm_qs_dim_unavailable">Нужен помощник пульта</string>
     <string name="sm_qs_moving">Перемещайте стрелками, затем нажмите OK.</string>
     <string name="sm_qs_rename">Переименовать</string>
     <string name="sm_qs_rename_hint">Оставьте пустым для исходного названия</string>
