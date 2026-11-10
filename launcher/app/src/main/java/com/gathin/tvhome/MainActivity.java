@@ -579,6 +579,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glassAccent = festive ? 0 : accent;
         ambient = findViewById(R.id.ambient);
         suggestions = new NuvioSuggestions(this, findViewById(R.id.suggestion));
+        // Titles already in Continue watching are not suggested.
+        suggestions.setWatching(() -> continueRow != null ? continueRow.watchingKeys() : java.util.Collections.emptySet());
         // While a suggestion covers the screen, the wallpaper and the sky under it need not draw on every frame.
         suggestions.setCovering(covered -> {
             wallpaperPlayer.setCovered(covered);

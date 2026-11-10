@@ -219,6 +219,23 @@ final class ContinueRow {
      * from the cache and from the cards that hold them. start() reads the list again when Home comes back, and the
      * cards load them from the disk cache.
      */
+    /**
+     * This fork: what Nuvio suggestions should leave out: each title's lower-case name, and the IMDb id ("tt" and
+     * digits) its link to the app carries, if any.
+     */
+    java.util.Set<String> watchingKeys() {
+        java.util.Set<String> out = new java.util.HashSet<>();
+        java.util.regex.Pattern imdb = java.util.regex.Pattern.compile("tt\\d{5,}");
+        for (Item it : items) {
+            if (it.title != null && !it.title.trim().isEmpty()) out.add(it.title.trim().toLowerCase(java.util.Locale.ROOT));
+            if (it.intentUri != null) {
+                java.util.regex.Matcher m = imdb.matcher(it.intentUri);
+                if (m.find()) out.add(m.group());
+            }
+        }
+        return out;
+    }
+
     void trimMemory() {
         images.clearMemory();
         for (int i = 0; i < list.getChildCount(); i++) {

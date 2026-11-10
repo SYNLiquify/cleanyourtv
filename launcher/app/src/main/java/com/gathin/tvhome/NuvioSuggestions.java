@@ -52,7 +52,8 @@ final class NuvioSuggestions {
     private static final long LIST_MAX_AGE_MS = 6 * 60 * 60 * 1000L;
     private static final long ROTATE_MS = 9_000L;
     private static final long FADE_MS = 900L;
-    private static final int MAX_ITEMS = 40, MAX_CACHED_FILES = 60;
+    /** The day's selection (SuggestionPicker): its day, its titles, yesterday's, and every title shown so far. */
+    private static final String STATE = "nuvio_suggestions_state";
     private static final int TIMEOUT_MS = 10_000;
 
     static final class Item {
@@ -73,6 +74,10 @@ final class NuvioSuggestions {
     private Runnable backToDock = () -> { };
     private final File dir;
     private List<Item> items = Collections.emptyList();
+    /** The day (epoch day) the titles on hand were picked for; a new day picks new ones. */
+    private long selectionDay = -1;
+    /** Keys (IMDb ids, lower-case names) of the titles in Continue watching: those are not suggested. */
+    private java.util.function.Supplier<java.util.Set<String>> watching = Collections::emptySet;
     private int next;
     private boolean wanted, shown, loading;
     /** The backdrop on show: A or B; the other takes the next one and fades in over it. */
@@ -187,6 +192,14 @@ final class NuvioSuggestions {
         return p.contains(KEY) ? p.getBoolean(KEY, false) : nuvioInstalled(ctx);
     }
 
+    void setWatching(java.util.function.Supplier<java.util.Set<String>> watching) {
+        this.watching = watching;
+    }
+
+    private static long today() {
+        return java.time.LocalDate.now().toEpochDay();
+    }
+
     /** How Down from Open in Nuvio gets back to the dock (Home's last focused tile). */
     void setBackToDock(Runnable back) {
         backToDock = back;
@@ -238,13 +251,18 @@ final class NuvioSuggestions {
         }
         wanted = true;
         if (shown || loading) return;
-        if (items.isEmpty() || listStale()) {
+        // A new day (the dock is back after midnight) brings a new selection, as a stale list does.
+        if (items.isEmpty() || listStale() || selectionDay != today()) {
             loading = true;
             worker.execute(() -> {
-                List<Item> found = loadItems();
+                long day = today();
+                List<Item> found = loadItems(day);
                 main.post(() -> {
                     loading = false;
-                    if (!found.isEmpty()) items = found;
+                    if (!found.isEmpty()) {
+                        items = found;
+                        selectionDay = day;
+                    }
                     if (wanted && !items.isEmpty() && !shown) step();
                 });
             });
@@ -316,7 +334,14 @@ final class NuvioSuggestions {
     /** The next title: decoded off the main thread, then faded in over the one on show. */
     private void step() {
         if (!wanted || items.isEmpty()) return;
-        Item item = items.get(next % items.size());
+        // Not a title already in Continue watching (unless every one of today's is).
+        java.util.Set<String> skip = watching.get();
+        Item candidate = items.get(next % items.size());
+        for (int tries = 0; tries < items.size() && watched(candidate, skip); tries++) {
+            next = (next + 1) % items.size();
+            candidate = items.get(next);
+        }
+        Item item = candidate;
         next = (next + 1) % items.size();
         int gen = ++generation;
         int w = Math.max(1, ctx.getResources().getDisplayMetrics().widthPixels);
@@ -412,8 +437,18 @@ final class NuvioSuggestions {
         return System.currentTimeMillis() - listFile().lastModified() > LIST_MAX_AGE_MS;
     }
 
-    /** Movies and series taking turns; fetched again when the saved copy is older than LIST_MAX_AGE_MS. */
-    private List<Item> loadItems() {
+    private static boolean watched(Item item, java.util.Set<String> keys) {
+        if (keys.isEmpty()) return false;
+        return (item.id != null && keys.contains(item.id.toLowerCase(Locale.ROOT)))
+                || keys.contains(item.name.trim().toLowerCase(Locale.ROOT));
+    }
+
+    /**
+     * The day's titles (SuggestionPicker), movies and series taking turns. The catalogs are fetched again when the
+     * saved copy is older than LIST_MAX_AGE_MS; the selection stays all day, and a new day picks a new one and deletes
+     * the previous selection's pictures.
+     */
+    private List<Item> loadItems(long day) {
         File saved = listFile();
         if (listStale()) {
             try {
@@ -430,13 +465,9 @@ final class NuvioSuggestions {
         try (InputStream in = new FileInputStream(saved)) {
             JSONObject both = new JSONObject(new String(read(in, 8 << 20), StandardCharsets.UTF_8));
             List<Item> movies = parse(both.optJSONObject("movie")), series = parse(both.optJSONObject("series"));
-            List<Item> out = new ArrayList<>();
-            for (int i = 0; out.size() < MAX_ITEMS && (i < movies.size() || i < series.size()); i++) {
-                if (i < movies.size()) out.add(movies.get(i));
-                if (i < series.size() && out.size() < MAX_ITEMS) out.add(series.get(i));
-            }
+            List<Item> out = select(movies, series, day);
             next = out.isEmpty() ? 0 : new java.util.Random().nextInt(out.size());
-            trimCache();
+            keepPicturesOf(out);
             return out;
         } catch (Exception e) {
             Log.d(TAG, "no suggestions: " + e);
@@ -485,7 +516,7 @@ final class NuvioSuggestions {
         if (TextUtils.isEmpty(url)) return null;
         try {
             if (!dir.isDirectory() && !dir.mkdirs()) return null;
-            File file = new File(dir, Integer.toHexString(url.hashCode()) + "_" + url.length());
+            File file = cached(url);
             if (!file.isFile() || file.length() == 0) {
                 byte[] bytes = get(url, 6 << 20);
                 File tmp = new File(dir, file.getName() + ".tmp");
@@ -515,12 +546,56 @@ final class NuvioSuggestions {
         }
     }
 
-    /** Keeps the newest pictures only. */
-    private void trimCache() {
+    /** Today's selection: the one saved for today, or a new pick (saved, with yesterday's and the titles seen). */
+    private List<Item> select(List<Item> movies, List<Item> series, long day) {
+        SharedPreferences state = ctx.getSharedPreferences(STATE, Context.MODE_PRIVATE);
+        if (state.getLong("day", -1) == day) {
+            java.util.Map<String, Item> byKey = new java.util.HashMap<>();
+            for (Item it : movies) byKey.put(SuggestionPicker.key(it), it);
+            for (Item it : series) byKey.put(SuggestionPicker.key(it), it);
+            List<Item> kept = new ArrayList<>();
+            for (String key : state.getString("today", "").split("\n")) {
+                Item it = byKey.get(key);
+                if (it != null) kept.add(it);
+            }
+            if (!kept.isEmpty()) return kept;
+        }
+        java.util.Set<String> yesterday = lines(state.getString("today", ""));
+        java.util.Set<String> seen = lines(state.getString("seen", ""));
+        SuggestionPicker.Pick pick = SuggestionPicker.pick(movies, series, seen, yesterday, day);
+        java.util.Set<String> picked = new java.util.LinkedHashSet<>();
+        for (Item it : pick.items) picked.add(SuggestionPicker.key(it));
+        if (pick.restarted) seen = new java.util.HashSet<>(yesterday);   // every title had its turn: over again
+        seen.addAll(picked);
+        state.edit().putLong("day", day).putString("today", TextUtils.join("\n", picked))
+                .putString("seen", TextUtils.join("\n", seen)).apply();
+        Log.i(TAG, "day " + day + ": " + pick.items.size() + " titles" + (pick.restarted ? ", all seen: starting over" : ""));
+        return pick.items;
+    }
+
+    private static java.util.Set<String> lines(String text) {
+        java.util.Set<String> out = new java.util.HashSet<>();
+        for (String s : text.split("\n")) if (!s.isEmpty()) out.add(s);
+        return out;
+    }
+
+    /** The picture cache's file for a url. */
+    private File cached(String url) {
+        return new File(dir, Integer.toHexString(url.hashCode()) + "_" + url.length());
+    }
+
+    /** Deletes every cached picture that is not one of these titles' (the previous selection's, half-written ones). */
+    private void keepPicturesOf(List<Item> titles) {
+        java.util.Set<String> keep = new java.util.HashSet<>();
+        for (Item it : titles) {
+            if (!TextUtils.isEmpty(it.background)) keep.add(cached(it.background).getName());
+            if (!TextUtils.isEmpty(it.logo)) keep.add(cached(it.logo).getName());
+        }
         File[] files = dir.listFiles();
-        if (files == null || files.length <= MAX_CACHED_FILES) return;
-        Arrays.sort(files, (a, b) -> Long.compare(b.lastModified(), a.lastModified()));
-        for (int i = MAX_CACHED_FILES; i < files.length; i++) files[i].delete();
+        if (files == null) return;
+        int removed = 0;
+        for (File f : files) if (!keep.contains(f.getName()) && f.delete()) removed++;
+        if (removed > 0) Log.i(TAG, "removed " + removed + " pictures of an earlier selection");
     }
 
     private static byte[] get(String url, int max) throws IOException {
