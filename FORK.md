@@ -1,4 +1,4 @@
-# Apple TV-style home with Continue watching, weather, a Settings menu and highlight colors
+# The CleanYourTV launcher, supercharged: packed with features, up to date with mainline
 
 A fork of this repo's launcher (`launcher/`), built and tested on an **onn. 4K Streaming Box (2023, YOC), Google TV 14**
 and a **Hisense SmartTV 4K (songshan), Android 11**. Everything else in the repo (the debloat tools, lists and docs) is
