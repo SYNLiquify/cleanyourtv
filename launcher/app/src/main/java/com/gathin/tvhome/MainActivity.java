@@ -2138,7 +2138,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         String label = adapter.labelAt(position);
         int color = adapter.ambientColorAt(position);
         alignHeroToBand();
-        float y = dockTopInRoot - 14 * density - 26 * density - hero.getHeight();
+        // This fork: the name sits just above the dock band (was 26dp higher).
+        float y = dockTopInRoot - 14 * density - 8 * density - hero.getHeight();
         boolean changed = !label.contentEquals(heroName.getText());
         if (cinematic && heroArtAlpha > 0f) showHeroArt(position);
 
