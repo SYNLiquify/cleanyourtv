@@ -10,6 +10,17 @@ Each release comes in two builds: **online** and **offline** (goes online only f
 
 The full notes for each version are on the [releases page](https://github.com/SYNLiquify/cleanyourtv/releases).
 
+### 0.6.3 (November 10, 2026)
+- **Dim screen.** A new tile in the Settings panel dims the screen over any app up to 80%. Compact, remove, or move it.
+- **App tiles.** Add any app to the Settings panel, up to six.
+- **Fresh Nuvio suggestions every day.** A new selection of movies and series each day from the whole catalog, without titles you’ve already seen or are watching.
+- **Full release notes in the update prompt.** Press OK to scroll through.
+- **Compact weather on the screensaver.** Matches Home when Compact top bar is on, and the compact weather shows today’s high and low again.
+- **New icon and banner.**
+- **Faster and lighter.** Smoother movement along the dock over Nuvio suggestions, no weather downloads while you’re in other apps, fewer GitHub calls, a 2 MB smaller download, and no leftover background threads.
+- **Japanese everywhere.** The lunar date now has Japanese too.
+- **Mainline.** The latest launcher fixes from the main CleanYourTV repo, listed in the [release notes](https://github.com/SYNLiquify/cleanyourtv/releases/tag/launcher-6061).
+
 ### 0.6.2 (November 10, 2026)
 - **Nuvio suggestions on Home.** Popular movies and series fill the background while the dock has focus, with **Open in Nuvio** one press up, and a toggle in Settings (online build only).
 - **Customize the Quick settings panel.** Move, rename or turn off tiles, plus two app buttons.
