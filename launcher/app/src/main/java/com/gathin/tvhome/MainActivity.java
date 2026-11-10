@@ -1234,6 +1234,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         }
         restartIdleClock();
         promptsPaused = false;
+        if (suggestions != null) suggestions.resume();
         // Launcher updates from the fork (Updates): offer one already found, and check when the interval has passed,
         // which also covers the TV waking from standby.
         handler.postDelayed(() -> {
@@ -1453,7 +1454,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onPause() {
         super.onPause();
         resumed = false;
-        if (suggestions != null) suggestions.stop();
+        // This fork: the quick panel only pauses Home and leaves it on screen, so the suggestion stays under it;
+        // onStop (Home covered by an app) lets go of the pictures.
+        if (suggestions != null) suggestions.pause();
         // No UP reaches a paused Home, so a vendor-key hold it saw go down would still open its app later.
         // Only Home's own share is dropped: a key service that saw the same DOWN keeps its hold.
         RemoteKeys.release(this);
@@ -1484,6 +1487,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onStop() {
         super.onStop();
         started = false;
+        if (suggestions != null) suggestions.stop();
         unregisterReceiver(timeReceiver);
         clockRefresh.stop();
         handler.removeCallbacks(clockCheck);

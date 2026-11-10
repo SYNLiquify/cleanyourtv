@@ -81,7 +81,12 @@ final class NuvioSuggestions {
     /** One number per step: a picture decoded for an older step (focus left meanwhile) is dropped. */
     private int generation;
 
-    private final Runnable rotate = this::step;
+    /** Home paused but still on screen (the translucent quick panel over it): hold the picture, don't rotate. */
+    private boolean paused;
+
+    private final Runnable rotate = () -> {
+        if (!paused) step();
+    };
 
     NuvioSuggestions(Context context, View layer) {
         ctx = context.getApplicationContext();
@@ -213,8 +218,22 @@ final class NuvioSuggestions {
         }).start();
     }
 
+    /** Home paused under a window that leaves it visible (the quick panel): keep the picture, stop rotating. */
+    void pause() {
+        paused = true;
+        main.removeCallbacks(rotate);
+    }
+
+    /** Home in front again: rotate on from the picture on show. */
+    void resume() {
+        if (!paused) return;
+        paused = false;
+        if (shown && wanted) main.postDelayed(rotate, ROTATE_MS);
+    }
+
     /** Home stopped: let go of the pictures at once. */
     void stop() {
+        paused = false;
         wanted = false;
         hide();
         layer.animate().cancel();
