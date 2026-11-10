@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Jätä tyhjäksi, niin alkuperäinen nimi palaa</string>
     <string name="sm_nuvio_suggestions">Nuvion ehdotukset</string>
     <string name="sm_nuvio_suggestions_note">Suositut elokuvat ja sarjat Nuvion luettelosta täyttävät taustan, kun telakka on valittuna.</string>
+    <string name="suggestion_open">Avaa Nuviossa</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>

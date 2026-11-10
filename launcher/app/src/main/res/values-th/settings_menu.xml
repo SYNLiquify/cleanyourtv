@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">เว้นว่างไว้เพื่อใช้ชื่อเดิม</string>
     <string name="sm_nuvio_suggestions">คำแนะนำจาก Nuvio</string>
     <string name="sm_nuvio_suggestions_note">ภาพยนตร์และรายการยอดนิยมจากแคตตาล็อกของ Nuvio จะแสดงเป็นพื้นหลังขณะเลือกแถบแอป</string>
+    <string name="suggestion_open">เปิดใน Nuvio</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>

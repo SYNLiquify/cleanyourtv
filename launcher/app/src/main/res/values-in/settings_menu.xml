@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Biarkan kosong untuk nama aslinya</string>
     <string name="sm_nuvio_suggestions">Saran Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Film dan acara populer dari katalog Nuvio mengisi latar belakang saat dock dipilih.</string>
+    <string name="suggestion_open">Buka di Nuvio</string>
     <string name="sm_atv_settings">Setelan ATV</string>
     <string name="sm_hours">%1$d jam</string>
     <string name="update_done">Peluncur diperbarui ke %1$s</string>

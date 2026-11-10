@@ -73,5 +73,22 @@
             android:textSize="15sp"
             android:fontFamily="@string/font_regular"
             android:singleLine="true" />
+
+        <!-- Up from the dock: opens the title on show in Nuvio; Down goes back to the dock. -->
+        <TextView
+            android:id="@+id/suggestionOpen"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginTop="18dp"
+            android:paddingStart="18dp"
+            android:paddingEnd="20dp"
+            android:gravity="center"
+            android:background="@drawable/pill_bg"
+            android:textColor="@drawable/pill_text"
+            android:textSize="15sp"
+            android:fontFamily="@string/font_medium"
+            android:text="@string/suggestion_open"
+            android:focusable="true"
+            android:clickable="true" />
     </LinearLayout>
 </FrameLayout>

@@ -67,6 +67,10 @@ final class NuvioSuggestions {
     private final TextView name, meta;
     private final android.widget.LinearLayout chips;
     private final View info;
+    /** Open in Nuvio: Up from the dock reaches it; while it has focus the title on show stays. */
+    private final TextView open;
+    private Item current;
+    private Runnable backToDock = () -> { };
     private final File dir;
     private List<Item> items = Collections.emptyList();
     private int next;
@@ -89,6 +93,20 @@ final class NuvioSuggestions {
         meta = layer.findViewById(R.id.suggestionMeta);
         chips = layer.findViewById(R.id.suggestionChips);
         info = layer.findViewById(R.id.suggestionInfo);
+        open = layer.findViewById(R.id.suggestionOpen);
+        open.setOnClickListener(v -> openCurrent());
+        open.setOnFocusChangeListener((v, focused) -> {
+            main.removeCallbacks(rotate);
+            if (!focused && wanted) main.postDelayed(rotate, ROTATE_MS);   // back to the dock: rotate again
+        });
+        open.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == android.view.KeyEvent.KEYCODE_DPAD_DOWN) {
+                if (event.getAction() == android.view.KeyEvent.ACTION_DOWN) backToDock.run();
+                return true;
+            }
+            // Nothing beside it: Left and Right stay here.
+            return keyCode == android.view.KeyEvent.KEYCODE_DPAD_LEFT || keyCode == android.view.KeyEvent.KEYCODE_DPAD_RIGHT;
+        });
         dir = new File(ctx.getCacheDir(), "suggestions");
     }
 
@@ -109,6 +127,49 @@ final class NuvioSuggestions {
         if (BuildConfig.OFFLINE) return false;
         SharedPreferences p = ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE);
         return p.getBoolean(KEY, nuvioInstalled(ctx));
+    }
+
+    /** How Down from Open in Nuvio gets back to the dock (Home's last focused tile). */
+    void setBackToDock(Runnable back) {
+        backToDock = back;
+    }
+
+    /** Up from the dock: focus Open in Nuvio when a title is on show; false leaves Up to Home. */
+    boolean focusOpen() {
+        if (!shown || current == null || layer.getVisibility() != View.VISIBLE) return false;
+        return open.requestFocus();
+    }
+
+    /** Whether focus on v keeps the suggestions (the button is part of them). */
+    boolean owns(View v) {
+        return v == open;
+    }
+
+    /** Opens the title on show in the installed Nuvio app (its own link for a movie or series). */
+    private void openCurrent() {
+        Item item = current;
+        if (item == null || TextUtils.isEmpty(item.id)) return;
+        String type = "series".equals(item.type) ? "series" : "movie";
+        PackageManager pm = ctx.getPackageManager();
+        for (String pkg : NUVIO_APPS) {
+            try {
+                pm.getPackageInfo(pkg, 0);
+            } catch (PackageManager.NameNotFoundException notInstalled) {
+                continue;
+            }
+            android.net.Uri uri = "space.nuvio.nativelegacy".equals(pkg)
+                    ? android.net.Uri.parse("nuvio-legacy://meta/" + type + "/" + android.net.Uri.encode(item.id))
+                    : android.net.Uri.parse("nuvio://meta?type=" + type + "&id=" + android.net.Uri.encode(item.id));
+            android.content.Intent view = new android.content.Intent(android.content.Intent.ACTION_VIEW, uri).setPackage(pkg)
+                    .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK | android.content.Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            try {
+                layer.getContext().startActivity(view);
+                return;
+            } catch (android.content.ActivityNotFoundException | SecurityException e) {
+                Log.d(TAG, pkg + " cannot open " + uri + ": " + e);
+            }
+        }
+        android.widget.Toast.makeText(layer.getContext(), R.string.not_available, android.widget.Toast.LENGTH_SHORT).show();
     }
 
     /** The dock has focus: fade a suggestion in (fetching the lists first, if they are due). */
@@ -136,11 +197,13 @@ final class NuvioSuggestions {
 
     /** Focus left the dock (or Home went away): fade out and stop rotating. */
     void hide() {
+        if (open.hasFocus()) return;   // focus went to Open in Nuvio, which is part of them
         wanted = false;
         main.removeCallbacks(rotate);
         generation++;
         if (!shown) return;
         shown = false;
+        current = null;
         layer.animate().cancel();
         layer.animate().alpha(0f).setDuration(400).withEndAction(() -> {
             if (!shown) {
@@ -152,6 +215,7 @@ final class NuvioSuggestions {
 
     /** Home stopped: let go of the pictures at once. */
     void stop() {
+        wanted = false;
         hide();
         layer.animate().cancel();
         layer.setAlpha(0f);
@@ -192,6 +256,7 @@ final class NuvioSuggestions {
     }
 
     private void showItem(Item item, Bitmap back, Bitmap mark) {
+        current = item;
         ImageView in = onA ? backB : backA, out = onA ? backA : backB;
         Bitmap old = onA ? bitmapB : bitmapA;
         in.setImageBitmap(back);

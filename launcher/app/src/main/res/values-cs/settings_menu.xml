@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Ponechte prázdné pro původní název</string>
     <string name="sm_nuvio_suggestions">Návrhy z Nuvia</string>
     <string name="sm_nuvio_suggestions_note">Oblíbené filmy a seriály z katalogu Nuvio vyplní pozadí, když je vybraný dok.</string>
+    <string name="suggestion_open">Otevřít v Nuviu</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

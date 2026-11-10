@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Orijinal ad için boş bırakın</string>
     <string name="sm_nuvio_suggestions">Nuvio önerileri</string>
     <string name="sm_nuvio_suggestions_note">Dock seçiliyken Nuvio kataloğundan popüler filmler ve diziler arka planı doldurur.</string>
+    <string name="suggestion_open">Nuvio’da aç</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>

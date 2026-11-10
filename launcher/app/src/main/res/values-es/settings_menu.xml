@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Déjalo vacío para el nombre original</string>
     <string name="sm_nuvio_suggestions">Sugerencias de Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Películas y series populares del catálogo de Nuvio llenan el fondo mientras el dock tiene el foco.</string>
+    <string name="suggestion_open">Abrir en Nuvio</string>
     <string name="sm_atv_settings">Ajustes de ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher actualizado a %1$s</string>

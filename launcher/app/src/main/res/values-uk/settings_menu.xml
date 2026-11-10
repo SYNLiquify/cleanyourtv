@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Залиште порожнім для початкової назви</string>
     <string name="sm_nuvio_suggestions">Добірка Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Популярні фільми й серіали з каталогу Nuvio заповнюють тло, поки вибрано панель застосунків.</string>
+    <string name="suggestion_open">Відкрити в Nuvio</string>
     <string name="sm_atv_settings">Налаштування ATV</string>
     <string name="sm_hours">%1$d год</string>
     <string name="update_done">Лаунчер оновлено до %1$s</string>

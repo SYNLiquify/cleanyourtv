@@ -567,6 +567,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         glassAccent = festive ? 0 : accent;
         ambient = findViewById(R.id.ambient);
         suggestions = new NuvioSuggestions(this, findViewById(R.id.suggestion));
+        suggestions.setBackToDock(() -> focusTile(lastFocused));
+        // Only while the dock has focus: anywhere else (the top bar, the rows, Continue watching) fades them out.
+        findViewById(R.id.root).getViewTreeObserver().addOnGlobalFocusChangeListener((oldFocus, newFocus) -> {
+            if (newFocus != null && !suggestions.owns(newFocus) && !inDock(newFocus)) suggestions.hide();
+        });
         // The glow is one bitmap, so its alpha can be applied while drawing it. Otherwise every frame of
         // a fade renders it into a full-screen offscreen buffer first.
         ambient.forceHasOverlappingRendering(false);
@@ -2648,6 +2653,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     // ---- navigation ------------------------------------------------------------------------------
 
+    /** Whether v is (inside) one of the dock's tiles. */
+    private boolean inDock(View v) {
+        View item = grid.findContainingItemView(v);
+        if (item == null) return false;
+        int position = grid.getChildAdapterPosition(item);
+        return position >= 0 && (singleRow || position < COLUMNS);
+    }
+
     @Override
     public boolean onTileVerticalKey(int position, int keyCode) {
         int count = adapter.appCount();
@@ -2655,7 +2668,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (singleRow) {
             // One row: Up leaves for the top bar, Down has nowhere to go, and Left/Right walk the whole row,
             // stopping at its two ends (the default focus search scrolls the row to the next tile).
-            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) return false;
+            if (keyCode == KeyEvent.KEYCODE_DPAD_UP) return suggestions != null && suggestions.focusOpen();
             if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) return true;
             boolean forward = rtlAppGrid ? keyCode == KeyEvent.KEYCODE_DPAD_LEFT : keyCode == KeyEvent.KEYCODE_DPAD_RIGHT;
             int last = adapter.focusablePosition(count - 1);
@@ -2693,7 +2706,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             return true;
         }
         if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-            if (position < COLUMNS) return false;          // dock row: let focus move to the top bar
+            // Dock row: Open in Nuvio when a suggestion is on show, else let focus move to the top bar.
+            if (position < COLUMNS) return suggestions != null && suggestions.focusOpen();
             // The dock and the rows under it have different column counts: go to the tile above, by position on screen.
             if (firstGridRow) target = Math.min(dockColumnAt(tileCenterX(position)), adapter.dockFilled() - 1);
             else target = position - GRID_COLUMNS;

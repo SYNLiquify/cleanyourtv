@@ -155,6 +155,7 @@
     <string name="sm_qs_rename_hint">Để trống để dùng tên gốc</string>
     <string name="sm_nuvio_suggestions">Gợi ý từ Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Phim và chương trình nổi bật từ danh mục của Nuvio hiện làm nền khi dock được chọn.</string>
+    <string name="suggestion_open">Mở trong Nuvio</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>
