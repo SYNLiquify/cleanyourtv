@@ -115,23 +115,36 @@ final class NuvioSuggestions {
         dir = new File(ctx.getCacheDir(), "suggestions");
     }
 
+    /** Whether a Nuvio app is installed, worked out once; packagesChanged() asks again. Main thread only. */
+    private static Boolean installed;
+
     static boolean nuvioInstalled(Context ctx) {
+        if (installed != null) return installed;
         PackageManager pm = ctx.getPackageManager();
+        boolean found = false;
         for (String pkg : NUVIO_APPS) {
             try {
                 pm.getPackageInfo(pkg, 0);
-                return true;
+                found = true;
+                break;
             } catch (PackageManager.NameNotFoundException ignored) {
             }
         }
-        return false;
+        installed = found;
+        return found;
+    }
+
+    /** An app was installed or removed (Home's package receiver): look for Nuvio again next time. */
+    static void packagesChanged() {
+        installed = null;
     }
 
     /** The offline build has none: it goes online only for updates. */
     static boolean enabled(Context ctx) {
         if (BuildConfig.OFFLINE) return false;
         SharedPreferences p = ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE);
-        return p.getBoolean(KEY, nuvioInstalled(ctx));
+        // The saved choice when there is one; the Nuvio check (a PackageManager call per Nuvio app) only otherwise.
+        return p.contains(KEY) ? p.getBoolean(KEY, false) : nuvioInstalled(ctx);
     }
 
     /** How Down from Open in Nuvio gets back to the dock (Home's last focused tile). */

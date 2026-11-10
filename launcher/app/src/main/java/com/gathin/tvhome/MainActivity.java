@@ -419,14 +419,16 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             boolean validated = caps.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED);
             // open_on_start_network_wait: the boot's app opens on the first validated network.
             if (validated && startPending != null) handler.post(openWhenOnline);
-            // This fork: a launcher update check from the TV starting or waking that failed offline runs now.
-            if (validated) handler.post(() -> {
-                Updates.checkIfStartPending(MainActivity.this, MainActivity.this::offerUpdate);
-                // Back online (the TV woke, Wi-Fi returned): fetch the weather now rather than wait for the retry.
-                if (weather != null) weather.refreshNow();
-            });
             if (validated == lastValidated) return;
             lastValidated = validated;
+            // This fork: just back online (the TV woke, Wi-Fi returned): a launcher update check from the TV starting
+            // or waking that failed offline runs now, and the weather is fetched rather than waiting for the retry.
+            // Only on that change, not on every signal-strength update, and the weather only with Home on screen
+            // (onResume refreshes it otherwise), so nothing is fetched over a video.
+            if (validated) handler.post(() -> {
+                Updates.checkIfStartPending(MainActivity.this, MainActivity.this::offerUpdate);
+                if (weather != null && started) weather.refreshNow();
+            });
             if (wifiNoInternetTint != null) handler.post(MainActivity.this::updateWifiLabel);
         }
     };
@@ -461,6 +463,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             // Updates send REMOVED followed by ADDED; keep the tile until the new APK is ready.
             if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.getAction())
                     && intent.getBooleanExtra(Intent.EXTRA_REPLACING, false)) return;
+            NuvioSuggestions.packagesChanged();
             // In the background this only marks the tiles stale; onResume rebuilds them once.
             if (!tileRefresh.onPackagesChanged()) return;
             reloadApps(false);
