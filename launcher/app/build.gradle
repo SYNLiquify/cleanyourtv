@@ -85,6 +85,34 @@ android {
 // The wallpapers themselves stay out of the APK (about 13 MB): ThemeLibrary downloads them from GitHub on apply.
 def themeAssets = layout.buildDirectory.dir('generated/themeAssets').get().asFile
 android.sourceSets.main.assets.srcDirs += [themeAssets]
+// This fork: a theme's screenshot only ever shows as a preview card in Settings (ThemeLibrary decodes it at 300-450 px
+// wide), so the APK carries it at 640 px wide instead of the repo's 1280x720: about 2 MB less APK. themes/ is unchanged.
+def shrinkScreenshot(File from, File to) {
+    def img = javax.imageio.ImageIO.read(from)
+    if (img == null || img.width <= 640) {
+        java.nio.file.Files.copy(from.toPath(), to.toPath())
+        return
+    }
+    int w = 640
+    int h = Math.round(img.height * 640.0d / img.width) as int
+    def scaled = new java.awt.image.BufferedImage(w, h, java.awt.image.BufferedImage.TYPE_INT_RGB)
+    def g = scaled.createGraphics()
+    g.drawImage(img.getScaledInstance(w, h, java.awt.Image.SCALE_AREA_AVERAGING), 0, 0, null)
+    g.dispose()
+    def writer = javax.imageio.ImageIO.getImageWritersByFormatName('jpg').next()
+    def param = writer.getDefaultWriteParam()
+    param.setCompressionMode(javax.imageio.ImageWriteParam.MODE_EXPLICIT)
+    param.setCompressionQuality(0.85f)
+    def stream = javax.imageio.ImageIO.createImageOutputStream(to)
+    try {
+        writer.setOutput(stream)
+        writer.write(null, new javax.imageio.IIOImage(scaled, null, null), param)
+    } finally {
+        stream.close()
+        writer.dispose()
+    }
+}
+
 tasks.register('bundleThemes') {
     def src = rootProject.file('../themes')
     inputs.dir(src)
@@ -101,7 +129,7 @@ tasks.register('bundleThemes') {
             def dst = new File(out, d.name)
             dst.mkdirs()
             java.nio.file.Files.copy(cfg.toPath(), new File(dst, 'config.json').toPath())
-            java.nio.file.Files.copy(shot.toPath(), new File(dst, 'screenshot.jpg').toPath())
+            shrinkScreenshot(shot, new File(dst, 'screenshot.jpg'))
             def files = []
             if (new File(d, 'wallpaper.jpg').isFile()) files << 'wallpaper.jpg'
             def walls = new File(d, 'wallpapers')
