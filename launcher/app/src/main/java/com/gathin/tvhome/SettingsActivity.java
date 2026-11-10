@@ -246,10 +246,23 @@ public final class SettingsActivity extends Activity {
             Runnable r = back;
             back = null;
             r.run();
+            // This fork: back on a category's page, focus goes to the row that opened the page just left (Look's
+            // Themes, System's Updates...), not to the category in the list.
+            if (back == null && category >= 0) {
+                String label = openedFrom.get(category);
+                pane.post(() -> {
+                    View row = label == null ? null : rowLabelled(label);
+                    if (row != null) row.requestFocus();
+                    else if (!pane.hasFocus()) focusPane();
+                });
+            }
             return;
         }
         super.onBackPressed();
     }
+
+    /** The row on each category's page that last opened a page of its own (Back returns focus to it). */
+    private final java.util.Map<Integer, String> openedFrom = new java.util.HashMap<>();
 
     /**
      * Left from the settings returns to the category they belong to, rather than whichever category the focus finder
@@ -2587,7 +2600,13 @@ public final class SettingsActivity extends Activity {
             LinearLayout.LayoutParams chevronLp = new LinearLayout.LayoutParams(-2, -2);
             chevronLp.setMarginStart(dp(14));
             row.addView(chevron, chevronLp);
-            row.setOnClickListener(v -> action.run());
+            row.setOnClickListener(v -> {
+                boolean onCategoryPage = back == null && category >= 0;
+                int from = category;
+                action.run();
+                // It opened a page of its own (one with a Back): remember the row, for focus after that Back.
+                if (onCategoryPage && back != null) openedFrom.put(from, label);
+            });
         }
         row.setOnFocusChangeListener((v, focused) -> {
             if (focused) scrollIntoView(v);
