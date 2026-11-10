@@ -156,6 +156,7 @@
     <string name="sm_nuvio_suggestions">Nuvio 推荐</string>
     <string name="sm_nuvio_suggestions_note">选中底栏时，Nuvio 目录中的热门电影和剧集会铺满背景。</string>
     <string name="suggestion_open">在 Nuvio 中打开</string>
+    <string name="sm_app_name">底栏上方的应用名称</string>
     <string name="sm_atv_settings">ATV 设置</string>
     <string name="sm_hours">%1$d 小时</string>
     <string name="update_done">启动器已更新到 %1$s</string>

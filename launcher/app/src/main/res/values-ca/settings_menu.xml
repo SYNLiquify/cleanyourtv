@@ -156,6 +156,7 @@
     <string name="sm_nuvio_suggestions">Suggeriments de Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Pel·lícules i sèries populars del catàleg de Nuvio omplen el fons mentre el dock té el focus.</string>
     <string name="suggestion_open">Obre a Nuvio</string>
+    <string name="sm_app_name">Nom de l\'app sobre el dock</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

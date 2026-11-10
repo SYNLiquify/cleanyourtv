@@ -156,6 +156,7 @@
     <string name="sm_nuvio_suggestions">Подборка Nuvio</string>
     <string name="sm_nuvio_suggestions_note">Популярные фильмы и сериалы из каталога Nuvio заполняют фон, пока выбрана панель приложений.</string>
     <string name="suggestion_open">Открыть в Nuvio</string>
+    <string name="sm_app_name">Название приложения над панелью</string>
     <string name="sm_atv_settings">Настройки ATV</string>
     <string name="sm_hours">%1$d ч</string>
     <string name="update_done">Лаунчер обновлён до %1$s</string>

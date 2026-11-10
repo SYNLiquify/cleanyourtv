@@ -156,6 +156,7 @@
     <string name="sm_nuvio_suggestions">Nuvio-র পরামর্শ</string>
     <string name="sm_nuvio_suggestions_note">ডক নির্বাচিত থাকলে Nuvio-র ক্যাটালগের জনপ্রিয় সিনেমা ও শো পটভূমিতে দেখা যায়।</string>
     <string name="suggestion_open">Nuvio-তে খুলুন</string>
+    <string name="sm_app_name">ডকের উপরে অ্যাপের নাম</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>

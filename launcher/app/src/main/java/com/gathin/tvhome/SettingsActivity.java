@@ -343,6 +343,11 @@ public final class SettingsActivity extends Activity {
             note(getString(R.string.sm_nuvio_suggestions_note));
         }
         section(R.string.sm_look);
+        // This fork: the focused dock app's name above the dock (config.xml / theme dock_title).
+        pane.addView(toggleRow(getString(R.string.sm_app_name), config.dockTitle, on -> {
+            prefs.edit().putBoolean(Config.DOCK_TITLE_KEY, on).apply();
+            changed();
+        }));
         String[] opacities = new String[DOCK_OPACITIES.length];
         int current = 0;
         for (int i = 0; i < DOCK_OPACITIES.length; i++) {

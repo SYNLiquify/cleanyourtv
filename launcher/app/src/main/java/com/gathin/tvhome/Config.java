@@ -40,6 +40,8 @@ final class Config {
     static final String FILE_NAME = "config.json";
     /** This fork: this TV's own remote-key settings, kept across theme switches (see load). */
     static final String DEVICE_FILE_NAME = "device.json";
+    /** Settings > Home > App name above the dock (dock_title), in SETTINGS_NAME. */
+    static final String DOCK_TITLE_KEY = "dock_title";
     static final String WALLPAPER_NAME = "wallpaper.jpg";
     static final String SETTINGS_NAME = "launcher_settings";
     static final String ROWS_BELOW_DOCK_KEY = "rows_below_dock";
@@ -687,6 +689,8 @@ final class Config {
         int chosenRows = choices.getInt(ROWS_BELOW_DOCK_KEY, rowsBelow);
         if (chosenRows >= 0 && chosenRows <= 3) rowsBelow = chosenRows;
         animations = choices.getBoolean("animations", animations);
+        // This fork: Settings > Home > App name above the dock, over config.xml and the theme's dock_title.
+        dockTitle = choices.getBoolean(DOCK_TITLE_KEY, dockTitle);
         advancedEffects = choices.getBoolean("advanced_effects", advancedEffects);
         File wallpaper = dir != null ? new File(dir, WALLPAPER_NAME) : null;
         if (wallpaper != null && !(wallpaper.isFile() && wallpaper.length() > 0)) wallpaper = null;
