@@ -38,7 +38,12 @@ final class LauncherLocale {
      * and the dates match the text.
      */
     static Locale effective(Context base) {
-        Locale locale = wanted(base);
+        return effective(base, null);
+    }
+
+    /** As effective(base), with a Config already loaded (null: load it only if it is needed). */
+    static Locale effective(Context base, Config loaded) {
+        Locale locale = wanted(base, loaded);
         if (locale == null) return Locale.ENGLISH;
         if (BuildConfig.OFFLINE || "en".equals(locale.getLanguage())
                 || LanguagePacks.installedTagFor(base, locale) != null) return locale;
@@ -47,7 +52,24 @@ final class LauncherLocale {
 
     /** The chosen language, else the TV's (the system's, as base may already be in the launcher's), installed or not. */
     static Locale wanted(Context base) {
-        Locale chosen = parse(Config.load(base).locale);
+        return wanted(base, null);
+    }
+
+    /**
+     * As wanted(base). A language chosen in Settings wins over config.xml and the theme (Config.load), so it is read
+     * from there straight away: every activity's attachBaseContext asks, and Config.load reads and parses the theme's
+     * config.json and about a hundred resources each time. loaded: a Config already loaded, or null.
+     */
+    static Locale wanted(Context base, Config loaded) {
+        String setting;
+        try {
+            android.content.SharedPreferences choices = base.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE);
+            setting = choices.contains(Config.LOCALE_KEY) ? choices.getString(Config.LOCALE_KEY, "").trim() : null;
+        } catch (IllegalStateException lockedAtBoot) {
+            setting = null;   // credential storage before the first unlock (a direct-boot helper)
+        }
+        if (setting == null) setting = (loaded != null ? loaded : Config.load(base)).locale;
+        Locale chosen = parse(setting);
         return chosen != null ? chosen : android.content.res.Resources.getSystem().getConfiguration().getLocales().get(0);
     }
 

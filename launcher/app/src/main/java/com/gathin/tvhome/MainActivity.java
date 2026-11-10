@@ -508,7 +508,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         density = getResources().getDisplayMetrics().density;
         // config.xml, overlaid by config.json from a pushed theme (see Config and tools/theme.sh).
         Config cfg = Config.load(this);
-        chosenLocale = LauncherLocale.effective(this);
+        chosenLocale = LauncherLocale.effective(this, cfg);
         LanguagePacks.refreshIfUpdated(this);
         Updates.removeLeftoverDownload(this);
         // Home itself shows the update with its card (showUpdatedCard), so no toast here.

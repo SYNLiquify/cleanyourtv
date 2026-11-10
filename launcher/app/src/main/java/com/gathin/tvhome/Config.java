@@ -855,13 +855,30 @@ final class Config {
         if (json == null) {
             copy.delete();
         } else {
-            try (FileOutputStream out = new FileOutputStream(copy)) {
-                out.write(json.toString().getBytes(StandardCharsets.UTF_8));
-            } catch (IOException e) {
-                Log.w(TAG, "could not keep a copy of " + file + ": " + e.getMessage());
+            byte[] text = json.toString().getBytes(StandardCharsets.UTF_8);
+            // This fork: only when it changed, rather than a write to flash on every load.
+            if (!sameAs(copy, text)) {
+                try (FileOutputStream out = new FileOutputStream(copy)) {
+                    out.write(text);
+                } catch (IOException e) {
+                    Log.w(TAG, "could not keep a copy of " + file + ": " + e.getMessage());
+                }
             }
         }
         return json;
+    }
+
+    /** Whether file holds exactly text. */
+    private static boolean sameAs(File file, byte[] text) {
+        if (!file.isFile() || file.length() != text.length) return false;
+        try (java.io.FileInputStream in = new java.io.FileInputStream(file)) {
+            byte[] have = new byte[text.length];
+            int at = 0;
+            for (int n; at < have.length && (n = in.read(have, at, have.length - at)) > 0; ) at += n;
+            return at == have.length && java.util.Arrays.equals(have, text);
+        } catch (IOException e) {
+            return false;
+        }
     }
 
     private static JSONObject read(File file) {
