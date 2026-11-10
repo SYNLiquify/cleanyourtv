@@ -208,7 +208,19 @@ final class ContinueRow {
         }
     }
 
-    void trimMemory() { images.clearMemory(); }
+    /**
+     * Another app needs the memory while Home is in the background (MainActivity.onTrimMemory): the thumbnails go,
+     * from the cache and from the cards that hold them. start() reads the list again when Home comes back, and the
+     * cards load them from the disk cache.
+     */
+    void trimMemory() {
+        images.clearMemory();
+        for (int i = 0; i < list.getChildCount(); i++) {
+            RecyclerView.ViewHolder h = list.getChildViewHolder(list.getChildAt(i));
+            if (h instanceof Card) ((Card) h).image.setImageDrawable(null);
+        }
+        list.getRecycledViewPool().clear();
+    }
 
     private void load() {
         final int gen = ++generation;

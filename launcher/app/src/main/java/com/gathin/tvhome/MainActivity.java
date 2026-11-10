@@ -1548,6 +1548,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         heroArtCache.clear();
         heroArtKey = null;
         wallpaperPlayer.releaseForMemoryPressure();
+        if (continueRow != null) continueRow.trimMemory();   // this fork: the Continue watching thumbnails too
         tileRefresh.invalidate();
     }
 
