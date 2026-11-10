@@ -123,17 +123,20 @@ public final class SettingsActivity extends Activity {
 
         LinearLayout columns = new LinearLayout(this);
         columns.setOrientation(LinearLayout.HORIZONTAL);
-        columns.setPadding(dp(56), dp(36), dp(56), 0);
+        columns.setPadding(dp(56), dp(44), dp(56), 0);
         root.addView(columns, new FrameLayout.LayoutParams(-1, -1));
 
         LinearLayout left = new LinearLayout(this);
         left.setOrientation(LinearLayout.VERTICAL);
-        columns.addView(left, new LinearLayout.LayoutParams(dp(220), -1));
-        // This fork: a smaller header (no "LAUNCHER" line), so the categories and rows get the room.
-        TextView title = text(32, R.string.font_light, INK);
+        columns.addView(left, new LinearLayout.LayoutParams(dp(250), -1));
+        TextView kicker = text(13, R.string.font_regular, 0x99FFFFFF);
+        kicker.setText(getString(R.string.sm_kicker).toUpperCase(Locale.getDefault()));
+        kicker.setLetterSpacing(0.2f);
+        left.addView(kicker);
+        TextView title = text(44, R.string.font_light, INK);
         title.setText(R.string.sm_title);
         LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(-2, -2);
-        titleLp.bottomMargin = dp(20);
+        titleLp.bottomMargin = dp(26);
         left.addView(title, titleLp);
         int[] names = {R.string.sm_home, R.string.sm_themes, R.string.sm_weather, R.string.sm_clock, R.string.sm_storage,
                 R.string.sm_system};
@@ -142,14 +145,14 @@ public final class SettingsActivity extends Activity {
             TextView b = pill(getString(names[i]));
             b.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
             b.setPadding(dp(22), 0, dp(22), 0);
-            b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            b.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
             b.setOnFocusChangeListener((v, focused) -> {
                 // keepPage: a page redrawing itself (Quick settings) let focus land here for a moment.
                 if (focused && !keepPage) showCategory(index);
             });
             b.setOnClickListener(v -> focusPane());
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(40));
-            lp.bottomMargin = dp(8);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(48));
+            lp.bottomMargin = dp(10);
             left.addView(b, lp);
             categoryButtons.add(b);
             // The offline build has no weather; the button stays in the list, hidden, so the pages keep their numbers.
@@ -1875,8 +1878,8 @@ public final class SettingsActivity extends Activity {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setMinimumHeight(dp(60));
-        TextView name = text(16, R.string.font_regular, INK);
+        row.setMinimumHeight(dp(72));
+        TextView name = text(18, R.string.font_regular, INK);
         name.setText(R.string.sm_ss_position);
         name.setSingleLine(true);
         row.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
@@ -1893,8 +1896,8 @@ public final class SettingsActivity extends Activity {
             pill.setOnFocusChangeListener((v, focused) -> {
                 if (focused) scrollIntoView(row);
             });
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(36));
-            lp.setMarginStart(dp(8));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            lp.setMarginStart(dp(10));
             row.addView(pill, lp);
             choices.add(pill);
         }
@@ -2149,8 +2152,8 @@ public final class SettingsActivity extends Activity {
         });
         pills.add(rename);
         for (int i = 0; i < pills.size(); i++) {
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(36));
-            if (i > 0) lp.setMarginStart(dp(8));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            if (i > 0) lp.setMarginStart(dp(10));
             qsActions.addView(pills.get(i), lp);
         }
         pills.get(0).requestFocus();
@@ -2242,8 +2245,8 @@ public final class SettingsActivity extends Activity {
         LinearLayout row = new LinearLayout(this);
         row.setOrientation(LinearLayout.HORIZONTAL);
         row.setGravity(Gravity.CENTER_VERTICAL);
-        row.setMinimumHeight(dp(48));
-        TextView name = text(16, R.string.font_regular, INK);
+        row.setMinimumHeight(dp(58));
+        TextView name = text(18, R.string.font_regular, INK);
         name.setText(label);
         name.setSingleLine(true);
         name.setEllipsize(TextUtils.TruncateAt.END);
@@ -2264,13 +2267,13 @@ public final class SettingsActivity extends Activity {
             p.setOnFocusChangeListener((v, focused) -> {
                 if (focused) scrollIntoView(row);
             });
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(36));
-            lp.setMarginStart(dp(options.length >= 6 ? 6 : 8));
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, dp(44));
+            lp.setMarginStart(dp(options.length >= 6 ? 8 : 10));
             row.addView(p, lp);
             pills.add(p);
         }
         LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
-        rowLp.topMargin = dp(4);
+        rowLp.topMargin = dp(6);
         row.setLayoutParams(rowLp);
         return row;
     }
@@ -2287,9 +2290,9 @@ public final class SettingsActivity extends Activity {
         row.setGravity(Gravity.CENTER_VERTICAL);
         row.setFocusable(true);
         row.setClickable(true);
-        row.setBackground(glass(dp(14)));
-        row.setPadding(dp(20), 0, dp(18), 0);
-        TextView name = text(16, R.string.font_regular, INK);
+        row.setBackground(glass(dp(16)));
+        row.setPadding(dp(22), 0, dp(20), 0);
+        TextView name = text(18, R.string.font_regular, INK);
         name.setText(label);
         name.setDuplicateParentStateEnabled(true);
         // A label written right to left (العربية, עברית in the language list) still starts at the row's left edge.
@@ -2301,7 +2304,7 @@ public final class SettingsActivity extends Activity {
         name.setEllipsize(TextUtils.TruncateAt.END);
         row.addView(name, new LinearLayout.LayoutParams(0, -2, 1f));
         if (!value.isEmpty()) {
-            TextView v = text(14, R.string.font_regular, 0x99FFFFFF);
+            TextView v = text(15, R.string.font_regular, 0x99FFFFFF);
             v.setText(value);
             v.setDuplicateParentStateEnabled(true);
             v.setTextColor(ink(0x99FFFFFF));
@@ -2314,7 +2317,7 @@ public final class SettingsActivity extends Activity {
         }
         // No action: an information row (Storage). It still takes focus, so the remote can scroll to it.
         if (action != null) {
-            TextView chevron = text(20, R.string.font_light, 0x99FFFFFF);
+            TextView chevron = text(22, R.string.font_light, 0x99FFFFFF);
             chevron.setText("›");
             chevron.setDuplicateParentStateEnabled(true);
             chevron.setTextColor(ink(0x99FFFFFF));
@@ -2326,8 +2329,8 @@ public final class SettingsActivity extends Activity {
         row.setOnFocusChangeListener((v, focused) -> {
             if (focused) scrollIntoView(v);
         });
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(46));
-        lp.topMargin = dp(8);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, dp(56));
+        lp.topMargin = dp(10);
         row.setLayoutParams(lp);
         return row;
     }
@@ -2338,13 +2341,13 @@ public final class SettingsActivity extends Activity {
     private TextView hint;
 
     private void section(int title) {
-        TextView t = text(12, R.string.font_medium, 0x80FFFFFF);
+        TextView t = text(13, R.string.font_medium, 0x80FFFFFF);
         t.setText(getString(title).toUpperCase(Locale.getDefault()));
         t.setLetterSpacing(0.16f);
         t.setTag(SECTION_TAG);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-2, -2);
-        lp.topMargin = pane.getChildCount() == 0 ? dp(2) : dp(18);
-        lp.bottomMargin = dp(2);
+        lp.topMargin = pane.getChildCount() == 0 ? dp(4) : dp(26);
+        lp.bottomMargin = dp(4);
         pane.addView(t, lp);
     }
 
@@ -2403,13 +2406,13 @@ public final class SettingsActivity extends Activity {
 
     /** Home's frosted pill (pill_bg): glass at rest, white with dark text with focus; outlined when chosen. */
     private TextView pill(String label) {
-        TextView p = text(14, R.string.font_medium, INK);
+        TextView p = text(15, R.string.font_medium, INK);
         p.setText(label);
         p.setGravity(Gravity.CENTER);
-        p.setPadding(dp(16), 0, dp(16), 0);
+        p.setPadding(dp(20), 0, dp(20), 0);
         p.setFocusable(true);
         p.setClickable(true);
-        p.setBackground(glass(dp(18)));
+        p.setBackground(glass(dp(22)));
         p.setTextColor(ink(INK));
         return p;
     }
