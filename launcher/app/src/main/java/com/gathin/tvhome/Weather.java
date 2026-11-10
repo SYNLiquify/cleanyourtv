@@ -178,7 +178,12 @@ final class Weather {
         StringBuilder text = new StringBuilder(words.getString(celsius ? R.string.weather_temp_c : R.string.weather_temp_f,
                 unit(prefs.getInt("temp", 0), celsius)));
         if (compact) {
+            // The icon stands for the conditions; today's high and low still follow Settings > Weather.
             text.insert(0, icon(prefs.getInt("code", 0)) + "  ");
+            if (settings.getBoolean(HILO_KEY, true)) {
+                text.append(words.getString(R.string.weather_separator)).append(words.getString(R.string.weather_hilo,
+                        unit(prefs.getInt("hi", 0), celsius), unit(prefs.getInt("lo", 0), celsius)));
+            }
             if (!TextUtils.equals(view.getText(), text)) view.setText(text);
             view.setVisibility(android.view.View.VISIBLE);
             return;
