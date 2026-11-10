@@ -68,7 +68,7 @@ public final class QuickSettingsActivity extends Activity {
     }
 
     /**
-     * This fork: the Dim screen row (ScreenDim). Left/Right move it 1% (held, it sweeps; Right dims more, mirrored in a right-to-left
+     * This fork: the Dim screen row (ScreenDim). Left/Right move it 1% (held, faster and faster; Right dims more, mirrored in a right-to-left
      * language), OK turns it off or back on; the bar shows the level out of ScreenDim.MAX.
      */
     private void bindDim() {
@@ -99,7 +99,10 @@ public final class QuickSettingsActivity extends Activity {
             if (event.getAction() == android.view.KeyEvent.ACTION_DOWN && ScreenDim.available()) {
                 int direction = code == android.view.KeyEvent.KEYCODE_DPAD_RIGHT ? 1 : -1;
                 if (v.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) direction = -direction;
-                ScreenDim.set(this, ScreenDim.level(this) + direction * ScreenDim.STEP);
+                // Ramps while held: 1% a press, then 2% and 4% a step the longer the key repeats.
+                int repeats = event.getRepeatCount();
+                int step = ScreenDim.STEP * (repeats < 6 ? 1 : repeats < 16 ? 2 : 4);
+                ScreenDim.set(this, ScreenDim.level(this) + direction * step);
                 show.run();
             }
             return true;
