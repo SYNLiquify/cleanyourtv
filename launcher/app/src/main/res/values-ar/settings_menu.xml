@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">حرّكه بالأسهم ثم اضغط OK.</string>
     <string name="sm_qs_rename">إعادة التسمية</string>
     <string name="sm_qs_rename_hint">اتركه فارغًا للاسم الأصلي</string>
+    <string name="sm_nuvio_suggestions">اقتراحات Nuvio</string>
+    <string name="sm_nuvio_suggestions_note">تملأ الأفلام والمسلسلات الشائعة من كتالوج Nuvio الخلفية أثناء التركيز على شريط التطبيقات.</string>
     <string name="sm_atv_settings">إعدادات ATV</string>
     <string name="sm_hours">%1$d ساعة</string>
     <string name="update_done">تم تحديث المشغّل إلى %1$s</string>

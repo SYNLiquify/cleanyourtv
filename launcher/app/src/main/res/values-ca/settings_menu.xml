@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">Mou-lo amb les fletxes i prem OK.</string>
     <string name="sm_qs_rename">Canvia el nom</string>
     <string name="sm_qs_rename_hint">Deixa-ho buit per al nom original</string>
+    <string name="sm_nuvio_suggestions">Suggeriments de Nuvio</string>
+    <string name="sm_nuvio_suggestions_note">Pel·lícules i sèries populars del catàleg de Nuvio omplen el fons mentre el dock té el focus.</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

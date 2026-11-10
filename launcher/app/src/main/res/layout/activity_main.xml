@@ -30,6 +30,9 @@
         android:layout_height="match_parent"
         android:alpha="0" />
 
+    <!-- This fork: Nuvio suggestions behind Home while the dock has focus (NuvioSuggestions). -->
+    <include layout="@layout/nuvio_suggestion" />
+
     <!-- Race-weekend panel (a theme's race_calendar, see RaceWeekend): in the free space under the clock,
          shown only from shortly before a weekend's first session until the race is over. Updated once a
          minute with the clock, never animated. -->

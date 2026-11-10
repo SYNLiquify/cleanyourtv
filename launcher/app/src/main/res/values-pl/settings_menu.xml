@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">Przenieś go strzałkami i naciśnij OK.</string>
     <string name="sm_qs_rename">Zmień nazwę</string>
     <string name="sm_qs_rename_hint">Zostaw puste, aby przywrócić oryginalną nazwę</string>
+    <string name="sm_nuvio_suggestions">Propozycje z Nuvio</string>
+    <string name="sm_nuvio_suggestions_note">Popularne filmy i seriale z katalogu Nuvio wypełniają tło, gdy dok jest zaznaczony.</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

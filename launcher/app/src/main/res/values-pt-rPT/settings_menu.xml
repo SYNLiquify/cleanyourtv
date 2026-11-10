@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">Mova-o com as setas e prima OK.</string>
     <string name="sm_qs_rename">Mudar o nome</string>
     <string name="sm_qs_rename_hint">Deixe vazio para o nome original</string>
+    <string name="sm_nuvio_suggestions">Sugestões do Nuvio</string>
+    <string name="sm_nuvio_suggestions_note">Filmes e séries populares do catálogo do Nuvio preenchem o fundo enquanto a dock está em foco.</string>
     <string name="sm_atv_settings">Definições do ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher atualizado para %1$s</string>

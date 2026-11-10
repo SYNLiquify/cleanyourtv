@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This fork: Nuvio suggestions behind Home while the dock has focus (NuvioSuggestions): a popular title's backdrop,
+     darkened towards the clock and the dock, with its logo (or name), its rating and year as outlined chips, and its
+     kind and genres. Two backdrops so one can fade into the next. Hidden until the dock has focus. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/suggestion"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="0"
+    android:visibility="gone"
+    android:importantForAccessibility="no">
+
+    <ImageView
+        android:id="@+id/suggestionBackA"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop" />
+
+    <ImageView
+        android:id="@+id/suggestionBackB"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:alpha="0" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/suggestion_scrim" />
+
+    <LinearLayout
+        android:id="@+id/suggestionInfo"
+        android:layout_width="520dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="118dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/suggestionLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="320dp"
+            android:maxHeight="72dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitStart"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/suggestionName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFFFF"
+            android:textSize="36sp"
+            android:fontFamily="@string/font_medium"
+            android:maxLines="2"
+            android:ellipsize="end" />
+
+        <!-- The rating and the year, each in an outlined chip (NuvioSuggestions). -->
+        <LinearLayout
+            android:id="@+id/suggestionChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/suggestionMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="#B3FFFFFF"
+            android:textSize="15sp"
+            android:fontFamily="@string/font_regular"
+            android:singleLine="true" />
+    </LinearLayout>
+</FrameLayout>

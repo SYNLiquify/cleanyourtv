@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">Uni strelkalar bilan siljiting, so‘ng OK bosing.</string>
     <string name="sm_qs_rename">Nomini o‘zgartirish</string>
     <string name="sm_qs_rename_hint">Asl nom uchun bo‘sh qoldiring</string>
+    <string name="sm_nuvio_suggestions">Nuvio tavsiyalari</string>
+    <string name="sm_nuvio_suggestions_note">Dok tanlanganida Nuvio katalogidagi mashhur filmlar va seriallar fonni to‘ldiradi.</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

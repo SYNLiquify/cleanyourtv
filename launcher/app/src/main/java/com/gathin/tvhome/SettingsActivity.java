@@ -334,6 +334,14 @@ public final class SettingsActivity extends Activity {
                     prefs.edit().putBoolean(CONTINUE_WATCHING_KEY, on).apply();
                     changed();
                 }));
+        // This fork: popular titles from Nuvio's catalog behind Home while the dock has focus (not in the offline build).
+        if (!BuildConfig.OFFLINE) {
+            pane.addView(toggleRow(getString(R.string.sm_nuvio_suggestions), NuvioSuggestions.enabled(this), on -> {
+                prefs.edit().putBoolean(NuvioSuggestions.KEY, on).apply();
+                changed();
+            }));
+            note(getString(R.string.sm_nuvio_suggestions_note));
+        }
         section(R.string.sm_look);
         String[] opacities = new String[DOCK_OPACITIES.length];
         int current = 0;

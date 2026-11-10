@@ -158,6 +158,8 @@
     <string name="sm_qs_moving">Move it with the arrows, then press OK.</string>
     <string name="sm_qs_rename">Rename</string>
     <string name="sm_qs_rename_hint">Leave it empty for the original name</string>
+    <string name="sm_nuvio_suggestions">Nuvio suggestions</string>
+    <string name="sm_nuvio_suggestions_note">Popular movies and shows from Nuvio\'s catalog fill the background while the dock has focus.</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

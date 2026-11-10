@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">הזיזו בעזרת החצים ולחצו OK.</string>
     <string name="sm_qs_rename">שינוי שם</string>
     <string name="sm_qs_rename_hint">השאירו ריק לשם המקורי</string>
+    <string name="sm_nuvio_suggestions">הצעות מ-Nuvio</string>
+    <string name="sm_nuvio_suggestions_note">סרטים וסדרות פופולריים מהקטלוג של Nuvio ממלאים את הרקע כשהמעגן בפוקוס.</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

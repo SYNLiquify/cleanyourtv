@@ -153,6 +153,8 @@
     <string name="sm_qs_moving">用方向鍵移動，然後按 OK。</string>
     <string name="sm_qs_rename">重新命名</string>
     <string name="sm_qs_rename_hint">留空則恢復原名</string>
+    <string name="sm_nuvio_suggestions">Nuvio 推薦</string>
+    <string name="sm_nuvio_suggestions_note">選取底部列時，Nuvio 目錄中的熱門電影和影集會鋪滿背景。</string>
     <string name="sm_atv_settings">ATV 設定</string>
     <string name="sm_hours">%1$d 小時</string>
     <string name="update_done">啟動器已更新至 %1$s</string>

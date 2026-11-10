@@ -96,6 +96,7 @@ Unlike the upstream launcher, this fork has the `INTERNET` permission. It is use
 | Theme list | `raw.githubusercontent.com` (themes README), `api.github.com` (repo tree) | Only on opening the Themes page or pressing Refresh, at most every 10 minutes; the API only when the README changed, or once a day |
 | Theme previews and wallpapers | `raw.githubusercontent.com` | When a preview changed, or a theme is applied |
 | Continue watching thumbnails | The image URLs the app publishes (https only, 4 MB cap, cached up to 40 MB) | When a new title appears |
+| Nuvio suggestions | `v3-cinemeta.strem.io` (Nuvio's default catalog: popular movies and series), `images.metahub.space` (backdrops and logos, https only, cached on the TV) | The lists at most every 6 hours, a picture the first time its title is shown; only while the dock has focus, and only with Settings > Home > Nuvio suggestions on (on by default when a Nuvio app is installed). Not in the offline build |
 | Update check | `api.github.com` (this fork's latest release) | At boot, when Home returns after the interval, and every interval (1 hour by default); never with checks off |
 | Update download | `github.com` release asset (32 MB cap, SHA-256 checked) | Only when Install update is chosen |
 

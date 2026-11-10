@@ -178,6 +178,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     /** config.xml cinematic_white_focus: the cinematic shelf keeps the white highlight. */
     private boolean cinematicWhiteFocus;
     private ImageView heroArt;
+    /** This fork: Nuvio suggestions behind Home while the dock has focus. */
+    private NuvioSuggestions suggestions;
     /** config.xml cinematic_dots: false leaves the dock position dots out of the cinematic shelf. */
     private boolean heroDotsShown = true;
     /** The artwork's opacity behind the cinematic shelf (config.xml cinematic_art); 0 leaves it out. */
@@ -564,6 +566,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         else if (accent != 0) glass.setAccent(accent);
         glassAccent = festive ? 0 : accent;
         ambient = findViewById(R.id.ambient);
+        suggestions = new NuvioSuggestions(this, findViewById(R.id.suggestion));
         // The glow is one bitmap, so its alpha can be applied while drawing it. Otherwise every frame of
         // a fade renders it into a full-screen offscreen buffer first.
         ambient.forceHasOverlappingRendering(false);
@@ -1442,6 +1445,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     protected void onPause() {
         super.onPause();
         resumed = false;
+        if (suggestions != null) suggestions.stop();
         // No UP reaches a paused Home, so a vendor-key hold it saw go down would still open its app later.
         // Only Home's own share is dropped: a key service that saw the same DOWN keeps its hold.
         RemoteKeys.release(this);
@@ -2125,6 +2129,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     // ---- top shelf -------------------------------------------------------------------------------
 
     private void showHero(int position, float dockTopInRoot) {
+        if (suggestions != null) suggestions.show();   // the dock has focus
         String label = adapter.labelAt(position);
         int color = adapter.ambientColorAt(position);
         alignHeroToBand();
@@ -2437,6 +2442,7 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     private void hideHero() {
+        if (suggestions != null) suggestions.hide();
         if (!heroShown) return;
         stopAmbientAnimation();
         hero.animate().cancel();
