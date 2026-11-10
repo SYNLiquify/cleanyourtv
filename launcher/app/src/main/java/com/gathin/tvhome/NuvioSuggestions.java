@@ -99,8 +99,13 @@ final class NuvioSuggestions {
     }
 
     private final Runnable rotate = () -> {
-        if (!paused) step();
+        // Not while Open in Nuvio has focus: the owner is reading this title, or stepping through them with Left/Right.
+        if (!paused && !openFocused()) step();
     };
+
+    private boolean openFocused() {
+        return open.hasFocus();
+    }
 
     NuvioSuggestions(Context context, View layer) {
         ctx = context.getApplicationContext();
@@ -123,8 +128,17 @@ final class NuvioSuggestions {
                 if (event.getAction() == android.view.KeyEvent.ACTION_DOWN) backToDock.run();
                 return true;
             }
-            // Nothing beside it: Left and Right stay here.
-            return keyCode == android.view.KeyEvent.KEYCODE_DPAD_LEFT || keyCode == android.view.KeyEvent.KEYCODE_DPAD_RIGHT;
+            // Left and Right step through the suggestions by hand: the previous title, or the next (mirrored in a
+            // right-to-left language). One title a press; a held key does not race through them.
+            boolean left = keyCode == android.view.KeyEvent.KEYCODE_DPAD_LEFT;
+            if (!left && keyCode != android.view.KeyEvent.KEYCODE_DPAD_RIGHT) return false;
+            if (event.getAction() == android.view.KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0 && items.size() > 1) {
+                boolean back = left != (v.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL);
+                // next is the title after the one on show; the one before it is two back.
+                if (back) next = ((next - 2) % items.size() + items.size()) % items.size();
+                step();
+            }
+            return true;
         });
         dir = new File(ctx.getCacheDir(), "suggestions");
         // The scrim's three gradients, drawn once into 192x108 and stretched (filtered, so it stays smooth): a frame

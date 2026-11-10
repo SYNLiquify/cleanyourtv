@@ -135,6 +135,19 @@ final class ClockScene {
         }
         weather = ScreensaverStyle.OFF.equals(style.weatherMode) ? null
                 : new Weather(ctx, handler, weatherView);   // shown or not as Settings > Weather say
+        // This fork: with Settings > Look > Compact top bar on (the default), the weather reads like Home's, an icon and
+        // the temperature ("☁ 62°F"), instead of conditions and high/low.
+        if (weather != null && compactWeather(ctx)) weather.setCompact(true);
+    }
+
+    /** Home's Compact top bar setting (Config.COMPACT_TOP_KEY, on by default). */
+    private static boolean compactWeather(Context ctx) {
+        try {
+            return ctx.getSharedPreferences(Config.SETTINGS_NAME, Context.MODE_PRIVATE)
+                    .getBoolean(Config.COMPACT_TOP_KEY, true);
+        } catch (IllegalStateException lockedAtBoot) {
+            return true;
+        }
     }
 
     private static void scale(TextView v, float factor) {
