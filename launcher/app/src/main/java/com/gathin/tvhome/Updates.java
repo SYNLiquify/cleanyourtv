@@ -320,7 +320,7 @@ public final class Updates extends BroadcastReceiver {
             Offer found = null;
             SharedPreferences.Editor e = prefs(ctx).edit().putLong(LAST_CHECK, System.currentTimeMillis());
             try {
-                JSONObject r = new JSONObject(get(LATEST));
+                JSONObject r = new JSONObject(latest(ctx));
                 Matcher m = TAG_CODE.matcher(r.optString("tag_name"));
                 if (!m.matches()) throw new IOException("no launcher release");
                 int code = Integer.parseInt(m.group(1));
@@ -484,12 +484,35 @@ public final class Updates extends BroadcastReceiver {
         return sb.toString();
     }
 
-    private static String get(String url) throws IOException {
-        HttpURLConnection c = (HttpURLConnection) new URL(url).openConnection();
+    private static final String LATEST_ETAG = "latest_etag", LATEST_BODY = "latest_body";
+
+    /**
+     * The latest release's JSON. Asked with the last answer's ETag: when nothing changed GitHub answers 304, which does
+     * not count against its 60 requests an hour for the TV's address (shared with Themes and other TVs), and the
+     * kept answer is used.
+     */
+    private static String latest(Context ctx) throws IOException {
+        SharedPreferences p = prefs(ctx);
+        String etag = p.getString(LATEST_ETAG, null), kept = p.getString(LATEST_BODY, null);
+        HttpURLConnection c = (HttpURLConnection) new URL(LATEST).openConnection();
+        if (etag != null && kept != null) c.setRequestProperty("If-None-Match", etag);
+        String body = read(c);
+        if (body == null) {
+            Log.i(TAG, "check: release unchanged (304)");
+            return kept;
+        }
+        String tag = c.getHeaderField("ETag");
+        if (tag != null) p.edit().putString(LATEST_ETAG, tag).putString(LATEST_BODY, body).apply();
+        return body;
+    }
+
+    /** The answer's text, or null for 304 Not Modified. */
+    private static String read(HttpURLConnection c) throws IOException {
         c.setConnectTimeout(TIMEOUT_MS);
         c.setReadTimeout(TIMEOUT_MS);
         c.setRequestProperty("Accept", "application/vnd.github+json");
         try {
+            if (c.getResponseCode() == HttpURLConnection.HTTP_NOT_MODIFIED) return null;
             if (c.getResponseCode() != HttpURLConnection.HTTP_OK) throw new IOException("GitHub answered " + c.getResponseCode());
             try (InputStream in = c.getInputStream()) {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();

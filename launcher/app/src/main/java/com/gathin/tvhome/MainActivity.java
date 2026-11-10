@@ -1187,9 +1187,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (openLibraryIfAsked(intent)) return;
         if (openInputsIfAsked(intent)) return;
         if (intent == null || !intent.hasCategory(Intent.CATEGORY_HOME)) return;
-        // This fork: every Home press checks for a launcher update (at most once a minute; not with checks Off).
-        Updates.checkOnHomePress(this, this::offerUpdate);
-        if (weather != null) weather.refreshNow();   // this fork: fresh weather each time Home is pressed
+        // This fork: every Home press checks for a launcher update (at most once a minute; not with checks Off) and
+        // refreshes the weather, 2 s later, so the network and TLS work stays out of the return-to-Home animation;
+        // leaving Home before then (onPause) skips them.
+        handler.removeCallbacks(homePressChecks);
+        handler.postDelayed(homePressChecks, 2000);
         if (gameDay != null && !stopped) gameDay.read();
         grid.scrollToPosition(0);
         lastFocused = 0;
@@ -1461,10 +1463,17 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         if (resumed && idleClockMs > 0) root.postDelayed(showIdleClock, idleClockMs);
     }
 
+    /** This fork: the Home press's update check and weather refresh (onNewIntent), after the animation. */
+    private final Runnable homePressChecks = () -> {
+        Updates.checkOnHomePress(this, this::offerUpdate);
+        if (weather != null) weather.refreshNow();
+    };
+
     @Override
     protected void onPause() {
         super.onPause();
         resumed = false;
+        handler.removeCallbacks(homePressChecks);
         // This fork: the quick panel only pauses Home and leaves it on screen, so the suggestion stays under it;
         // onStop (Home covered by an app) lets go of the pictures.
         if (suggestions != null) suggestions.pause();
