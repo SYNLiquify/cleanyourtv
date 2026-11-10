@@ -34,6 +34,7 @@ The first release, on top of the Apple TV-style home, highlight colors, Continue
 - **Plain version numbers.** The launcher now shows versions like 0.5.9 instead of build numbers.
 - **Both versions in Settings > System.** Shows the main repo's launcher version along with this fork's.
 - **Language support covering the whole launcher along with settings for changing and removing languages.**
+- **Added Japanese to the languages.**
 - **Updates page.** Check for updates and choose how often it checks.
 - **Faster installs.** Android’s install screen opens sooner, Settings shows the download progress, and a notice tells you when the update is done.
 - **Storage redesigned.** Colored bars show what the launcher is using, with a shortcut to Android’s storage, and only parts that hold data are listed.
