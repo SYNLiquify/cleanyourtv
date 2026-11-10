@@ -136,11 +136,17 @@ public final class SettingsActivity extends Activity {
         LinearLayout.LayoutParams titleLp = new LinearLayout.LayoutParams(-2, -2);
         titleLp.bottomMargin = dp(20);
         left.addView(title, titleLp);
-        // This fork: Search, above the categories (Up from the first one): every setting by name, with suggestions.
-        searchButton = pill(getString(R.string.sm_search));
-        searchButton.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-        searchButton.setPadding(dp(22), 0, dp(22), 0);
+        // This fork: Search, above the categories (Up from the first one): type in it, and the settings whose name
+        // matches show on the right as you go; each opens its page with the row focused.
+        searchButton = field(getString(R.string.sm_search), "");
+        searchButton.setInputType(InputType.TYPE_CLASS_TEXT);
+        searchButton.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        searchButton.setBackground(glass(dp(24)));
+        searchButton.setTextColor(ink(INK));
         searchButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+        searchButton.setHintTextColor(new android.content.res.ColorStateList(
+                new int[][]{{android.R.attr.state_focused}, {}}, new int[]{0x99000000, 0x99FFFFFF}));
+        searchButton.setPadding(dp(22), 0, dp(18), 0);
         Drawable magnifier = getDrawable(R.drawable.ic_search_small);
         if (magnifier != null) {
             magnifier.setBounds(0, 0, dp(20), dp(20));
@@ -151,7 +157,21 @@ public final class SettingsActivity extends Activity {
         searchButton.setOnFocusChangeListener((v, focused) -> {
             if (focused && !keepPage && category != PAGE_SEARCH) showSearch();
         });
-        searchButton.setOnClickListener(v -> focusSearchField());
+        searchButton.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence t, int a, int b, int c) {}
+            @Override public void onTextChanged(CharSequence t, int a, int b, int c) {}
+            @Override public void afterTextChanged(android.text.Editable t) {
+                if (category != PAGE_SEARCH) showSearch();
+                else showResults(t.toString());
+            }
+        });
+        // Done on the keyboard: to the results.
+        searchButton.setOnEditorActionListener((v, action, event) -> {
+            hideKeyboard(searchButton);
+            View first = searchResults == null ? null : firstFocusable(searchResults);
+            if (first != null) first.requestFocus();
+            return true;
+        });
         LinearLayout.LayoutParams searchLp = new LinearLayout.LayoutParams(-1, dp(48));
         searchLp.bottomMargin = dp(18);
         left.addView(searchButton, searchLp);
@@ -260,9 +280,11 @@ public final class SettingsActivity extends Activity {
                 return true;
             }
             if (focus == searchButton) {
-                if (key == KeyEvent.KEYCODE_DPAD_UP || key == KeyEvent.KEYCODE_DPAD_LEFT) return true;
-                if (key == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                    focusSearchField();
+                if (key == KeyEvent.KEYCODE_DPAD_UP) return true;
+                // Right past the end of the text: to the results.
+                if (key == KeyEvent.KEYCODE_DPAD_RIGHT && searchButton.getSelectionEnd() >= searchButton.length()) {
+                    View first = searchResults == null ? null : firstFocusable(searchResults);
+                    if (first != null) first.requestFocus();
                     return true;
                 }
             }
@@ -2098,8 +2120,7 @@ public final class SettingsActivity extends Activity {
 
     /** The search page's "category" (not one of the list's). */
     private static final int PAGE_SEARCH = -2;
-    private TextView searchButton;
-    private EditText searchField;
+    private EditText searchButton;
     private LinearLayout searchResults;
 
     /** A setting search can find: its name, where it is, how to get there and which row to focus. */
@@ -2175,52 +2196,28 @@ public final class SettingsActivity extends Activity {
         return out;
     }
 
-    /** The search page: the field, and under it the settings that match what is typed (or suggestions). */
+    /** The search page: the settings that match what is typed in the Search box on the left. */
     private void showSearch() {
         back = null;
         stayOnPage(this::clearPane);
         category = PAGE_SEARCH;
         for (TextView b : categoryButtons) b.setSelected(false);
         paneTitle.setText(R.string.sm_search);
-        searchField = field(getString(R.string.sm_search_hint), "");
-        searchField.setInputType(InputType.TYPE_CLASS_TEXT);
-        searchField.addTextChangedListener(new android.text.TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence t, int a, int b, int c) {}
-            @Override public void onTextChanged(CharSequence t, int a, int b, int c) {}
-            @Override public void afterTextChanged(android.text.Editable t) { showResults(t.toString()); }
-        });
-        searchField.setOnEditorActionListener((v, action, event) -> {
-            hideKeyboard(searchField);
-            View first = firstFocusable(searchResults);
-            if (first != null) first.requestFocus();
-            return true;
-        });
-        pane.addView(searchField, new LinearLayout.LayoutParams(-1, dp(52)));
         searchResults = new LinearLayout(this);
         searchResults.setOrientation(LinearLayout.VERTICAL);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
-        lp.topMargin = dp(8);
-        pane.addView(searchResults, lp);
-        showResults("");
+        pane.addView(searchResults, new LinearLayout.LayoutParams(-1, -2));
+        showResults(searchButton.getText().toString());
         back = () -> searchButton.requestFocus();   // Back goes to Search first; the next Back leaves Settings
     }
 
-    private void focusSearchField() {
-        if (category != PAGE_SEARCH) showSearch();
-        if (searchField != null) searchField.requestFocus();
-    }
-
-    /** Suggestions while the field is empty; then the settings whose name has what is typed, best first. */
+    /** The settings whose name has what is typed, best first; nothing until something is typed. */
     private void showResults(String typed) {
         if (searchResults == null) return;
         searchResults.removeAllViews();
         String q = typed.trim().toLowerCase(Locale.getDefault());
+        if (q.isEmpty()) return;
         List<Found> starts = new ArrayList<>(), contains = new ArrayList<>();
         for (Found f : searchIndex()) {
-            if (q.isEmpty()) {
-                if (f.suggested) starts.add(f);
-                continue;
-            }
             String name = f.label.toLowerCase(Locale.getDefault());
             if (name.startsWith(q) || name.contains(" " + q)) starts.add(f);
             else if (name.contains(q) || f.where.toLowerCase(Locale.getDefault()).contains(q)) contains.add(f);
@@ -2228,9 +2225,9 @@ public final class SettingsActivity extends Activity {
         starts.addAll(contains);
         TextView heading = text(13, R.string.font_medium, 0x80FFFFFF);
         heading.setLetterSpacing(0.16f);
-        heading.setText(getString(q.isEmpty() ? R.string.sm_search_suggested : R.string.sm_search).toUpperCase(Locale.getDefault()));
+        heading.setText(getString(R.string.sm_search_suggested).toUpperCase(Locale.getDefault()));
         LinearLayout.LayoutParams headingLp = new LinearLayout.LayoutParams(-2, -2);
-        headingLp.topMargin = dp(10);
+        headingLp.topMargin = dp(4);
         searchResults.addView(heading, headingLp);
         if (starts.isEmpty()) {
             TextView none = text(16, R.string.font_regular, 0x99FFFFFF);
@@ -2248,7 +2245,7 @@ public final class SettingsActivity extends Activity {
 
     /** Opens a setting found by search: its category, its page, and focus on its row. */
     private void goTo(Found f) {
-        if (searchField != null) hideKeyboard(searchField);
+        hideKeyboard(searchButton);
         showCategory(f.page, true);
         if (f.open != null) f.open.run();
         pane.post(() -> {
@@ -2301,24 +2298,23 @@ public final class SettingsActivity extends Activity {
         date.setFormat24Hour(datePattern);
         ClockFormat.apply(card.findViewById(R.id.quickTime), prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat));
         card.findViewById(R.id.quickAll).setFocusable(false);   // the preview's own buttons are the tiles
-        // Reset first, above the panel, where it is seen.
-        pane.addView(actionRow(getString(R.string.sm_qs_reset), "", () -> {
-            QuickTiles.reset(this);
-            showQuickSettings(null);
-        }));
         LinearLayout.LayoutParams cardLp = new LinearLayout.LayoutParams(-2, -2);
-        cardLp.topMargin = dp(14);
+        cardLp.topMargin = dp(8);
         pane.addView(card, cardLp);
         qsTiles = card.findViewById(R.id.tiles);
 
         // What can be done with the selected tile, under the preview.
         qsActions = new LinearLayout(this);
         qsActions.setOrientation(LinearLayout.HORIZONTAL);
-        qsActions.setMinimumHeight(dp(58));
         qsActions.setGravity(Gravity.CENTER_VERTICAL);
+        qsActions.setVisibility(View.GONE);   // shown with a tile's actions, so Reset sits right under the panel
         LinearLayout.LayoutParams actionsLp = new LinearLayout.LayoutParams(-1, -2);
         actionsLp.topMargin = dp(10);
         pane.addView(qsActions, actionsLp);
+        pane.addView(actionRow(getString(R.string.sm_qs_reset), "", () -> {
+            QuickTiles.reset(this);
+            showQuickSettings(null);
+        }));
 
 
         qsOrder = QuickTiles.order(this);
@@ -2366,6 +2362,7 @@ public final class SettingsActivity extends Activity {
             back = qsPageBack;
             stayOnPage(() -> {
                 qsActions.removeAllViews();
+                qsActions.setVisibility(View.GONE);
                 qsMoving = id;
                 View moving = drawQuickTiles(id);
                 if (moving != null) moving.requestFocus();
@@ -2403,11 +2400,13 @@ public final class SettingsActivity extends Activity {
             if (i > 0) lp.setMarginStart(dp(10));
             qsActions.addView(pills.get(i), lp);
         }
+        qsActions.setVisibility(View.VISIBLE);
         pills.get(0).requestFocus();
         back = () -> {
             back = qsPageBack;
             stayOnPage(() -> {
                 qsActions.removeAllViews();
+                qsActions.setVisibility(View.GONE);
                 tile.requestFocus();
             });
         };
