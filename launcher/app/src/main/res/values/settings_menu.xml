@@ -167,6 +167,7 @@
     <string name="sm_search_hint">Search settings</string>
     <string name="sm_search_suggested">Suggested</string>
     <string name="sm_search_none">No settings match</string>
+    <string name="sm_clear_suggestions">Clear Nuvio suggestion pictures</string>
     <string name="sm_atv_settings">ATV settings</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher updated to %1$s</string>

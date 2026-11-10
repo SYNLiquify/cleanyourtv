@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Pretraži podešavanja</string>
     <string name="sm_search_suggested">Predlozi</string>
     <string name="sm_search_none">Nijedno podešavanje se ne poklapa</string>
+    <string name="sm_clear_suggestions">Obriši slike Nuvio predloga</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

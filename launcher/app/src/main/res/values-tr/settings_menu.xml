@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Ayarlarda ara</string>
     <string name="sm_search_suggested">Önerilen</string>
     <string name="sm_search_none">Eşleşen ayar yok</string>
+    <string name="sm_clear_suggestions">Nuvio öneri görsellerini temizle</string>
     <string name="sm_atv_settings">ATV ayarları</string>
     <string name="sm_hours">%1$d sa</string>
     <string name="update_done">Başlatıcı %1$s sürümüne güncellendi</string>

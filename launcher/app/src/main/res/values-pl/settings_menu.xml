@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Szukaj w ustawieniach</string>
     <string name="sm_search_suggested">Sugerowane</string>
     <string name="sm_search_none">Brak pasujących ustawień</string>
+    <string name="sm_clear_suggestions">Wyczyść obrazy propozycji z Nuvio</string>
     <string name="sm_atv_settings">Ustawienia ATV</string>
     <string name="sm_hours">%1$d godz.</string>
     <string name="update_done">Launcher zaktualizowany do %1$s</string>

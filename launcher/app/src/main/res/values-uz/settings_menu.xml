@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Sozlamalarda qidirish</string>
     <string name="sm_search_suggested">Tavsiya etilgan</string>
     <string name="sm_search_none">Mos sozlama topilmadi</string>
+    <string name="sm_clear_suggestions">Nuvio tavsiyalari rasmlarini tozalash</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

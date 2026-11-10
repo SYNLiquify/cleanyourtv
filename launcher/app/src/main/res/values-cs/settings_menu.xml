@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Hledat v nastavení</string>
     <string name="sm_search_suggested">Navrhované</string>
     <string name="sm_search_none">Žádné nastavení neodpovídá</string>
+    <string name="sm_clear_suggestions">Vymazat obrázky návrhů z Nuvia</string>
     <string name="sm_atv_settings">Nastavení ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Spouštěč aktualizován na %1$s</string>

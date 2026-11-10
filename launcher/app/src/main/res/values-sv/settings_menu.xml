@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Sök i inställningar</string>
     <string name="sm_search_suggested">Förslag</string>
     <string name="sm_search_none">Inga inställningar matchar</string>
+    <string name="sm_clear_suggestions">Rensa bilder från Nuvio-förslag</string>
     <string name="sm_atv_settings">ATV-inställningar</string>
     <string name="sm_hours">%1$d tim</string>
     <string name="update_done">Startskärmen uppdaterad till %1$s</string>

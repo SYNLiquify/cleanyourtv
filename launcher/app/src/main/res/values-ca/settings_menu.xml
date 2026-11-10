@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Cerca a la configuració</string>
     <string name="sm_search_suggested">Suggeriments</string>
     <string name="sm_search_none">Cap opció coincideix</string>
+    <string name="sm_clear_suggestions">Esborra les imatges dels suggeriments de Nuvio</string>
     <string name="sm_atv_settings">Configuració d\'ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Llançador actualitzat a %1$s</string>

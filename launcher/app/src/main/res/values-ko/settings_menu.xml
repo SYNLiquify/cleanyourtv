@@ -162,6 +162,7 @@
     <string name="sm_search_hint">설정 검색</string>
     <string name="sm_search_suggested">추천</string>
     <string name="sm_search_none">일치하는 설정이 없습니다</string>
+    <string name="sm_clear_suggestions">Nuvio 추천 이미지 지우기</string>
     <string name="sm_atv_settings">ATV 설정</string>
     <string name="sm_hours">%1$d시간</string>
     <string name="update_done">런처가 %1$s(으)로 업데이트됨</string>

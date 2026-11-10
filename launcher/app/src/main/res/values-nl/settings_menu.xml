@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Instellingen zoeken</string>
     <string name="sm_search_suggested">Suggesties</string>
     <string name="sm_search_none">Geen instellingen gevonden</string>
+    <string name="sm_clear_suggestions">Afbeeldingen van Nuvio-suggesties wissen</string>
     <string name="sm_atv_settings">ATV-instellingen</string>
     <string name="sm_hours">%1$d u</string>
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>

@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Rechercher un réglage</string>
     <string name="sm_search_suggested">Suggestions</string>
     <string name="sm_search_none">Aucun réglage ne correspond</string>
+    <string name="sm_clear_suggestions">Effacer les images des suggestions Nuvio</string>
     <string name="sm_atv_settings">Paramètres ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Lanceur mis à jour vers %1$s</string>

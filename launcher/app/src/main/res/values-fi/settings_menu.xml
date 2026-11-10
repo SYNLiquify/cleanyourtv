@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Hae asetuksista</string>
     <string name="sm_search_suggested">Ehdotetut</string>
     <string name="sm_search_none">Ei vastaavia asetuksia</string>
+    <string name="sm_clear_suggestions">Tyhjennä Nuvion ehdotusten kuvat</string>
     <string name="sm_atv_settings">ATV:n asetukset</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Käynnistin päivitetty versioon %1$s</string>

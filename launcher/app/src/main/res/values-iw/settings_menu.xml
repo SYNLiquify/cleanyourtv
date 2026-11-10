@@ -162,6 +162,7 @@
     <string name="sm_search_hint">חיפוש בהגדרות</string>
     <string name="sm_search_suggested">מוצעים</string>
     <string name="sm_search_none">אין הגדרות תואמות</string>
+    <string name="sm_clear_suggestions">ניקוי תמונות ההצעות מ-Nuvio</string>
     <string name="sm_atv_settings">הגדרות ATV</string>
     <string name="sm_hours">%1$d שע׳</string>
     <string name="update_done">מסך הבית עודכן ל-%1$s</string>

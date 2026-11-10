@@ -162,6 +162,7 @@
     <string name="sm_search_hint">সেটিংস খুঁজুন</string>
     <string name="sm_search_suggested">প্রস্তাবিত</string>
     <string name="sm_search_none">কোনো সেটিং মেলেনি</string>
+    <string name="sm_clear_suggestions">Nuvio পরামর্শের ছবি মুছুন</string>
     <string name="sm_atv_settings">ATV সেটিংস</string>
     <string name="sm_hours">%1$d ঘণ্টা</string>
     <string name="update_done">লঞ্চার %1$s-এ আপডেট হয়েছে</string>

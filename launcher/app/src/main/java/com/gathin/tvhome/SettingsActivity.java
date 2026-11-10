@@ -1034,11 +1034,11 @@ public final class SettingsActivity extends Activity {
 
     /** The bar colours, after iOS's storage page: one per part, in the order the bar draws them. */
     private static final int[] STORAGE_COLORS = {0xFFFF453A, 0xFFFF9F0A, 0xFFFFD60A, 0xFF30D158, 0xFF64D2FF,
-            0xFF0A84FF, 0xFFBF5AF2, 0xFFFF375F, 0xFF5E5CE6, 0xFF8E8E93};
-    /** The legend's names, one per part, in STORAGE_COLORS' order. */
+            0xFF66D4CF, 0xFF0A84FF, 0xFFBF5AF2, 0xFFFF375F, 0xFF5E5CE6, 0xFF8E8E93};
+    /** The legend's names, one per part, in STORAGE_COLORS' order (a part at 0 B is left out of both). */
     private static final int[] STORAGE_LABELS = {R.string.sm_st_app, R.string.sm_seg_wallpapers, R.string.sm_seg_themes,
-            R.string.sm_seg_previews, R.string.sm_seg_thumbnails, R.string.sm_st_languages, R.string.sm_seg_settings,
-            R.string.sm_seg_update, R.string.sm_seg_temp, R.string.sm_seg_runtime};
+            R.string.sm_seg_previews, R.string.sm_seg_thumbnails, R.string.sm_nuvio_suggestions, R.string.sm_st_languages,
+            R.string.sm_seg_settings, R.string.sm_seg_update, R.string.sm_seg_temp, R.string.sm_seg_runtime};
 
     /**
      * Storage, laid out like iOS's: a card for the launcher with one bar split into its parts and a legend under it,
@@ -1065,6 +1065,9 @@ public final class SettingsActivity extends Activity {
         paneTitle.setText(R.string.sm_storage);
         java.io.File thumbnails = new java.io.File(getCacheDir(), "continue");
         java.io.File themeStore = new java.io.File(getFilesDir(), "themes");
+        // This fork's newer files: Nuvio suggestions' pictures and title list, themes copied onto the TV, device.json.
+        java.io.File suggestionPictures = new java.io.File(getCacheDir(), "suggestions");
+        java.io.File suggestionList = new java.io.File(getFilesDir(), "nuvio_suggestions.json");
 
         TextView[] launcherTotal = {null};
         SegmentBar launcherBar = new SegmentBar(this);
@@ -1085,6 +1088,11 @@ public final class SettingsActivity extends Activity {
         section(R.string.sm_clean_up);
         pane.addView(actionRow(getString(R.string.sm_clear_thumbnails), "", () -> {
             delete(thumbnails);
+            Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
+            reopenStorage();
+        }));
+        if (!BuildConfig.OFFLINE) pane.addView(actionRow(getString(R.string.sm_clear_suggestions), "", () -> {
+            delete(suggestionPictures);   // fetched again, one at a time, the next time the dock has focus
             Toast.makeText(this, R.string.sm_cleared, Toast.LENGTH_SHORT).show();
             reopenStorage();
         }));
@@ -1124,6 +1132,8 @@ public final class SettingsActivity extends Activity {
                         + size(new java.io.File(external, "wallpapers"));
             }
             long downloaded = 0, previews = 0;
+            // Themes copied onto the TV (its themes/ folder) count with the downloaded ones.
+            if (external != null) downloaded += size(new java.io.File(external, "themes"));
             java.io.File[] dirs = themeStore.listFiles();
             if (dirs != null) for (java.io.File d : dirs) {
                 long all = size(d), kept = size(new java.io.File(d, "saved"));
@@ -1135,16 +1145,22 @@ public final class SettingsActivity extends Activity {
             for (String tag : packs) langs += LanguagePacks.size(this, tag);
             // Settings and weather: the preferences (every setting, the weather and update state) and the small files
             // Home keeps (app order, library, cards), that is everything in files/ but themes and languages.
+            long suggestions = size(suggestionPictures) + size(suggestionList);
+            // Settings: the preferences (every setting, the weather, the screensaver, Quick settings, update state), the
+            // small files Home keeps (app order, library, cards) and this TV's device.json.
             long settings = size(new java.io.File(getDataDir(), "shared_prefs"))
-                    + Math.max(0, size(getFilesDir()) - size(themeStore) - size(new java.io.File(getFilesDir(), "languages")));
+                    + Math.max(0, size(getFilesDir()) - size(themeStore) - size(new java.io.File(getFilesDir(), "languages"))
+                    - size(suggestionList))
+                    + (external != null ? size(new java.io.File(external, Config.DEVICE_FILE_NAME)) : 0);
             // An update's APK stays in the cache after it is installed, until Android or Clean up clears it.
             long update = size(new java.io.File(getCacheDir(), "update.apk"));
-            long temp = Math.max(0, size(getCacheDir()) - thumbs - update);
+            long temp = Math.max(0, size(getCacheDir()) - thumbs - update - size(suggestionPictures));
             long data = size(getDataDir()) + size(external);
             // What is left is Android's own for this app: compiled code (code_cache) and its runtime files.
-            long runtime = Math.max(0, data - wallpapers - downloaded - previews - thumbs - langs - settings - update - temp);
+            long runtime = Math.max(0, data - wallpapers - downloaded - previews - thumbs - suggestions - langs - settings
+                    - update - temp);
             long launcher = app + data;
-            long[] parts = {app, wallpapers, downloaded, previews, thumbs, langs, settings, update, temp, runtime};
+            long[] parts = {app, wallpapers, downloaded, previews, thumbs, suggestions, langs, settings, update, temp, runtime};
             main.post(() -> {
                 if (isFinishing() || !launcherBar.isAttachedToWindow()) return;   // Storage left meanwhile
                 launcherTotal[0].setText(bytes(launcher));
@@ -2186,7 +2202,8 @@ public final class SettingsActivity extends Activity {
             out.add(new Found(getString(u), updates, PAGE_SYSTEM, this::showUpdates, getString(u), u == R.string.sm_update_check));
         }
         String storage = system + "  \u203a  " + getString(R.string.sm_storage);
-        for (int c : new int[]{R.string.sm_clear_thumbnails, R.string.sm_delete_other_languages, R.string.sm_android_storage}) {
+        for (int c : new int[]{R.string.sm_clear_thumbnails, R.string.sm_clear_suggestions, R.string.sm_delete_other_languages,
+                R.string.sm_android_storage}) {
             out.add(new Found(getString(c), storage, PAGE_SYSTEM, this::showStorage, getString(c), false));
         }
         String atv = system + "  \u203a  " + getString(R.string.sm_atv_settings);

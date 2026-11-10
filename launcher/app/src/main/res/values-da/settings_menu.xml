@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Søg i indstillinger</string>
     <string name="sm_search_suggested">Forslag</string>
     <string name="sm_search_none">Ingen indstillinger passer</string>
+    <string name="sm_clear_suggestions">Ryd billeder fra Nuvio-forslag</string>
     <string name="sm_atv_settings">ATV-indstillinger</string>
     <string name="sm_hours">%1$d t</string>
     <string name="update_done">Startskærm opdateret til %1$s</string>

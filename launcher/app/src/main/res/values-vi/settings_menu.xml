@@ -162,6 +162,7 @@
     <string name="sm_search_hint">Tìm cài đặt</string>
     <string name="sm_search_suggested">Gợi ý</string>
     <string name="sm_search_none">Không có cài đặt phù hợp</string>
+    <string name="sm_clear_suggestions">Xóa ảnh gợi ý từ Nuvio</string>
     <string name="sm_atv_settings">Cài đặt ATV</string>
     <string name="sm_hours">%1$d giờ</string>
     <string name="update_done">Đã cập nhật launcher lên %1$s</string>

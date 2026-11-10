@@ -162,6 +162,7 @@
     <string name="sm_search_hint">ค้นหาการตั้งค่า</string>
     <string name="sm_search_suggested">แนะนำ</string>
     <string name="sm_search_none">ไม่พบการตั้งค่าที่ตรงกัน</string>
+    <string name="sm_clear_suggestions">ล้างรูปภาพคำแนะนำจาก Nuvio</string>
     <string name="sm_atv_settings">การตั้งค่า ATV</string>
     <string name="sm_hours">%1$d ชม.</string>
     <string name="update_done">อัปเดตลอนเชอร์เป็น %1$s แล้ว</string>
