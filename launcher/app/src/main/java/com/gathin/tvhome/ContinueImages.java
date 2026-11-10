@@ -84,6 +84,11 @@ final class ContinueImages {
 
     void clearMemory() { memory.evictAll(); }
 
+    /** Home is gone (onDestroy): its two download threads end too, rather than one pair per recreated Home. */
+    void close() {
+        pool.shutdownNow();
+    }
+
     /**
      * Drops every cached thumbnail, on disk and in memory, that is not one of these: a title finished or taken off the
      * app's list takes its picture with it. Called with the urls of a list that was read successfully, never after a

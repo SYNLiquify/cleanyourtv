@@ -272,6 +272,12 @@ final class NuvioSuggestions {
         if (shown && wanted) main.postDelayed(rotate, ROTATE_MS);
     }
 
+    /** Home is gone (onDestroy): the worker thread ends, rather than one per recreated Home. */
+    void close() {
+        stop();
+        worker.shutdownNow();
+    }
+
     /** Home stopped: let go of the pictures at once. */
     void stop() {
         paused = false;

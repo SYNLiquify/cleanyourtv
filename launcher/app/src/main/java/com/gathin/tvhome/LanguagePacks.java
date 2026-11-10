@@ -483,14 +483,26 @@ final class LanguagePacks {
             this.rules = PluralRules.forLocale(locale);
         }
 
+        /** Looked-up ids: the pack's text, or NONE. Two AssetManager calls an id otherwise, on every getString. */
+        private final android.util.SparseArray<String> looked = new android.util.SparseArray<>();
+        private static final String NONE = new String("");
+
         /** The pack's text for a string resource id, or null. */
         String lookup(int id) {
-            try {
-                if (!"string".equals(getResourceTypeName(id))) return null;
-                return pack.strings.get(getResourceEntryName(id));
-            } catch (NotFoundException e) {
-                return null;
+            synchronized (looked) {
+                String known = looked.get(id);
+                if (known != null) return known == NONE ? null : known;
             }
+            String found;
+            try {
+                found = "string".equals(getResourceTypeName(id)) ? pack.strings.get(getResourceEntryName(id)) : null;
+            } catch (NotFoundException e) {
+                found = null;
+            }
+            synchronized (looked) {
+                looked.put(id, found == null ? NONE : found);
+            }
+            return found;
         }
 
         @Override

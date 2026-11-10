@@ -1570,6 +1570,8 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         RemoteKeys.release(this);
         cancelHoldOk();
         if (gameDay != null) gameDay.shutdown();
+        if (continueRow != null) continueRow.close();   // this fork: their threads end with this Home
+        if (suggestions != null) suggestions.close();
         unregisterReceiver(packageReceiver);
         if (openOnStartOnWake) unregisterReceiver(wakeReceiver);
         unregisterReceiver(updateWakeReceiver);

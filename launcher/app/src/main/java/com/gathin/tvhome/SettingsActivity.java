@@ -114,13 +114,20 @@ public final class SettingsActivity extends Activity {
         FrameLayout root = new FrameLayout(this);
         root.setBackgroundColor(0xFF000000);
         // Home's ambient glow, a calm blue behind the menu.
+        // Drawn once into a 160x90 picture and stretched (filtered): a full-screen radial gradient is drawn on the
+        // CPU on some Android versions on every frame Settings animates.
         View glow = new View(this);
         GradientDrawable glowShape = new GradientDrawable();
         glowShape.setGradientType(GradientDrawable.RADIAL_GRADIENT);
         glowShape.setColors(new int[]{0x402B5CFF, 0x142B5CFF, 0x002B5CFF});
         glowShape.setGradientCenter(0.18f, 0.2f);
-        glow.setBackground(glowShape);
-        glow.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> glowShape.setGradientRadius((r - l) * 0.7f));
+        glowShape.setGradientRadius(160 * 0.7f);
+        glowShape.setBounds(0, 0, 160, 90);
+        android.graphics.Bitmap glowPicture = android.graphics.Bitmap.createBitmap(160, 90, android.graphics.Bitmap.Config.ARGB_8888);
+        glowShape.draw(new android.graphics.Canvas(glowPicture));
+        android.graphics.drawable.BitmapDrawable glowBaked = new android.graphics.drawable.BitmapDrawable(getResources(), glowPicture);
+        glowBaked.setFilterBitmap(true);
+        glow.setBackground(glowBaked);
         root.addView(glow, new FrameLayout.LayoutParams(-1, -1));
 
         LinearLayout columns = new LinearLayout(this);
@@ -2154,6 +2161,7 @@ public final class SettingsActivity extends Activity {
         screen.setScaleY(scale);
         ClockFormat.apply(screen, prefs.getString(Config.CLOCK_FORMAT_KEY, config.clockFormat));
         previewScene = new ClockScene(screen);
+        previewScene.setDecodeScale(scale);   // the wallpaper at the preview's size, not the screen's (about 4 MB)
         previewScene.useHomeWallpaper(this);
         previewScene.start();
     }

@@ -257,12 +257,20 @@ final class ClockScene {
         wallpaperRes = ctx.getResources();
     }
 
+    /** This fork: the share of the screen the scene is shown at (Settings' preview), so the picture decodes smaller. */
+    private float decodeScale = 1f;
+
+    /** Before start(): the scene is shown scaled down to scale (Settings > Screensaver's preview). */
+    void setDecodeScale(float scale) {
+        decodeScale = Math.max(0.1f, Math.min(1f, scale));
+    }
+
     private void loadWallpaper() {
         File file = wallpaperFile;
         int shade = wallpaperShade;
         Resources res = wallpaperRes;
         DisplayMetrics dm = res.getDisplayMetrics();
-        int w = dm.widthPixels, h = dm.heightPixels;
+        int w = Math.round(dm.widthPixels * decodeScale), h = Math.round(dm.heightPixels * decodeScale);
         int generation = ++wallpaperGeneration;
         new Thread(() -> {
             Bitmap bmp = decode(file, w, h);

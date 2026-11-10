@@ -200,6 +200,12 @@ final class ContinueRow {
         load();
     }
 
+    /** Home is gone: the thumbnail threads end. */
+    void close() {
+        stop();
+        images.close();
+    }
+
     void stop() {
         main.removeCallbacks(reload);
         if (observing) {

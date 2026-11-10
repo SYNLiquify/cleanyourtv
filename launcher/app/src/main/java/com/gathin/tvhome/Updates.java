@@ -141,13 +141,9 @@ public final class Updates extends BroadcastReceiver {
         return code > installed || (!channel.equals(build()) && code >= installed);
     }
 
+    /** The running launcher's version code: this APK's own, so no PackageManager call. */
     static int installedCode(Context ctx) {
-        try {
-            PackageInfo p = ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0);
-            return Build.VERSION.SDK_INT >= 28 ? (int) p.getLongVersionCode() : p.versionCode;
-        } catch (PackageManager.NameNotFoundException e) {
-            return 0;
-        }
+        return BuildConfig.VERSION_CODE;
     }
 
     static String installedName(Context ctx) {
