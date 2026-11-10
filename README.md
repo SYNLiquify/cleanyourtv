@@ -30,13 +30,17 @@ The full notes for each version are on the [releases page](https://github.com/SY
 - **"Press Home to go back" after an update** shows again on TVs that never told the launcher it was updated.
 
 ### 0.5.9 (November 5, 2026)
-- **Both versions under Settings > System.** It reads "Launcher 3.4 · Liquify's fork 0.5.9": the upstream launcher this fork is built on, then the fork's own version.
-
-### 0.5.8 (November 5, 2026)
-- **Plain version numbers.** TVs, Settings and release titles show 0.5.8, 0.5.9 and so on.
-
-### Earlier builds
-The first builds (3.3-fork and 3.4-fork pre-releases) added the Apple TV-style home, the highlight colors, Continue watching, the weather, the Settings menu, 32 languages and updates from this fork's releases.
+The first release, on top of the Apple TV-style home, highlight colors, Continue watching, weather and Settings menu from the fork's early builds.
+- **Plain version numbers.** The launcher now shows versions like 0.5.9 instead of build numbers.
+- **Both versions in Settings > System.** Shows the main repo's launcher version along with this fork's.
+- **Language support covering the whole launcher along with settings for changing and removing languages.**
+- **Updates page.** Check for updates and choose how often it checks.
+- **Faster installs.** Android’s install screen opens sooner, Settings shows the download progress, and a notice tells you when the update is done.
+- **Storage redesigned.** Colored bars show what the launcher is using, with a shortcut to Android’s storage, and only parts that hold data are listed.
+- **Fixed the downloaded update staying in storage.** The APK is now removed once it’s installed.
+- **Date and weather on one line.** They fit in any language, and long lines shrink instead of being cut off.
+- **Settings navigation fixes.** Up and Down stop at the ends of a page, notes show in full, and right-to-left language names line up.
+- **Mainline.** Built on the main CleanYourTV repo's launcher 3.4, with its fixes listed in the [release notes](https://github.com/SYNLiquify/cleanyourtv/releases/tag/launcher-5364).
 
 ## Screenshots
 
