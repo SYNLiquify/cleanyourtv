@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">Dok tanlanganida Nuvio katalogidagi mashhur filmlar va seriallar fonni to‘ldiradi.</string>
     <string name="suggestion_open">Nuvio’da ochish</string>
     <string name="sm_app_name">Dok ustida ilova nomi</string>
+    <string name="sm_compact_top">Ixcham yuqori panel</string>
     <string name="sm_atv_settings">ATV sozlamalari</string>
     <string name="sm_hours">%1$d soat</string>
     <string name="update_done">Ishga tushirgich %1$s versiyasiga yangilandi</string>

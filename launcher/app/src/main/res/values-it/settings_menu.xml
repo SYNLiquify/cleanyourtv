@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">Film e serie popolari dal catalogo di Nuvio riempiono lo sfondo mentre il dock è selezionato.</string>
     <string name="suggestion_open">Apri in Nuvio</string>
     <string name="sm_app_name">Nome dell’app sopra il dock</string>
+    <string name="sm_compact_top">Barra superiore compatta</string>
     <string name="sm_atv_settings">Impostazioni ATV</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Launcher aggiornato a %1$s</string>

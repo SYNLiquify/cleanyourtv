@@ -42,6 +42,8 @@ final class Config {
     static final String DEVICE_FILE_NAME = "device.json";
     /** Settings > Home > App name above the dock (dock_title), in SETTINGS_NAME. */
     static final String DOCK_TITLE_KEY = "dock_title";
+    /** Settings > Home > Compact top bar, in SETTINGS_NAME: on unless turned off. */
+    static final String COMPACT_TOP_KEY = "compact_top";
     static final String WALLPAPER_NAME = "wallpaper.jpg";
     static final String SETTINGS_NAME = "launcher_settings";
     static final String ROWS_BELOW_DOCK_KEY = "rows_below_dock";
@@ -190,6 +192,8 @@ final class Config {
      *  key_filter off (Hisense songshan, Android 11: with a key filter on, held volume keys stop repeating). Empty:
      *  none. Set after construction, from device.json only. */
     String settingsKeyBroadcast = "";
+    /** This fork: Settings > Home > Compact top bar (COMPACT_TOP_KEY). Set after construction. */
+    boolean compactTop;
     /** Stock launcher whose home screen is sent back here if the firmware revives it (config.xml stock_home_redirect). */
     final String stockHomeRedirect;
     /** A Live TV window the firmware opens by itself at power-on is sent back to Home (power_on_home). */
@@ -691,6 +695,12 @@ final class Config {
         animations = choices.getBoolean("animations", animations);
         // This fork: Settings > Home > App name above the dock, over config.xml and the theme's dock_title.
         dockTitle = choices.getBoolean(DOCK_TITLE_KEY, dockTitle);
+        // This fork: Compact top bar: a smaller clock with the date and the weather on one line, round icon pills.
+        boolean compactTop = choices.getBoolean(COMPACT_TOP_KEY, true);
+        if (compactTop) {
+            iconOnlyButtons = true;
+            iconOnlyInputs = true;
+        }
         advancedEffects = choices.getBoolean("advanced_effects", advancedEffects);
         File wallpaper = dir != null ? new File(dir, WALLPAPER_NAME) : null;
         if (wallpaper != null && !(wallpaper.isFile() && wallpaper.length() > 0)) wallpaper = null;
@@ -746,6 +756,7 @@ final class Config {
                 dateBelowClock, vpnPill, locale, powerOnHomeAlways, inputsConnectedOnly, inputsCecStateOnly,
                 Math.max(0, Math.min(600, openOnStartNetworkWait)), openOnStartOnWake, iconOnlyVpn, clockFormat, backOpensClock, glowSnap);
         loaded.settingsKeyBroadcast = settingsKeyBroadcast;
+        loaded.compactTop = compactTop;
         return loaded;
     }
 

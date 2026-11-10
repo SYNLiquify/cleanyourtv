@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">選取底部列時，Nuvio 目錄中的熱門電影和影集會鋪滿背景。</string>
     <string name="suggestion_open">在 Nuvio 中開啟</string>
     <string name="sm_app_name">底部列上方的應用程式名稱</string>
+    <string name="sm_compact_top">精簡頂端列</string>
     <string name="sm_atv_settings">ATV 設定</string>
     <string name="sm_hours">%1$d 小時</string>
     <string name="update_done">啟動器已更新至 %1$s</string>

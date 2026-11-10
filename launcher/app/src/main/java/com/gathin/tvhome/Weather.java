@@ -59,6 +59,14 @@ final class Weather {
     private volatile boolean fetching;
     private long lastAttempt;
 
+    /** This fork: Home's compact top bar: "☁ 62°F", an icon for the sky and the temperature only. */
+    private boolean compact;
+
+    void setCompact(boolean compact) {
+        this.compact = compact;
+        show();
+    }
+
     Weather(Context context, Handler main, TextView view) {
         this.context = context.getApplicationContext();
         this.words = context;
@@ -169,6 +177,12 @@ final class Weather {
         boolean celsius = "c".equals(settings.getString(UNITS_KEY, "f"));
         StringBuilder text = new StringBuilder(words.getString(celsius ? R.string.weather_temp_c : R.string.weather_temp_f,
                 unit(prefs.getInt("temp", 0), celsius)));
+        if (compact) {
+            text.insert(0, icon(prefs.getInt("code", 0)) + "  ");
+            if (!TextUtils.equals(view.getText(), text)) view.setText(text);
+            view.setVisibility(android.view.View.VISIBLE);
+            return;
+        }
         String sep = words.getString(R.string.weather_separator);
         if (settings.getBoolean(CONDITIONS_KEY, true)) text.append(sep).append(sky(prefs.getInt("code", 0)));
         if (settings.getBoolean(HILO_KEY, true)) {
@@ -251,6 +265,23 @@ final class Weather {
                 "TN", "Tennessee", "TX", "Texas", "UT", "Utah", "VT", "Vermont", "VA", "Virginia", "WA", "Washington",
                 "WV", "West Virginia", "WI", "Wisconsin", "WY", "Wyoming", "DC", "District of Columbia"};
         for (int i = 0; i < s.length; i += 2) US_STATES.put(s[i], s[i + 1]);
+    }
+
+    /**
+     * The sky as one symbol for the compact top bar: sun (a moon at night), sun and cloud, cloud, umbrella, snowflake,
+     * lightning. U+FE0E asks for the plain text glyph, not a coloured emoji.
+     */
+    private static String icon(int code) {
+        int hour = java.time.LocalTime.now().getHour();
+        boolean night = hour < 6 || hour >= 19;
+        String c;
+        if (code == 0 || code == 1) c = night ? "\u263E" : "\u2600";
+        else if (code == 2) c = night ? "\u263E" : "\u26C5";
+        else if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) c = "\u2602";
+        else if ((code >= 71 && code <= 77) || code == 85 || code == 86) c = "\u2744";
+        else if (code >= 95) c = "\u26A1";
+        else c = "\u2601";
+        return c + "\uFE0E";
     }
 
     /** WMO weather interpretation codes, as Open-Meteo reports them. */

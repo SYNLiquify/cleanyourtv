@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">Populaire films en series uit de Nuvio-catalogus vullen de achtergrond zolang het dock geselecteerd is.</string>
     <string name="suggestion_open">Openen in Nuvio</string>
     <string name="sm_app_name">App-naam boven het dock</string>
+    <string name="sm_compact_top">Compacte bovenbalk</string>
     <string name="sm_atv_settings">ATV-instellingen</string>
     <string name="sm_hours">%1$d u</string>
     <string name="update_done">Launcher bijgewerkt naar %1$s</string>

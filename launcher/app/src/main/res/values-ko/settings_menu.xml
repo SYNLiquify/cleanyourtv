@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">독을 선택하고 있는 동안 Nuvio 카탈로그의 인기 영화와 프로그램이 배경을 채웁니다.</string>
     <string name="suggestion_open">Nuvio에서 열기</string>
     <string name="sm_app_name">독 위에 앱 이름</string>
+    <string name="sm_compact_top">간결한 상단 바</string>
     <string name="sm_atv_settings">ATV 설정</string>
     <string name="sm_hours">%1$d시간</string>
     <string name="update_done">런처가 %1$s(으)로 업데이트됨</string>

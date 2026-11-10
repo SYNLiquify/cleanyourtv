@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">Popularni filmovi i serije iz Nuvio kataloga ispunjavaju pozadinu dok je dok u fokusu.</string>
     <string name="suggestion_open">Otvori u Nuvio</string>
     <string name="sm_app_name">Naziv aplikacije iznad doka</string>
+    <string name="sm_compact_top">Kompaktna gornja traka</string>
     <string name="sm_atv_settings">ATV podešavanja</string>
     <string name="sm_hours">%1$d h</string>
     <string name="update_done">Pokretač je ažuriran na %1$s</string>

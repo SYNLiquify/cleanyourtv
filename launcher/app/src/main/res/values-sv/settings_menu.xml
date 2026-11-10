@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">Populära filmer och serier från Nuvios katalog fyller bakgrunden medan dockan har fokus.</string>
     <string name="suggestion_open">Öppna i Nuvio</string>
     <string name="sm_app_name">Appnamn ovanför dockan</string>
+    <string name="sm_compact_top">Kompakt toppfält</string>
     <string name="sm_atv_settings">ATV-inställningar</string>
     <string name="sm_hours">%1$d tim</string>
     <string name="update_done">Startskärmen uppdaterad till %1$s</string>

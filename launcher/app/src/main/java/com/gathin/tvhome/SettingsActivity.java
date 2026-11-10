@@ -343,6 +343,11 @@ public final class SettingsActivity extends Activity {
             note(getString(R.string.sm_nuvio_suggestions_note));
         }
         section(R.string.sm_look);
+        // This fork: a smaller clock, the date and the weather on one line, round icon pills.
+        pane.addView(toggleRow(getString(R.string.sm_compact_top), config.compactTop, on -> {
+            prefs.edit().putBoolean(Config.COMPACT_TOP_KEY, on).apply();
+            changed();
+        }));
         // This fork: the focused dock app's name above the dock (config.xml / theme dock_title).
         pane.addView(toggleRow(getString(R.string.sm_app_name), config.dockTitle, on -> {
             prefs.edit().putBoolean(Config.DOCK_TITLE_KEY, on).apply();

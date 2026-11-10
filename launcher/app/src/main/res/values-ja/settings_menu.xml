@@ -157,6 +157,7 @@
     <string name="sm_nuvio_suggestions_note">ドックを選択している間、Nuvio のカタログから人気の映画や番組が背景に表示されます。</string>
     <string name="suggestion_open">Nuvio で開く</string>
     <string name="sm_app_name">ドックの上にアプリ名</string>
+    <string name="sm_compact_top">コンパクトな上部バー</string>
     <string name="sm_atv_settings">ATV の設定</string>
     <string name="sm_hours">%1$d時間</string>
     <string name="update_done">ランチャーを %1$s に更新しました</string>

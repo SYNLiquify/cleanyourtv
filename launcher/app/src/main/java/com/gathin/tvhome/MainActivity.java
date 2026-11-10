@@ -670,6 +670,9 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
             lunarDate.setTextSize(11f);
             date.setPadding(0, (int) (4 * density), 0, 0);
         }
+        // This fork: Compact top bar (Settings > Home): with the plain header only, not the Shamsi or lunar lines or
+        // the date under the clock, which have layouts of their own.
+        if (cfg.compactTop && !shamsi && !lunar && !cfg.dateBelowClock) applyCompactTop();
         vpnApp = cfg.vpnApp;
         vpnPill = cfg.vpnPill && !cfg.topMenu;
         btnVpn = findViewById(R.id.btnVpn);
@@ -4458,6 +4461,47 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
 
     /** The date's and the weather line's text size as laid out, before fitDateLine shrinks them. */
     private float dateBasePx, weatherBasePx;
+    /** Compact top bar: the date and the weather share one line, so they shrink together. */
+    private boolean dateWeatherOneLine;
+
+    /**
+     * This fork's compact top bar: the clock at 36sp (was 52), and the date and the weather on one line beside it, the
+     * weather as an icon and the temperature. The pills turn into round icons through Config (icon_only_buttons).
+     */
+    private void applyCompactTop() {
+        TextView clock = findViewById(R.id.clock);
+        TextView ampm = findViewById(R.id.ampm);
+        View divider = findViewById(R.id.clockDivider);
+        TextView date = findViewById(R.id.date);
+        TextView wx = findViewById(R.id.weather);
+        if (clock == null || ampm == null || divider == null || date == null || wx == null) return;
+        clock.setTextSize(TypedValue.COMPLEX_UNIT_SP, 36f);
+        ampm.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12f);
+        LinearLayout.LayoutParams ampmLp = (LinearLayout.LayoutParams) ampm.getLayoutParams();
+        ampmLp.bottomMargin = Math.round(5 * density);
+        ampm.setLayoutParams(ampmLp);
+        LinearLayout.LayoutParams dividerLp = (LinearLayout.LayoutParams) divider.getLayoutParams();
+        dividerLp.height = Math.round(18 * density);
+        dividerLp.bottomMargin = Math.round(6 * density);
+        dividerLp.setMarginStart(Math.round(12 * density));
+        dividerLp.setMarginEnd(Math.round(12 * density));
+        divider.setLayoutParams(dividerLp);
+        LinearLayout column = (LinearLayout) date.getParent();
+        column.setOrientation(LinearLayout.HORIZONTAL);
+        column.setBaselineAligned(true);
+        LinearLayout.LayoutParams columnLp = (LinearLayout.LayoutParams) column.getLayoutParams();
+        columnLp.bottomMargin = Math.round(6 * density);
+        column.setLayoutParams(columnLp);
+        LinearLayout.LayoutParams dateLp = (LinearLayout.LayoutParams) date.getLayoutParams();
+        dateLp.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        date.setLayoutParams(dateLp);
+        LinearLayout.LayoutParams wxLp = (LinearLayout.LayoutParams) wx.getLayoutParams();
+        wxLp.topMargin = 0;
+        wxLp.setMarginStart(Math.round(18 * density));
+        wx.setLayoutParams(wxLp);
+        dateWeatherOneLine = true;
+        if (weather != null) weather.setCompact(true);
+    }
 
     /**
      * This fork: the date and the weather line beside the clock stay on one line in every language and shrink to fit
@@ -4510,6 +4554,11 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         float scale = Math.min(1f, room / Math.max(1f, naturalWidth(date, dateBasePx)));
         if (wx.getVisibility() == View.VISIBLE && wx.length() > 0) {
             scale = Math.min(scale, room / Math.max(1f, naturalWidth(wx, weatherBasePx)));
+            if (dateWeatherOneLine) {
+                // One line: both, and the gap between them, share the room.
+                float both = naturalWidth(date, dateBasePx) + naturalWidth(wx, weatherBasePx) + 18 * density;
+                scale = Math.min(1f, room / Math.max(1f, both));
+            }
         }
         scale = Math.max(0.6f, scale);
         setPxIfChanged(date, dateBasePx * scale);
