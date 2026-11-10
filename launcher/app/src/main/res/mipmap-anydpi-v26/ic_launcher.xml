@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This fork's icon: a white TV outline on near-black, as an adaptive icon. The foreground (mipmap-*dpi, 108dp, the TV
+     inside the 66dp safe zone) also serves as the monochrome layer for themed icons. -->
+<adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+    <background android:drawable="@color/ic_launcher_background" />
+    <foreground android:drawable="@mipmap/ic_launcher_foreground" />
+    <monochrome android:drawable="@mipmap/ic_launcher_foreground" />
+</adaptive-icon>
