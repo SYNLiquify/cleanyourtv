@@ -45,7 +45,10 @@ android {
         // This fork: English only in the APK. The other languages stay here as sources and download when picked
         // (LanguagePacks), which keeps about 400 KB of string tables out of every install. The offline build
         // downloads nothing, so it carries them all.
-        if (network == 'online') resourceConfigurations += ["en"]
+        // -PlauncherAllLanguages=true (test builds only): every language in the APK, so strings added since the last push
+        // show translated before GitHub has them (a downloaded pack falls back to the APK's own strings).
+        def allLanguages = providers.gradleProperty('launcherAllLanguages').getOrElse('false') == 'true'
+        if (network == 'online' && !allLanguages) resourceConfigurations += ["en"]
     }
 
     buildTypes {
