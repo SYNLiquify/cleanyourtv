@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">הוספת אריח אפליקציה</string>
     <string name="sm_qs_dim">עמעום המסך</string>
     <string name="sm_qs_dim_unavailable">נדרש מסייע השלט</string>
+    <string name="sm_qs_compact">מצומצם</string>
+    <string name="sm_qs_full_width">רוחב מלא</string>
     <string name="sm_qs_moving">הזיזו בעזרת החצים ולחצו OK.</string>
     <string name="sm_qs_rename">שינוי שם</string>
     <string name="sm_qs_rename_hint">השאירו ריק לשם המקורי</string>

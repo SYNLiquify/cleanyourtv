@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Añadir icono de app</string>
     <string name="sm_qs_dim">Atenuar pantalla</string>
     <string name="sm_qs_dim_unavailable">Requiere el asistente del mando</string>
+    <string name="sm_qs_compact">Compacto</string>
+    <string name="sm_qs_full_width">Ancho completo</string>
     <string name="sm_qs_moving">Muévelo con las flechas y pulsa OK.</string>
     <string name="sm_qs_rename">Cambiar nombre</string>
     <string name="sm_qs_rename_hint">Déjalo vacío para el nombre original</string>

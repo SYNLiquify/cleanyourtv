@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">App-Kachel hinzufügen</string>
     <string name="sm_qs_dim">Bildschirm abdunkeln</string>
     <string name="sm_qs_dim_unavailable">Benötigt den Fernbedienungshelfer</string>
+    <string name="sm_qs_compact">Kompakt</string>
+    <string name="sm_qs_full_width">Volle Breite</string>
     <string name="sm_qs_moving">Mit den Pfeiltasten verschieben, dann OK drücken.</string>
     <string name="sm_qs_rename">Umbenennen</string>
     <string name="sm_qs_rename_hint">Leer lassen für den ursprünglichen Namen</string>

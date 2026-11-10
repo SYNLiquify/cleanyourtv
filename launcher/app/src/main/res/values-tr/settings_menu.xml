@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Uygulama kutucuğu ekle</string>
     <string name="sm_qs_dim">Ekranı karart</string>
     <string name="sm_qs_dim_unavailable">Kumanda yardımcısı gerekir</string>
+    <string name="sm_qs_compact">Kompakt</string>
+    <string name="sm_qs_full_width">Tam genişlik</string>
     <string name="sm_qs_moving">Oklarla taşıyın, sonra OK’e basın.</string>
     <string name="sm_qs_rename">Yeniden adlandır</string>
     <string name="sm_qs_rename_hint">Orijinal ad için boş bırakın</string>

@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">앱 타일 추가</string>
     <string name="sm_qs_dim">화면 어둡게</string>
     <string name="sm_qs_dim_unavailable">리모컨 도우미가 필요합니다</string>
+    <string name="sm_qs_compact">작게</string>
+    <string name="sm_qs_full_width">전체 너비</string>
     <string name="sm_qs_moving">화살표로 옮긴 뒤 OK를 누르세요.</string>
     <string name="sm_qs_rename">이름 바꾸기</string>
     <string name="sm_qs_rename_hint">비워 두면 원래 이름으로 돌아갑니다</string>

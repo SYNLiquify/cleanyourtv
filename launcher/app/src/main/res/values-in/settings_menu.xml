@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Tambah ubin aplikasi</string>
     <string name="sm_qs_dim">Redupkan layar</string>
     <string name="sm_qs_dim_unavailable">Memerlukan pembantu remote</string>
+    <string name="sm_qs_compact">Ringkas</string>
+    <string name="sm_qs_full_width">Lebar penuh</string>
     <string name="sm_qs_moving">Pindahkan dengan tombol panah, lalu tekan OK.</string>
     <string name="sm_qs_rename">Ganti nama</string>
     <string name="sm_qs_rename_hint">Biarkan kosong untuk nama aslinya</string>

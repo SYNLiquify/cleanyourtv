@@ -2439,6 +2439,16 @@ public final class SettingsActivity extends Activity {
             choose.setOnClickListener(v -> showAppChooser(id));
             pills.add(choose);
         }
+        if (QuickTiles.DIM.equals(id)) {
+            // Dim screen: a full-width slider, or a tile half wide like the others.
+            boolean wide = QuickTiles.dimWide(this);
+            TextView size = pill(getString(wide ? R.string.sm_qs_compact : R.string.sm_qs_full_width));
+            size.setOnClickListener(v -> {
+                QuickTiles.setDimWide(this, !wide);
+                showQuickSettings(id);
+            });
+            pills.add(size);
+        }
         if (QuickTiles.isApp(id)) {
             TextView remove = pill(getString(R.string.sm_remove));
             remove.setOnClickListener(v -> {
@@ -2475,18 +2485,33 @@ public final class SettingsActivity extends Activity {
         };
     }
 
-    /** While a tile moves: the arrows swap it with its neighbour in the grid, OK or Back puts it down. */
+    /**
+     * While a tile moves: the arrows swap it with its neighbour in the grid as the panel lays it out (QuickTiles.rows:
+     * two a row, Dim screen at full width alone), OK or Back puts it down.
+     */
     private boolean moveQuickTile(String id, int keyCode, KeyEvent event) {
         if (!id.equals(qsMoving)) return false;
         boolean drop = keyCode == KeyEvent.KEYCODE_DPAD_CENTER || keyCode == KeyEvent.KEYCODE_ENTER
                 || keyCode == KeyEvent.KEYCODE_BACK;
         if (event.getAction() != KeyEvent.ACTION_DOWN) return drop || isArrow(keyCode);
-        int at = qsOrder.indexOf(id), to = -1;
+        List<List<String>> rows = QuickTiles.rows(this, qsOrder);
+        int r = 0, c = 0;
+        for (int i = 0; i < rows.size(); i++) {
+            if (rows.get(i).contains(id)) {
+                r = i;
+                c = rows.get(i).indexOf(id);
+            }
+        }
+        String neighbour = null;
         switch (keyCode) {
-            case KeyEvent.KEYCODE_DPAD_LEFT: if (at % 2 == 1) to = at - 1; break;
-            case KeyEvent.KEYCODE_DPAD_RIGHT: if (at % 2 == 0 && at + 1 < qsOrder.size()) to = at + 1; break;
-            case KeyEvent.KEYCODE_DPAD_UP: if (at >= 2) to = at - 2; break;
-            case KeyEvent.KEYCODE_DPAD_DOWN: if (at + 2 < qsOrder.size()) to = at + 2; break;
+            case KeyEvent.KEYCODE_DPAD_LEFT: if (c > 0) neighbour = rows.get(r).get(c - 1); break;
+            case KeyEvent.KEYCODE_DPAD_RIGHT: if (c + 1 < rows.get(r).size()) neighbour = rows.get(r).get(c + 1); break;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                if (r > 0) neighbour = rows.get(r - 1).get(Math.min(c, rows.get(r - 1).size() - 1));
+                break;
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                if (r + 1 < rows.size()) neighbour = rows.get(r + 1).get(Math.min(c, rows.get(r + 1).size() - 1));
+                break;
             default:
                 if (!drop) return false;
                 qsMoving = null;
@@ -2498,8 +2523,8 @@ public final class SettingsActivity extends Activity {
                 });
                 return true;
         }
-        if (to >= 0) {
-            Collections.swap(qsOrder, at, to);
+        if (neighbour != null) {
+            Collections.swap(qsOrder, qsOrder.indexOf(id), qsOrder.indexOf(neighbour));
             stayOnPage(() -> {
                 View moved = drawQuickTiles(id);
                 if (moved != null) moved.requestFocus();

@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Thêm ô ứng dụng</string>
     <string name="sm_qs_dim">Làm mờ màn hình</string>
     <string name="sm_qs_dim_unavailable">Cần trình hỗ trợ điều khiển</string>
+    <string name="sm_qs_compact">Thu gọn</string>
+    <string name="sm_qs_full_width">Toàn chiều rộng</string>
     <string name="sm_qs_moving">Di chuyển bằng phím mũi tên rồi nhấn OK.</string>
     <string name="sm_qs_rename">Đổi tên</string>
     <string name="sm_qs_rename_hint">Để trống để dùng tên gốc</string>

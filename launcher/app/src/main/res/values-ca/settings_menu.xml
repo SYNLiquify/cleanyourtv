@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Afegeix una icona d\'aplicació</string>
     <string name="sm_qs_dim">Enfosqueix la pantalla</string>
     <string name="sm_qs_dim_unavailable">Cal l\'assistent del comandament</string>
+    <string name="sm_qs_compact">Compacte</string>
+    <string name="sm_qs_full_width">Amplada completa</string>
     <string name="sm_qs_moving">Mou-lo amb les fletxes i prem OK.</string>
     <string name="sm_qs_rename">Canvia el nom</string>
     <string name="sm_qs_rename_hint">Deixa-ho buit per al nom original</string>

@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Ilova plitkasini qo\'shish</string>
     <string name="sm_qs_dim">Ekranni xiralashtirish</string>
     <string name="sm_qs_dim_unavailable">Pult yordamchisi kerak</string>
+    <string name="sm_qs_compact">Ixcham</string>
+    <string name="sm_qs_full_width">To\'liq kenglik</string>
     <string name="sm_qs_moving">Uni strelkalar bilan siljiting, so‘ng OK bosing.</string>
     <string name="sm_qs_rename">Nomini o‘zgartirish</string>
     <string name="sm_qs_rename_hint">Asl nom uchun bo‘sh qoldiring</string>

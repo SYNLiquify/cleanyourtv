@@ -158,6 +158,8 @@
     <string name="sm_qs_add_app">Add app tile</string>
     <string name="sm_qs_dim">Dim screen</string>
     <string name="sm_qs_dim_unavailable">Needs the remote helper</string>
+    <string name="sm_qs_compact">Compact</string>
+    <string name="sm_qs_full_width">Full width</string>
     <string name="sm_qs_moving">Move it with the arrows, then press OK.</string>
     <string name="sm_qs_rename">Rename</string>
     <string name="sm_qs_rename_hint">Leave it empty for the original name</string>

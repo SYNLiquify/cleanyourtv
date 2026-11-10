@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Adicionar bloco de app</string>
     <string name="sm_qs_dim">Escurecer tela</string>
     <string name="sm_qs_dim_unavailable">Requer o assistente do controle</string>
+    <string name="sm_qs_compact">Compacto</string>
+    <string name="sm_qs_full_width">Largura total</string>
     <string name="sm_qs_moving">Mova com as setas e pressione OK.</string>
     <string name="sm_qs_rename">Renomear</string>
     <string name="sm_qs_rename_hint">Deixe vazio para o nome original</string>

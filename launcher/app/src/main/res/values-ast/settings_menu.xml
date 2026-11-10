@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Amestar mosaicu d\'aplicación</string>
     <string name="sm_qs_dim">Atenuar la pantalla</string>
     <string name="sm_qs_dim_unavailable">Necesita l\'ayudante del mandu</string>
+    <string name="sm_qs_compact">Compactu</string>
+    <string name="sm_qs_full_width">Anchor completu</string>
     <string name="sm_qs_moving">Muévelu coles fleches y primi OK.</string>
     <string name="sm_qs_rename">Renomar</string>
     <string name="sm_qs_rename_hint">Déxalu baleru pal nome orixinal</string>

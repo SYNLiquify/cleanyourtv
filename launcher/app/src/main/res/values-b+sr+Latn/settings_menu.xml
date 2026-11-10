@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Dodaj pločicu aplikacije</string>
     <string name="sm_qs_dim">Zatamni ekran</string>
     <string name="sm_qs_dim_unavailable">Potreban je pomoćnik daljinskog</string>
+    <string name="sm_qs_compact">Kompaktno</string>
+    <string name="sm_qs_full_width">Puna širina</string>
     <string name="sm_qs_moving">Pomerite ga strelicama, pa pritisnite OK.</string>
     <string name="sm_qs_rename">Preimenuj</string>
     <string name="sm_qs_rename_hint">Ostavite prazno za originalni naziv</string>

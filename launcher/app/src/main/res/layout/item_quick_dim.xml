@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This fork: the Dim screen tile at full width (ScreenDim, QuickTiles.DIM): name and level, the bar under them.
+     Left/Right change it while focused. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="0dp"
+    android:layout_height="46dp"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp"
+    android:background="@drawable/quick_tile_bg"
+    android:focusable="true"
+    android:clickable="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:duplicateParentState="true">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:src="@drawable/ic_dim"
+            android:tint="@drawable/pill_text"
+            android:duplicateParentState="true"
+            android:contentDescription="@null" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:textColor="@drawable/pill_text"
+            android:duplicateParentState="true"
+            android:textSize="12sp"
+            android:fontFamily="@string/font_medium"
+            android:maxLines="1"
+            android:ellipsize="end" />
+
+        <TextView
+            android:id="@+id/dimValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@drawable/pill_text"
+            android:duplicateParentState="true"
+            android:textSize="11sp"
+            android:fontFamily="@string/font_medium"
+            android:maxLines="1" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/dimTrack"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/quick_dim_track"
+        android:duplicateParentState="true">
+
+        <View
+            android:id="@+id/dimFill"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/quick_dim_fill"
+            android:duplicateParentState="true" />
+    </FrameLayout>
+</LinearLayout>

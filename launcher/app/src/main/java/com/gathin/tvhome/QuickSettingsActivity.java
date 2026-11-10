@@ -59,40 +59,36 @@ public final class QuickSettingsActivity extends Activity {
         // The tiles as arranged on Settings > System > Quick settings (QuickTiles): order, off, app buttons.
         LinearLayout tiles = findViewById(R.id.tiles);
         List<View> shown = QuickTiles.fill(this, tiles, QuickTiles.shown(this), (id, tile) -> {
+            if (QuickTiles.DIM.equals(id)) {
+                bindDim(tile, QuickTiles.dimWide(this));
+                return;
+            }
             Intent target = QuickTiles.intent(this, id);
             tile.setOnClickListener(v -> open(target));
         });
         tiles.setVisibility(shown.isEmpty() ? View.GONE : View.VISIBLE);
-        bindDim();
         (shown.isEmpty() ? findViewById(R.id.quickAll) : shown.get(0)).requestFocus();
     }
 
     /**
-     * This fork: the Dim screen row (ScreenDim). Left/Right move it 1% (held, faster and faster; Right dims more, mirrored in a right-to-left
-     * language), OK turns it off or back on; the bar shows the level out of ScreenDim.MAX.
+     * This fork: the Dim screen tile (ScreenDim). Left/Right move it 1% (held, faster and faster; Right dims more,
+     * mirrored in a right-to-left language); the bar shows the level out of ScreenDim.MAX. Full width, Left/Right
+     * change it straight away and OK turns it off or back on. Compact, Left/Right still reach the tile beside it:
+     * OK starts adjusting (the blue ring), and OK or Back ends it; Up or Down end it and move on.
      */
-    private void bindDim() {
-        View dim = findViewById(R.id.quickDim);
-        android.widget.TextView value = findViewById(R.id.quickDimValue);
-        View track = findViewById(R.id.quickDimTrack);
-        View fill = findViewById(R.id.quickDimFill);
-        dim.setVisibility(View.VISIBLE);
-        Runnable show = () -> {
-            int level = ScreenDim.level(this);
-            if (!ScreenDim.available()) value.setText(R.string.sm_qs_dim_unavailable);
-            else if (level == 0) value.setText(R.string.sm_off);
-            else value.setText(java.text.NumberFormat.getPercentInstance().format(level / 100.0));
-            int width = Math.round(track.getWidth() * level / (float) ScreenDim.MAX);
-            if (fill.getLayoutParams().width != width) {
-                fill.getLayoutParams().width = width;
-                fill.requestLayout();
-            }
-        };
-        track.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
-            if (r - l != or - ol) v.post(show);
+    private void bindDim(View dim, boolean wide) {
+        Runnable show = QuickTiles.showDim(dim);
+        dim.setOnFocusChangeListener((v, focused) -> {
+            if (!focused) v.setActivated(false);
         });
-        show.run();
         dim.setOnKeyListener((v, code, event) -> {
+            boolean adjusting = wide || v.isActivated();
+            if (!wide && v.isActivated() && (code == android.view.KeyEvent.KEYCODE_BACK
+                    || code == android.view.KeyEvent.KEYCODE_DPAD_UP || code == android.view.KeyEvent.KEYCODE_DPAD_DOWN)) {
+                if (event.getAction() == android.view.KeyEvent.ACTION_UP) v.setActivated(false);
+                return code == android.view.KeyEvent.KEYCODE_BACK;   // Up and Down go on to the next tile
+            }
+            if (!adjusting) return false;
             if (code != android.view.KeyEvent.KEYCODE_DPAD_LEFT && code != android.view.KeyEvent.KEYCODE_DPAD_RIGHT) {
                 return false;
             }
@@ -109,6 +105,10 @@ public final class QuickSettingsActivity extends Activity {
         });
         dim.setOnClickListener(v -> {
             if (!ScreenDim.available()) return;
+            if (!wide) {
+                v.setActivated(!v.isActivated());
+                return;
+            }
             ScreenDim.toggle(this);
             show.run();
         });

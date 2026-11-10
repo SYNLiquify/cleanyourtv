@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Legg til app-flis</string>
     <string name="sm_qs_dim">Demp skjermen</string>
     <string name="sm_qs_dim_unavailable">Krever fjernkontrollhjelperen</string>
+    <string name="sm_qs_compact">Kompakt</string>
+    <string name="sm_qs_full_width">Full bredde</string>
     <string name="sm_qs_moving">Flytt den med pilene, og trykk OK.</string>
     <string name="sm_qs_rename">Gi nytt navn</string>
     <string name="sm_qs_rename_hint">La feltet stå tomt for det opprinnelige navnet</string>

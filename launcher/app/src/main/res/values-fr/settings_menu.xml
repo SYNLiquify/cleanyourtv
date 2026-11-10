@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Ajouter une tuile d\'appli</string>
     <string name="sm_qs_dim">Assombrir l\'écran</string>
     <string name="sm_qs_dim_unavailable">Nécessite l\'assistant de la télécommande</string>
+    <string name="sm_qs_compact">Compact</string>
+    <string name="sm_qs_full_width">Pleine largeur</string>
     <string name="sm_qs_moving">Déplacez-le avec les flèches, puis appuyez sur OK.</string>
     <string name="sm_qs_rename">Renommer</string>
     <string name="sm_qs_rename_hint">Laissez vide pour le nom d’origine</string>

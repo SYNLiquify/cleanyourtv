@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Додати плитку застосунку</string>
     <string name="sm_qs_dim">Затемнити екран</string>
     <string name="sm_qs_dim_unavailable">Потрібен помічник пульта</string>
+    <string name="sm_qs_compact">Компактно</string>
+    <string name="sm_qs_full_width">На всю ширину</string>
     <string name="sm_qs_moving">Переміщуйте стрілками, потім натисніть OK.</string>
     <string name="sm_qs_rename">Перейменувати</string>
     <string name="sm_qs_rename_hint">Залиште порожнім для початкової назви</string>

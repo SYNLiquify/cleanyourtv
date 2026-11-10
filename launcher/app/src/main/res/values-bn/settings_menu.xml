@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">অ্যাপ টাইল যোগ করুন</string>
     <string name="sm_qs_dim">স্ক্রিন অনুজ্জ্বল</string>
     <string name="sm_qs_dim_unavailable">রিমোট সহায়ক প্রয়োজন</string>
+    <string name="sm_qs_compact">ছোট</string>
+    <string name="sm_qs_full_width">পূর্ণ প্রস্থ</string>
     <string name="sm_qs_moving">তীর দিয়ে সরান, তারপর OK চাপুন।</string>
     <string name="sm_qs_rename">নাম বদলান</string>
     <string name="sm_qs_rename_hint">আসল নামের জন্য ফাঁকা রাখুন</string>

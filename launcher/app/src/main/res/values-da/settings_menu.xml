@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Tilføj appfelt</string>
     <string name="sm_qs_dim">Dæmp skærmen</string>
     <string name="sm_qs_dim_unavailable">Kræver fjernbetjeningshjælperen</string>
+    <string name="sm_qs_compact">Kompakt</string>
+    <string name="sm_qs_full_width">Fuld bredde</string>
     <string name="sm_qs_moving">Flyt den med pilene, og tryk på OK.</string>
     <string name="sm_qs_rename">Omdøb</string>
     <string name="sm_qs_rename_hint">Lad feltet være tomt for det oprindelige navn</string>

@@ -27,10 +27,10 @@ import java.util.Set;
 final class QuickTiles {
 
     static final String ORDER_KEY = "qs_order", OFF_KEY = "qs_off", APP_KEY = "qs_app_", LABEL_KEY = "qs_label_",
-            APP_TILES_KEY = "qs_apps";
-    static final String DISPLAY = "display", NETWORK = "network", APPS = "apps", LAUNCHER = "launcher";
-    /** The settings tiles every panel has; app tiles ("app1", "app2", ...) are added on top of them. */
-    static final List<String> FIXED = Collections.unmodifiableList(Arrays.asList(DISPLAY, NETWORK, APPS, LAUNCHER));
+            APP_TILES_KEY = "qs_apps", DIM_WIDE_KEY = "qs_dim_wide";
+    static final String DISPLAY = "display", NETWORK = "network", APPS = "apps", LAUNCHER = "launcher", DIM = "dim";
+    /** The tiles every panel has; app tiles ("app1", "app2", ...) are added on top of them. DIM is Dim screen. */
+    static final List<String> FIXED = Collections.unmodifiableList(Arrays.asList(DISPLAY, NETWORK, APPS, LAUNCHER, DIM));
     /** App tiles at most, so the panel still fits under the top of the screen. */
     static final int MAX_APP_TILES = 6;
 
@@ -149,9 +149,10 @@ final class QuickTiles {
         prefs(ctx).edit().putString(LABEL_KEY + id, label == null ? "" : label.trim()).apply();
     }
 
-    /** Back to the first layout: the four settings tiles in order and on, no app tiles, their own names. */
+    /** Back to the first layout: the settings tiles in order and on, no app tiles, their own names, Dim full width. */
     static void reset(Context ctx) {
-        SharedPreferences.Editor e = prefs(ctx).edit().remove(ORDER_KEY).remove(OFF_KEY).putString(APP_TILES_KEY, "");
+        SharedPreferences.Editor e = prefs(ctx).edit().remove(ORDER_KEY).remove(OFF_KEY).putString(APP_TILES_KEY, "")
+                .remove(DIM_WIDE_KEY);
         for (String id : all(ctx)) e.remove(APP_KEY + id).remove(LABEL_KEY + id);
         e.apply();
     }
@@ -163,6 +164,7 @@ final class QuickTiles {
             case NETWORK: return ctx.getString(R.string.quick_network);
             case APPS: return ctx.getString(R.string.quick_apps);
             case LAUNCHER: return ctx.getString(R.string.launcher_settings);
+            case DIM: return ctx.getString(R.string.sm_qs_dim);
             default:
                 try {
                     PackageManager pm = ctx.getPackageManager();
@@ -171,6 +173,68 @@ final class QuickTiles {
                     return ctx.getString(R.string.sm_qs_app_button, number(id));
                 }
         }
+    }
+
+    /** Dim screen as a full-width slider (true, the first layout) or a tile half wide like the others. */
+    static boolean dimWide(Context ctx) {
+        return prefs(ctx).getBoolean(DIM_WIDE_KEY, true);
+    }
+
+    static void setDimWide(Context ctx, boolean wide) {
+        prefs(ctx).edit().putBoolean(DIM_WIDE_KEY, wide).apply();
+    }
+
+    /** A tile that takes a row of its own. */
+    static boolean wide(Context ctx, String id) {
+        return DIM.equals(id) && dimWide(ctx);
+    }
+
+    /** The tiles as the panel lays them out: two a row, a wide tile on a row of its own. */
+    static List<List<String>> rows(Context ctx, List<String> ids) {
+        List<List<String>> rows = new ArrayList<>();
+        List<String> row = new ArrayList<>();
+        for (String id : ids) {
+            if (wide(ctx, id)) {
+                if (!row.isEmpty()) rows.add(row);
+                rows.add(Collections.singletonList(id));
+                row = new ArrayList<>();
+                continue;
+            }
+            row.add(id);
+            if (row.size() == 2) {
+                rows.add(row);
+                row = new ArrayList<>();
+            }
+        }
+        if (!row.isEmpty()) rows.add(row);
+        return rows;
+    }
+
+    /**
+     * Shows the Dim screen level on its tile (value and bar, out of ScreenDim.MAX), now and whenever its bar is laid
+     * out again; returns the Runnable that shows it, for after a change.
+     */
+    static Runnable showDim(View tile) {
+        Context ctx = tile.getContext();
+        TextView value = tile.findViewById(R.id.dimValue);
+        View track = tile.findViewById(R.id.dimTrack);
+        View fill = tile.findViewById(R.id.dimFill);
+        Runnable show = () -> {
+            int level = ScreenDim.level(ctx);
+            if (!ScreenDim.available()) value.setText(R.string.sm_qs_dim_unavailable);
+            else if (level == 0) value.setText(R.string.sm_off);
+            else value.setText(java.text.NumberFormat.getPercentInstance().format(level / 100.0));
+            int width = Math.round(track.getWidth() * level / (float) ScreenDim.MAX);
+            if (fill.getLayoutParams().width != width) {
+                fill.getLayoutParams().width = width;
+                fill.requestLayout();
+            }
+        };
+        track.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> {
+            if (r - l != or - ol) v.post(show);
+        });
+        show.run();
+        return show;
     }
 
     /** An app tile's id: "app" and a number ("apps" is the Apps settings tile). */
@@ -229,6 +293,13 @@ final class QuickTiles {
 
     /** The tile's view (item_quick_tile): icon and name; an app button shows its app's own icon and name. */
     static View tile(Context ctx, LayoutInflater inflater, LinearLayout row, String id) {
+        if (DIM.equals(id)) {
+            View dim = inflater.inflate(dimWide(ctx) ? R.layout.item_quick_dim : R.layout.item_quick_dim_small, row, false);
+            String own = label(ctx, id);
+            ((TextView) dim.findViewById(R.id.title)).setText(own.isEmpty() ? ctx.getString(R.string.sm_qs_dim) : own);
+            showDim(dim);
+            return dim;
+        }
         View tile = inflater.inflate(R.layout.item_quick_tile, row, false);
         ImageView icon = tile.findViewById(R.id.icon);
         TextView title = tile.findViewById(R.id.title);
@@ -261,33 +332,35 @@ final class QuickTiles {
         return tile;
     }
 
-    /** Lays the tiles out two to a row in tiles; each view is passed to bind (id, view) before it is added. */
+    /**
+     * Lays the tiles out as rows() does (two a row, a wide tile alone); each view is passed to bind (id, view) before
+     * it is added.
+     */
     static List<View> fill(Context ctx, LinearLayout tiles, List<String> ids, java.util.function.BiConsumer<String, View> bind) {
         tiles.removeAllViews();
         LayoutInflater inflater = LayoutInflater.from(ctx);
         int gap = Math.round(8 * ctx.getResources().getDisplayMetrics().density);
         List<View> views = new ArrayList<>();
-        LinearLayout row = null;
-        for (String id : ids) {
-            if (row == null || row.getChildCount() == 2) {
-                row = new LinearLayout(ctx);
-                row.setOrientation(LinearLayout.HORIZONTAL);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(-1, -2);
-                if (tiles.getChildCount() > 0) lp.topMargin = gap;
-                tiles.addView(row, lp);
+        for (List<String> ids2 : rows(ctx, ids)) {
+            LinearLayout row = new LinearLayout(ctx);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            LinearLayout.LayoutParams rowLp = new LinearLayout.LayoutParams(-1, -2);
+            if (tiles.getChildCount() > 0) rowLp.topMargin = gap;
+            tiles.addView(row, rowLp);
+            for (String id : ids2) {
+                View tile = tile(ctx, inflater, row, id);
+                if (row.getChildCount() == 1) ((LinearLayout.LayoutParams) tile.getLayoutParams()).setMarginStart(gap);
+                bind.accept(id, tile);
+                row.addView(tile);
+                views.add(tile);
             }
-            View tile = tile(ctx, inflater, row, id);
-            if (row.getChildCount() == 1) ((LinearLayout.LayoutParams) tile.getLayoutParams()).setMarginStart(gap);
-            bind.accept(id, tile);
-            row.addView(tile);
-            views.add(tile);
-        }
-        // An odd last tile keeps its half width, like the others.
-        if (row != null && row.getChildCount() == 1) {
-            View spacer = new View(ctx);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, 1, 1f);
-            lp.setMarginStart(gap);
-            row.addView(spacer, lp);
+            // A lone half-width tile keeps its half width, like the others.
+            if (ids2.size() == 1 && !wide(ctx, ids2.get(0))) {
+                View spacer = new View(ctx);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, 1, 1f);
+                lp.setMarginStart(gap);
+                row.addView(spacer, lp);
+            }
         }
         return views;
     }

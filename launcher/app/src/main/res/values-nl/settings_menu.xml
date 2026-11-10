@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">App-tegel toevoegen</string>
     <string name="sm_qs_dim">Scherm dimmen</string>
     <string name="sm_qs_dim_unavailable">Vereist de afstandsbedieningshulp</string>
+    <string name="sm_qs_compact">Compact</string>
+    <string name="sm_qs_full_width">Volle breedte</string>
     <string name="sm_qs_moving">Verplaats hem met de pijlen en druk op OK.</string>
     <string name="sm_qs_rename">Naam wijzigen</string>
     <string name="sm_qs_rename_hint">Laat leeg voor de oorspronkelijke naam</string>

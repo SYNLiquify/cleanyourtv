@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">添加应用磁贴</string>
     <string name="sm_qs_dim">调暗屏幕</string>
     <string name="sm_qs_dim_unavailable">需要遥控器助手</string>
+    <string name="sm_qs_compact">紧凑</string>
+    <string name="sm_qs_full_width">全宽</string>
     <string name="sm_qs_moving">用方向键移动，然后按 OK。</string>
     <string name="sm_qs_rename">重命名</string>
     <string name="sm_qs_rename_hint">留空则恢复原名</string>

@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Lägg till appruta</string>
     <string name="sm_qs_dim">Dämpa skärmen</string>
     <string name="sm_qs_dim_unavailable">Kräver fjärrkontrollshjälpen</string>
+    <string name="sm_qs_compact">Kompakt</string>
+    <string name="sm_qs_full_width">Full bredd</string>
     <string name="sm_qs_moving">Flytta den med pilarna och tryck på OK.</string>
     <string name="sm_qs_rename">Byt namn</string>
     <string name="sm_qs_rename_hint">Lämna tomt för det ursprungliga namnet</string>

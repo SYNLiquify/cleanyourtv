@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Dodaj kafelek aplikacji</string>
     <string name="sm_qs_dim">Przyciemnij ekran</string>
     <string name="sm_qs_dim_unavailable">Wymaga pomocnika pilota</string>
+    <string name="sm_qs_compact">Kompaktowy</string>
+    <string name="sm_qs_full_width">Pełna szerokość</string>
     <string name="sm_qs_moving">Przenieś go strzałkami i naciśnij OK.</string>
     <string name="sm_qs_rename">Zmień nazwę</string>
     <string name="sm_qs_rename_hint">Zostaw puste, aby przywrócić oryginalną nazwę</string>

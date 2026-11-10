@@ -153,6 +153,8 @@
     <string name="sm_qs_add_app">Adicionar mosaico de app</string>
     <string name="sm_qs_dim">Escurecer ecrã</string>
     <string name="sm_qs_dim_unavailable">Requer o assistente do comando</string>
+    <string name="sm_qs_compact">Compacto</string>
+    <string name="sm_qs_full_width">Largura total</string>
     <string name="sm_qs_moving">Mova-o com as setas e prima OK.</string>
     <string name="sm_qs_rename">Mudar o nome</string>
     <string name="sm_qs_rename_hint">Deixe vazio para o nome original</string>
