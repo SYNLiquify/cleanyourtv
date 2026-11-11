@@ -153,6 +153,7 @@
     <string name="sm_qs_add_app">Aggiungi riquadro app</string>
     <string name="sm_qs_dim">Attenua schermo</string>
     <string name="sm_qs_dim_unavailable">Richiede l\'assistente del telecomando</string>
+    <string name="sm_qs_dim_keywords">Luminosità, Luminosità dello schermo, Scurisci, Oscura</string>
     <string name="sm_qs_compact">Compatto</string>
     <string name="sm_qs_full_width">Larghezza piena</string>
     <string name="sm_qs_moving">Spostalo con le frecce, poi premi OK.</string>

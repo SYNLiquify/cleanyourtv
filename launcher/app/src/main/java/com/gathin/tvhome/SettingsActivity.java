@@ -2182,20 +2182,28 @@ public final class SettingsActivity extends Activity {
     private EditText searchButton;
     private LinearLayout searchResults;
 
-    /** A setting search can find: its name, where it is, how to get there and which row to focus. */
+    /**
+     * A setting search can find: its name, where it is, how to get there and which row to focus (none: open focuses
+     * the setting itself), and other words it is found by (SettingsSearch).
+     */
     private static final class Found {
-        final String label, where, focus;
+        final String label, where, focus, keywords;
         final int page;
         final Runnable open;
         final boolean suggested;
 
         Found(String label, String where, int page, Runnable open, String focus, boolean suggested) {
+            this(label, where, page, open, focus, suggested, "");
+        }
+
+        Found(String label, String where, int page, Runnable open, String focus, boolean suggested, String keywords) {
             this.label = label;
             this.where = where;
             this.page = page;
             this.open = open;
             this.focus = focus;
             this.suggested = suggested;
+            this.keywords = keywords;
         }
     }
 
@@ -2228,6 +2236,11 @@ public final class SettingsActivity extends Activity {
             boolean suggested = r[0] == R.string.sm_language || r[0] == R.string.sm_compact_top;
             out.add(new Found(label, pages[r[1]], r[1], null, label, suggested));
         }
+        // Quick settings' Dim screen is a tile of the panel's preview, not a row: its page opens with the tile focused.
+        // Also found by its own keywords and by the name it was given there.
+        out.add(new Found(getString(R.string.sm_qs_dim), pages[PAGE_QUICK], PAGE_QUICK,
+                () -> showQuickSettings(QuickTiles.DIM), null, false,
+                getString(R.string.sm_qs_dim_keywords) + "," + QuickTiles.label(this, QuickTiles.DIM)));
         String look = pages[PAGE_LOOK], system = pages[PAGE_SYSTEM], clock = pages[PAGE_CLOCK];
         out.add(new Found(getString(R.string.sm_themes), look, PAGE_LOOK, null, getString(R.string.sm_themes), true));
         out.add(new Found(getString(R.string.sm_highlight), look, PAGE_LOOK, null, getString(R.string.sm_custom_color), false));
@@ -2274,13 +2287,12 @@ public final class SettingsActivity extends Activity {
     private void showResults(String typed) {
         if (searchResults == null) return;
         searchResults.removeAllViews();
-        String q = typed.trim().toLowerCase(Locale.getDefault());
-        if (q.isEmpty()) return;
+        if (typed.trim().isEmpty()) return;
         List<Found> starts = new ArrayList<>(), contains = new ArrayList<>();
         for (Found f : searchIndex()) {
-            String name = f.label.toLowerCase(Locale.getDefault());
-            if (name.startsWith(q) || name.contains(" " + q)) starts.add(f);
-            else if (name.contains(q) || f.where.toLowerCase(Locale.getDefault()).contains(q)) contains.add(f);
+            int match = SettingsSearch.match(typed, f.label, f.where, f.keywords, Locale.getDefault());
+            if (match == SettingsSearch.WORD) starts.add(f);
+            else if (match == SettingsSearch.ANYWHERE) contains.add(f);
         }
         starts.addAll(contains);
         TextView heading = text(13, R.string.font_medium, 0x80FFFFFF);
@@ -2308,6 +2320,7 @@ public final class SettingsActivity extends Activity {
         hideKeyboard(searchButton);
         showCategory(f.page, true);
         if (f.open != null) f.open.run();
+        if (f.open != null && f.focus == null) return;   // the page it opened focuses the setting (a Quick settings tile)
         pane.post(() -> {
             View row = f.focus == null ? null : rowLabelled(f.focus);
             if (row != null) row.requestFocus();
