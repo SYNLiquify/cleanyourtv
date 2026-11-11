@@ -12,4 +12,10 @@
     <string name="cw_almost_done">Deyarli tugadi</string>
     <string name="cw_up_next">Keyingisi</string>
     <string name="cw_watched">%1$d%% koʻrildi</string>
+    <string name="cw_airs_today">Bugun efirda</string>
+    <string name="cw_airs_tomorrow">Ertaga efirda</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">%1$d kundan keyin efirda</item>
+        <item quantity="other">%1$d kundan keyin efirda</item>
+    </plurals>
 </resources>

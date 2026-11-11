@@ -12,4 +12,9 @@
     <string name="cw_almost_done">거의 다 봄</string>
     <string name="cw_up_next">다음 편</string>
     <string name="cw_watched">%1$d%% 시청함</string>
+    <string name="cw_airs_today">오늘 방송</string>
+    <string name="cw_airs_tomorrow">내일 방송</string>
+    <plurals name="cw_airs_in">
+        <item quantity="other">%1$d일 후 방송</item>
+    </plurals>
 </resources>

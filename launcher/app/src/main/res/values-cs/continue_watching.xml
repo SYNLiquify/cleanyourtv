@@ -12,4 +12,12 @@
     <string name="cw_almost_done">Skoro dokončeno</string>
     <string name="cw_up_next">Následuje</string>
     <string name="cw_watched">Zhlédnuto %1$d%%</string>
+    <string name="cw_airs_today">Vysílá se dnes</string>
+    <string name="cw_airs_tomorrow">Vysílá se zítra</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Vysílá se za %1$d den</item>
+        <item quantity="few">Vysílá se za %1$d dny</item>
+        <item quantity="many">Vysílá se za %1$d dne</item>
+        <item quantity="other">Vysílá se za %1$d dní</item>
+    </plurals>
 </resources>

@@ -12,4 +12,10 @@
     <string name="cw_almost_done">Nesten ferdig</string>
     <string name="cw_up_next">Neste</string>
     <string name="cw_watched">%1$d%% sett</string>
+    <string name="cw_airs_today">Sendes i dag</string>
+    <string name="cw_airs_tomorrow">Sendes i morgen</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Sendes om %1$d dag</item>
+        <item quantity="other">Sendes om %1$d dager</item>
+    </plurals>
 </resources>

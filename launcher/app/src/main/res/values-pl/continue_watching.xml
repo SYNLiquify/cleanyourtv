@@ -12,4 +12,12 @@
     <string name="cw_almost_done">Prawie koniec</string>
     <string name="cw_up_next">Następny</string>
     <string name="cw_watched">Obejrzano %1$d%%</string>
+    <string name="cw_airs_today">Emisja dziś</string>
+    <string name="cw_airs_tomorrow">Emisja jutro</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Emisja za %1$d dzień</item>
+        <item quantity="few">Emisja za %1$d dni</item>
+        <item quantity="many">Emisja za %1$d dni</item>
+        <item quantity="other">Emisja za %1$d dnia</item>
+    </plurals>
 </resources>

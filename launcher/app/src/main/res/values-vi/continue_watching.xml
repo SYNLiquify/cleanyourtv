@@ -12,4 +12,9 @@
     <string name="cw_almost_done">Sắp xong</string>
     <string name="cw_up_next">Tiếp theo</string>
     <string name="cw_watched">Đã xem %1$d%%</string>
+    <string name="cw_airs_today">Phát sóng hôm nay</string>
+    <string name="cw_airs_tomorrow">Phát sóng ngày mai</string>
+    <plurals name="cw_airs_in">
+        <item quantity="other">Phát sóng sau %1$d ngày</item>
+    </plurals>
 </resources>

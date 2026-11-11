@@ -12,4 +12,11 @@
     <string name="cw_almost_done">כמעט נגמר</string>
     <string name="cw_up_next">הבא בתור</string>
     <string name="cw_watched">נצפו %1$d%%</string>
+    <string name="cw_airs_today">משודר היום</string>
+    <string name="cw_airs_tomorrow">משודר מחר</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">משודר בעוד %1$d יום</item>
+        <item quantity="two">משודר בעוד %1$d ימים</item>
+        <item quantity="other">משודר בעוד %1$d ימים</item>
+    </plurals>
 </resources>

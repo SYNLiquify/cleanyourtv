@@ -12,4 +12,11 @@
     <string name="cw_almost_done">Casi terminado</string>
     <string name="cw_up_next">A continuación</string>
     <string name="cw_watched">%1$d%% visto</string>
+    <string name="cw_airs_today">Se emite hoy</string>
+    <string name="cw_airs_tomorrow">Se emite mañana</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Se emite en %1$d día</item>
+        <item quantity="many">Se emite en %1$d días</item>
+        <item quantity="other">Se emite en %1$d días</item>
+    </plurals>
 </resources>

@@ -12,4 +12,9 @@
     <string name="cw_almost_done">Hampir selesai</string>
     <string name="cw_up_next">Berikutnya</string>
     <string name="cw_watched">%1$d%% ditonton</string>
+    <string name="cw_airs_today">Tayang hari ini</string>
+    <string name="cw_airs_tomorrow">Tayang besok</string>
+    <plurals name="cw_airs_in">
+        <item quantity="other">Tayang %1$d hari lagi</item>
+    </plurals>
 </resources>

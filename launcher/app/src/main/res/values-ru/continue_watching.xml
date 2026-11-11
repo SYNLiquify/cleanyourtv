@@ -12,4 +12,12 @@
     <string name="cw_almost_done">Почти досмотрено</string>
     <string name="cw_up_next">Далее</string>
     <string name="cw_watched">Просмотрено %1$d%%</string>
+    <string name="cw_airs_today">Выходит сегодня</string>
+    <string name="cw_airs_tomorrow">Выходит завтра</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Выходит через %1$d день</item>
+        <item quantity="few">Выходит через %1$d дня</item>
+        <item quantity="many">Выходит через %1$d дней</item>
+        <item quantity="other">Выходит через %1$d дня</item>
+    </plurals>
 </resources>

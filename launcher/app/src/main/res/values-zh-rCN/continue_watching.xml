@@ -12,4 +12,9 @@
     <string name="cw_almost_done">即将看完</string>
     <string name="cw_up_next">接下来</string>
     <string name="cw_watched">已观看 %1$d%%</string>
+    <string name="cw_airs_today">今天播出</string>
+    <string name="cw_airs_tomorrow">明天播出</string>
+    <plurals name="cw_airs_in">
+        <item quantity="other">%1$d 天后播出</item>
+    </plurals>
 </resources>

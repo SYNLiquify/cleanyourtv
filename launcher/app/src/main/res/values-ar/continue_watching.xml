@@ -12,4 +12,14 @@
     <string name="cw_almost_done">أوشك على الانتهاء</string>
     <string name="cw_up_next">التالي</string>
     <string name="cw_watched">تمت مشاهدة %1$d%%</string>
+    <string name="cw_airs_today">يُعرض اليوم</string>
+    <string name="cw_airs_tomorrow">يُعرض غدًا</string>
+    <plurals name="cw_airs_in">
+        <item quantity="zero">يُعرض بعد %1$d يوم</item>
+        <item quantity="one">يُعرض بعد %1$d يوم</item>
+        <item quantity="two">يُعرض بعد %1$d يومين</item>
+        <item quantity="few">يُعرض بعد %1$d أيام</item>
+        <item quantity="many">يُعرض بعد %1$d يومًا</item>
+        <item quantity="other">يُعرض بعد %1$d يوم</item>
+    </plurals>
 </resources>

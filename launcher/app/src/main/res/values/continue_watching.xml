@@ -13,4 +13,11 @@
     <string name="cw_almost_done">Almost done</string>
     <string name="cw_up_next">Up next</string>
     <string name="cw_watched">%1$d%% watched</string>
+    <!-- This fork: an upcoming episode (UpcomingEpisodes), counted in days from today. -->
+    <string name="cw_airs_today">Airs today</string>
+    <string name="cw_airs_tomorrow">Airs tomorrow</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Airs in %1$d day</item>
+        <item quantity="other">Airs in %1$d days</item>
+    </plurals>
 </resources>

@@ -12,4 +12,10 @@
     <string name="cw_almost_done">Cuasi acabáu</string>
     <string name="cw_up_next">Darréu</string>
     <string name="cw_watched">%1$d%% vistu</string>
+    <string name="cw_airs_today">Emítese güei</string>
+    <string name="cw_airs_tomorrow">Emítese mañana</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Emítese en %1$d día</item>
+        <item quantity="other">Emítese en %1$d díes</item>
+    </plurals>
 </resources>

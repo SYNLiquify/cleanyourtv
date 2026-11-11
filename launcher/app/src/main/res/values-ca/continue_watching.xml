@@ -12,4 +12,11 @@
     <string name="cw_almost_done">Gairebé acabat</string>
     <string name="cw_up_next">A continuació</string>
     <string name="cw_watched">%1$d%% vist</string>
+    <string name="cw_airs_today">S\'emet avui</string>
+    <string name="cw_airs_tomorrow">S\'emet demà</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">S\'emet d\'aquí a %1$d dia</item>
+        <item quantity="many">S\'emet d\'aquí a %1$d dies</item>
+        <item quantity="other">S\'emet d\'aquí a %1$d dies</item>
+    </plurals>
 </resources>

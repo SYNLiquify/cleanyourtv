@@ -12,4 +12,9 @@
     <string name="cw_almost_done">ใกล้จบแล้ว</string>
     <string name="cw_up_next">ถัดไป</string>
     <string name="cw_watched">ดูแล้ว %1$d%%</string>
+    <string name="cw_airs_today">ออกอากาศวันนี้</string>
+    <string name="cw_airs_tomorrow">ออกอากาศพรุ่งนี้</string>
+    <plurals name="cw_airs_in">
+        <item quantity="other">ออกอากาศในอีก %1$d วัน</item>
+    </plurals>
 </resources>

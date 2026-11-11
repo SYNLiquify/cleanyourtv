@@ -59,6 +59,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             // Sideloaded over ADB, never published: sign with the debug key so it installs over a debug build.
             signingConfig signingConfigs.debug
+            // This fork: -PlauncherDebuggable=true (test builds only) lets `run-as com.gathin.tvhome` read and seed
+            // the launcher's own files on the TV. Never for a release.
+            debuggable providers.gradleProperty('launcherDebuggable').getOrElse('false') == 'true'
         }
     }
 

@@ -12,4 +12,10 @@
     <string name="cw_almost_done">প্রায় শেষ</string>
     <string name="cw_up_next">এরপর</string>
     <string name="cw_watched">%1$d%% দেখা হয়েছে</string>
+    <string name="cw_airs_today">আজ সম্প্রচার</string>
+    <string name="cw_airs_tomorrow">আগামীকাল সম্প্রচার</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">%1$d দিনে সম্প্রচার</item>
+        <item quantity="other">%1$d দিনে সম্প্রচার</item>
+    </plurals>
 </resources>

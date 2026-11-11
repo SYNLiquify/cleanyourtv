@@ -12,4 +12,10 @@
     <string name="cw_almost_done">Lähes katsottu</string>
     <string name="cw_up_next">Seuraavaksi</string>
     <string name="cw_watched">%1$d %% katsottu</string>
+    <string name="cw_airs_today">Esitetään tänään</string>
+    <string name="cw_airs_tomorrow">Esitetään huomenna</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Esitetään %1$d päivän päästä</item>
+        <item quantity="other">Esitetään %1$d päivän päästä</item>
+    </plurals>
 </resources>

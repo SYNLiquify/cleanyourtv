@@ -12,4 +12,11 @@
     <string name="cw_almost_done">Skoro gotovo</string>
     <string name="cw_up_next">Sledeće</string>
     <string name="cw_watched">Odgledano %1$d%%</string>
+    <string name="cw_airs_today">Emituje se danas</string>
+    <string name="cw_airs_tomorrow">Emituje se sutra</string>
+    <plurals name="cw_airs_in">
+        <item quantity="one">Emituje se za %1$d dan</item>
+        <item quantity="few">Emituje se za %1$d dana</item>
+        <item quantity="other">Emituje se za %1$d dana</item>
+    </plurals>
 </resources>

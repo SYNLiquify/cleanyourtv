@@ -87,6 +87,8 @@ final class ContinueRow {
         String pkg, title, episodeTitle, season, episode, intentUri, image;
         int type;
         long duration, position, weight;
+        /** This fork: when an episode still to come airs (UpcomingEpisodes), ms; 0 for the app's own rows. */
+        long airs;
     }
 
     interface Host {
@@ -248,8 +250,13 @@ final class ContinueRow {
     private void load() {
         final int gen = ++generation;
         new Thread(() -> {
-            List<Item> found = query(context, packages);
+            List<Item> rows = query(context, packages);
+            final List<Item> found = rows == null ? null : new ArrayList<>();
             if (found != null) {
+                // This fork: shows the app dropped until their next episode airs, as "Airs in N days" cards first,
+                // then the app's own rows.
+                found.addAll(UpcomingEpisodes.update(context, rows));
+                found.addAll(rows);
                 // The list was read: thumbnails of titles no longer on it are deleted.
                 List<String> urls = new ArrayList<>();
                 for (Item it : found) urls.add(it.image);
@@ -408,6 +415,7 @@ final class ContinueRow {
     }
 
     private String remaining(Item it) {
+        if (it.airs > 0) return UpcomingEpisodes.label(context, it.airs);
         // No progress yet: the next episode the app lined up rather than one left part-way.
         if (!started(it)) return context.getString(R.string.cw_up_next);
         if (it.duration == SYNTHETIC_DURATION_MS) {
