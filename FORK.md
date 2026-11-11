@@ -9,8 +9,8 @@ unchanged.
 ## Screenshots
 
 The full gallery is near the top of [README.md](README.md): Home, Continue watching, the screensaver and the Settings
-pages. All were taken on the Hisense with the default settings; in the Continue watching shot the titles, episode names
-and thumbnails are blurred for privacy.
+pages. All were taken on the Hisense with the default settings; the show and movie pictures are blurred, and the names,
+episodes and everything else the launcher draws stay sharp.
 
 | | |
 |---|---|

@@ -56,8 +56,8 @@ The first release, on top of the Apple TV-style home, highlight colors, Continue
 
 ## Screenshots
 
-Taken on the Hisense with the launcher's default settings. In the Continue watching shot the titles, episode names and
-thumbnails are blurred for privacy.
+Taken on the Hisense with the launcher's default settings. The show and movie pictures, behind the Nuvio suggestion and
+on the Continue watching cards, are blurred; everything the launcher draws over them stays sharp.
 
 <p align="center">
   <img src="docs/screenshots/apple-tv-home/home.jpg" alt="Home with the dock focused on YouTube over a Nuvio suggestion: the title's logo, rating, year and genres, and Open in Nuvio" width="900">
