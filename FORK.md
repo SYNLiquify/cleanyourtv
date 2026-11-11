@@ -4,20 +4,20 @@ A fork of this repo's launcher (`launcher/`), built and tested on an **onn. 4K S
 and a **Hisense SmartTV 4K (songshan), Android 11**. Everything else in the repo (the debloat tools, lists and docs) is
 unchanged.
 
-![Home with the dock focused, in YouTube's red with the Adaptive highlight color](docs/screenshots/apple-tv-home/home-adaptive-youtube.jpg)
+![Home with the dock focused on YouTube over a Nuvio suggestion](docs/screenshots/apple-tv-home/home.jpg)
 
 ## Screenshots
 
-The full gallery is at the top of [README.md](README.md): the Adaptive highlight on several apps, the menus, Continue
-watching, the app grid, the reorder banner, the screensaver and every Settings page. All were taken on the Hisense;
-in the Continue watching shots the titles, episode names and thumbnails are blurred for privacy.
+The full gallery is near the top of [README.md](README.md): Home, Continue watching, the screensaver and the Settings
+pages. All were taken on the Hisense with the default settings; in the Continue watching shot the titles, episode names
+and thumbnails are blurred for privacy.
 
 | | |
 |---|---|
-| ![Continue watching under the dock](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![Settings, Home: the highlight color swatches](docs/screenshots/apple-tv-home/settings-highlight.jpg) |
-| **Continue watching** | **Highlight color** |
-| ![Settings, Themes: every theme in the repo](docs/screenshots/apple-tv-home/themes-gallery.jpg) | ![The custom color picker](docs/screenshots/apple-tv-home/custom-color.jpg) |
-| **Themes** | **Custom color** |
+| ![Continue watching under the dock](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![Settings, Quick settings with its live preview](docs/screenshots/apple-tv-home/quick-settings.jpg) |
+| **Continue watching** | **Quick settings** |
+| ![Settings, Themes: every theme in the repo](docs/screenshots/apple-tv-home/themes.jpg) | ![The screensaver with compact weather](docs/screenshots/apple-tv-home/screensaver.jpg) |
+| **Themes** | **Screensaver** |
 
 ## What it adds
 

@@ -56,63 +56,21 @@ The first release, on top of the Apple TV-style home, highlight colors, Continue
 
 ## Screenshots
 
+Taken on the Hisense with the launcher's default settings. In the Continue watching shot the titles, episode names and
+thumbnails are blurred for privacy.
+
 <p align="center">
-  <img src="docs/screenshots/apple-tv-home/home-adaptive-youtube.jpg" alt="Home with the dock focused on YouTube: the focus glow, the glow behind Home and the pill outlines are YouTube red" width="900">
+  <img src="docs/screenshots/apple-tv-home/home.jpg" alt="Home with the dock focused on YouTube over a Nuvio suggestion: the title's logo, rating, year and genres, and Open in Nuvio" width="900">
 </p>
 
-### Adaptive highlight color
-
-With **Adaptive**, the focus glow, the top-bar pills, menus and the Continue watching ring take the focused app's own
-color, sampled from its banner like the glow behind Home.
-
 | | |
 |---|---|
-| ![Nuvio focused: everything turns Nuvio blue](docs/screenshots/apple-tv-home/home-adaptive-nuvio.jpg) | ![TV Bro focused: everything turns TV Bro yellow](docs/screenshots/apple-tv-home/home-adaptive-tvbro.jpg) |
-| **Nuvio**: blue | **TV Bro**: yellow |
-| ![The Inputs menu filled with the focused app's blue](docs/screenshots/apple-tv-home/inputs-menu.jpg) | ![A tile's hold-OK menu in TV Bro's yellow, with dark text for contrast](docs/screenshots/apple-tv-home/tile-menu.jpg) |
-| **Inputs menu**: HDMI, AV and Live TV in the app's color | **Hold OK on a tile**: Replace, Move, App info |
-
-### Home
-
-| | |
-|---|---|
-| ![Down from the dock: the Continue watching row of thumbnail cards with time left and progress](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![Down again: the app grid, four across under the dock's width](docs/screenshots/apple-tv-home/app-grid.jpg) |
-| **Continue watching** (Nuvio): time left, Up next, progress. *Titles and thumbnails blurred for privacy* | **App grid**: rows span the dock's width; the glow follows the focused app |
-| ![While moving apps, a pill under the top bar says Reordering apps, press Back to cancel](docs/screenshots/apple-tv-home/reorder-banner.jpg) | ![The clock screensaver with the date and the weather](docs/screenshots/apple-tv-home/screensaver.jpg) |
-| **Reordering**: a pill says how to finish | **Screensaver**: clock, date and weather |
-
-### Settings menu
-
-| | |
-|---|---|
-| ![Settings, Home: highlight color swatches, Adaptive first](docs/screenshots/apple-tv-home/settings-highlight.jpg) | ![The custom color picker: hue, saturation and brightness sliders with a live preview](docs/screenshots/apple-tv-home/custom-color.jpg) |
-| **Highlight color**: Adaptive, White and eight presets | **Custom color**: sliders for the remote, a preview, or a hex code |
-| ![Settings, Home: dock apps, apps per row, Continue watching, dock background, animations](docs/screenshots/apple-tv-home/settings-layout.jpg) | ![Settings, Themes: the GitHub status with Refresh, and the downloaded themes](docs/screenshots/apple-tv-home/themes.jpg) |
-| **Home**: layout and look | **Themes**: GitHub status, Refresh, Downloaded |
-| ![Settings, Themes: previews of every theme in the repo](docs/screenshots/apple-tv-home/themes-gallery.jpg) | ![Settings, Weather: units, conditions, high and low, location](docs/screenshots/apple-tv-home/settings-weather.jpg) |
-| **Themes**: every theme in the repo, applied in place | **Weather**: °F/°C, what to show, location |
-| ![Settings, Clock: time format, greetings, custom greetings that rotate](docs/screenshots/apple-tv-home/settings-clock.jpg) | ![Settings, Storage: the TV's free space and what the launcher uses](docs/screenshots/apple-tv-home/settings-storage.jpg) |
-| **Clock**: 12/24-hour, greetings that rotate | **Storage**: space used, with clean-up buttons |
-| ![Settings, System: ATV settings, Language and Updates, each opening its own page](docs/screenshots/apple-tv-home/settings-system.jpg) | ![System, ATV settings: Android TV settings, network and Wi-Fi, apps, screensaver, default home app](docs/screenshots/apple-tv-home/atv-settings.jpg) |
-| **System**: ATV settings, Language, Updates | **ATV settings**: Android's own settings, a click away |
-| ![Storage, the Languages row: 32 included](docs/screenshots/apple-tv-home/storage-languages.jpg) | |
-| **Storage**: the installed languages, one row that opens their list | |
-
-### Updates from this fork
-
-| | |
-|---|---|
-| ![Home offering a launcher update: Install update or Later](docs/screenshots/apple-tv-home/update-card.jpg) | ![System, Updates: Check for updates and the version at the top, how often to check below](docs/screenshots/apple-tv-home/updates-page.jpg) |
-| **Home offers each new version**: Install update or Later | **Updates**: Check for updates at the top, the interval below |
-
-### Every language upstream has, plus Japanese
-
-| | |
-|---|---|
-| ![System, Language: the TV's language, English, Español, 日本語, العربية and more, each in its own name](docs/screenshots/apple-tv-home/language-list.jpg) | ![The Settings menu in Japanese](docs/screenshots/apple-tv-home/japanese-settings.jpg) |
-| **Language**: 32, each in its own name | **The menu in Japanese** |
-| ![Home in Japanese: the date, the weather and the pills translated](docs/screenshots/apple-tv-home/japanese-home.jpg) | ![Home in Spanish: the long date and weather shrink to one line](docs/screenshots/apple-tv-home/spanish-home.jpg) |
-| **Home in Japanese** | **Home in Spanish**: long words shrink to fit one line |
+| ![Down from the dock: the Continue watching row, an episode that airs in 3 days first, then time left and progress](docs/screenshots/apple-tv-home/continue-watching.jpg) | ![The screensaver: a large clock, the date and the compact weather with today's high and low](docs/screenshots/apple-tv-home/screensaver.jpg) |
+| **Continue watching**: time left, progress, and episodes that air soon | **Screensaver**: clock, date and compact weather |
+| ![Settings, Home: dock apps, apps per row, Continue watching and Nuvio suggestions](docs/screenshots/apple-tv-home/settings-home.jpg) | ![Settings, Quick settings: a live preview of the panel with Display, Network, Apps, Launcher settings and the Dim screen slider](docs/screenshots/apple-tv-home/quick-settings.jpg) |
+| **Settings, Home**: layout, Continue watching, Nuvio suggestions | **Quick settings**: arrange the remote's panel, add app tiles, dim the screen |
+| ![Settings, Look: themes, compact top bar, app name above the dock, dock background, animations](docs/screenshots/apple-tv-home/settings-look.jpg) | ![Settings, Themes: up to date with GitHub, the downloaded themes and every theme in the repo](docs/screenshots/apple-tv-home/themes.jpg) |
+| **Look**: themes, top bar, dock and highlight color | **Themes**: every theme in the repo, applied in place |
 
 ## Features
 
