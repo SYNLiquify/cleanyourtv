@@ -98,6 +98,47 @@ class HighlightTest(unittest.TestCase):
         self.assertEqual(total, 15)
 
 
+class UniqueThreadTest(unittest.TestCase):
+    RX = re.compile(r"^(activityResume|RV OnBindView|DrawFrames 1)$")
+
+    def test_repeated_names_and_main_aliases_count_each_physical_thread_once(self):
+        for names, labels in (
+            (["main", "RenderThread"], ["main thread", "RenderThread"]),
+            (["main", "main", "RenderThread", "RenderThread"], ["main thread", "RenderThread"]),
+            (["main", PKG, "RenderThread"], ["main thread", "RenderThread"]),
+            ([PKG, "main", "RenderThread"], [PKG, "RenderThread"]),
+            (["RenderThread", PKG, "main", "RenderThread"], ["RenderThread", PKG]),
+        ):
+            with self.subTest(names=names):
+                lanes = flamechart.lanes(fake_trace(), PKG, names, 1000 * MS, 1065 * MS)
+                # Main: onResume 30 ms plus binding 4 ms; RenderThread: draw 10 ms.
+                total = sum(flamechart.highlighted(rows, self.RX, 1000 * MS, 1065 * MS)[0]
+                            for _, rows in lanes)
+                self.assertEqual(total, 44)
+                self.assertEqual([label for label, _ in lanes], labels)
+                ids = [row["id"] for _, rows in lanes for row in rows]
+                self.assertEqual(len(ids), len(set(ids)))
+
+    def test_main_passes_unique_lanes_and_the_correct_total_to_the_renderer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace, out = Path(tmp, "nav-1.pftrace"), Path(tmp, "chart.png")
+            trace.write_bytes(b"")
+            q, close = fake_trace(), mock.Mock()
+            with mock.patch.dict(sys.modules, {"PIL": mock.MagicMock()}), \
+                    mock.patch.object(flamechart.trace_report, "opener", return_value=lambda path: (q, close)), \
+                    mock.patch.object(flamechart, "draw", return_value=(1600, 100)) as draw, \
+                    contextlib.redirect_stdout(io.StringIO()):
+                flamechart.main([str(trace), "--out", str(out), "--threads",
+                                 f"main,{PKG},RenderThread,main", "--highlight", self.RX.pattern])
+            close.assert_called_once_with()
+            draw.assert_called_once()
+            panels, rx = draw.call_args.args[:2]
+            panel = panels[0]
+            self.assertEqual(sum(flamechart.highlighted(rows, rx, panel["t0"], panel["t1"])[0]
+                                 for _, rows in panel["lanes"]), 44)
+            self.assertEqual([label for label, _ in panel["lanes"]], ["main thread", "RenderThread"])
+
+
 class WindowTest(unittest.TestCase):
     def test_first_frame_window_spans_start_to_frame_drawn(self):
         t0, t1 = flamechart.window(fake_trace(), PKG, "first-frame", nav=False)
@@ -260,8 +301,30 @@ class WriteFailureTest(unittest.TestCase):
         self.assertEqual("", output.getvalue())
         stray = [l for l in error.getvalue().splitlines() if "ResourceWarning" not in l and not l.startswith("  ")]
         self.assertEqual([], stray)   # a GC ResourceWarning from another test may land here; nothing else may
-        image.save.assert_called_once_with(str(out))
+        image.save.assert_called_once()
+        self.assertNotEqual(str(out), image.save.call_args.args[0])
         close.assert_called_once_with()
+
+    def test_a_failed_save_keeps_the_chart_already_there(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            trace = Path(tmp, "nav-1.pftrace")
+            trace.write_bytes(b"")
+            out = Path(tmp, "chart.png")
+            out.write_bytes(b"old chart")
+            pil, image = fake_pillow()
+
+            def truncate_then_fail(path, **options):
+                Path(path).write_bytes(b"half")
+                raise OSError(28, "No space left on device")
+            image.save.side_effect = truncate_then_fail
+            with mock.patch.dict(sys.modules, {"PIL": pil}), \
+                    mock.patch.object(flamechart.trace_report, "opener",
+                                      return_value=lambda path: (fake_trace(), mock.Mock())), \
+                    contextlib.redirect_stdout(io.StringIO()), \
+                    contextlib.redirect_stderr(io.StringIO()), \
+                    self.assertRaises(SystemExit):
+                flamechart.main([str(trace), "--out", str(out)])
+            self.assertEqual(b"old chart", out.read_bytes())
 
     def test_a_font_load_failure_is_not_called_an_output_write_failure(self):
         with tempfile.TemporaryDirectory() as tmp:

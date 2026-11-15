@@ -13,7 +13,10 @@ build-and-install.sh, or the steps in addons/README.md; tools/theme.sh or theme.
 
 install on an installed add-on updates it (pm install -r). show prints every picture a switch's row carries in
 docs/switches.md, since a few keys have two (the pill up and at rest for `vpn_pill`), and a reader who copies
-only the first path would see half of what the page documents. set writes the key into a theme folder of your own and
+only the first path would see half of what the page documents. status asks the TV which package answers HOME
+with the launcher's own MainActivity, because a build made with -PlauncherApplicationId (some firmware only lets
+an allowlisted name be Home) keeps the class and moves the id: that is the package it reports, and the
+`/sdcard/Android/data/<id>/files/config.json` it reads the pushed theme from. set writes the key into a theme folder of your own and
 pushes it with the platform's theme script, as themes/README.md describes; it never edits a folder in this checkout, so pointing
 --theme at the project's themes/ or examples/ is refused before anything is written. set reads the value the way
 the key's own type in the Keys table needs - true or false for a bool, a JSON list, object or number where the
@@ -26,7 +29,15 @@ to the shape its own parser reads - six hex digits, and no background alpha, whi
 a malformed colour is refused rather than written as one the theme already had. A list of app_keys is read one entry at a
 time the way the launcher reads it: a key that is a keycode or a KEYCODE_ name and a target that is a package, an
 activity, an action word, input:, guide: or inputs, since RemoteKeys skips an entry it cannot read without a word
-and that button would open nothing. A theme's config.json is hand-edited, so one
+and that button would open nothing. A list of `"package=value"` entries (`app_labels`, `app_banners`,
+`launch_actions`) is read one entry at a time too: Config.packageMap() keeps only an entry with a package before
+the '=' and a value after it, so an entry without both halves is refused rather than written as one the tile never
+reads, and so is an `app_banners` name the launcher cannot draw: AppAdapter.bundledBanner() answers null for anything
+but a `banner_*` drawable this checkout ships, so `com.netflix.ninja=magenta` is a banner the theme says is set and
+the tile never shows. The two keys the Inputs menu reads a vendor number out of are read the same way:
+`input_sources` entries one at a time, since InputSources.mapped() skips an entry it cannot match to an input id,
+and `source_panel_extra` as the `"name=value"` pair openSourcePanel() sends, since a value without a name or a
+whole number before the '=' sends no extra at all. A theme's config.json is hand-edited, so one
 that cannot be read, is not JSON, or is not a JSON object is named before the key is written, and a write it cannot
 make says so instead of ending in a traceback.
 set's own arguments are read first: a switch without a value, a --theme without the folder behind it, and a word
@@ -64,6 +75,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 TOOLS = ROOT / "tools"
 LAUNCHER_PKG = "com.gathin.tvhome"
+# The launcher does not always run under its default id: some firmware only lets a package name it allowlists be
+# Home, so launcher/app/build.gradle takes -PlauncherApplicationId and the device notes send people there
+# (docs/devices/xiaomi-mitv-mftr0-debloat-home.md wants com.ts.launcher on a China Xiaomi set, and
+# docs/devices/skyworth-7t861-a23.md com.coocaa.tvhome on a Coocaa one). The activity class does not move with
+# the id - it is always <applicationId>/com.gathin.tvhome.MainActivity - so the TV is asked which package wears
+# it, with the same HOME query tools/disable.sh reads its claimants with. status read the default id and its
+# directory, so on such a set it answered "launcher: not installed" about an installed launcher and "theme: none
+# (the built-in config.xml)" about a theme it had just pushed (#3703).
+LAUNCHER_ACTIVITY = "com.gathin.tvhome.MainActivity"
+CLAIM_QUERY = "cmd package query-activities --brief -a android.intent.action.MAIN -c android.intent.category.HOME"
+LAUNCHER_ID = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(\.[A-Za-z0-9_]+)+$")
 
 
 # ---------------------------------------------------------------- reading the repo
@@ -368,6 +390,184 @@ def app_keys_problem(values):
     return None
 
 
+# The three Keys-table rows whose entries are `package=value` pairs (`app_labels`, `app_banners`,
+# `launch_actions`). Config.stringList() keeps such an entry, and Config.packageMap() then reads it:
+#
+#     int eq = entry.indexOf('=');
+#     if (eq <= 0) continue;
+#     String pkg = entry.substring(0, eq).trim(), value = entry.substring(eq + 1).trim();
+#     if (!pkg.isEmpty() && !value.isEmpty()) out.put(pkg, value);
+#
+# so an entry with no '=', with nothing before it or with nothing after it is skipped without a word, and the
+# tile keeps the name, banner or action it had - while set has reported the list as written and the theme as
+# pushed. The left half is looked up against installed package names (`appLabels.containsKey(pkg)`), so a
+# name that is not a package name finds nothing either. Both halves are trimmed, as packageMap() trims them.
+PAIR_CELLS = ('list of "package=',)
+
+
+def package_pair_problem(values):
+    """The first entry Config.packageMap() would skip, or None.
+
+    packageMap() reads one entry at a time and keeps only one with both halves: no '=' at all, the '=' first
+    (`=banner_tv`), nothing after it (`com.netflix.ninja=`), and the entry is gone without a word. The left half
+    is the key looked up against the installed app's package name, so `TV=MagentaTV` - a label written as though
+    the app's name were the key - is kept by the map and never read.
+    """
+    for entry in values:
+        if not isinstance(entry, str):
+            return f"{entry!r} is not a string, so stringList() drops it"
+        text = entry.strip()
+        if not text:
+            return "an empty entry, which stringList() drops"
+        package, equals, value = text.partition("=")
+        if not equals:
+            return f"{entry!r} has no '=' in it, so packageMap() skips it"
+        if not package.strip():
+            return f"{entry!r} names no package before the '=', so packageMap() skips it"
+        if not value.strip():
+            return f"{entry!r} names a package but nothing to set for it, so packageMap() skips it"
+        if not PACKAGE_NAME.fullmatch(package.strip()):
+            return (f"{entry!r}: {package.strip()!r} is not a package name, so the entry is looked up as one "
+                    f"and no app answers it")
+    return None
+
+
+# The banner_* drawables the launcher bundles. AppAdapter.bundledBanner() is
+#     if (name == null || !name.startsWith("banner_")) return null;
+#     int id = ctx.getResources().getIdentifier(name, "drawable", ctx.getPackageName());
+#     return id != 0 ? ctx.getDrawable(id) : null;
+# and a null banner leaves the tile with the app's own art, so the other half of an app_banners entry is not
+# free text: `com.netflix.ninja=magenta` - the app's colour where a bundled banner's name goes - is a banner
+# the theme reports as set and the TV never draws, and `banner_tv2` is the same. The names are read out of this
+# checkout's res/ rather than listed here, because the launcher a theme is pushed to is built from this tree.
+LAUNCHER_RES = ROOT / "launcher" / "app" / "src" / "main" / "res"
+BANNER_SUFFIXES = (".xml", ".png", ".webp", ".jpg")
+
+
+def bundled_banners(root=ROOT):
+    """The banner_* drawable names this checkout's launcher ships, in a stable order."""
+    names = set()
+    for folder in (Path(root) / LAUNCHER_RES.relative_to(ROOT)).glob("drawable*"):
+        if not folder.is_dir():
+            continue
+        for path in folder.iterdir():
+            if path.name.startswith("banner_") and path.suffix.lower() in BANNER_SUFFIXES:
+                names.add(path.stem)
+    return sorted(names)
+
+
+def banner_problem(values, root=ROOT):
+    """The first app_banners entry whose banner name the launcher cannot draw, or None.
+
+    A pair package_pair_problem() has already refused is not read here: an entry with no '=' or an empty half
+    never reaches the map, so nothing of its value is drawn either way.
+    """
+    have = bundled_banners(root)
+    for entry in values:
+        if not isinstance(entry, str):
+            continue
+        text = entry.strip()
+        if "=" not in text:
+            continue
+        name = text.partition("=")[2].strip()
+        if not name:
+            continue
+        if not name.startswith("banner_"):
+            return (f"{entry!r} names {name!r}, and bundledBanner() answers null for a name that does not "
+                    f"start with `banner_`, so the tile keeps the art it had")
+        if name not in have:
+            return (f"{entry!r} names {name!r}, which is not a drawable the launcher ships "
+                    f"({', '.join(have) if have else 'none'}), so the tile keeps the art it had")
+    return None
+
+
+# The half of a value both Inputs-menu readers hand to Integer.parseInt(), after the '='. Java's parse takes an
+# optional sign and digits only, and throws on anything outside an int, which is caught and answered with "no
+# number": openSourcePanel() swallows the NumberFormatException, and mapped() answers null, "not mapped".
+INT_MIN, INT_MAX = -2 ** 31, 2 ** 31 - 1
+
+
+def whole_number(text):
+    """True when Integer.parseInt() reads the whole of text as an int."""
+    if not re.fullmatch(r"[+-]?\d+", text):
+        return False
+    return INT_MIN <= int(text) <= INT_MAX
+
+
+def input_source_problem(values):
+    """The first input_sources entry InputSources.mapped() cannot read, or None.
+
+    mapped() reads one entry at a time:
+
+        int equals = mapping.indexOf('=');
+        if (equals <= 0 || !mapping.substring(0, equals).trim().equals(input)) continue;
+        String value = mapping.substring(equals + 1).trim();
+        if (value.equals("-")) return -1;
+        try { return Integer.parseInt(value); } catch (NumberFormatException ignored) { return null; }
+
+    where `input` is the input id's last part (`HW5` out of `.../.hdmi.HDMIInputService/HW5`). So an entry with no
+    '=', with the '=' first, or with a '/' in its left half matches no input at all, and one whose right half is
+    neither '-' nor a whole number answers null - the row is not mapped - while the theme says the number is set.
+    The loop returns on the first entry naming an input, so a second entry for the same one is never read either.
+    """
+    seen = {}
+    for entry in values:
+        if not isinstance(entry, str):
+            return f"{entry!r} is not a string, and stringList() keeps only strings"
+        text = entry.strip()
+        equals = text.find("=")
+        if equals < 0:
+            return f"{entry!r} has no '=', so mapped() skips it and the row is not mapped"
+        left = text[:equals].strip()
+        right = text[equals + 1:].strip()
+        if not left:
+            return f"{entry!r} has nothing before its '=', so mapped() skips it and the row is not mapped"
+        if "/" in left:
+            return (f"{entry!r} names {left!r}, and mapped() compares that half with an input id's last part - "
+                    f"the text after its '/', such as `HW5` - so this entry matches no input")
+        if right != "-" and not whole_number(right):
+            return (f"{entry!r} gives {right!r} after the '=', which is neither `-` (hide the input) nor a whole "
+                    f"number mapped() can send, so it answers null and the row is not mapped")
+        if left in seen:
+            return (f"{entry!r} names {left!r} a second time, and mapped() returns on the first entry for an "
+                    f"input, so this one is never read")
+        seen[left] = text
+    return None
+
+
+def panel_extra_problem(text):
+    """The source_panel_extra value openSourcePanel() sends no extra for, or None.
+
+    openSourcePanel() reads
+
+        int eq = sourcePanelExtra.indexOf('=');
+        if (eq > 0) {
+            i.putExtra(sourcePanelExtra.substring(0, eq).trim(),
+                       Integer.parseInt(sourcePanelExtra.substring(eq + 1).trim()));
+        } catch (NumberFormatException ignored) {}
+
+    so a value with no '=', with nothing before it, or with a half that is not a whole number sends no extra at
+    all: the panel opens without the command the theme names (Coocaa OS's `control_center_command=100`). The
+    built-in default is the empty string, which is kept.
+    """
+    value = text.strip()
+    if not value:
+        return None
+    equals = value.find("=")
+    if equals <= 0:
+        return (f"{text!r} has no name before a '=', and openSourcePanel() sends an extra only when there is "
+                f"one, so the panel opens without it")
+    name = value[:equals].strip()
+    number = value[equals + 1:].strip()
+    if not name:
+        return (f"{text!r} has no name before its '=', and openSourcePanel() sends an extra only when there is "
+                f"one, so the panel opens without it")
+    if not whole_number(number):
+        return (f"{text!r} gives {number!r} after the '=', and openSourcePanel() catches the NumberFormatException "
+                f"a half that is not a whole number throws, so it sends no extra at all")
+    return None
+
+
 # The string keys a Keys-table row names the values of, with the one the launcher answers instead and whether its
 # reader ignores case. Config.glowStyle() is `GLOW_HORIZON.equalsIgnoreCase(value.trim()) ? GLOW_HORIZON :
 # GLOW_RADIAL` and glassStyle() answers glass to anything else; WallpaperRotation.validOrder() is
@@ -458,9 +658,15 @@ def value_as(key, item, text):
         try:
             parsed = json.loads(text)
         except ValueError:
-            return enum_value(key, text)
-        # A string key is read as a String only, so `set greeting_name 42` means the text 42, not a number.
-        return enum_value(key, parsed if isinstance(parsed, str) else text)
+            value = enum_value(key, text)
+        else:
+            # A string key is read as a String only, so `set greeting_name 42` means the text 42, not a number.
+            value = enum_value(key, parsed if isinstance(parsed, str) else text)
+        if key == "source_panel_extra":
+            problem = panel_extra_problem(value)
+            if problem:
+                sys.exit(f"{key} takes {item.get('type')}, and {problem}. Nothing was written or pushed.")
+        return value
     try:
         parsed = json.loads(text)
     except ValueError:
@@ -485,6 +691,32 @@ def value_as(key, item, text):
                      f"{problem}. RemoteKeys drops such an entry without a word, so that button would open "
                      f"nothing while the theme says it is set. Nothing was written or pushed.")
         # stringList() trims every entry it keeps, so the file holds what the TV reads.
+        return [entry.strip() for entry in parsed or []]
+    cell = (item.get("type") or "").strip()
+    if cell.startswith(PAIR_CELLS):
+        problem = package_pair_problem(parsed)
+        if problem:
+            sys.exit(f"{key} takes {cell}, and this list has an entry the launcher would skip: {problem}. "
+                     f"Config.packageMap() keeps only an entry with a package before the '=' and a value after "
+                     f"it, so that tile would keep what it had while the theme says it is set. Nothing was "
+                     f"written or pushed.")
+        # packageMap() trims both halves, so the file holds the pair the map keeps.
+        if key == "app_banners":
+            # The right half is a bundled drawable's name, not free text: bundledBanner() draws only a
+            # banner_* name this checkout ships, and a null banner leaves the tile with the app's own art.
+            problem = banner_problem(parsed)
+            if problem:
+                sys.exit(f"{key} takes {cell}, and this list has an entry the launcher cannot draw: {problem}. "
+                         f"Nothing was written or pushed.")
+        return [entry.strip() for entry in parsed or []]
+    if key == "input_sources":
+        # InputSources.mapped() reads one entry at a time and answers null for one it cannot match to an input
+        # id, or cannot turn into a number: the row falls back to the standard path with no word on the TV.
+        problem = input_source_problem(parsed)
+        if problem:
+            sys.exit(f"{key} takes {cell}, and this list has an entry the Inputs menu would not map: {problem}. "
+                     f"Nothing was written or pushed.")
+        # mapped() trims both halves, so the file holds the mapping the launcher reads.
         return [entry.strip() for entry in parsed or []]
     return parsed
 
@@ -593,7 +825,7 @@ def tv_python():
     raise SystemExit(2)
 
 
-def tv(command):
+def tv(command, quiet=False):
     if not os.environ.get("TV_HOST"):
         # The same two lines tools/tv.py prints for this, and the status check.py answers it with: without
         # TV_HOST there is no TV to ask anything, which is not the same as a command that failed on one.
@@ -605,6 +837,10 @@ def tv(command):
         sys.stderr.write("Nothing was asked of the TV.\n")
         raise SystemExit(2)
     r = subprocess.run([tv_python(), "-I", str(TOOLS / "tv.py"), command], capture_output=True, text=True)
+    # An answer this run can do without: `cmd package query-activities` is missing on some Android 8 firmware, and
+    # that is not a reason to stop a status that can still read the launcher's config.json.
+    if quiet:
+        return r.stdout if not r.returncode else ""
     # A failed read is unknown, not empty: never report "not installed" for a TV that didn't answer.
     if r.returncode:
         sys.stderr.write((r.stderr.strip() or r.stdout.strip()
@@ -617,6 +853,23 @@ def tv(command):
         # asked of it" cannot look like "the TV refused it".
         raise SystemExit(2 if r.returncode == 2 else 1)
     return r.stdout
+
+
+def launcher_package():
+    """The package the TV answers HOME with, when it wears this launcher's MainActivity, else the default id.
+
+    `com.gathin.tvhome` stays the answer for a TV that says nothing: it is the build almost every reader has, and a
+    set that cannot answer the query (an Android 8 firmware without `cmd package query-activities`) still gets the
+    directory that build writes.
+    """
+    for line in tv(CLAIM_QUERY, quiet=True).splitlines():
+        line = line.strip()
+        if not line.endswith("/" + LAUNCHER_ACTIVITY):
+            continue
+        candidate = line[: -len("/" + LAUNCHER_ACTIVITY)]
+        if LAUNCHER_ID.match(candidate):
+            return candidate
+    return LAUNCHER_PKG
 
 
 def installed_packages():
@@ -748,22 +1001,31 @@ def cmd_show(name):
 
 def cmd_status():
     have = installed_packages()
-    print(f"launcher: {'installed' if LAUNCHER_PKG in have else 'not installed'}")
+    launcher = launcher_package()
+    # The id is named only when it is not the default one: a reader on the default build has nothing to check, and
+    # an owner who built under another id is looking for exactly this name.
+    print(f"launcher: {'installed' if launcher in have else 'not installed'}"
+          + (f" ({launcher})" if launcher != LAUNCHER_PKG else ""))
     print("add-ons on the TV:")
     for item in addons():
         if item["package"] in have:
             print(f"  {item['id']}")
-    config = tv(f"cat /sdcard/Android/data/{LAUNCHER_PKG}/files/config.json 2>/dev/null")
+    config = tv(f"cat /sdcard/Android/data/{launcher}/files/config.json 2>/dev/null")
     match = None
     if config.strip():
         try:
             pushed = json.loads(config)
-            for t in themes():
-                f = ROOT / "themes" / t["id"] / "config.json"
-                if f.is_file() and json.loads(f.read_text(encoding="utf-8")) == pushed:
-                    match = t["id"]
         except ValueError:
             pass
+        else:
+            for t in themes():
+                f = ROOT / "themes" / t["id"] / "config.json"
+                try:
+                    matches = f.is_file() and json.loads(f.read_text(encoding="utf-8")) == pushed
+                except (OSError, ValueError):
+                    continue
+                if matches:
+                    match = t["id"]
     print(f"theme: {match or ('your own' if config.strip() else 'none (the built-in config.xml)')}")
     return 0
 
@@ -933,6 +1195,12 @@ def set_args(args):
 
 
 def main(argv):
+    # A console code page such as cp1252 cannot print every name; print a replacement character instead of stopping.
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(errors="replace")
+        except (AttributeError, ValueError):
+            pass
     if not argv or argv[0] in ("-h", "--help", "help"):
         print(platform_usage(__doc__))
         return 0

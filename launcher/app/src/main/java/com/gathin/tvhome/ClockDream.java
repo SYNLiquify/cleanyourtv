@@ -13,7 +13,7 @@ public class ClockDream extends DreamService {
     /** This fork: the screensaver's date and weather in the launcher's language (Settings > System > Language). */
     @Override
     protected void attachBaseContext(android.content.Context base) {
-        super.attachBaseContext(LauncherLocale.wrap(base));
+        super.attachBaseContext(LauncherLocale.wrap(base));   // the theme's locale, as ClockActivity
     }
 
     @Override

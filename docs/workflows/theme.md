@@ -19,7 +19,7 @@
    against its `CREDITS.md`, which the folder then has to ship.
 5. Bump the count in the Themes feature row of every front page that states it: today `README.md` ("`N ship
    in themes/`"), `README.de.md`, `README.nl.md`, `README.uk.md`, `README.tr.md`, `README.pt-BR.md`,
-   `README.he.md`, `README.uz.md` and `README.fr.md` (the last five in digits), each in its own words; the nine are
+   `README.he.md`, `README.uz.md`, `README.fr.md` and `README.es.md` (the last six in digits), each in its own words; the ten are
    today's pages rather than the rule.
    `tests/test_readme_theme_count.py` counts the folders that carry a `config.json` and fails on a page
    whose number is not that count, naming the page and the folders (`README.nl.md says 10 themes and
@@ -30,4 +30,8 @@
    of the count.
 6. A look that needs a new key is a launcher switch first, in its own PR.
 
-Then run the tests: `python3 -m unittest discover -s tests -v`.
+Then run the tests with the checkout's venv: `tools/venv/bin/python -m unittest discover -s tests -v`.
+[`README.md`'s by-hand block](../../README.md) builds it, and it is where `tools/requirements.txt` puts the
+`adb_shell` the suite imports - under the system `python3` those checks skip and the run still says OK. The
+picture, card and wallpaper checks need Pillow as well: `tools/requirements-perf.txt` adds it, and without it
+they are reported as skips, not failures.
