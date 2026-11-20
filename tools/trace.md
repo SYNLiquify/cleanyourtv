@@ -29,7 +29,9 @@ TV_HOST=<tv ip> tools/venv/bin/python -I tools/trace.py home --runs 5 --out trac
 ```
 
 `--out` is the folder the traces are written into, and it is created if it is not there. A file where the
-folder goes, a path through a file and an empty `--out` are refused before the TV is asked anything.
+folder goes, a path through a file, an empty `--out` and a name the filesystem will not look at (one longer
+than the filesystem allows for a name, or one under a folder this user may not open) are refused before the
+TV is asked anything.
 
 A TV that cannot be reached stops the run with `tools/tv.py`'s sentence - a port that refuses, a Wireless
 debugging port that asks for TLS, an address nothing answers on, or, before the TV is asked anything at
@@ -44,6 +46,11 @@ Nothing was recorded, so nothing is half-written: `tools/bench.py`, `tools/check
 | `coldsys` | `am force-stop` with Home in front; Android restarts it | The restart after Home was killed for memory |
 | `nav` | 24 D-pad moves, 0.35 s apart | Focus, scrolling, drawing |
 | `custom` | `--step CMD` (repeatable) after `--setup CMD` | Anything else; `sleep N` steps set the length |
+
+Keep delays in standalone literal `sleep` steps, such as `--step 'sleep .5'` or
+`--step 'sleep "0.5s"'`. Whitespace, quoted numbers and the `s`, `m`, `h`, `d` suffixes are counted
+in the recording length and waited on this computer. A variable or compound shell command is sent
+unchanged to the TV; its running time cannot be inferred, so keep its waits in separate literal steps.
 
 - **Output:** each run writes `<scenario>-<n>.pftrace` (10–20 MB) and a `.json` with the commands and the
   TV's model and build. `traces/` is gitignored.

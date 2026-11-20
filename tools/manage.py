@@ -39,7 +39,8 @@ the tile never shows. The two keys the Inputs menu reads a vendor number out of 
 and `source_panel_extra` as the `"name=value"` pair openSourcePanel() sends, since a value without a name or a
 whole number before the '=' sends no extra at all. A theme's config.json is hand-edited, so one
 that cannot be read, is not JSON, or is not a JSON object is named before the key is written, and a write it cannot
-make says so instead of ending in a traceback.
+make says so instead of ending in a traceback. An edit whose UTF-8 config would exceed the launcher's 64 KB
+read limit is refused before writing or pushing; the previous file is kept.
 set's own arguments are read first: a switch without a value, a --theme without the folder behind it, and a word
 left over are answered with the usage line and exit 2 before a theme folder is read or written. list, status,
 show, install and remove read their own words the same way, before anything is read from this checkout or asked
@@ -49,11 +50,14 @@ A --theme folder that is not there is refused by name, not made: set starts a co
 of your own that exists, and the push it ends with replaces the theme on the TV and empties that theme's
 wallpapers, so a mistyped path would leave a one-key theme behind.
 
-On Windows, theme install and set use PowerShell (pwsh, or powershell when pwsh is not on PATH), without loading
-profiles or changing execution policy. Add-ons with their own shell installer still need Bash; an install whose bash
+On Windows, theme install and set use PowerShell (pwsh, or powershell when pwsh is not on PATH) with
+-ExecutionPolicy Bypass - the flag every .ps1 command these pages hand out carries - so the script still loads
+under the Restricted policy Windows 10 and 11 ship; the flag applies to that one process and changes nothing on
+the machine. No profile is loaded. Add-ons with their own shell installer still need Bash; an install whose bash
 or Gradle wrapper cannot start says which and what to install, and exits 1 before anything is built or pushed. A theme install
 takes only its name; script arguments belong to add-ons. If set saves the local file but the push fails, it
-reports that separately: the TV may have received only part of the theme.
+reports that separately: exit 2 means nothing was sent to the TV, any other code means the TV may have
+received only part of the theme.
 
 Exit status: 0 the command ran, 1 a command on the TV or a script this checkout runs failed, 2 the command line
 asked for something this script does not do - a command it does not have, or a word the command would drop - which
@@ -62,11 +66,14 @@ the TV: no TV_HOST, a checkout with no tools/venv, and a TV tools/tv.py answered
 (a refused port, a Wireless debugging port that answers TLS, an address with no route to it). check.py answers the
 first two of those with 2 as well, and b64push.py the second.
 """
+import datetime
+import errno
 import json
 import math
 import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -278,6 +285,7 @@ def number_in_range(key, item, parsed, text):
 # The Keys-table cell of a list the launcher reads with intArray() - `[83, 176]` for the remote buttons those
 # keys add. A list with anything else in it is answered with the built-in default, not the list.
 KEYCODES = "list of keycodes"
+JAVA_INT_MAX = 2147483647
 
 
 def keycode_problem(values):
@@ -297,6 +305,10 @@ def keycode_problem(values):
             return f"{entry} is not a whole number (the launcher reads it as {int(entry)})"
         if int(entry) < 1:
             return f"{int(entry)} is below 1"
+        if int(entry) > JAVA_INT_MAX:
+            # intValue() keeps the low 32 bits: 4294967297 becomes keycode 1, 4294967296 becomes 0.
+            wrapped = (int(entry) + 2**31) % 2**32 - 2**31
+            return f"{int(entry)} is above {JAVA_INT_MAX}, the largest the launcher reads; it would read {wrapped}"
     return None
 
 
@@ -346,6 +358,8 @@ def app_key_problem(entry):
         if not APP_KEY_NAME.fullmatch(code):
             return (f"{entry!r}: {code!r} is not a key the launcher reads, which is a keycode (190) or a "
                     f"KEYCODE_ name (KEYCODE_BUTTON_3)")
+        if code == "KEYCODE_UNKNOWN":
+            return f"{entry!r}: {label} 0 is not a button the launcher reads, which keeps only a key above 0"
     elif int(code) < 1:
         return f"{entry!r}: {label} 0 is not a button the launcher reads, which keeps only a key above 0"
     return app_key_target_problem(entry, target)
@@ -643,6 +657,22 @@ def colour_value(key, text):
     return value
 
 
+def festival_until_problem(value):
+    """Why Festival.parse() would turn the skin off for this end date, or None."""
+    # Java's trim() drops only characters up to U+0020, so a no-break space stays and fails the parse.
+    text = value.strip("".join(map(chr, range(33))))
+    if not text:
+        return None
+    # fromisoformat() alone also takes 20261130 and 2026-W48-1, which LocalDate.parse() rejects.
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", text, re.ASCII):
+        return f"{value!r} is not a date written like 2026-11-30"
+    try:
+        datetime.date.fromisoformat(text)
+    except ValueError:
+        return f"{value!r} is not a day on the calendar"
+    return None
+
+
 def value_as(key, item, text):
     """The argument read the way the key's type needs, or a refusal naming what the key takes."""
     kind = declared_kind(item)
@@ -653,7 +683,13 @@ def value_as(key, item, text):
             sys.exit(f"{key} is a bool, so pass true or false, not {text}")
         return text.strip().lower() == "true"
     if kind == "colour":
-        return colour_value(key, text)
+        # Colours are strings too: decode JSON string arguments as the other string keys do.
+        # Validate the decoded colour, so its JSON quotes cannot hide a malformed hex value.
+        try:
+            parsed = json.loads(text)
+        except ValueError:
+            parsed = text
+        return colour_value(key, parsed if isinstance(parsed, str) else text)
     if kind in (None, "string"):
         try:
             parsed = json.loads(text)
@@ -662,6 +698,17 @@ def value_as(key, item, text):
         else:
             # A string key is read as a String only, so `set greeting_name 42` means the text 42, not a number.
             value = enum_value(key, parsed if isinstance(parsed, str) else text)
+        if key == "festival_until":
+            problem = festival_until_problem(value)
+            if problem:
+                sys.exit(f"{key} takes YYYY-MM-DD or nothing, and {problem}. Festival.parse() turns the whole "
+                         f"festival skin off for a date it cannot read. Nothing was written or pushed.")
+        # Festival.parse(): Java trim() (characters up to U+0020), lowercase, then length() in UTF-16 units.
+        if key in ("festival", "seasonal_skin") and len(
+                value.strip("".join(map(chr, range(33)))).lower().encode("utf-16-le")) // 2 > 40:
+            sys.exit(f"{key} takes a name of at most 40 characters, and {value!r} is longer. Festival.parse() "
+                     f"returns no skin for a longer name, so the festival would be off. Nothing was written or "
+                     f"pushed.")
         if key == "source_panel_extra":
             problem = panel_extra_problem(value)
             if problem:
@@ -681,9 +728,9 @@ def value_as(key, item, text):
     if (item.get("type") or "").strip() == KEYCODES:
         problem = keycode_problem(parsed)
         if problem:
-            sys.exit(f"{key} takes {KEYCODES}, so every entry has to be a whole number of at least 1: {problem}, "
-                     f"and the launcher ignores the whole list when one entry is not, so those remote buttons "
-                     f"would do nothing. Nothing was written or pushed.")
+            sys.exit(f"{key} takes {KEYCODES}, so every entry has to be a whole number from 1 to {JAVA_INT_MAX}: "
+                     f"{problem}, and the launcher ignores the whole list when one entry is below 1, or maps another "
+                     f"button, so those remote buttons would not do what you set. Nothing was written or pushed.")
     if (item.get("type") or "").strip() == APP_KEYS:
         problem = app_keys_problem(parsed)
         if problem:
@@ -693,6 +740,14 @@ def value_as(key, item, text):
         # stringList() trims every entry it keeps, so the file holds what the TV reads.
         return [entry.strip() for entry in parsed or []]
     cell = (item.get("type") or "").strip()
+    if cell == "list of package names":
+        # Config.stringList() drops non-strings and strings empty after Java trim().
+        # Refuse before writing or pushing, rather than reporting a partly applied list.
+        # Java trim() removes only characters up to U+0020, unlike Python str.strip().
+        for index, entry in enumerate(parsed, 1):
+            if not isinstance(entry, str) or not entry.strip("".join(map(chr, range(33)))):
+                sys.exit(f"{key} takes {cell}, but entry {index} is not a non-empty string. "
+                         f"Config.stringList() would drop it. Nothing was written or pushed.")
     if cell.startswith(PAIR_CELLS):
         problem = package_pair_problem(parsed)
         if problem:
@@ -743,6 +798,27 @@ def json_kind(value):
     return type(value).__name__
 
 
+def looked_at(path):
+    """What is at `path`: ('folder'|'file'|'missing', None), or ('refused', why) when the filesystem will not say.
+
+    `Path.exists()` answers False for a path that is not there and re-raises every other OSError, so a --theme
+    whose name no filesystem can hold (a component longer than NAME_MAX), or a folder this user may not
+    traverse, ended the run in an OSError traceback with exit 1 - the status this file keeps for "a command on
+    the TV or a script this checkout runs failed", over a run that never looked at a TV and wrote nothing.
+    Judged once, with the reason, the shape becomes the refusal it was meant to be.
+    """
+    try:
+        info = os.stat(path)
+    except OSError as error:
+        # What Path.exists() answers with False for: nothing is there, or nothing that is a folder.
+        if error.errno in (errno.ENOENT, errno.ENOTDIR, errno.ELOOP, errno.EBADF):
+            return "missing", None
+        return "refused", (error.strerror or str(error))
+    except ValueError:      # a NUL in the name, which os.stat refuses before the filesystem sees it
+        return "missing", None
+    return ("folder" if stat.S_ISDIR(info.st_mode) else "file"), None
+
+
 def own_folder_problem(folder):
     """Why set may not write into `folder`, or None: it is one of the folders this checkout ships, a file, or
     not there at all."""
@@ -751,9 +827,14 @@ def own_folder_problem(folder):
         if folder == project or project in folder.parents:
             return (f"{folder} is inside this checkout's {name}/: set writes into a theme folder of your own, "
                     f"so copy one somewhere else first. Nothing was written or pushed.")
-    if folder.exists() and not folder.is_dir():
+    kind, why = looked_at(folder)
+    if kind == "refused":
+        return (f"{folder} cannot be looked at ({why}): --theme takes a theme folder of your own, and set writes "
+                f"into one that can be read. A name the filesystem refuses is usually a folder edited or pasted "
+                f"wrong. Nothing was written or pushed.")
+    if kind == "file":
         return f"{folder} is a file, not a folder: --theme takes a theme folder of your own."
-    if not folder.exists():
+    if kind == "missing":
         # A path with a file in the middle of it cannot be made at all, which is not a typo to point at the
         # folder for: name the file that is in the way, as the write used to.
         for parent in folder.parents:
@@ -886,7 +967,10 @@ def theme_command(folder):
         shell = shutil.which("pwsh") or shutil.which("powershell")
         if not shell:
             sys.exit("PowerShell was not found: put pwsh or powershell on PATH. Nothing was written or pushed.")
-        return [shell, "-NoProfile", "-NonInteractive", "-File", str(TOOLS / "theme.ps1"), "-Theme", str(folder)]
+        # -ExecutionPolicy Bypass is the flag every .ps1 command these pages hand out carries: Windows 10 and 11
+        # ship Restricted, which refuses to load a script, and the flag covers that one process only (#3894).
+        return [shell, "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass",
+                "-File", str(TOOLS / "theme.ps1"), "-Theme", str(folder)]
     return ["bash", str(TOOLS / "theme.sh"), str(folder)]
 
 
@@ -1067,6 +1151,12 @@ def cmd_set(key, value, theme_folder):
     command = theme_command(folder)
     data[key] = parsed
     f = folder / "config.json"
+    text = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    size = len(text.replace("\n", os.linesep).encode("utf-8"))
+    # Config.read(File) ignores the whole overlay above this limit, not just the edited key.
+    if size > 64 * 1024:
+        sys.exit(f"{f} would be {size} bytes: the launcher ignores a config larger than 64 KB "
+                 f"(65536 bytes). Nothing was written or pushed.")
     replaced = False
     try:
         # own_folder_problem() above refuses a missing folder; an existing empty one is valid.
@@ -1085,7 +1175,7 @@ def cmd_set(key, value, theme_folder):
                 pass   # keep refusing a read-only file, even when its folder permits replacement
         with tempfile.TemporaryDirectory(prefix=".manage-config-", dir=target.parent) as staging:
             pending = Path(staging) / target.name
-            pending.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+            pending.write_text(text, encoding="utf-8")
             if target.exists():
                 shutil.copymode(target, pending)
             os.replace(pending, target)
@@ -1099,7 +1189,10 @@ def cmd_set(key, value, theme_folder):
                          f"The temporary folder may remain at {staging}. Continuing with the theme push.\n")
     print(f"{key} = {json.dumps(parsed)} in {f}")
     code = push_theme(command)
-    if code:
+    if code == 2:
+        sys.stderr.write(f"Saved {f} locally, but the theme push failed (exit 2): nothing was sent to the TV. "
+                         "The local edit was kept.\n")
+    elif code:
         sys.stderr.write(f"Saved {f} locally, but the theme push failed (exit {code}). "
                          "The TV may be only partly updated; the local edit was kept.\n")
     return code

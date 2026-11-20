@@ -6,7 +6,7 @@ one at a time, and reads the frame timestamps that `dumpsys gfxinfo <pkg> frames
 
   * response  = the first frame that FINISHED after the key was injected
   * movement  = the end of the continuous run of frames that started with it
-  * jank      = janky frames / total frames, from the same dump
+  * jank      = janky frames / total frames, from the dump's process-wide summary
 
 It also measures the cold start (`am start -W`), the return to Home (HOME key from another app),
 the idle CPU of the whole device and the launcher's own PSS. Nothing on the TV is changed.
@@ -327,15 +327,12 @@ def measure_key(tv, keycode, binary=None, package=None):
     # answer to it: the key had no visual reaction and is left out of the numbers.
     if (first - threshold) / 1e6 > 150:
         return None
-    frames = janky = 0
-    for line in stats.splitlines():
-        match = re.match(r"Total frames rendered:\s*(\d+)", line)
-        if match:
-            frames = int(match.group(1))
-        match = re.match(r"Janky frames:\s*(\d+)", line)
-        if match:
-            janky = int(match.group(1))
-    return ((first - threshold) / 1e6, (last - threshold) / 1e6, frames, janky)
+    # gfxinfo prints process-wide totals before the per-window summaries. Keep those totals,
+    # not the last window's counts: a hidden window can have no frames at all.
+    frames = re.search(r"^Total frames rendered:\s*(\d+)", stats, re.M)
+    janky = re.search(r"^Janky frames:\s*(\d+)", stats, re.M)
+    return ((first - threshold) / 1e6, (last - threshold) / 1e6,
+            int(frames.group(1)) if frames else 0, int(janky.group(1)) if janky else 0)
 
 
 def clear_log(tv, binary=None):
@@ -591,7 +588,16 @@ def launcher_pid(tv, package):
 def idle_cpu(tv, package, seconds):
     """The CPU of the whole device and of the launcher, over `seconds`, from /proc/stat."""
     def sample():
-        return tv.shell("head -1 /proc/stat; cat /proc/[0-9]*/stat 2>/dev/null", retry=True).splitlines()
+        return tv.shell("head -1 /proc/stat; cat /proc/[0-9]*/stat /proc/uptime 2>/dev/null",
+                        retry=True).splitlines()
+
+    def uptime(lines):
+        # /proc/uptime is the only two-number line: elapsed seconds, then summed CPU idle seconds.
+        for line in lines:
+            match = re.fullmatch(r"(\d+(?:\.\d+)?)\s+\d+(?:\.\d+)?", line.strip())
+            if match:
+                return float(match[1])
+        return None
 
     def parse(lines):
         for line in lines:
@@ -606,7 +612,9 @@ def idle_cpu(tv, package, seconds):
         prefix = f"{pid} ("
         for line in lines:
             if line.startswith(prefix):
-                parts = line[line.index(")") + 2:].split()
+                # comm is printed verbatim inside parentheses and may itself contain ')'.
+                # The last ')' ends it; state and the numeric counters follow.
+                parts = line[line.rindex(")") + 2:].split()
                 if len(parts) > 12:
                     return int(parts[11]) + int(parts[12])
         return None
@@ -627,8 +635,13 @@ def idle_cpu(tv, package, seconds):
     idle = after_cpu[1] - before_cpu[1]
     device = 0.0 if total == 0 else 100 * (1 - idle / total)
     launcher = None
-    if before_ticks is not None and after_ticks is not None:
-        launcher = 100 * (after_ticks - before_ticks) / (ticks_per_second * seconds)
+    before_time, after_time = uptime(before), uptime(after)
+    # The PID query, ADB round trips and host scheduling also lie between the counter reads.
+    # Dividing by the requested sleep alone overstates usage on a slow connection. Use the TV's
+    # own elapsed time from the same snapshots; without it the launcher percentage is unknown.
+    if (before_ticks is not None and after_ticks is not None
+            and before_time is not None and after_time is not None and after_time > before_time):
+        launcher = 100 * (after_ticks - before_ticks) / (ticks_per_second * (after_time - before_time))
     return device, launcher
 
 
@@ -772,6 +785,8 @@ def main():
             parser.error(f"--{option} is the number of {unit}: pass at least 1, not {getattr(args, option)}")
     if args.idle < 1:
         parser.error(f"--idle is the number of idle seconds: pass at least 1, not {args.idle}")
+    if args.idle > 86400:
+        parser.error(f"--idle is the number of idle seconds: pass at most 86400, not {args.idle}")
     if not args.host:
         # Nothing has been measured: a run with no address is the 2 the docstring gives a run that never
         # got as far as the TV, not the 1 a run keeps when its numbers exist and result.json could not be

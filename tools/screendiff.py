@@ -106,7 +106,8 @@ def screenshot(which, path):
     try:
         image = Image.open(path)
         image.load()
-    except OSError as e:
+    except (OSError, SyntaxError) as e:
+        # PNG chunk errors can surface as SyntaxError after the header was accepted.
         if image is not None:
             image.close()   # the file is open; a refusal should not leave the handle for the GC
         raise ValueError(f"cannot read the {which} screenshot {path}: {e}. Nothing was compared.")
@@ -132,7 +133,11 @@ def _compare(a, b, masks, threshold):
     worst = ImageChops.lighter(ImageChops.lighter(r, g), bl)
     over = worst.point(lambda v: 255 if v > threshold else 0)
     count = over.histogram()[255]
-    return count, over.getbbox(), max(worst.getdata()), over
+    # The peak of that single-band difference is the largest difference in any channel, read by getextrema()
+    # at C speed: max(worst.getdata()) built one Python int per pixel of a screenshot only to take the
+    # largest, and Pillow 13 deprecates getdata (tools/requirements-photos.txt pins it) with Pillow 14
+    # removing it, where this line would end the run in an AttributeError after the comparison was done.
+    return count, over.getbbox(), worst.getextrema()[1], over
 
 
 def redact(im, region):

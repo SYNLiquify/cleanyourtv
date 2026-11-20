@@ -36,7 +36,7 @@ android {
         versionName file('version.txt').text.trim()
         // Upstream's launcher version this fork is built on (Settings > System shows "Launcher 3.4 · Liquify's fork 0.5.8").
         // Set it to upstream's versionName when merging a new upstream release.
-        resValue "string", "upstream_version", "3.5"
+        resValue "string", "upstream_version", "3.6"
         // This fork: -PlauncherNetwork=offline builds the offline launcher, without the features that reach anything
         // but GitHub (weather). Themes, language downloads and updates stay; its update channel can switch builds.
         def network = providers.gradleProperty('launcherNetwork').getOrElse('online')

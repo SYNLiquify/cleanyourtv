@@ -7,9 +7,15 @@ Every JPEG, PNG, WebP and (with pillow-heif) HEIC file in the first folder is ce
 second folder. The originals are never touched: a target that is the source folder (by any spelling or
 link), or an 01.jpg there that is a symlink or hard link to one of your photos, stops the run before
 anything is written. Each picture is kept under --max-kb (300 by default, what
-themes/README.md asks for) by lowering the JPEG quality a step at a time.
+themes/README.md asks for) by lowering the JPEG quality a step at a time, and a picture that cannot be
+brought under the limit at the quality floor is printed as over it, at the size the file really is. A
+limit no picture can meet - 0 or less - is refused before anything is read.
 Each output is replaced only after a complete JPEG is ready; a failed conversion leaves any earlier
 wallpaper at that name intact.
+Embedded ICC colour profiles are converted to sRGB before darkening, so Display P3 and Adobe RGB
+photos are interpreted in their own colour space instead of assuming sRGB samples.
+Without Pillow's LittleCMS support, a warning says the profile was not applied and conversion uses the
+original RGB path; malformed profiles still skip that photo when colour management is available.
 
 The darkening is painted into the picture, so wallpaper_dim can stay at 0 and the launcher draws no shade
 layer. The numbers that worked on a Xiaomi Mi Box S (2 GB) are the defaults: brightness 0.25 and a gradient
@@ -24,6 +30,7 @@ installed (PEP 668 leaves it externally managed):
 Use pictures you have the right to show.
 """
 import argparse
+import io
 import os
 from pathlib import Path
 import stat
@@ -80,11 +87,33 @@ def darken(image, brightness, gradient):
     return image
 
 
+def to_srgb(image):
+    """Read profiled photo samples in their own colour space before writing an sRGB JPEG."""
+    profile = image.info.get("icc_profile")
+    if not profile:
+        return image.convert("RGB")
+    try:
+        from PIL import ImageCms
+        source = ImageCms.ImageCmsProfile(io.BytesIO(profile))
+        # A palette or grayscale/alpha PNG needs its colour channels expanded for LittleCMS;
+        # a CMYK JPEG must keep its CMYK samples until its own profile has been applied.
+        mode = {"RGB": "RGB", "GRAY": "L", "CMYK": "CMYK"}.get(source.profile.xcolor_space.strip())
+        if mode:
+            image = image.convert(mode)
+        return ImageCms.profileToProfile(image, source, ImageCms.createProfile("sRGB"), outputMode="RGB")
+    except ImportError:
+        # ImageCms can defer a missing native core's ImportError until profile parsing.
+        # Keep the original conversion available, but do not claim its profile was applied.
+        print("warning: ICC colour conversion needs Pillow with LittleCMS; using RGB conversion "
+              "without applying the profile.", file=sys.stderr)
+        return image.convert("RGB")
+
+
 def prepare(path, out_path, size, brightness, gradient, quality, max_kb):
     """Writes one wallpaper and returns (size in KB, JPEG quality used)."""
     from PIL import Image, ImageOps
     with Image.open(path) as opened:
-        image = ImageOps.exif_transpose(opened).convert("RGB")
+        image = to_srgb(ImageOps.exif_transpose(opened))
     image = ImageOps.fit(image, size, Image.LANCZOS, centering=(0.5, 0.5))
     image = darken(image, brightness, gradient)
     # Save candidates beside the destination, so an encoder/disk failure leaves
@@ -144,6 +173,12 @@ def main(argv=None):
         parser.error("--gradient must be between 0 and 0.9")
     if not 30 <= args.quality <= 95:
         parser.error("--quality must be between 30 and 95")
+    # A limit of 0 or less is the one value the size search can never reach: every picture is written
+    # over it and the run still exits 0, so `--max-kb 0` - what a script meaning "no limit" passes -
+    # read as a clean run whose pictures are all over the budget it stated.
+    if args.max_kb < 1:
+        parser.error(f"--max-kb must be at least 1 KB, and {args.max_kb} is a limit no picture can meet: "
+                     "every picture would be written over it")
     if not os.path.isdir(args.source):
         parser.error(f"{args.source} is not a folder")
     source_real = os.path.realpath(args.source)
@@ -188,13 +223,20 @@ def main(argv=None):
             continue
         out_path = os.path.join(args.target, "%02d.jpg" % number)
         try:
-            kb, quality = prepare(path, out_path, args.size, args.brightness, args.gradient, args.quality, args.max_kb)
+            _, quality = prepare(path, out_path, args.size, args.brightness, args.gradient, args.quality, args.max_kb)
         except Exception as error:  # a corrupt picture must not stop the rest
             print(f"skipped {name}: {error}")
             continue
         written += 1
-        note = "" if kb <= args.max_kb else f"  (over {args.max_kb} KB even at quality {quality})"
-        print(f"{os.path.basename(out_path)}  <- {name}  {kb} KB, quality {quality}{note}")
+        # Judged on the file's own size, not the rounded number prepare() returns: rounding 40.23 KB to
+        # 40 puts it exactly on a 40 KB limit, so a picture over its budget read as "40 KB" with no note
+        # - the one thing themes/README.md's "under 300 KB" is about. An over-limit picture is printed to
+        # a tenth of a KB, so the line and its note cannot contradict each other.
+        size_kb = os.path.getsize(out_path) / 1024
+        over = size_kb > args.max_kb
+        note = f"  (over {args.max_kb} KB even at quality {quality})" if over else ""
+        shown = f"{size_kb:.1f}" if over else f"{round(size_kb)}"
+        print(f"{os.path.basename(out_path)}  <- {name}  {shown} KB, quality {quality}{note}")
     print(f"{written} of {len(files)} pictures written to {args.target}")
     return 0 if written else 1
 

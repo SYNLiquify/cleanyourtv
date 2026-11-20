@@ -46,6 +46,8 @@ the core bigger or change how it behaves. You install an add-on only if you want
 | [Koi Pond](koi-pond/) | A pixel-art koi pond seen from above as the screensaver and a card: koi and fry over a rippling, light-netted floor, lily pads and lotus, the time of day from the clock with fireflies after dark, rain now and then, and on the card OK starts a breathing guide (in 4 s, out 6 s) while arrows drop a pebble; drawn on the TV with no network | [@nottoobright](https://github.com/nottoobright) | TCL Smart TV Pro G08 (Google TV 14) | None | <img src="koi-pond/screenshot.jpg" width="240" alt="Koi Pond on a TV"> |
 | [Files card](files-card/) | A card for your file manager: OK opens Amaze File Manager, or another installed one (X-plore, Solid Explorer, FX, CX, Files by Google); it only starts the app | [@maxhayim](https://github.com/maxhayim) | MOKA R8G (Android 14) | None | <img src="files-card/screenshot.jpg" width="240" alt="Files card on a TV"> |
 | [Panchang](hindu-calendar/) | Today's Hindu panchang read at sunrise: tithi, nakshatra, yoga and karana with the time each ends, sunrise and sunset, the day's Rahu Kala, Yamaganda, Gulika and Abhijit, the month and day number in one of five regional calendars (north Indian, Gujarati, Marathi, Tamil, Bengali) for a city you pick, and a month grid with each day's tithi and nakshatra, worked out offline | [@Your-Voldemort](https://github.com/Your-Voldemort) | Noble Skiodo NS 2K SmartTV (Skyworth sunnyvale), Android TV 14 | None | <img src="hindu-calendar/screenshot.jpg" width="240" alt="Panchang on a TV"> |
+| [Hindi Panchang](hindi-panchang/) | Offline Hindu Lunar Panchang and Vikram Samvat calendar with 12 monthly artworks, 3D Moon orbs, Tithi, festivals, Suvichar, bundled cities, and manual coordinates | [@anujmishra11](https://github.com/anujmishra11) | Hisense 65U8G (Android TV 10) | None | <img src="hindi-panchang/screenshot.jpg" width="240" alt="Hindi Panchang on a TV"> |
+| [Floating Clock](floating-clock/) | A minimalist floating `HH:mm.ss` clock screensaver and card: the first five digits float gently in place and drift slowly upward only across a carry, while the last second digit flows continuously upward as a swaying, fading stream over a subtle ambient glow, drawn live on the TV with no network | [@shirui-liu](https://github.com/shirui-liu) | TCL Google TV (TCL C02_2K_GLB, Android 9) | None | <img src="floating-clock/screenshot.jpg" width="240" alt="Floating Clock on a TV"> |
 
 A widget, an info tile, a storage or smart-home card: if it can live as its own small app, it can live
 here. See the rules below.
@@ -116,7 +118,7 @@ TV_HOST=<tv ip> tools/venv/bin/python -I tools/manage.py install weather
 ## Rules
 
 - **Its own app.** One folder per add-on, `addons/<name>/`, with its own Gradle project
-  (`settings.gradle`, `app/`), its own package name and its own README.
+  (`settings.gradle` or `settings.gradle.kts`, `app/`), its own package name and its own README.
 - **Only through the module-card spec.** An add-on never edits anything under `launcher/`, and
   `launcher/` never references `addons/`. If your idea needs a change inside the launcher, it isn't
   an add-on. Open an issue first instead.

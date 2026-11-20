@@ -6,9 +6,17 @@ like a trace (process, thread, thread_track, slice, actual_frame_timeline_slice)
 numbers by hand. A test that needs the real engine runs only when the optional perfetto package is
 installed and CLEANYOURTV_TRACE names a trace recorded with tools/trace.py.
 
+Every trace `fake_trace()` builds stays referenced until the module's tests end and is closed there, as
+`tests/test_flamechart.py` does: an unreferenced connection is collected at a random point, and Python
+3.13 reports that as `ResourceWarning: unclosed database` on stderr - `-W always::ResourceWarning` named
+16 of them for this module, against none for either flamechart module. Twelve of the cases here close
+their own trace through `addCleanup`, and sqlite3 accepts a second `close()`, so the module's teardown
+does not have to ask which ones are left. `TracesAreClosedTest` holds both halves.
+
 Run from the repository root: python3 -m unittest discover -s tests -v
 """
 import contextlib
+import errno
 import importlib.util
 import io
 import json
@@ -28,6 +36,18 @@ spec.loader.exec_module(report)
 
 PKG = "com.gathin.tvhome"
 MS = 1_000_000
+
+# Every trace fake_trace() builds stays referenced until the module ends and is closed in tearDownModule(),
+# as tests/test_flamechart.py does. An unreferenced connection is collected at a random point and Python
+# 3.13 reports that as "ResourceWarning: unclosed database" on stderr - 16 of them for this module before
+# this registry existed. Twelve cases close their own trace through addCleanup; sqlite3 accepts a second
+# close(), so the teardown below does not ask which ones those were.
+_FAKE_DBS = []
+
+
+def tearDownModule():
+    while _FAKE_DBS:
+        _FAKE_DBS.pop().close()
 
 
 def fake_trace(cold=False, frames=(), draws=(), missed=1, gpu=()):
@@ -62,6 +82,7 @@ def fake_trace(cold=False, frames=(), draws=(), missed=1, gpu=()):
         db.execute("insert into actual_frame_timeline_slice values (?, ?, 2, ?)", ((1060 + 20 * i) * MS, dur * MS, jank))
     q = lambda sql: [dict(r) for r in db.execute(sql)]
     q.close = db.close
+    _FAKE_DBS.append(db)
     return q
 
 
@@ -362,6 +383,50 @@ class InputSetsTest(unittest.TestCase):
             self.skipTest(f"cannot create {kind}: {error}")
         return target
 
+    def test_an_unreadable_folder_cannot_be_omitted_from_either_input_set(self):
+        denied = self.folder / "unreadable"
+        self.trace(denied, 1, 5000)
+        scan = os.scandir
+        for number in (errno.EACCES, errno.EIO):
+            for args in ([self.before, denied], [self.before, "--vs", self.after, denied]):
+                with self.subTest(errno=number, args=args):
+                    def refused(path):
+                        if os.fspath(path) == str(denied):
+                            raise OSError(number, os.strerror(number), str(denied))
+                        return scan(path)
+
+                    with mock.patch.object(report.os, "scandir", refused):
+                        text, code, opener = self.run_report(args)
+                    self.assertIsNotNone(code, "a partial input set was reported as complete")
+                    self.assertIn(str(denied), code)
+                    self.assertIn(os.strerror(number), code)
+                    self.assertEqual(text, "")
+                    opener.assert_not_called()
+                    self.assertEqual((denied / "home-1.pftrace").read_text(), "5000")
+
+    @unittest.skipUnless(os.name == "posix", "needs POSIX directory permissions")
+    def test_real_directory_read_denial_stops_before_any_trace_is_opened(self):
+        denied = self.folder / "unreadable"
+        trace = self.trace(denied, 1, 5000)
+        mode = denied.stat().st_mode & 0o777
+        denied.chmod(0)
+        try:
+            try:
+                list(denied.iterdir())
+            except PermissionError:
+                pass
+            else:
+                self.skipTest("this user can read the directory without its read permission")
+            text, code, opener = self.run_report([self.before, denied])
+        finally:
+            denied.chmod(mode)
+        self.assertIsNotNone(code, "the inaccessible folder was silently left out")
+        self.assertIn(str(denied), code)
+        self.assertIn("Permission denied", code)
+        self.assertEqual(text, "")
+        opener.assert_not_called()
+        self.assertEqual(trace.read_text(), "5000")
+
     def test_overlapping_inputs_keep_first_spelling_and_numeric_run_order(self):
         first = self.before / "home-2.pftrace"
         args = [first, self.before, self.before, self.before / "home-1.pftrace"]
@@ -522,6 +587,13 @@ class InputSetsTest(unittest.TestCase):
 
 
 class FilesTest(unittest.TestCase):
+    def test_folder_expansion_keeps_hidden_traces_and_other_suffixes_out(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            for name in ("home-2.pftrace", ".home-1.pftrace", "home-1.json", "home-1.pftrace"):
+                Path(tmp, name).write_bytes(b"")
+            self.assertEqual(report.expand([tmp]),
+                             [os.path.join(tmp, name) for name in ("home-1.pftrace", "home-2.pftrace")])
+
     def test_folders_expand_in_run_order(self):
         with tempfile.TemporaryDirectory() as tmp:
             for n in (1, 2, 10):
@@ -733,6 +805,29 @@ class MainTest(unittest.TestCase):
                 report.main(argv)
             opener.assert_not_called()
 
+    def test_completed_reports_print_on_limited_consoles(self):
+        for codec in ("ascii", "cp1252", "utf-8"):
+            for name in ("home-1", "home-电视"):
+                for markdown in (False, True):
+                    with self.subTest(codec=codec, name=name, markdown=markdown), tempfile.TemporaryDirectory() as tmp:
+                        path = self.trace(tmp, name)
+                        raw = io.BytesIO()
+                        console = io.TextIOWrapper(raw, encoding=codec, newline="")
+                        q = fake_trace(frames=[16])
+                        close = mock.Mock(side_effect=q.close)
+                        try:
+                            with mock.patch.object(report, "opener", return_value=lambda path: (q, close)), \
+                                    contextlib.redirect_stdout(console):
+                                report.main([path, *(["--markdown"] if markdown else [])])
+                            console.flush()
+                            text = raw.getvalue().decode(codec)
+                            self.assertIn(name.encode(codec, errors="replace").decode(codec), text)
+                            row = next(line for line in text.splitlines() if "start to first frame drawn" in line)
+                            self.assertEqual(row.count("65"), 4)  # run, median, and both ends of the range
+                            close.assert_called_once_with()
+                        finally:
+                            console.detach()
+
     def test_mixed_folder_is_rejected_in_either_input_set(self):
         with tempfile.TemporaryDirectory() as tmp:
             mixed, starts = Path(tmp, "mixed"), Path(tmp, "starts")
@@ -796,6 +891,32 @@ class RealTraceTest(unittest.TestCase):
         finally:
             close()
         self.assertIn("frames", metrics)
+
+
+class TracesAreClosedTest(unittest.TestCase):
+    """The module's own teardown closes the traces its cases did not.
+
+    `fake_trace()` keeps every connection it opens so `tearDownModule()` can close them together, which is
+    what keeps Python 3.13's `ResourceWarning: unclosed database` off this module's stderr. These cases pin
+    the two halves of that: a trace a case leaves alone is closed at the end, and one a case already closed
+    is closed again without an exception - which is why the teardown needs no record of who closed what.
+    Calling `tearDownModule()` from inside a case is safe: a case uses its trace only in its own body, and the
+    twelve that close theirs have done so before their cleanup ran.
+    """
+
+    def test_a_trace_no_case_closed_is_closed_when_the_module_ends(self):
+        started = len(_FAKE_DBS)
+        q = fake_trace()
+        self.assertEqual(len(_FAKE_DBS), started + 1, "fake_trace() did not keep its trace for the module")
+        tearDownModule()
+        self.assertEqual(_FAKE_DBS, [], "tearDownModule() left a trace open")
+        with self.assertRaises(sqlite3.ProgrammingError):
+            q("select count(*) from process")
+
+    def test_a_trace_the_case_closed_itself_is_closed_again_without_a_word(self):
+        q = fake_trace()
+        q.close()
+        tearDownModule()        # the same call the module makes at the end, over one closed trace
 
 
 if __name__ == "__main__":

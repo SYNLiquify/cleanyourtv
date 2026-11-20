@@ -26,8 +26,25 @@
   `docs/devices/<name>.md:<line>: <the value>`. A serial number has no shape a test can recognise, so it is
   left out by hand: `docs/devices/coop-cotv-0001.md` once printed one in its Device table while the notes around it
   said they left the serial out (taken out since). Both guards read the same AGENTS.md sentence as the lists do.
+  A command a note prints is held to two rules that are not about the address. One that hands
+  `tools/disable.sh`, `restore.sh` or `theme.sh` a list, a theme folder or `--reset` has to name the TV, or
+  `tests/test_sh_commands_name_the_tv.py` fails it as a command that stops before anything is sent, with
+  `Set TV_HOST to your TV's IP address`. One that starts a Python tool has to name an interpreter in front
+  of it, or `tests/test_documented_tool_commands.py` answers `Permission denied` (exit 126): the tools are
+  100644 in git except `tv.py` and `adb-closed.py`, and the pages name the checkout's venv in front of them,
+  `tools/venv/bin/python -I tools/<x>.py`, since that venv also holds the packages they import.
+  `TV_HOST=<tv ip> tools/venv/bin/python -I tools/check.py --fix <list>` passes both, and is the shape the
+  notes already print.
 - Several tests pin facts in `docs/devices/` notes, `PROMPT.md` and `docs/TROUBLESHOOTING.md` (the
   `tests/test_*_note.py` files). If you reword one of those passages, run the suite and keep the fact.
+- Two of them judge where a passage sits, not only what it says, so a true sentence can still red the suite.
+  `tests/test_g09_key_repeat_note.py` wants the `key_filter` switch named in exactly one section, the one that
+  carries the G09/MOSR4 bisect, so a second bullet that mentions it fails with
+  `key_filter is documented in 2 sections`: write the behaviour where the switch is not the point.
+  `tests/test_connecting_no_wireless_note.py` reads the *first* bullet naming both `adb tcpip 5555` and
+  `adb devices` as its cable route, so a Connecting bullet placed above that one takes its place and three
+  cases fail against the old bullet's requirements (#1489, `TV_PORT`, `over USB`): add yours below it, or name
+  only one of the two commands.
 - Docs and the README stay in step: a new list gets its `tv.json` (the TV tables are generated from it), and a
   theme, add-on or tool its row where the others are.
 

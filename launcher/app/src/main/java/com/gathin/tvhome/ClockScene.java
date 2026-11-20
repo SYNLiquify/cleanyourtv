@@ -62,6 +62,8 @@ final class ClockScene {
     private int colorIndex;
     /** clock_wallpaper or clock_glow false: something else (a picture, or plain black) replaced the coloured glow. */
     private boolean wallpaperShown;
+    /** clock_glow false: plain black behind the clock, whether or not a picture shows. */
+    private boolean glowOff;
     /** clock_wallpaper: the picture start() decodes, its darkening, and the resources to draw it with. */
     private File wallpaperFile;
     private int wallpaperShade;
@@ -227,7 +229,7 @@ final class ClockScene {
      * clock_wallpaper: put the picture Home is showing behind the clock, darkened by clock_wallpaper_dim, in
      * place of the glow, and carry a collection's rotation on while the screensaver is up. Decoded off the main
      * thread at screen size in RGB_565 (4 MB at 1080p), like Home's own; until then, or if it cannot be read,
-     * the glow stays.
+     * the glow stays, unless clock_glow is false.
      * Call before start(), which starts the decode (again after a stop() that dropped an unfinished one).
      */
     void useHomeWallpaper(Context ctx) {
@@ -237,15 +239,14 @@ final class ClockScene {
         } catch (RuntimeException e) {
             return;
         }
-        if (!cfg.clockWallpaper) {
-            // clock_glow false: plain black behind the clock (OLED); the clock itself still moves every minute.
-            if (!cfg.clockGlow) {
-                wallpaperShown = true;   // also stops the glow's colour cycle
-                ambient.setBackground(null);
-                for (int i = 1; i < points.length; i++) points[i].setVisibility(View.GONE);
-            }
-            return;
+        // clock_glow false: plain black behind the clock (OLED), also when clock_wallpaper has no picture to show;
+        // the clock itself still moves every minute.
+        glowOff = !cfg.clockGlow;
+        if (glowOff) {
+            ambient.setBackground(null);
+            for (int i = 1; i < points.length; i++) points[i].setVisibility(View.GONE);
         }
+        if (!cfg.clockWallpaper) return;
         // What Home plays, and Config puts the single wallpaper in it when a theme has no collection.
         // Reading cfg.wallpaper first held the screensaver on wallpaper.jpg while Home rotated.
         if (cfg.wallpapers.isEmpty()) {
@@ -396,7 +397,7 @@ final class ClockScene {
 
     /** The points fade out, move and fade back in: cheap (a layer's alpha) where moving the gradient is not. */
     private void movePoints() {
-        if (points.length < 2 || wallpaperShown) return;
+        if (points.length < 2 || wallpaperShown || glowOff) return;
         for (int i = 1; i < points.length; i++) {
             ImageView point = points[i];
             GradientDrawable g = glows[i];
@@ -409,7 +410,7 @@ final class ClockScene {
 
     /** The colour cycle: every point on to its next palette colour. A custom colour stays. */
     private void shiftGlow() {
-        if (wallpaperShown || !ScreensaverStyle.GLOW_CYCLE.equals(style.glow)) return;
+        if (wallpaperShown || glowOff || !ScreensaverStyle.GLOW_CYCLE.equals(style.glow)) return;
         colorIndex = (colorIndex + 1) % PALETTE.length;
         ArgbEvaluator mix = new ArgbEvaluator();
         for (int p = 0; p < points.length; p++) {

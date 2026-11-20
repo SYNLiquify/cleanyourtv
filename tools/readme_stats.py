@@ -16,6 +16,13 @@ USAGE = ("usage: readme_stats.py [--halloween] <font.ttf> <out.png>\n"
          "  Fredoka, the variable TTF from Google Fonts, is not in this repo: download it and pass the\n"
          "  path of the file you saved.")
 
+# A reader asking what the script does, answered the way the rest of tools/ answers it (tv.py, privacy.py,
+# blocky_wallpapers.py): this file's own note on stdout and 0. Without this branch the word was read as the
+# font - the usage line went to stderr and the run returned 1, the status this file gives a run that wrote
+# nothing - so `tools/readme_stats.py --help | less` showed nothing, and `--help && ...` looked like a
+# failed run.
+HELP = ("-h", "--help")
+
 
 def font_and_out(argv):
     """The font and the picture, or a usage line that says where the font comes from.
@@ -25,12 +32,23 @@ def font_and_out(argv):
     it wanted nor where to get it.
     """
     argv = [a for a in argv if a != "--halloween"]
+    if any(word in HELP for word in argv[1:]):
+        print((__doc__ or USAGE).strip())
+        sys.exit(0)
     if len(argv) != 3:
         sys.exit(USAGE)
     font, out = argv[1], argv[2]
     if not os.path.isfile(font):
         sys.exit(f"cannot open the font at {font}: Fredoka, the variable TTF from Google Fonts, is not in\n"
                  "this repo, so pass the path of the copy you downloaded")
+    # A picture suffix can still name the supplied font through a symbolic or hard link.
+    try:
+        if os.path.samefile(out, font):
+            sys.exit(f"cannot write {out}: it is the same file as input font {font}. Nothing was written.")
+    except FileNotFoundError:
+        pass  # A distinct output that does not exist yet is fine.
+    except OSError as error:
+        sys.exit(f"cannot compare output {out} with input font {font}: {error}. Nothing was written.")
     return font, out
 
 
@@ -84,7 +102,7 @@ try:
 except ImportError:
     sys.exit("readme_stats.py needs Pillow: tools/venv/bin/pip install -r tools/requirements-perf.txt")
 
-STATS = [("481", "TV MODELS"), ("131", "BRANDS"), ("31", "LANGUAGES"), ("572 KB", "LAUNCHER")]
+STATS = [("504", "TV MODELS"), ("138", "BRANDS"), ("31", "LANGUAGES"), ("572 KB", "LAUNCHER")]
 W, H = 1600, 240
 img = Image.new("RGB", (W, H), "#15181e"); d = ImageDraw.Draw(img)
 def f(size, wt):

@@ -92,6 +92,34 @@ class SeasonArgumentTest(unittest.TestCase):
         self.assertEqual(race_calendar.season("2026"), "2026")
         self.assertEqual(race_calendar.season(str(race_calendar.FIRST_SEASON)), str(race_calendar.FIRST_SEASON))
 
+    def test_decimal_years_build_ascii_requests_and_update_the_calendar(self):
+        for value in ("2026", "２０２６", "٢٠٢٦", "20２٦"):
+            with self.subTest(value=value), tempfile.TemporaryDirectory() as tmp:
+                folder = Path(tmp)
+                config = folder / "config.json"
+                config.write_bytes(THEME_BYTES)
+                urls = []
+
+                def fetch(request, **kwargs):
+                    # Exercise HTTP's actual request-line encoding without opening a connection.
+                    connection = http.client.HTTPSConnection("api.jolpi.ca")
+                    try:
+                        connection.putrequest(request.get_method(), request.selector)
+                    finally:
+                        connection.close()
+                    urls.append(request.full_url)
+                    return io.BytesIO(RESPONSE)
+
+                with mock.patch.object(sys, "argv", ["race_calendar.py", str(folder), "--season", value]), \
+                        mock.patch.object(race_calendar, "datetime", clock()), \
+                        mock.patch.object(race_calendar.urllib.request, "urlopen", side_effect=fetch), \
+                        contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                    self.assertEqual(race_calendar.main(), 0)
+                self.assertEqual(urls, [race_calendar.API.format(season="2026")])
+                data = json.loads(config.read_text(encoding="utf-8"))
+                self.assertEqual(data.pop("race_calendar")[0]["round"], 1)
+                self.assertEqual(data, {k: v for k, v in THEME.items() if k != "race_calendar"})
+
     def test_a_typo_and_a_year_before_the_first_season_are_refused(self):
         for value in ("2027x", "26", "26x", str(race_calendar.FIRST_SEASON - 1), "1899", "", "2026.5",
                       "-2026"):
@@ -518,6 +546,37 @@ with mock.patch.object(urllib.request, 'urlopen', side_effect=lambda *a, **k: io
         self.assert_refused(status, stderr, "there is no theme folder at", str(picture))
         self.urlopen.assert_not_called()
 
+    def test_a_theme_path_the_filesystem_refuses_to_stat_is_named(self):
+        # A theme path whose name is longer than NAME_MAX - or one under a folder this user may not
+        # traverse - used to end the run in an OSError as a traceback, exit 1: the code this script
+        # keeps for "no race left this season", over a path it never looked at. It is a stat this run
+        # asks for itself (stat_folder), not `Path.is_dir()`, which on Python 3.14 answers False for
+        # this name instead of raising: the case holds on every version.
+        self.stub()
+        word = str(Path(self.tmp.name) / ("t" * 300))
+        try:
+            os.stat(word)
+        except OSError:
+            pass
+        else:
+            self.skipTest("this filesystem stats a 300-character name")
+        status, stderr = self.run_main(word, "--season", "2026")
+        self.assert_refused(status, stderr, "could not look at", "File name too long")
+        self.assertEqual(self.out.getvalue(), "")
+        self.urlopen.assert_not_called()
+
+    def test_a_theme_path_this_user_may_not_look_at_is_the_same_refusal(self):
+        # The same branch on any platform, in-process: a folder the run may not open (another user's
+        # home, a mount that denies) answers PermissionError out of the stat this run asks, which is
+        # what stat_folder() does rather than `Path.is_dir()` - that one answers False for it on
+        # Python 3.14, which would read as a theme folder that is not there.
+        self.stub()
+        with mock.patch.object(Path, "stat", side_effect=PermissionError(errno.EACCES, "Permission denied")):
+            status, stderr = self.run_main(str(self.theme), "--season", "2026")
+        self.assert_refused(status, stderr, "could not look at", "Permission denied")
+        self.assertEqual(self.out.getvalue(), "")
+        self.urlopen.assert_not_called()
+
     def test_an_empty_theme_name_is_not_the_directory_it_is_run_from(self):
         # `race_calendar.py "$THEME"` with THEME unset passes the empty word, and Path("") is Path("."):
         # a folder that is always there, so the folder check let it through, the run wrote a config.json
@@ -576,6 +635,47 @@ with mock.patch.object(urllib.request, 'urlopen', side_effect=lambda *a, **k: io
         status, stderr = self.run_main(str(self.theme), "--season", "2026")
         self.assert_refused(status, stderr, f"{self.config} is not a file")
         self.urlopen.assert_not_called()
+
+    def test_a_config_json_the_filesystem_will_not_stat_never_fetches(self):
+        self.stub()
+        self.config.write_bytes(THEME_BYTES)
+        real_stat = Path.stat
+        for number in (errno.EACCES, errno.EIO, errno.ENAMETOOLONG, errno.EINVAL):
+            with self.subTest(errno=number):
+                def refused(path, *args, **kwargs):
+                    if path == self.config:
+                        raise OSError(number, os.strerror(number))
+                    return real_stat(path, *args, **kwargs)
+
+                with mock.patch.object(Path, "stat", refused):
+                    status, stderr = self.run_main(str(self.theme), "--season", "2026")
+                self.assert_refused(status, stderr, str(self.config), os.strerror(number))
+                self.urlopen.assert_not_called()
+                self.assertEqual(self.config.read_bytes(), THEME_BYTES)
+                self.assertEqual(self.out.getvalue(), "")
+
+    @unittest.skipUnless(os.name == "posix", "needs POSIX directory search permissions")
+    def test_a_theme_without_search_permission_refuses_its_config_before_fetching(self):
+        # stat(theme) succeeds without searching inside it; stat(theme/config.json) does not.
+        # On 3.13 that error escaped exists(), while 3.14 treated it as a missing config and fetched.
+        self.stub()
+        self.config.write_bytes(THEME_BYTES)
+        mode = stat.S_IMODE(self.theme.stat().st_mode)
+        self.theme.chmod(0)
+        try:
+            try:
+                self.config.stat()
+            except PermissionError:
+                pass
+            else:
+                self.skipTest("this user can search a directory without its search permission")
+            status, stderr = self.run_main(str(self.theme), "--season", "2026")
+        finally:
+            self.theme.chmod(mode)
+        self.assert_refused(status, stderr, str(self.config), "Permission denied")
+        self.urlopen.assert_not_called()
+        self.assertEqual(self.config.read_bytes(), THEME_BYTES)
+        self.assertEqual(self.out.getvalue(), "")
 
     def test_a_config_json_that_cannot_be_written_is_named_after_the_fetch(self):
         # The other half of the same file: the fetch happens first, so this one is not "nothing was
@@ -648,6 +748,24 @@ with mock.patch.object(urllib.request, 'urlopen', side_effect=lambda *a, **k: io
                                                 "Service Unavailable", {}, None))
         status, stderr = self.run_main(str(self.theme), "--season", "2026")
         self.assert_refused(status, stderr, "Jolpica answered 503 Service Unavailable")
+
+    def test_the_answer_it_refuses_is_closed(self):
+        # urllib raises the 503 with the response inside it, body and all, so the connection belongs to
+        # whoever caught it. Refusing without close() leaves it to the collector, and Python 3.14's
+        # addbase then prints `ResourceWarning: Implicitly cleaning up <HTTPError 503: ...>` after the
+        # refusal; 3.12 prints nothing, which is why the case reads a close rather than a warning.
+        class Answer(urllib.error.HTTPError):
+            was_closed = False
+
+            def close(self):
+                type(self).was_closed = True
+                super().close()
+
+        self.stub(raises=Answer(race_calendar.API.format(season="2026"), 503, "Service Unavailable",
+                                {}, io.BytesIO(b"unavailable")))
+        status, stderr = self.run_main(str(self.theme), "--season", "2026")
+        self.assert_refused(status, stderr, "Jolpica answered 503 Service Unavailable")
+        self.assertTrue(Answer.was_closed, "the 503 the script refused was left open")
 
     def test_a_body_that_is_not_json_is_named_as_such(self):
         self.stub(body=b"<html><body>502 Bad Gateway</body></html>")

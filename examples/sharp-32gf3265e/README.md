@@ -7,13 +7,22 @@ Tested on one Sharp 32GF3265E ("SHARP 2K Smart TV", device umeda, Skyworth board
 
 ## Apply
 
-1. Debloat: TV_HOST=<tv ip> tools/disable.sh examples/sharp-32gf3265e/debloat.txt
-2. Install the repo launcher as Home (the script disables the stock launcher itself once the new one owns Home):
-   TV_HOST=<tv ip> HOME_KEY_SERVICE=1 INPUT_KEY_SERVICE=1 launcher/build-and-install.sh
-3. Push this folder's config (dock, glass band, gear key, power-on Home):
-   TV_HOST=<tv ip> tools/theme.sh examples/sharp-32gf3265e
+Run these from the repository root:
 
-Undo: TV_HOST=<tv ip> tools/restore.sh examples/sharp-32gf3265e/debloat.txt com.google.android.apps.tv.launcherx
+```bash
+TV_HOST=<tv ip> tools/disable.sh examples/sharp-32gf3265e/debloat.txt
+TV_HOST=<tv ip> HOME_KEY_SERVICE=1 INPUT_KEY_SERVICE=1 launcher/build-and-install.sh
+TV_HOST=<tv ip> tools/theme.sh examples/sharp-32gf3265e
+```
+
+The second line installs the repo launcher as Home (the script disables the stock launcher itself once the
+new one owns Home); the third pushes this folder's config (dock, glass band, gear key, power-on Home).
+
+Undo:
+
+```bash
+TV_HOST=<tv ip> tools/restore.sh examples/sharp-32gf3265e/debloat.txt com.google.android.apps.tv.launcherx
+```
 (the stock launcher stays disabled; the repo launcher is Home)
 
 ## Notes
@@ -32,5 +41,6 @@ Undo: TV_HOST=<tv ip> tools/restore.sh examples/sharp-32gf3265e/debloat.txt com.
   if wanted: screen off after 10 min (system screen_off_timeout 600000) and full suspend after 1 h
   (secure sleep_timeout 3600000).
 - The factory test packages stay enabled and must never be launched.
-- The firmware re-enabled the Assistant (com.google.android.katniss) once at a power-on; if the mic button
-  works again, disable it again from the list.
+- The firmware re-enabled the Assistant (com.google.android.katniss) once at a power-on. Its line stays
+  commented, so applying this list leaves the Assistant on (this set has it off by the owner's choice);
+  uncomment it to turn the Assistant off again, mic button included.
